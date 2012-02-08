@@ -3,10 +3,9 @@
  */
 package eu.scape_project.watch.core.rest.resource;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.LinkedList;
 
-import javax.persistence.PersistenceException;
-import javax.persistence.Query;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -17,6 +16,9 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 
+import thewebsemantic.Sparql;
+
+import com.hp.hpl.jena.query.QuerySolutionMap;
 import com.wordnik.swagger.core.ApiError;
 import com.wordnik.swagger.core.ApiErrors;
 import com.wordnik.swagger.core.ApiOperation;
@@ -38,11 +40,21 @@ public class EntityTypeResource extends JavaHelp {
 			.getLogger(EntityTypeResource.class);
 
 	private EntityType getEntityTypeByNameImpl(String name) {
-//		EntityType entitytype = KB.getInstance().findByProperty(
-//				EntityType.class, "name", name);
-//		// do we need a null check here?
-//		return entitytype;
-	  return null;
+		EntityType ret = null;
+		String query = "SELECT ?s WHERE { ?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://watch.scape-project.eu/EntityType> ."
+				+ " ?s <http://watch.scape-project.eu/name> \"" + name + "\"}";
+		LinkedList<EntityType> results = Sparql.exec(KB.getInstance()
+				.getReader(), EntityType.class, query, new QuerySolutionMap(),
+				0, 1);
+		if (results.size() > 1) {
+			logger.warn("Got more than one result when getting an entity type by name, name="
+					+ name);
+		}
+		if (results.size() > 0) {
+			ret = results.getFirst();
+		}
+
+		return ret;
 	}
 
 	@GET
@@ -64,39 +76,29 @@ public class EntityTypeResource extends JavaHelp {
 	@GET
 	@Path("/list")
 	@ApiOperation(value = "List all entity types", notes = "")
-	@ApiErrors(value = { @ApiError(code = 500, reason = "Error connecting to persistence layer") })
-	public Response listEntity() throws ApiException {
-		Response response;
-//		try {
-//			Query query = KB
-//					.getInstance()
-//					.getEntityManager()
-//					.createNativeQuery("where {?result rdf:type kb:EntityType}");
-//			query.setHint(RdfQuery.HINT_ENTITY_CLASS, EntityType.class);
-//			List<EntityType> list = query.getResultList();
-//			response = Response.ok().entity(list).build();
-//		} catch (PersistenceException e) {
-//			e.printStackTrace();
-//			throw new ApiException(500, e.getMessage());
-//		}
-//		return response;
-		return null;
+	// @ApiErrors(value = { @ApiError(code = 500, reason =
+	// "Error connecting to persistence layer") })
+	public Response listEntity() {
+		Collection<EntityType> list = KB.getInstance().getReader()
+				.load(EntityType.class);
+		return Response.ok().entity(list).build();
 	}
 
 	@POST
+	@Path("/{name}")
 	@ApiOperation(value = "Create Entity Type", notes = "This can only be done by an admin user (TODO)")
-	@ApiErrors(value = { @ApiError(code = 500, reason = "Unexpected internal error") })
+	// @ApiErrors(value = { @ApiError(code = 500, reason =
+	// "Unexpected internal error") })
 	public Response createEntityType(
-			@ApiParam(value = "Entity Type object", required = true) EntityType entitytype)
+			@ApiParam(value = "Entity type name (must be unique)", required = true)  @PathParam("name") String name,
+			@ApiParam(value = "Entity type description", required = false) String description)
 			throws ApiException {
-		logger.info("creating entity name: " + entitytype.getName());
-		try {
-//			KB.getInstance().getEntityManager().persist(entitytype);
-			return Response.ok().entity(entitytype).build();
-		} catch (Throwable e) {
-			logger.error("Unexpected error", e);
-			throw new ApiException(500, e);
-		}
+		logger.info("creating entity name: " + name);
+		KB.getInstance();
+		EntityType entitytype = new EntityType(name, description);
+		entitytype.save();
+		return Response.ok().entity(entitytype).build();
+
 	}
 
 	@PUT
@@ -108,29 +110,33 @@ public class EntityTypeResource extends JavaHelp {
 	public Response updateEntityType(
 			@ApiParam(value = "Name that need to be deleted", required = true) @PathParam("name") String name,
 			@ApiParam(value = "Updated Entity Type object", required = true) EntityType entitytype) {
-//		EntityType mergedEntityType = KB.getInstance().getEntityManager()
-//				.merge(entitytype);
-//		return Response.ok().entity(mergedEntityType).build();
-	  return null;
+		EntityType original = getEntityTypeByNameImpl(entitytype.getName());
+		if (original != null) {
+			original.delete();
+			entitytype.save();
+			return Response.ok().entity(entitytype).build();
+		} else {
+			throw new NotFoundException(404, "Entity type '"
+					+ entitytype.getName() + "' not found");
+		}
 	}
 
 	@DELETE
 	@Path("/{name}")
 	@ApiOperation(value = "Delete Entity Type", notes = "This can only be done by an admin user (TODO)")
-	@ApiErrors(value = {
-			@ApiError(code = 404, reason = "Entity Type not found"),
-			@ApiError(code = 500, reason = "Unexpected internal error") })
+	@ApiErrors(value = { @ApiError(code = 404, reason = "Entity Type not found") })
 	public Response deleteEntity(
 			@ApiParam(value = "The name of the Entity Type to be deleted", required = true) @PathParam("name") String name)
 			throws ApiException {
 		logger.info("deleting entity type name: " + name);
-		try {
-			EntityType entitytype = getEntityTypeByNameImpl(name);
-//			KB.getInstance().getEntityManager().remove(entitytype);
+
+		EntityType entitytype = getEntityTypeByNameImpl(name);
+		if (entitytype != null) {
+			entitytype.delete();
 			return Response.ok().entity(entitytype).build();
-		} catch (Throwable e) {
-			logger.error("Unexpected error", e);
-			throw new ApiException(500, e);
+		} else {
+			throw new NotFoundException(404, "Entity type '" + name
+					+ "' not found");
 		}
 	}
 

@@ -61,10 +61,10 @@ public class WatchClient {
 
 	/***************** ENTITY TYPE *************************/
 
-	public EntityType createEntityType(EntityType entitytype) {
-		return resource.path(ENTITY_TYPE + "." + format + "/")
+	public EntityType createEntityType(String name, String description) {
+		return resource.path(ENTITY_TYPE + "." + format + "/" + name)
 				.accept(MediaType.APPLICATION_JSON)
-				.post(EntityType.class, entitytype);
+				.post(EntityType.class, description);
 	}
 
 	public EntityType getEntityType(String name) {

@@ -38,10 +38,11 @@ public class EntityTypeResource extends JavaHelp {
 			.getLogger(EntityTypeResource.class);
 
 	private EntityType getEntityTypeByNameImpl(String name) {
-		EntityType entitytype = KB.getInstance().findByProperty(
-				EntityType.class, "name", name);
-		// do we need a null check here?
-		return entitytype;
+//		EntityType entitytype = KB.getInstance().findByProperty(
+//				EntityType.class, "name", name);
+//		// do we need a null check here?
+//		return entitytype;
+	  return null;
 	}
 
 	@GET
@@ -90,7 +91,7 @@ public class EntityTypeResource extends JavaHelp {
 			throws ApiException {
 		logger.info("creating entity name: " + entitytype.getName());
 		try {
-			KB.getInstance().getEntityManager().persist(entitytype);
+//			KB.getInstance().getEntityManager().persist(entitytype);
 			return Response.ok().entity(entitytype).build();
 		} catch (Throwable e) {
 			logger.error("Unexpected error", e);
@@ -107,9 +108,10 @@ public class EntityTypeResource extends JavaHelp {
 	public Response updateEntityType(
 			@ApiParam(value = "Name that need to be deleted", required = true) @PathParam("name") String name,
 			@ApiParam(value = "Updated Entity Type object", required = true) EntityType entitytype) {
-		EntityType mergedEntityType = KB.getInstance().getEntityManager()
-				.merge(entitytype);
-		return Response.ok().entity(mergedEntityType).build();
+//		EntityType mergedEntityType = KB.getInstance().getEntityManager()
+//				.merge(entitytype);
+//		return Response.ok().entity(mergedEntityType).build();
+	  return null;
 	}
 
 	@DELETE
@@ -124,7 +126,7 @@ public class EntityTypeResource extends JavaHelp {
 		logger.info("deleting entity type name: " + name);
 		try {
 			EntityType entitytype = getEntityTypeByNameImpl(name);
-			KB.getInstance().getEntityManager().remove(entitytype);
+//			KB.getInstance().getEntityManager().remove(entitytype);
 			return Response.ok().entity(entitytype).build();
 		} catch (Throwable e) {
 			logger.error("Unexpected error", e);

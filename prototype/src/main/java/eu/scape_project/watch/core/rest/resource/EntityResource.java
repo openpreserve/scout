@@ -33,9 +33,10 @@ public class EntityResource extends JavaHelp {
 	private static final Logger logger = Logger.getLogger(EntityResource.class);
 
 	private Entity getEntityByNameImpl(String name) {
-		Entity entity = KB.getInstance().findByProperty(Entity.class, "name", name);
-//		do we need a null check here?
-		return entity;
+//		Entity entity = KB.getInstance().findByProperty(Entity.class, "name", name);
+////		do we need a null check here?
+//		return entity;
+	  return null;
 	}
 
 	@GET
@@ -83,7 +84,7 @@ public class EntityResource extends JavaHelp {
 			throws ApiException {
 		logger.info("creating entity name: " + entity.getName());
 		try {
-			KB.getInstance().getEntityManager().persist(entity);
+//			KB.getInstance().getEntityManager().persist(entity);
 			return Response.ok().entity(entity).build();
 		} catch (Throwable e) {
 			logger.error("Unexpected error", e);
@@ -100,8 +101,9 @@ public class EntityResource extends JavaHelp {
 	public Response updateEntity(
 			@ApiParam(value = "Name that need to be deleted", required = true) @PathParam("name") String name,
 			@ApiParam(value = "Updated Entity object", required = true) Entity entity) {
-		Entity mergedEntity = KB.getInstance().getEntityManager().merge(entity);
-		return Response.ok().entity(mergedEntity).build();
+//		Entity mergedEntity = KB.getInstance().getEntityManager().merge(entity);
+//		return Response.ok().entity(mergedEntity).build();
+	  return null;
 	}
 
 	@DELETE
@@ -115,7 +117,7 @@ public class EntityResource extends JavaHelp {
 		logger.info("deleting entity name: " + name);
 		try {
 			Entity entity = getEntityByNameImpl(name);
-			KB.getInstance().getEntityManager().remove(entity);
+//			KB.getInstance().getEntityManager().remove(entity);
 			return Response.ok().entity(entity).build();
 		} catch (Throwable e) {
 			logger.error("Unexpected error", e);

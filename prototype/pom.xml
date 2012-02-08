@@ -25,17 +25,6 @@
 			<url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
 		</repository>
 		<repository>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<id>aduna-opensource.releases</id>
-			<name>Aduna Open Source - Maven releases</name>
-			<url>http://repo.aduna-software.org/maven2/releases</url>
-		</repository>
-		<repository>
 			<id>KEEP Artifacts</id>
 			<name>KEEP Artifacts-releases</name>
 			<url>http://artifactory.keep.pt/keep</url>
@@ -164,6 +153,11 @@
 			<artifactId>jersey-test-framework-grizzly2</artifactId>
 			<version>1.11</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.hp.hpl.jena</groupId>
+			<artifactId>jena</artifactId>
+			<version>2.6.4</version>
 		</dependency>
 	</dependencies>
 	<scm>

@@ -1,25 +1,28 @@
 package eu.scape_project.watch.core.model;
 
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+import thewebsemantic.Id;
+import thewebsemantic.Namespace;
+import thewebsemantic.binding.RdfBean;
+
+@Namespace("http://watch.scape-project.eu/")
 @XmlRootElement(name = "entitytype")
 @XmlAccessorType(XmlAccessType.FIELD)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class EntityType {
+public class EntityType extends RdfBean<EntityType> {
 
 	public EntityType() {
 		super();
 	}
 
 	public EntityType(String n, String d) {
+		super();
 		this.name = n;
 		this.description = d;
 	}
@@ -30,9 +33,10 @@ public class EntityType {
 	@XmlElement
 	private String description;
 
-	@XmlTransient
-	private List<Property> properties;
+//	@XmlTransient
+//	private List<Property> properties;
 
+	@Id
 	public String getName() {
 		return name;
 	}
@@ -49,23 +53,23 @@ public class EntityType {
 		this.description = description;
 	}
 
-	public List<Property> getProperties() {
-		return properties;
-	}
+	// public List<Property> getProperties() {
+	// return properties;
+	// }
+	//
+	// public void setProperties(List<Property> properties) {
+	// this.properties = properties;
+	// }
 
-	public void setProperties(List<Property> properties) {
-		this.properties = properties;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
-	}
+	// @Override
+	// public int hashCode() {
+	// final int prime = 31;
+	// int result = 1;
+	// result = prime * result
+	// + ((description == null) ? 0 : description.hashCode());
+	// result = prime * result + ((name == null) ? 0 : name.hashCode());
+	// return result;
+	// }
 
 	@Override
 	public boolean equals(Object obj) {

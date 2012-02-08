@@ -10,10 +10,15 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+import thewebsemantic.Id;
+import thewebsemantic.Namespace;
+import thewebsemantic.binding.RdfBean;
+
+@Namespace("http://watch.scape-project.eu/")
 @XmlRootElement(name = "entity")
 @XmlAccessorType(XmlAccessType.FIELD)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Entity {
+public class Entity extends RdfBean<EntityType> {
 
 	public Entity() {
 	    super();
@@ -24,6 +29,7 @@ public class Entity {
 	    this.name = n;
 	}
  
+	@Id
 	@XmlElement(name = "name")
 	private String name;
 

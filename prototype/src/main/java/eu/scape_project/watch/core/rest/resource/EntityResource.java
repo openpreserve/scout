@@ -3,6 +3,8 @@
  */
 package eu.scape_project.watch.core.rest.resource;
 
+import java.util.Collection;
+
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -73,6 +75,9 @@ public class EntityResource extends JavaHelp {
 //			throw new ApiException(500, e.getMessage());
 //		}
 //		return response;
+		
+		
+		
 		return null;
 	}
 
@@ -85,6 +90,8 @@ public class EntityResource extends JavaHelp {
 		logger.info("creating entity name: " + entity.getName());
 		try {
 //			KB.getInstance().getEntityManager().persist(entity);
+			
+			entity.save();
 			return Response.ok().entity(entity).build();
 		} catch (Throwable e) {
 			logger.error("Unexpected error", e);

@@ -1,15 +1,20 @@
 package eu.scape_project.watch.core;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
 import junit.framework.Assert;
 
+import org.apache.commons.io.FileUtils;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import thewebsemantic.Sparql;
 
+import com.google.common.io.Files;
 import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Property;
@@ -20,35 +25,51 @@ import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.vocabulary.VCARD;
 
 import eu.scape_project.watch.core.model.EntityType;
+import eu.scape_project.watch.core.rest.util.KBUtils;
 
 public class KBTest {
-	Logger LOG = Logger.getLogger(KBTest.class.getSimpleName());
+	private static final Logger LOG = Logger.getLogger(KBTest.class
+			.getSimpleName());
 
-	@Test
-	public void shouldTestDefaultModel() throws Exception {
-		Dataset dataset = KB.getInstance().getDataset();
-		Model model = dataset.getDefaultModel();
-		String url = "http://whatever.test/JohnSmith";
-		String name = "John Smith";
-		Resource resource = model.createResource(url);
-		resource.addProperty(VCARD.FN, name);
+	private final static File tempDir = Files.createTempDir();
 
-		StmtIterator iterator = model.listStatements();
-
-		Assert.assertTrue(iterator.hasNext());
-
-		Statement statement = iterator.nextStatement();
-		Resource subject = statement.getSubject();
-		Property predicate = statement.getPredicate();
-		RDFNode object = statement.getObject();
-
-		Assert.assertEquals(url, subject.getURI());
-		Assert.assertEquals(VCARD.FN.getURI(), predicate.getURI());
-		Assert.assertEquals(name, object.toString());
-
-		Assert.assertFalse(iterator.hasNext());
-
+	@BeforeClass
+	public static void beforeClass() {
+		LOG.info("Creating data folder at " + tempDir.getPath());
+		KB.setDataFolder(tempDir.getPath());
 	}
+
+	@AfterClass
+	public static void afterClass() {
+		LOG.info("Deleting data folder at " + tempDir.getPath());
+		FileUtils.deleteQuietly(tempDir);
+	}
+
+	// @Test
+	// public void shouldTestDefaultModel() throws Exception {
+	// Dataset dataset = KB.getInstance().getDataset();
+	// Model model = dataset.getDefaultModel();
+	// String url = "http://whatever.test/JohnSmith";
+	// String name = "John Smith";
+	// Resource resource = model.createResource(url);
+	// resource.addProperty(VCARD.FN, name);
+	//
+	// StmtIterator iterator = model.listStatements();
+	//
+	// Assert.assertTrue(iterator.hasNext());
+	//
+	// Statement statement = iterator.nextStatement();
+	// Resource subject = statement.getSubject();
+	// Property predicate = statement.getPredicate();
+	// RDFNode object = statement.getObject();
+	//
+	// Assert.assertEquals(url, subject.getURI());
+	// Assert.assertEquals(VCARD.FN.getURI(), predicate.getURI());
+	// Assert.assertEquals(name, object.toString());
+	//
+	// Assert.assertFalse(iterator.hasNext());
+	//
+	// }
 
 	@Test
 	public void testEntityType() {
@@ -61,7 +82,7 @@ public class KBTest {
 
 		type.save();
 
-		printStatements();
+		KBUtils.printStatements();
 
 		// List
 		Collection<EntityType> types = KB.getInstance().getReader()
@@ -71,19 +92,26 @@ public class KBTest {
 
 		// QUERY
 		String query = "SELECT ?s WHERE { ?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://watch.scape-project.eu/EntityType> }";
-		List<EntityType> types3 = Sparql.exec(KB.getInstance().getModel(),
+		List<EntityType> types2 = Sparql.exec(KB.getInstance().getModel(),
 				EntityType.class, query);
 
-		Assert.assertTrue(types3.contains(type));
+		Assert.assertTrue(types2.contains(type));
+
+		// FIND
+		EntityType type2 = KBUtils.find(type.getName(), EntityType.class,
+				"name");
+
+		Assert.assertNotNull(type2);
+		Assert.assertEquals(type, type2);
 
 		// DELETE
 		type.delete();
 
 		// LIST AGAIN
-		Collection<EntityType> types2 = KB.getInstance().getReader()
+		Collection<EntityType> types3 = KB.getInstance().getReader()
 				.load(EntityType.class);
 
-		Assert.assertFalse(types2.contains(type));
+		Assert.assertFalse(types3.contains(type));
 
 		// QUERY AGAIN
 		List<EntityType> types4 = Sparql.exec(KB.getInstance().getModel(),
@@ -91,44 +119,12 @@ public class KBTest {
 
 		Assert.assertFalse(types4.contains(type));
 
+		// FIND AGAIN
+		EntityType type3 = KBUtils.find(type.getName(), EntityType.class,
+				"name");
+
+		Assert.assertNull(type3);
+
 	}
 
-	private void printStatements() {
-
-		StmtIterator statements = KB.getInstance().getModel().listStatements();
-		try {
-			while (statements.hasNext()) {
-				Statement stmt = statements.next();
-				Resource s = stmt.getSubject();
-				Resource p = stmt.getPredicate();
-				RDFNode o = stmt.getObject();
-
-				String sinfo = "";
-				String pinfo = "";
-				String oinfo = "";
-
-				if (s.isURIResource()) {
-					sinfo = "URI " + s.getURI();
-				} else if (s.isAnon()) {
-					sinfo = "Anon " + s.getId();
-				}
-
-				if (p.isURIResource())
-					pinfo = "URI " + p.getURI();
-
-				if (o.isURIResource()) {
-					oinfo = "URI " + o.toString();
-				} else if (o.isAnon()) {
-					oinfo = "Anon " + o.toString();
-				} else if (o.isLiteral()) {
-					oinfo = "Lit " + o.asLiteral();
-				}
-				LOG.info("TRIPLE (" + sinfo + ", " + pinfo + ", " + oinfo);
-			}
-		} catch (Throwable e) {
-			LOG.info(e.getMessage());
-		} finally {
-			statements.close();
-		}
-	}
 }

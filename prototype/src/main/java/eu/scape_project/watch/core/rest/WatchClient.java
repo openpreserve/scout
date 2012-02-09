@@ -18,13 +18,31 @@ public class WatchClient {
 	private static final String PROPERTY_VALUE = "propertyvalue";
 
 	private final WebResource resource;
-	private final String format;
+	private final Format format;
 
-	public WatchClient(WebResource resource) {
-		this(resource, "json");
+	public static enum Format {
+		JSON, XML;
+
+		public String toString() {
+			return super.toString().toLowerCase();
+		}
+
+		public String getMediaType() {
+			if (this.equals(JSON)) {
+				return MediaType.APPLICATION_JSON;
+			} else if (this.equals(XML)) {
+				return MediaType.APPLICATION_XML;
+			} else {
+				return null;
+			}
+		}
 	}
 
-	public WatchClient(WebResource resource, String format) {
+	public WatchClient(WebResource resource) {
+		this(resource, Format.JSON);
+	}
+
+	public WatchClient(WebResource resource, Format format) {
 		super();
 		this.resource = resource;
 		this.format = format;
@@ -34,61 +52,60 @@ public class WatchClient {
 
 	public Entity createEntity(Entity entity) {
 		return resource.path(ENTITY + "." + format + "/")
-				.accept(MediaType.APPLICATION_JSON).post(Entity.class, entity);
+				.accept(format.getMediaType()).post(Entity.class, entity);
 	}
 
 	public Entity getEntity(String name) {
 		return resource.path(ENTITY + "." + format + "/" + name)
-				.accept(MediaType.APPLICATION_JSON).get(Entity.class);
+				.accept(format.getMediaType()).get(Entity.class);
 	}
 
 	public Entity updateEntity(String name, Entity entity) {
 		return resource.path(ENTITY + "." + format + "/" + name)
-				.accept(MediaType.APPLICATION_JSON).put(Entity.class, entity);
+				.accept(format.getMediaType()).put(Entity.class, entity);
 	}
 
 	public List<Entity> listEntity() {
 		return (List<Entity>) resource.path(ENTITY + "." + format + "/list")
-				.accept(MediaType.APPLICATION_JSON)
+				.accept(format.getMediaType())
 				.get(new GenericType<List<Entity>>() {
 				});
 	}
 
 	public Entity deleteEntity(String name) {
 		return resource.path(ENTITY + "." + format + "/" + name)
-				.accept(MediaType.APPLICATION_JSON).delete(Entity.class);
+				.accept(format.getMediaType()).delete(Entity.class);
 	}
 
 	/***************** ENTITY TYPE *************************/
 
 	public EntityType createEntityType(String name, String description) {
 		return resource.path(ENTITY_TYPE + "." + format + "/" + name)
-				.accept(MediaType.APPLICATION_JSON)
+				.accept(format.getMediaType())
 				.post(EntityType.class, description);
 	}
 
 	public EntityType getEntityType(String name) {
 		return resource.path(ENTITY_TYPE + "." + format + "/" + name)
-				.accept(MediaType.APPLICATION_JSON).get(EntityType.class);
+				.accept(format.getMediaType()).get(EntityType.class);
 	}
 
 	public EntityType updateEntityType(String name, EntityType entity) {
 		return resource.path(ENTITY_TYPE + "." + format + "/" + name)
-				.accept(MediaType.APPLICATION_JSON)
-				.put(EntityType.class, entity);
+				.accept(format.getMediaType()).put(EntityType.class, entity);
 	}
 
 	public List<EntityType> listEntityType() {
 		return (List<EntityType>) resource
 				.path(ENTITY_TYPE + "." + format + "/list")
-				.accept(MediaType.APPLICATION_JSON)
+				.accept(format.getMediaType())
 				.get(new GenericType<List<EntityType>>() {
 				});
 	}
 
 	public EntityType deleteEntityType(String name) {
 		return resource.path(ENTITY_TYPE + "." + format + "/" + name)
-				.accept(MediaType.APPLICATION_JSON).delete(EntityType.class);
+				.accept(format.getMediaType()).delete(EntityType.class);
 	}
 
 }

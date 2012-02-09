@@ -1,5 +1,9 @@
 package eu.scape_project.watch.core;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +19,6 @@ public class KB {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(KB.class);
 
-	private static final String DATA_FOLDER = "./data/tdb";
 	// private static final String UNION_GRAPH = "urn:x-arq:UnionGraph";
 
 	private static KB UNIQUE_INSTANCE;
@@ -23,28 +26,42 @@ public class KB {
 	private static Dataset dataset;
 	private static Model model;
 
+	public static final String WATCH_NS = "http://watch.scape-project.eu/";
+	public static final String RDFS_NS = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+
+	// TODO get data folder from config
+	private static String DATA_FOLDER = "/usr/local/watch/data/tdb";
+
+	public static void setDataFolder(String dataFolder) {
+		DATA_FOLDER = dataFolder;
+	}
+
 	public static synchronized KB getInstance() {
 		if (KB.UNIQUE_INSTANCE == null) {
 			KB.UNIQUE_INSTANCE = new KB();
 
-			dataset = TDBFactory.createDataset(DATA_FOLDER);
+			File dataFolderFile = new File(DATA_FOLDER);
+			try {
+				FileUtils.forceMkdir(dataFolderFile);
+				dataset = TDBFactory.createDataset(DATA_FOLDER);
+				model = TDBFactory.createModel(DATA_FOLDER);
+				Jenabean.instance().bind(model);
+				LOGGER.info("KB manager created at {}", DATA_FOLDER);
+			} catch (IOException e) {
+				LOGGER.error("Data folder {} could not be created",
+						e.getMessage());
+			}
 
 			Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
 				@Override
 				public void run() {
-					dataset.close();
+					if (dataset != null) {
+						dataset.close();
+					}
 					KB.LOGGER.info("closing dataset");
 				}
 			}));
 
-			// model = ModelFactory.createOntologyModel(
-			// OntModelSpec.OWL_MEM_MICRO_RULE_INF,
-			// dataset.getNamedModel(UNION_GRAPH));
-			model = TDBFactory.createModel(DATA_FOLDER);
-
-			Jenabean.instance().bind(model);
-
-			KB.LOGGER.info("KB manager created");
 		}
 
 		return KB.UNIQUE_INSTANCE;

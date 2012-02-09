@@ -7,14 +7,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+import eu.scape_project.watch.core.KB;
+
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
 
-@Namespace("http://watch.scape-project.eu/")
+@Namespace(KB.WATCH_NS)
 @XmlRootElement(name = "entitytype")
 @XmlAccessorType(XmlAccessType.FIELD)
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class EntityType extends RdfBean<EntityType> {
 
 	public EntityType() {
@@ -33,8 +35,8 @@ public class EntityType extends RdfBean<EntityType> {
 	@XmlElement
 	private String description;
 
-//	@XmlTransient
-//	private List<Property> properties;
+	// @XmlTransient
+	// private List<Property> properties;
 
 	@Id
 	public String getName() {

@@ -12,6 +12,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
@@ -29,6 +30,7 @@ import eu.scape_project.watch.core.KB;
 import eu.scape_project.watch.core.model.EntityType;
 import eu.scape_project.watch.core.rest.exception.ApiException;
 import eu.scape_project.watch.core.rest.exception.NotFoundException;
+import eu.scape_project.watch.core.rest.util.KBUtils;
 
 /**
  * @author lfaria
@@ -36,25 +38,16 @@ import eu.scape_project.watch.core.rest.exception.NotFoundException;
  */
 public class EntityTypeResource extends JavaHelp {
 
+	static {
+		// Binding KB with Jenabean
+		KB.getInstance();
+	}
+
 	private static final Logger logger = Logger
 			.getLogger(EntityTypeResource.class);
 
 	private EntityType getEntityTypeByNameImpl(String name) {
-		EntityType ret = null;
-		String query = "SELECT ?s WHERE { ?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://watch.scape-project.eu/EntityType> ."
-				+ " ?s <http://watch.scape-project.eu/name> \"" + name + "\"}";
-		LinkedList<EntityType> results = Sparql.exec(KB.getInstance()
-				.getReader(), EntityType.class, query, new QuerySolutionMap(),
-				0, 1);
-		if (results.size() > 1) {
-			logger.warn("Got more than one result when getting an entity type by name, name="
-					+ name);
-		}
-		if (results.size() > 0) {
-			ret = results.getFirst();
-		}
-
-		return ret;
+		return KBUtils.find(name, EntityType.class, "name");
 	}
 
 	@GET
@@ -81,7 +74,9 @@ public class EntityTypeResource extends JavaHelp {
 	public Response listEntity() {
 		Collection<EntityType> list = KB.getInstance().getReader()
 				.load(EntityType.class);
-		return Response.ok().entity(list).build();
+		return Response.ok()
+				.entity(new GenericEntity<Collection<EntityType>>(list) {
+				}).build();
 	}
 
 	@POST
@@ -90,13 +85,14 @@ public class EntityTypeResource extends JavaHelp {
 	// @ApiErrors(value = { @ApiError(code = 500, reason =
 	// "Unexpected internal error") })
 	public Response createEntityType(
-			@ApiParam(value = "Entity type name (must be unique)", required = true)  @PathParam("name") String name,
+			@ApiParam(value = "Entity type name (must be unique)", required = true) @PathParam("name") String name,
 			@ApiParam(value = "Entity type description", required = false) String description)
 			throws ApiException {
 		logger.info("creating entity name: " + name);
-		KB.getInstance();
 		EntityType entitytype = new EntityType(name, description);
 		entitytype.save();
+
+		KBUtils.printStatements();
 		return Response.ok().entity(entitytype).build();
 
 	}

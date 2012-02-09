@@ -1,4 +1,4 @@
-package eu.scape_project.watch.core.rest.util;
+package eu.scape_project.watch.core;
 
 import java.util.LinkedList;
 
@@ -15,7 +15,6 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 
-import eu.scape_project.watch.core.KB;
 import eu.scape_project.watch.core.model.EntityType;
 
 public class KBUtils {
@@ -73,7 +72,7 @@ public class KBUtils {
 						+ "SELECT ?s WHERE { ?s <%1$s> <%2$s> . ?s <%3$s> \"%4$s\"^^xsd:string}",
 						rdfstype, idtype, attrtype, id);
 
-		LOG.error("Query: " + query);
+		LOG.debug("Query: " + query);
 
 		LinkedList<T> results = Sparql.exec(KB.getInstance().getReader(),
 				typeClass, query, new QuerySolutionMap(), 0, 1);

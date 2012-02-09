@@ -4,7 +4,6 @@
 package eu.scape_project.watch.core.rest.resource;
 
 import java.util.Collection;
-import java.util.LinkedList;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -17,9 +16,6 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 
-import thewebsemantic.Sparql;
-
-import com.hp.hpl.jena.query.QuerySolutionMap;
 import com.wordnik.swagger.core.ApiError;
 import com.wordnik.swagger.core.ApiErrors;
 import com.wordnik.swagger.core.ApiOperation;
@@ -27,10 +23,10 @@ import com.wordnik.swagger.core.ApiParam;
 import com.wordnik.swagger.core.JavaHelp;
 
 import eu.scape_project.watch.core.KB;
+import eu.scape_project.watch.core.KBUtils;
 import eu.scape_project.watch.core.model.EntityType;
 import eu.scape_project.watch.core.rest.exception.ApiException;
 import eu.scape_project.watch.core.rest.exception.NotFoundException;
-import eu.scape_project.watch.core.rest.util.KBUtils;
 
 /**
  * @author lfaria
@@ -62,7 +58,7 @@ public class EntityTypeResource extends JavaHelp {
 		if (entitytype != null) {
 			return Response.ok().entity(entitytype).build();
 		} else {
-			throw new NotFoundException(404, "Entity Type id not found");
+			throw new NotFoundException("Entity Type id not found: " + name);
 		}
 	}
 
@@ -106,14 +102,13 @@ public class EntityTypeResource extends JavaHelp {
 	public Response updateEntityType(
 			@ApiParam(value = "Name that need to be deleted", required = true) @PathParam("name") String name,
 			@ApiParam(value = "Updated Entity Type object", required = true) EntityType entitytype) {
-		EntityType original = getEntityTypeByNameImpl(entitytype.getName());
+		EntityType original = getEntityTypeByNameImpl(name);
 		if (original != null) {
 			original.delete();
 			entitytype.save();
 			return Response.ok().entity(entitytype).build();
 		} else {
-			throw new NotFoundException(404, "Entity type '"
-					+ entitytype.getName() + "' not found");
+			throw new NotFoundException("Entity type not found: " + name);
 		}
 	}
 
@@ -131,8 +126,7 @@ public class EntityTypeResource extends JavaHelp {
 			entitytype.delete();
 			return Response.ok().entity(entitytype).build();
 		} else {
-			throw new NotFoundException(404, "Entity type '" + name
-					+ "' not found");
+			throw new NotFoundException("Entity type not found: " + name);
 		}
 	}
 

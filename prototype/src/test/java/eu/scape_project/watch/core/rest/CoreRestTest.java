@@ -65,81 +65,22 @@ public class CoreRestTest extends JerseyTest {
 		resource = clientWithJacksonSerializer.resource(getBaseURI());
 	}
 
-	/*
-	 * @Test public void entityXML() { WebResource resource = resource();
-	 * 
-	 * // CREATE String name = "test"; Entity entity = new Entity();
-	 * entity.setName(name);
-	 * 
-	 * Entity entity2 =
-	 * resource.path("entity.xml/").accept(MediaType.APPLICATION_XML)
-	 * .post(Entity.class, entity);
-	 * 
-	 * System.out.println("Created: " + entity2);
-	 * 
-	 * assertEquals(entity.getName(), entity2.getName());
-	 * 
-	 * // TODO test creating an already existing entity
-	 * 
-	 * // GET Entity entity3 = resource.path("entity.xml/" + name)
-	 * .accept(MediaType.APPLICATION_XML).get(Entity.class);
-	 * 
-	 * assertEquals(entity.getName(), entity3.getName());
-	 * 
-	 * // LIST //
-	 * resource.path("entity.xml/list").accept(MediaType.APPLICATION_XML) //
-	 * .get(.class);
-	 * 
-	 * // DELETE resource.path("entity.xml/" +
-	 * name).accept(MediaType.APPLICATION_XML) .delete(Entity.class);
-	 * 
-	 * assertEquals(true, true);
-	 * 
-	 * }
-	 */
-
 	@Test
 	public void entityTypeJSON() {
-		WatchClient client = new WatchClient(resource, WatchClient.Format.JSON);
-
-		// CREATE
-		String name = "tests";
-		String description = "Several kinds of tests";
-
-		EntityType entitytype = client.createEntityType(name, description);
-
-		System.out.println("Created: " + entitytype);
-
-		assertEquals(entitytype.getName(), name);
-		assertEquals(entitytype.getDescription(), description);
-
-		// TODO test creating an already existing entity type
-
-		// GET
-		EntityType entitytype3 = client.getEntityType(name);
-		// System.out.println("get: " + entitytype + " == " + entitytype3 +
-		// "?");
-		assertEquals(entitytype, entitytype3);
-
-		// LIST
-		List<EntityType> list = client.listEntityType();
-		Assert.assertTrue(list.contains(entitytype));
-		Assert.assertTrue(list.contains(entitytype3));
-
-		// TODO test update
-
-		// DELETE
-		EntityType entity4 = client.deleteEntityType(name);
-		Assert.assertEquals(entity4, entitytype);
+		entityType(WatchClient.Format.JSON);
 	}
 
 	@Test
 	public void entityTypeXML() {
-		WatchClient client = new WatchClient(resource, WatchClient.Format.XML);
+		entityType(WatchClient.Format.XML);
+	}
+
+	public void entityType(WatchClient.Format format) {
+		WatchClient client = new WatchClient(resource, format);
 
 		// CREATE
-		String name = "tests";
-		String description = "Several kinds of tests";
+		String name = "test";
+		String description = "A test";
 
 		EntityType entitytype = client.createEntityType(name, description);
 
@@ -152,55 +93,78 @@ public class CoreRestTest extends JerseyTest {
 
 		// GET
 		EntityType entitytype3 = client.getEntityType(name);
-		// System.out.println("get: " + entitytype + " == " + entitytype3 +
-		// "?");
+		Assert.assertNotNull(entitytype3);
 		assertEquals(entitytype, entitytype3);
 
 		// LIST
 		List<EntityType> list = client.listEntityType();
 		Assert.assertTrue(list.contains(entitytype));
-		Assert.assertTrue(list.contains(entitytype3));
 
 		// TODO test update
 
 		// DELETE
 		EntityType entity4 = client.deleteEntityType(name);
 		Assert.assertEquals(entity4, entitytype);
+
+		// GET
+		EntityType entitytype5 = client.getEntityType(name);
+		Assert.assertNull(entitytype5);
+
+		// LIST
+		List<EntityType> list2 = client.listEntityType();
+		Assert.assertFalse(list2.contains(entitytype));
 	}
 
-	//@Test
+	@Test
 	public void entityJSON() {
-		// WatchClient client = new WatchClient(resource, "json");
-		WatchClient client = new WatchClient(resource);
+		entity(WatchClient.Format.JSON);
+	}
+
+	@Test
+	public void entityXML() {
+		entity(WatchClient.Format.XML);
+	}
+
+	public void entity(WatchClient.Format format) {
+		WatchClient client = new WatchClient(resource, format);
 
 		// CREATE
-		String name = "test";
-		Entity entity = new Entity();
-		entity.setName(name);
+		String typeName = "test";
+		String typeDescription = "A test";
 
-		Entity entity2 = client.createEntity(entity);
+		EntityType entitytype = client.createEntityType(typeName,
+				typeDescription);
 
-		System.out.println("Created: " + entity2);
-
-		assertEquals(entity.getName(), entity2.getName());
+		String name = "test01";
+		Entity entity = client.createEntity(name, typeName);
+		Assert.assertNotNull(entity);
+		Assert.assertEquals(entity.getName(), name);
+		Assert.assertNotNull(entity.getEntityType());
+		Assert.assertEquals(entity.getEntityType(), entitytype);
 
 		// TODO test creating an already existing entity
 
 		// GET
-		Entity entity3 = client.getEntity(name);
-		assertEquals(entity.getName(), entity3.getName());
+		Entity entity2 = client.getEntity(name);
+		assertEquals(entity, entity2);
 
 		// LIST
 		List<Entity> list = client.listEntity();
 		Assert.assertTrue(list.contains(entity));
-		Assert.assertTrue(list.contains(entity2));
-		Assert.assertTrue(list.contains(entity3));
 
 		// TODO test update
 
 		// DELETE
-		Entity entity4 = client.deleteEntity(name);
-		Assert.assertEquals(entity4, entity);
+		Entity entity3 = client.deleteEntity(name);
+		Assert.assertEquals(entity3, entity);
+
+		// GET
+		Entity entity4 = client.getEntity(name);
+		Assert.assertNull(entity4);
+
+		// LIST
+		List<Entity> list2 = client.listEntity();
+		Assert.assertFalse(list2.contains(entity));
 	}
 
 }

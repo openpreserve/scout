@@ -4,7 +4,9 @@ import java.util.List;
 
 import javax.ws.rs.core.MediaType;
 
+import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
+import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 
 import eu.scape_project.watch.core.model.Entity;
@@ -38,9 +40,9 @@ public class WatchClient {
 		}
 	}
 
-	public WatchClient(WebResource resource) {
-		this(resource, Format.JSON);
-	}
+	// public WatchClient(WebResource resource) {
+	// this(resource, Format.JSON);
+	// }
 
 	public WatchClient(WebResource resource, Format format) {
 		super();
@@ -50,14 +52,23 @@ public class WatchClient {
 
 	/***************** ENTITY ******************************/
 
-	public Entity createEntity(Entity entity) {
-		return resource.path(ENTITY + "." + format + "/")
-				.accept(format.getMediaType()).post(Entity.class, entity);
+	public Entity createEntity(String name, String type) {
+		return resource.path(ENTITY + "." + format + "/" + name)
+				.accept(format.getMediaType()).post(Entity.class, type);
 	}
 
 	public Entity getEntity(String name) {
-		return resource.path(ENTITY + "." + format + "/" + name)
-				.accept(format.getMediaType()).get(Entity.class);
+		try {
+			return resource.path(ENTITY + "." + format + "/" + name)
+					.accept(format.getMediaType()).get(Entity.class);
+		} catch (UniformInterfaceException e) {
+			ClientResponse resp = e.getResponse();
+			if (resp.getStatus() == 404) {
+				return null;
+			} else {
+				throw e;
+			}
+		}
 	}
 
 	public Entity updateEntity(String name, Entity entity) {
@@ -86,8 +97,17 @@ public class WatchClient {
 	}
 
 	public EntityType getEntityType(String name) {
-		return resource.path(ENTITY_TYPE + "." + format + "/" + name)
-				.accept(format.getMediaType()).get(EntityType.class);
+		try {
+			return resource.path(ENTITY_TYPE + "." + format + "/" + name)
+					.accept(format.getMediaType()).get(EntityType.class);
+		} catch (UniformInterfaceException e) {
+			ClientResponse resp = e.getResponse();
+			if (resp.getStatus() == 404) {
+				return null;
+			} else {
+				throw e;
+			}
+		}
 	}
 
 	public EntityType updateEntityType(String name, EntityType entity) {

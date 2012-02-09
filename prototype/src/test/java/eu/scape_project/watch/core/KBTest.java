@@ -25,7 +25,6 @@ import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.vocabulary.VCARD;
 
 import eu.scape_project.watch.core.model.EntityType;
-import eu.scape_project.watch.core.rest.util.KBUtils;
 
 public class KBTest {
 	private static final Logger LOG = Logger.getLogger(KBTest.class

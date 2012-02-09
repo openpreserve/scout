@@ -9,32 +9,36 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
+
+import eu.scape_project.watch.core.KB;
 
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
 
-@Namespace("http://watch.scape-project.eu/")
+@Namespace(KB.WATCH_NS)
 @XmlRootElement(name = "entity")
 @XmlAccessorType(XmlAccessType.FIELD)
-@JsonIgnoreProperties(ignoreUnknown=true)
-public class Entity extends RdfBean<EntityType> {
+// @JsonIgnoreProperties(ignoreUnknown = true)
+public class Entity extends RdfBean<Entity> {
 
 	public Entity() {
-	    super();
+		super();
 	}
-	
+
 	public Entity(EntityType et, String n) {
-	    this.entityType = et;
-	    this.name = n;
+		this.type = et;
+		this.name = n;
 	}
- 
+
 	@Id
-	@XmlElement(name = "name")
+	@XmlElement(required = true)
 	private String name;
 
-	@XmlTransient
-	private EntityType entityType;
+	@XmlElement
+	@JsonProperty
+	private EntityType type;
 
 	@XmlTransient
 	private List<PropertyValue> propertyValues;
@@ -48,11 +52,11 @@ public class Entity extends RdfBean<EntityType> {
 	}
 
 	public EntityType getEntityType() {
-		return entityType;
+		return type;
 	}
 
 	public void setEntityType(EntityType entityType) {
-		this.entityType = entityType;
+		this.type = entityType;
 	}
 
 	public List<PropertyValue> getPropertyValues() {
@@ -67,8 +71,7 @@ public class Entity extends RdfBean<EntityType> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((entityType == null) ? 0 : entityType.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
@@ -82,10 +85,10 @@ public class Entity extends RdfBean<EntityType> {
 		if (getClass() != obj.getClass())
 			return false;
 		Entity other = (Entity) obj;
-		if (entityType == null) {
-			if (other.entityType != null)
+		if (type == null) {
+			if (other.type != null)
 				return false;
-		} else if (!entityType.equals(other.entityType))
+		} else if (!type.equals(other.type))
 			return false;
 		if (name == null) {
 			if (other.name != null)

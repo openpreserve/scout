@@ -38,7 +38,8 @@ public class RequestResource extends JavaHelp {
 		if (asyncRequest != null) {
 			return Response.ok().entity(asyncRequest).build();
 		} else {
-			throw new NotFoundException(404, "AsyncRequest id not found");
+			throw new NotFoundException("AsyncRequest id not found: "
+					+ requestId);
 		}
 	}
 }

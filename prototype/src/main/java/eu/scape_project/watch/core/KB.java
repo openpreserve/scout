@@ -15,6 +15,9 @@ import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.tdb.TDBFactory;
 
+import eu.scape_project.watch.core.model.Entity;
+import eu.scape_project.watch.core.model.EntityType;
+
 public class KB {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(KB.class);
@@ -42,11 +45,21 @@ public class KB {
 
 			File dataFolderFile = new File(DATA_FOLDER);
 			try {
-				FileUtils.forceMkdir(dataFolderFile);
+				boolean initdata = false;
+				if (!dataFolderFile.exists()) {
+					FileUtils.forceMkdir(dataFolderFile);
+					initdata = true;
+				}
 				dataset = TDBFactory.createDataset(DATA_FOLDER);
 				model = TDBFactory.createModel(DATA_FOLDER);
 				Jenabean.instance().bind(model);
+
+				if (initdata) {
+					createInitialData();
+				}
+
 				LOGGER.info("KB manager created at {}", DATA_FOLDER);
+
 			} catch (IOException e) {
 				LOGGER.error("Data folder {} could not be created",
 						e.getMessage());
@@ -65,6 +78,24 @@ public class KB {
 		}
 
 		return KB.UNIQUE_INSTANCE;
+	}
+
+	private static void createInitialData() {
+		EntityType formats = new EntityType("format", "File format");
+		EntityType tools = new EntityType("tools",
+				"Applications that read and/or write into diferent file formats");
+
+		formats.save();
+		tools.save();
+
+		Entity pdfFormat = new Entity(formats, "PDF");
+		Entity tiffFormat = new Entity(formats, "TIFF");
+		Entity imageMagickTool = new Entity(tools, "ImageMagick");
+
+		pdfFormat.save();
+		tiffFormat.save();
+		imageMagickTool.save();
+
 	}
 
 	public Dataset getDataset() {

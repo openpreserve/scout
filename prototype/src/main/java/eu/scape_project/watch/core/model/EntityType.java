@@ -1,22 +1,22 @@
 package eu.scape_project.watch.core.model;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
-import eu.scape_project.watch.core.KB;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
+import eu.scape_project.watch.core.KB;
 
 @Namespace(KB.WATCH_NS)
-@XmlRootElement(name = "entitytype")
+@XmlRootElement(name = KB.ENTITY_TYPE)
 @XmlAccessorType(XmlAccessType.FIELD)
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class EntityType extends RdfBean<EntityType> {
 
 	public EntityType() {
@@ -29,16 +29,18 @@ public class EntityType extends RdfBean<EntityType> {
 		this.description = d;
 	}
 
+	@Id
 	@XmlElement
 	private String name;
 
 	@XmlElement
 	private String description;
 
-	// @XmlTransient
-	// private List<Property> properties;
+	@XmlElement
+	@JsonProperty
+	private List<Property> properties;
 
-	@Id
+	
 	public String getName() {
 		return name;
 	}
@@ -55,13 +57,13 @@ public class EntityType extends RdfBean<EntityType> {
 		this.description = description;
 	}
 
-	// public List<Property> getProperties() {
-	// return properties;
-	// }
-	//
-	// public void setProperties(List<Property> properties) {
-	// this.properties = properties;
-	// }
+	public List<Property> getProperties() {
+		return properties;
+	}
+
+	public void setProperties(List<Property> properties) {
+		this.properties = properties;
+	}
 
 	// @Override
 	// public int hashCode() {

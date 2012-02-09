@@ -8,19 +8,16 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
-
-import eu.scape_project.watch.core.KB;
 
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
+import eu.scape_project.watch.core.KB;
 
 @Namespace(KB.WATCH_NS)
-@XmlRootElement(name = "entity")
+@XmlRootElement(name = KB.ENTITY)
 @XmlAccessorType(XmlAccessType.FIELD)
-// @JsonIgnoreProperties(ignoreUnknown = true)
 public class Entity extends RdfBean<Entity> {
 
 	public Entity() {

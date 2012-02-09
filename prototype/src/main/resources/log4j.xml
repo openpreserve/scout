@@ -11,6 +11,7 @@
 
 	<logger name="eu.scape_project_watch.core">
 		<level value="debug" />
+		<appender-ref ref="CONSOLE" />
 	</logger>
 
 	<root>

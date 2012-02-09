@@ -2,6 +2,8 @@ package eu.scape_project.watch.core;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -17,6 +19,7 @@ import com.hp.hpl.jena.tdb.TDBFactory;
 
 import eu.scape_project.watch.core.model.Entity;
 import eu.scape_project.watch.core.model.EntityType;
+import eu.scape_project.watch.core.model.Property;
 
 public class KB {
 
@@ -31,6 +34,11 @@ public class KB {
 
 	public static final String WATCH_NS = "http://watch.scape-project.eu/";
 	public static final String RDFS_NS = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+
+	public static final String ENTITY = "entity";
+	public static final String ENTITY_TYPE = "entitytype";
+	public static final String PROPERTY = "property";
+	public static final String PROPERTY_VALUE = "propertyvalue";
 
 	// TODO get data folder from config
 	private static String DATA_FOLDER = "/usr/local/watch/data/tdb";
@@ -81,11 +89,26 @@ public class KB {
 	}
 
 	private static void createInitialData() {
+
 		EntityType formats = new EntityType("format", "File format");
+		List<Property> formatProperties = new ArrayList<Property>();
+		Property formatPUID = new Property("PUID", "PRONOM Id");
+		Property formatMimetype = new Property("MIME", "MIME type");
+		formatProperties.add(formatPUID);
+		formatProperties.add(formatMimetype);
+		formats.setProperties(formatProperties);
+
+		formatPUID.save();
+		formatMimetype.save();
+		formats.save();
+
 		EntityType tools = new EntityType("tools",
 				"Applications that read and/or write into diferent file formats");
+		List<Property> toolsProperties = new ArrayList<Property>();
+		Property toolVersion = new Property("version", "Tool version");
+		tools.setProperties(toolsProperties);
 
-		formats.save();
+		toolVersion.save();
 		tools.save();
 
 		Entity pdfFormat = new Entity(formats, "PDF");

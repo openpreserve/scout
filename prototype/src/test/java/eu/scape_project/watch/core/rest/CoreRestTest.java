@@ -26,6 +26,7 @@ import com.sun.jersey.test.framework.WebAppDescriptor;
 import eu.scape_project.watch.core.KB;
 import eu.scape_project.watch.core.model.Entity;
 import eu.scape_project.watch.core.model.EntityType;
+import eu.scape_project.watch.core.model.Property;
 
 public class CoreRestTest extends JerseyTest {
 	private static final Logger LOG = LoggerFactory
@@ -66,16 +67,16 @@ public class CoreRestTest extends JerseyTest {
 	}
 
 	@Test
-	public void entityTypeJSON() {
-		entityType(WatchClient.Format.JSON);
+	public void entityType_CRUD_JSON() {
+		entityType_CRUD(WatchClient.Format.JSON);
 	}
 
 	@Test
-	public void entityTypeXML() {
-		entityType(WatchClient.Format.XML);
+	public void entityType_CRUD_XML() {
+		entityType_CRUD(WatchClient.Format.XML);
 	}
 
-	public void entityType(WatchClient.Format format) {
+	public void entityType_CRUD(WatchClient.Format format) {
 		WatchClient client = new WatchClient(resource, format);
 
 		// CREATE
@@ -116,16 +117,16 @@ public class CoreRestTest extends JerseyTest {
 	}
 
 	@Test
-	public void entityJSON() {
-		entity(WatchClient.Format.JSON);
+	public void entity_CRUD_JSON() {
+		entity_CRUD(WatchClient.Format.JSON);
 	}
 
 	@Test
-	public void entityXML() {
-		entity(WatchClient.Format.XML);
+	public void entity_CRUD_XML() {
+		entity_CRUD(WatchClient.Format.XML);
 	}
 
-	public void entity(WatchClient.Format format) {
+	public void entity_CRUD(WatchClient.Format format) {
 		WatchClient client = new WatchClient(resource, format);
 
 		// CREATE
@@ -158,6 +159,9 @@ public class CoreRestTest extends JerseyTest {
 		Entity entity3 = client.deleteEntity(name);
 		Assert.assertEquals(entity3, entity);
 
+		EntityType entitytype2 = client.deleteEntityType(typeName);
+		Assert.assertEquals(entitytype2, entitytype);
+
 		// GET
 		Entity entity4 = client.getEntity(name);
 		Assert.assertNull(entity4);
@@ -165,6 +169,60 @@ public class CoreRestTest extends JerseyTest {
 		// LIST
 		List<Entity> list2 = client.listEntity();
 		Assert.assertFalse(list2.contains(entity));
+	}
+
+	@Test
+	public void property_CRUD_JSON() {
+		property_CRUD(WatchClient.Format.JSON);
+	}
+
+	@Test
+	public void property_CRUD_XML() {
+		property_CRUD(WatchClient.Format.XML);
+	}
+
+	public void property_CRUD(WatchClient.Format format) {
+		WatchClient client = new WatchClient(resource, format);
+
+		// CREATE
+		String typeName = "test";
+		String typeDescription = "A test";
+
+		EntityType entitytype = client.createEntityType(typeName,
+				typeDescription);
+
+		String name = "property01";
+		String description = "The property 01";
+		Property property = client.createProperty(typeName, name, description);
+		Assert.assertNotNull(property);
+		Assert.assertEquals(property.getName(), name);
+		Assert.assertEquals(property.getDescription(), description);
+		// Assert.assertNotNull(property.getDatatype());
+		// Assert.assertEquals(property.getDatatype(), datatype);
+
+		// TODO test creating an already existing entity
+
+		// GET
+		Property property2 = client.getProperty(typeName, name);
+		Assert.assertEquals(property, property2);
+
+		// LIST
+		List<Property> list = client.listProperty();
+		Assert.assertTrue(list.contains(property));
+
+		// TODO test update
+
+		// DELETE
+		Property property3 = client.deleteProperty(typeName, name);
+		Assert.assertEquals(property3, property);
+
+		// GET
+		Property property4 = client.getProperty(typeName, name);
+		Assert.assertNull(property4);
+
+		// LIST
+		List<Property> list2 = client.listProperty();
+		Assert.assertTrue(list2.contains(property));
 	}
 
 }

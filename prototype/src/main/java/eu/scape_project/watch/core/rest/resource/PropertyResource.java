@@ -24,6 +24,8 @@ import com.wordnik.swagger.core.JavaHelp;
 
 import eu.scape_project.watch.core.KB;
 import eu.scape_project.watch.core.KBUtils;
+import eu.scape_project.watch.core.dao.EntityTypeDAO;
+import eu.scape_project.watch.core.dao.PropertyDAO;
 import eu.scape_project.watch.core.model.EntityType;
 import eu.scape_project.watch.core.model.Property;
 import eu.scape_project.watch.core.rest.exception.ApiException;
@@ -38,20 +40,15 @@ public class PropertyResource extends JavaHelp {
 	private static final Logger logger = Logger
 			.getLogger(PropertyResource.class);
 
-	private Property getPropertyByNameImpl(String type, String name) {
-		// TODO find property of a specific type
-		return KBUtils.find(name, Property.class, "name");
-	}
-
 	@GET
 	@Path("/{type}/{name}")
 	@ApiOperation(value = "Find Property by type and name", notes = "")
 	@ApiErrors(value = { @ApiError(code = 404, reason = "Property or Entity Type not found") })
-	public Response getEntityByName(
+	public Response getPropertyByName(
 			@ApiParam(value = "Name of the Entity Type", required = true) @PathParam("type") String type,
 			@ApiParam(value = "Name of the Property", required = true) @PathParam("name") String name)
 			throws NotFoundException {
-		Property property = getPropertyByNameImpl(type, name);
+		Property property = PropertyDAO.findByEntityAndName(type, name);
 
 		if (property != null) {
 			return Response.ok().entity(property).build();
@@ -63,12 +60,23 @@ public class PropertyResource extends JavaHelp {
 	@GET
 	@Path("/list")
 	@ApiOperation(value = "List all properties", notes = "")
-	// @ApiErrors(value = { @ApiError(code = 500, reason =
-	// "Error connecting to persistence layer") })
 	public Response listProperty() {
-		// TODO list properties of a type
 		Collection<Property> list = KB.getInstance().getReader()
 				.load(Property.class);
+		return Response.ok()
+				.entity(new GenericEntity<Collection<Property>>(list) {
+				}).build();
+	}
+
+	@GET
+	@Path("/list/{type}/{start}/{max}")
+	@ApiOperation(value = "List properties of a type", notes = "")
+	public Response listEntityOfType(
+			@ApiParam(value = "Entity type", required = true) @PathParam("type") String type,
+			@ApiParam(value = "Index of first item to retrieve", required = true, defaultValue = "0") @PathParam("start") int start,
+			@ApiParam(value = "Maximum number of items to retrieve", required = true, defaultValue = "100") @PathParam("max") int max)
+			throws ApiException {
+		Collection<Property> list = PropertyDAO.listWithType(type, start, max);
 		return Response.ok()
 				.entity(new GenericEntity<Collection<Property>>(list) {
 				}).build();
@@ -85,14 +93,12 @@ public class PropertyResource extends JavaHelp {
 		// TODO support data type
 		logger.debug("Create property name=" + name + " description="
 				+ description + " in type=" + type);
-		EntityType entitytype = KBUtils.find(type, EntityType.class, "name");
+		EntityType entityType = EntityTypeDAO.findById(type);
 
-		if (entitytype != null) {
-			Property property = new Property(name, description);
+		if (entityType != null) {
+			Property property = new Property(entityType, name, description);
 			property.save();
-
-			entitytype.getProperties().add(property);
-			entitytype.save();
+			KBUtils.printStatements();
 			return Response.ok().entity(property).build();
 		} else {
 			throw new NotFoundException("Entity type not found: " + type);
@@ -105,54 +111,38 @@ public class PropertyResource extends JavaHelp {
 	@ApiOperation(value = "Update Property of Type", notes = "This can only be done by an admin user (TODO)")
 	@ApiErrors(value = {
 			@ApiError(code = 400, reason = "Invalid Property supplied"),
-			@ApiError(code = 404, reason = "Entity Type not found") })
+			@ApiError(code = 404, reason = "Property not found") })
 	public Response updateProperty(
 			@ApiParam(value = "Entity type that owns Property", required = true) @PathParam("type") String type,
 			@ApiParam(value = "Name that needs to be deleted", required = true) @PathParam("name") String name,
 			@ApiParam(value = "Updated property object", required = true) Property property) {
-
-		EntityType entitytype = KBUtils.find(type, EntityType.class, "name");
-
-		if (entitytype != null) {
-			Property original = getPropertyByNameImpl(type, name);
-			if (original != null) {
-				entitytype.getProperties().remove(original);
-				original.delete();
-
-				property.save();
-				entitytype.getProperties().add(property);
-				entitytype.save();
-				return Response.ok().entity(property).build();
-			} else {
-				throw new NotFoundException("Property not found: " + name);
-			}
+		Property original = PropertyDAO.findByEntityAndName(type, name);
+		if (original != null) {
+			original.delete();
+			property.save();
+			return Response.ok().entity(property).build();
 		} else {
-			throw new NotFoundException("Entity type not found: " + type);
+			throw new NotFoundException("Property not found: " + name);
 		}
 	}
 
 	@DELETE
 	@Path("/{type}/{name}")
-	@ApiOperation(value = "Delete Property", notes = "This can only be done by an admin user (TODO)")
+	@ApiOperation(value = "Delete property", notes = "This can only be done by an admin user (TODO)")
 	@ApiErrors(value = { @ApiError(code = 404, reason = "Property or Entity Type not found") })
-	public Response deleteEntity(
-			@ApiParam(value = "Entity type that owns Property", required = true) @PathParam("type") String type,
-			@ApiParam(value = "The name of the Entity Type to be deleted", required = true) @PathParam("name") String name)
+	public Response deleteProperty(
+			@ApiParam(value = "Entity type that owns property", required = true) @PathParam("type") String type,
+			@ApiParam(value = "The name of the property to be deleted", required = true) @PathParam("name") String name)
 			throws ApiException {
-		EntityType entitytype = KBUtils.find(type, EntityType.class, "name");
+		Property property = PropertyDAO.findByEntityAndName(type, name);
 
-		if (entitytype != null) {
-			Property property = getPropertyByNameImpl(type, name);
-			if (property != null) {
-				entitytype.getProperties().remove(property);
-				property.delete();
-				return Response.ok().entity(property).build();
-			} else {
-				throw new NotFoundException("Property not found: " + name);
-			}
+		if (property != null) {
+			property.delete();
+			return Response.ok().entity(property).build();
 		} else {
-			throw new NotFoundException("Entity type not found: " + type);
+			throw new NotFoundException("Property not found: " + name);
 		}
+
 	}
 
 }

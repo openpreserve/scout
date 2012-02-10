@@ -36,9 +36,9 @@ public class EntityType extends RdfBean<EntityType> {
 	@XmlElement
 	private String description;
 
-	@XmlElement
-	@JsonProperty
-	private List<Property> properties;
+	// @XmlElement
+	// @JsonProperty
+	// private List<Property> properties;
 
 	
 	public String getName() {
@@ -57,13 +57,13 @@ public class EntityType extends RdfBean<EntityType> {
 		this.description = description;
 	}
 
-	public List<Property> getProperties() {
-		return properties;
-	}
-
-	public void setProperties(List<Property> properties) {
-		this.properties = properties;
-	}
+	// public List<Property> getProperties() {
+	// return properties;
+	// }
+	//
+	// public void setProperties(List<Property> properties) {
+	// this.properties = properties;
+	// }
 
 	// @Override
 	// public int hashCode() {

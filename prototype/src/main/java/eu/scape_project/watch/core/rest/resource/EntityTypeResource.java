@@ -23,7 +23,7 @@ import com.wordnik.swagger.core.ApiParam;
 import com.wordnik.swagger.core.JavaHelp;
 
 import eu.scape_project.watch.core.KB;
-import eu.scape_project.watch.core.KBUtils;
+import eu.scape_project.watch.core.dao.EntityTypeDAO;
 import eu.scape_project.watch.core.model.EntityType;
 import eu.scape_project.watch.core.rest.exception.ApiException;
 import eu.scape_project.watch.core.rest.exception.NotFoundException;
@@ -42,18 +42,14 @@ public class EntityTypeResource extends JavaHelp {
 	private static final Logger logger = Logger
 			.getLogger(EntityTypeResource.class);
 
-	private EntityType getEntityTypeByNameImpl(String name) {
-		return KBUtils.find(name, EntityType.class, "name");
-	}
-
 	@GET
 	@Path("/{name}")
 	@ApiOperation(value = "Find Entity Type by name", notes = "")
 	@ApiErrors(value = { @ApiError(code = 404, reason = "Entity Type not found") })
-	public Response getEntityByName(
+	public Response getEntityTypeByName(
 			@ApiParam(value = "Name of the Entity Type", required = true) @PathParam("name") String name)
 			throws NotFoundException {
-		EntityType entitytype = getEntityTypeByNameImpl(name);
+		EntityType entitytype = EntityTypeDAO.findById(name);
 
 		if (entitytype != null) {
 			return Response.ok().entity(entitytype).build();
@@ -65,9 +61,7 @@ public class EntityTypeResource extends JavaHelp {
 	@GET
 	@Path("/list")
 	@ApiOperation(value = "List all entity types", notes = "")
-	// @ApiErrors(value = { @ApiError(code = 500, reason =
-	// "Error connecting to persistence layer") })
-	public Response listEntity() {
+	public Response listEntityType() {
 		Collection<EntityType> list = KB.getInstance().getReader()
 				.load(EntityType.class);
 		return Response.ok()
@@ -78,8 +72,6 @@ public class EntityTypeResource extends JavaHelp {
 	@POST
 	@Path("/{name}")
 	@ApiOperation(value = "Create Entity Type", notes = "This can only be done by an admin user (TODO)")
-	// @ApiErrors(value = { @ApiError(code = 500, reason =
-	// "Unexpected internal error") })
 	public Response createEntityType(
 			@ApiParam(value = "Entity type name (must be unique)", required = true) @PathParam("name") String name,
 			@ApiParam(value = "Entity type description", required = false) String description)
@@ -87,8 +79,6 @@ public class EntityTypeResource extends JavaHelp {
 		logger.info("creating entity name: " + name);
 		EntityType entitytype = new EntityType(name, description);
 		entitytype.save();
-
-		KBUtils.printStatements();
 		return Response.ok().entity(entitytype).build();
 
 	}
@@ -102,7 +92,7 @@ public class EntityTypeResource extends JavaHelp {
 	public Response updateEntityType(
 			@ApiParam(value = "Name that need to be deleted", required = true) @PathParam("name") String name,
 			@ApiParam(value = "Updated Entity Type object", required = true) EntityType entitytype) {
-		EntityType original = getEntityTypeByNameImpl(name);
+		EntityType original = EntityTypeDAO.findById(name);
 		if (original != null) {
 			original.delete();
 			entitytype.save();
@@ -116,12 +106,12 @@ public class EntityTypeResource extends JavaHelp {
 	@Path("/{name}")
 	@ApiOperation(value = "Delete Entity Type", notes = "This can only be done by an admin user (TODO)")
 	@ApiErrors(value = { @ApiError(code = 404, reason = "Entity Type not found") })
-	public Response deleteEntity(
+	public Response deleteEntityType(
 			@ApiParam(value = "The name of the Entity Type to be deleted", required = true) @PathParam("name") String name)
 			throws ApiException {
 		logger.info("deleting entity type name: " + name);
 
-		EntityType entitytype = getEntityTypeByNameImpl(name);
+		EntityType entitytype = EntityTypeDAO.findById(name);
 		if (entitytype != null) {
 			entitytype.delete();
 			return Response.ok().entity(entitytype).build();

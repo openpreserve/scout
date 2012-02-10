@@ -8,7 +8,7 @@ public class Trigger {
 
   private Plan plan;
   
-  private Condition condition;
+  private Question question;
   
   private List<Notification> notification;
   
@@ -83,12 +83,12 @@ public class Trigger {
     return true;
   }
 
-  public Condition getCondition() {
-    return condition;
+  public Question getQuestion() {
+    return question;
   }
 
-  public void setCondition(Condition condition) {
-    this.condition = condition;
+	public void setQuestion(Question question) {
+    this.question = question;
   }
 
 }

@@ -24,6 +24,8 @@ import com.wordnik.swagger.core.JavaHelp;
 
 import eu.scape_project.watch.core.KB;
 import eu.scape_project.watch.core.KBUtils;
+import eu.scape_project.watch.core.dao.EntityDAO;
+import eu.scape_project.watch.core.dao.EntityTypeDAO;
 import eu.scape_project.watch.core.model.Entity;
 import eu.scape_project.watch.core.model.EntityType;
 import eu.scape_project.watch.core.rest.exception.ApiException;
@@ -37,10 +39,6 @@ public class EntityResource extends JavaHelp {
 
 	private static final Logger logger = Logger.getLogger(EntityResource.class);
 
-	private Entity getEntityByNameImpl(String name) {
-		return KBUtils.find(name, Entity.class, "name");
-	}
-
 	@GET
 	@Path("/{name}")
 	@ApiOperation(value = "Find Entity by name", notes = "")
@@ -48,7 +46,7 @@ public class EntityResource extends JavaHelp {
 	public Response getEntityByName(
 			@ApiParam(value = "Name of the Entity", required = true) @PathParam("name") String name)
 			throws NotFoundException {
-		Entity entity = getEntityByNameImpl(name);
+		Entity entity = EntityDAO.findById(name);
 
 		if (entity != null) {
 			return Response.ok().entity(entity).build();
@@ -69,6 +67,20 @@ public class EntityResource extends JavaHelp {
 				}).build();
 	}
 
+	@GET
+	@Path("/list/{type}/{start}/{max}")
+	@ApiOperation(value = "List entities of a type", notes = "")
+	public Response listEntityOfType(
+			@ApiParam(value = "Entity type", required = true) @PathParam("type") String type,
+			@ApiParam(value = "Index of first item to retrieve", required = true, defaultValue = "0") @PathParam("start") int start,
+			@ApiParam(value = "Maximum number of items to retrieve", required = true, defaultValue = "100") @PathParam("max") int max)
+			throws ApiException {
+		Collection<Entity> list = EntityDAO.listWithType(type, start, max);
+		return Response.ok()
+				.entity(new GenericEntity<Collection<Entity>>(list) {
+				}).build();
+	}
+
 	@POST
 	@Path("/{name}")
 	@ApiOperation(value = "Create Entity", notes = "This can only be done by a logged user (TODO)")
@@ -78,7 +90,7 @@ public class EntityResource extends JavaHelp {
 			@ApiParam(value = "Entity Type (must exist)", required = true) String type)
 			throws ApiException {
 
-		EntityType entitytype = KBUtils.find(type, EntityType.class, "name");
+		EntityType entitytype = EntityTypeDAO.findById(type);
 
 		if (entitytype != null) {
 			Entity entity = new Entity(entitytype, name);
@@ -99,7 +111,7 @@ public class EntityResource extends JavaHelp {
 	public Response updateEntity(
 			@ApiParam(value = "Name that need to be deleted", required = true) @PathParam("name") String name,
 			@ApiParam(value = "Updated Entity object", required = true) Entity entity) {
-		Entity original = getEntityByNameImpl(name);
+		Entity original = EntityDAO.findById(name);
 		if (original != null) {
 			original.delete();
 			entity.save();
@@ -117,7 +129,7 @@ public class EntityResource extends JavaHelp {
 			@ApiParam(value = "The name of the Entity to be deleted", required = true) @PathParam("name") String name)
 			throws ApiException {
 		logger.info("deleting entity name: " + name);
-		Entity entity = getEntityByNameImpl(name);
+		Entity entity = EntityDAO.findById(name);
 		if (entity != null) {
 			entity.delete();
 			return Response.ok().entity(entity).build();

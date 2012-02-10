@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.ws.rs.core.MediaType;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.UniformInterfaceException;
@@ -13,8 +16,11 @@ import eu.scape_project.watch.core.KB;
 import eu.scape_project.watch.core.model.Entity;
 import eu.scape_project.watch.core.model.EntityType;
 import eu.scape_project.watch.core.model.Property;
+import eu.scape_project.watch.core.model.PropertyValue;
 
 public class WatchClient {
+	private final Logger LOG = LoggerFactory.getLogger(WatchClient.class);
+
 	private final WebResource resource;
 	private final Format format;
 
@@ -166,6 +172,55 @@ public class WatchClient {
 		return resource
 				.path(KB.PROPERTY + "." + format + "/" + type + "/" + name)
 				.accept(format.getMediaType()).delete(Property.class);
+	}
+
+	/***************** PROPERTY VALUE *************************/
+
+	public PropertyValue createPropertyValue(String entity, String property,
+			String value) {
+		return resource
+				.path(KB.PROPERTY_VALUE + "." + format + "/" + entity + "/"
+						+ property).accept(format.getMediaType())
+				.post(PropertyValue.class, value);
+	}
+
+	public PropertyValue getPropertyValue(String entity, String property) {
+		try {
+			return resource
+					.path(KB.PROPERTY_VALUE + "." + format + "/" + entity + "/"
+							+ property).accept(format.getMediaType())
+					.get(PropertyValue.class);
+		} catch (UniformInterfaceException e) {
+			ClientResponse resp = e.getResponse();
+			if (resp.getStatus() == 404) {
+				return null;
+			} else {
+				throw e;
+			}
+		}
+	}
+
+	public PropertyValue updatePropertyValue(String entity, String property,
+			String value) {
+		return resource
+				.path(KB.PROPERTY_VALUE + "." + format + "/" + entity + "/"
+						+ property).accept(format.getMediaType())
+				.put(PropertyValue.class, value);
+	}
+
+	public List<PropertyValue> listPropertyValue() {
+		return (List<PropertyValue>) resource
+				.path(KB.PROPERTY_VALUE + "." + format + "/list")
+				.accept(format.getMediaType())
+				.get(new GenericType<List<PropertyValue>>() {
+				});
+	}
+
+	public PropertyValue deletePropertyValue(String entity, String property) {
+		return resource
+				.path(KB.PROPERTY_VALUE + "." + format + "/" + entity + "/"
+						+ property).accept(format.getMediaType())
+				.delete(PropertyValue.class);
 	}
 
 }

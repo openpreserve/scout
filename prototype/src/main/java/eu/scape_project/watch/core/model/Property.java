@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import thewebsemantic.Id;
@@ -17,7 +18,24 @@ import eu.scape_project.watch.core.KB;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Property extends RdfBean<Property> {
 
+	public static String createId(String entityTypeName, String propertyName) {
+		return entityTypeName + "/" + propertyName;
+	}
+
+	private void updateId() {
+		if (type != null && name != null) {
+			id = createId(type.getName(), name);
+		}
+	}
+
 	@Id
+	@JsonIgnore
+	private String id;
+
+	@XmlElement
+	@JsonProperty
+	private EntityType type;
+
 	@XmlElement
 	private String name;
 
@@ -32,14 +50,32 @@ public class Property extends RdfBean<Property> {
 		super();
 	}
 
-	public Property(String n, String d) {
+	public Property(EntityType t, String n, String d) {
+		super();
+		this.type = t;
 		this.name = n;
 		this.description = d;
+		this.datatype = DataType.TEXT;
+
+		updateId();
 	}
 
-	public Property(String n, String d, DataType dt) {
-		this(n, d);
+	public Property(EntityType t, String n, String d, DataType dt) {
+		this(t, n, d);
 		this.datatype = dt;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public EntityType getEntityType() {
+		return type;
+	}
+
+	public void setEntityType(EntityType entityType) {
+		this.type = entityType;
+		updateId();
 	}
 
 	public String getName() {
@@ -48,6 +84,7 @@ public class Property extends RdfBean<Property> {
 
 	public void setName(String name) {
 		this.name = name;
+		updateId();
 	}
 
 	public String getDescription() {
@@ -57,16 +94,6 @@ public class Property extends RdfBean<Property> {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-	// @Override
-	// public int hashCode() {
-	// final int prime = 31;
-	// int result = 1;
-	// result = prime * result
-	// + ((description == null) ? 0 : description.hashCode());
-	// result = prime * result + ((name == null) ? 0 : name.hashCode());
-	// return result;
-	// }
 
 	@Override
 	public boolean equals(Object obj) {

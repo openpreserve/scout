@@ -15,15 +15,8 @@ import org.junit.Test;
 import thewebsemantic.Sparql;
 
 import com.google.common.io.Files;
-import com.hp.hpl.jena.query.Dataset;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.Statement;
-import com.hp.hpl.jena.rdf.model.StmtIterator;
-import com.hp.hpl.jena.vocabulary.VCARD;
 
+import eu.scape_project.watch.core.dao.EntityTypeDAO;
 import eu.scape_project.watch.core.model.EntityType;
 
 public class KBTest {
@@ -97,8 +90,7 @@ public class KBTest {
 		Assert.assertTrue(types2.contains(type));
 
 		// FIND
-		EntityType type2 = KBUtils.find(type.getName(), EntityType.class,
-				"name");
+		EntityType type2 = EntityTypeDAO.findById(type.getName());
 
 		Assert.assertNotNull(type2);
 		Assert.assertEquals(type, type2);
@@ -119,9 +111,7 @@ public class KBTest {
 		Assert.assertFalse(types4.contains(type));
 
 		// FIND AGAIN
-		EntityType type3 = KBUtils.find(type.getName(), EntityType.class,
-				"name");
-
+		EntityType type3 = EntityTypeDAO.findById(type.getName());
 		Assert.assertNull(type3);
 
 	}

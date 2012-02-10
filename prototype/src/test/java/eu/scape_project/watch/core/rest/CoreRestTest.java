@@ -10,7 +10,11 @@ import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.MethodRule;
+import org.junit.rules.TestWatchman;
+import org.junit.runners.model.FrameworkMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,10 +31,23 @@ import eu.scape_project.watch.core.KB;
 import eu.scape_project.watch.core.model.Entity;
 import eu.scape_project.watch.core.model.EntityType;
 import eu.scape_project.watch.core.model.Property;
+import eu.scape_project.watch.core.model.PropertyValue;
 
 public class CoreRestTest extends JerseyTest {
+
 	private static final Logger LOG = LoggerFactory
 			.getLogger(CoreRestTest.class);
+
+	@Rule
+	public MethodRule watchman = new TestWatchman() {
+		public void starting(FrameworkMethod method) {
+			LOG.info("TEST {} being run...", method.getName());
+		}
+
+		public void finished(FrameworkMethod method) {
+			LOG.info("TEST {} finished", method.getName());
+		}
+	};
 
 	private WebResource resource;
 
@@ -197,13 +214,14 @@ public class CoreRestTest extends JerseyTest {
 		Assert.assertNotNull(property);
 		Assert.assertEquals(property.getName(), name);
 		Assert.assertEquals(property.getDescription(), description);
-		// Assert.assertNotNull(property.getDatatype());
+		Assert.assertNotNull(property.getDatatype());
 		// Assert.assertEquals(property.getDatatype(), datatype);
 
 		// TODO test creating an already existing entity
 
 		// GET
 		Property property2 = client.getProperty(typeName, name);
+		Assert.assertNotNull(property2);
 		Assert.assertEquals(property, property2);
 
 		// LIST
@@ -216,13 +234,89 @@ public class CoreRestTest extends JerseyTest {
 		Property property3 = client.deleteProperty(typeName, name);
 		Assert.assertEquals(property3, property);
 
+		EntityType entitytype2 = client.deleteEntityType(typeName);
+		Assert.assertEquals(entitytype2, entitytype);
+
 		// GET
 		Property property4 = client.getProperty(typeName, name);
 		Assert.assertNull(property4);
 
 		// LIST
 		List<Property> list2 = client.listProperty();
-		Assert.assertTrue(list2.contains(property));
+		Assert.assertFalse(list2.contains(property));
+	}
+
+	@Test
+	public void propertyValue_CRUD_JSON() {
+		propertyValue_CRUD(WatchClient.Format.JSON);
+	}
+
+	@Test
+	public void propertyValue_CRUD_XML() {
+		propertyValue_CRUD(WatchClient.Format.XML);
+	}
+
+	public void propertyValue_CRUD(WatchClient.Format format) {
+		WatchClient client = new WatchClient(resource, format);
+
+		// CREATE
+		String typeName = "test";
+		String typeDescription = "A test";
+
+		EntityType entitytype = client.createEntityType(typeName,
+				typeDescription);
+
+		String entityName = "test01";
+		Entity entity = client.createEntity(entityName, typeName);
+
+		String propertyName = "property01";
+		String propertyDescription = "The property 01";
+		Property property = client.createProperty(typeName, propertyName,
+				propertyDescription);
+
+		String value = "99999";
+		PropertyValue propertyValue = client.createPropertyValue(
+				entity.getName(), property.getName(), value);
+		Assert.assertNotNull(propertyValue);
+		Assert.assertEquals(propertyValue.getEntity(), entity);
+		Assert.assertEquals(propertyValue.getProperty(), property);
+		Assert.assertEquals(propertyValue.getValue(), value);
+
+		// GET
+		PropertyValue propertyValue2 = client.getPropertyValue(entityName,
+				propertyName);
+		Assert.assertNotNull(propertyValue2);
+		Assert.assertEquals(propertyValue, propertyValue2);
+
+		// LIST
+		List<PropertyValue> list = client.listPropertyValue();
+		Assert.assertTrue(list.contains(propertyValue));
+
+		// TODO test update
+
+		// DELETE
+		PropertyValue propertyValue3 = client.deletePropertyValue(entityName,
+				propertyName);
+		Assert.assertEquals(propertyValue3, propertyValue);
+
+		EntityType entitytype2 = client.deleteEntityType(typeName);
+		Assert.assertEquals(entitytype2, entitytype);
+
+		Entity entity2 = client.deleteEntity(entityName);
+		Assert.assertEquals(entity.getName(), entity2.getName());
+
+		Property property2 = client.deleteProperty(typeName, propertyName);
+		Assert.assertEquals(property2, property);
+
+		// GET
+		PropertyValue propertyValue4 = client.getPropertyValue(entityName,
+				propertyName);
+		Assert.assertNull(propertyValue4);
+
+		// LIST
+		List<PropertyValue> list2 = client.listPropertyValue();
+		Assert.assertFalse(list2.contains(propertyValue));
+
 	}
 
 }

@@ -9,6 +9,10 @@ import eu.scape_project.watch.core.rest.resource.EntityResourceJSON;
 import eu.scape_project.watch.core.rest.resource.EntityResourceXML;
 import eu.scape_project.watch.core.rest.resource.EntityTypeResourceJSON;
 import eu.scape_project.watch.core.rest.resource.EntityTypeResourceXML;
+import eu.scape_project.watch.core.rest.resource.PropertyResourceJSON;
+import eu.scape_project.watch.core.rest.resource.PropertyResourceXML;
+import eu.scape_project.watch.core.rest.resource.PropertyValueResourceJSON;
+import eu.scape_project.watch.core.rest.resource.PropertyValueResourceXML;
 
 public class WatchApplication extends Application {
 	@Override
@@ -21,6 +25,10 @@ public class WatchApplication extends Application {
 		classes.add(EntityResourceXML.class);
 		classes.add(EntityTypeResourceJSON.class);
 		classes.add(EntityTypeResourceXML.class);
+		classes.add(PropertyResourceJSON.class);
+		classes.add(PropertyResourceXML.class);
+		classes.add(PropertyValueResourceJSON.class);
+		classes.add(PropertyValueResourceXML.class);
 
 		return classes;
 	}

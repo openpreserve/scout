@@ -1,8 +1,8 @@
-package eu.scape_project.components.interfaces;
+package eu.scape_project.watch.components.interfaces;
 
 import java.util.List;
 
-import eu.scape_project.pw.elements.Task;
+import eu.scape_project.watch.components.elements.Task;
 
 
 /**

@@ -1,11 +1,11 @@
-package eu.scape_project.components;
+package eu.scape_project.watch.components;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.scape_project.components.interfaces.IMonitor;
-import eu.scape_project.pw.elements.Question;
-import eu.scape_project.pw.elements.WatchRequest;
+import eu.scape_project.watch.components.elements.Question;
+import eu.scape_project.watch.components.elements.WatchRequest;
+import eu.scape_project.watch.components.interfaces.IMonitor;
 
 public class CentralMonitor extends Thread{
 

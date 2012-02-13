@@ -1,4 +1,4 @@
-package eu.scape_project.pw.elements;
+package eu.scape_project.watch.components.elements;
 
 
 import java.util.Date;
@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import eu.scape_project.components.AdaptorHolder;
-import eu.scape_project.components.Monitor;
+import eu.scape_project.watch.components.AdaptorHolder;
+import eu.scape_project.watch.components.Monitor;
 
 
 public class Executor implements Runnable {

@@ -1,4 +1,4 @@
-package eu.scape_project.pw.elements;
+package eu.scape_project.watch.components.elements;
 
 import eu.scape_project.watch.core.model.Entity;
 import eu.scape_project.watch.core.model.Property;

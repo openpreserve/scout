@@ -1,4 +1,4 @@
-package eu.scape_project.pw.elements;
+package eu.scape_project.watch.components.elements;
 
 import java.util.ArrayList;
 import java.util.List;

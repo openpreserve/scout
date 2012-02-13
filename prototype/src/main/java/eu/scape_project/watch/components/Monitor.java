@@ -1,16 +1,16 @@
-package eu.scape_project.components;
+package eu.scape_project.watch.components;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import eu.scape_project.components.interfaces.IAdaptor;
-import eu.scape_project.components.interfaces.IMonitor;
-import eu.scape_project.pw.elements.Executor;
-import eu.scape_project.pw.elements.Question;
-import eu.scape_project.pw.elements.Result;
-import eu.scape_project.pw.elements.Task;
+import eu.scape_project.watch.components.elements.Executor;
+import eu.scape_project.watch.components.elements.Question;
+import eu.scape_project.watch.components.elements.Result;
+import eu.scape_project.watch.components.elements.Task;
+import eu.scape_project.watch.components.interfaces.IAdaptor;
+import eu.scape_project.watch.components.interfaces.IMonitor;
 import eu.scape_project.watch.core.model.EntityType;
 
 public class Monitor extends Thread implements IMonitor{

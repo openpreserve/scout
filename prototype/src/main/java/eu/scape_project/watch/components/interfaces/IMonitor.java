@@ -1,10 +1,10 @@
-package eu.scape_project.components.interfaces;
+package eu.scape_project.watch.components.interfaces;
 
 import java.util.List;
 
-import eu.scape_project.components.CentralMonitor;
-import eu.scape_project.pw.elements.Question;
-import eu.scape_project.pw.elements.Result;
+import eu.scape_project.watch.components.CentralMonitor;
+import eu.scape_project.watch.components.elements.Question;
+import eu.scape_project.watch.components.elements.Result;
 import eu.scape_project.watch.core.model.EntityType;
 
 public interface IMonitor {

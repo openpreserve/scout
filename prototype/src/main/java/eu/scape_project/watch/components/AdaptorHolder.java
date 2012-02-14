@@ -6,7 +6,13 @@ import java.util.List;
 
 import eu.scape_project.watch.components.elements.Result;
 import eu.scape_project.watch.components.elements.Task;
+import eu.scape_project.watch.components.elements.TaskWrapper;
 
+/**
+ * class that holds Adaptor and manages it when it needs to fetch the data  
+ * @author kresimir
+ *
+ */
 public class AdaptorHolder {
 	
 	/**
@@ -28,25 +34,16 @@ public class AdaptorHolder {
 	private long threshold = 1000;
 	
 	/**
-	 * all Tasks that needs to be done by the Adaptor -this should be improved - added in a separate class
+	 * all Tasks that need to be done by the Adaptor 
 	 */
-	private List<Task> tasks;
-	private List<Long> wrIDs;
-	private List<Long> times;
-	private List<Long> resetTimes;
-	
-	private List<Long> wrSent;
+	private List<TaskWrapper> tasks;
 	
 	private int id;
 	private Thread sleeper;
 	
 	public AdaptorHolder() {
 		isLocked = false;
-		tasks = new ArrayList<Task>();
-		wrIDs = new ArrayList<Long>();
-		times = new ArrayList<Long>();
-		resetTimes= new ArrayList<Long>();
-		wrSent = new ArrayList<Long>();
+		tasks = new ArrayList<TaskWrapper>();
 	}
 	
 	public AdaptorHolder(int id, Monitor monitor, Adaptor adaptor, Thread sleeper){
@@ -73,13 +70,9 @@ public class AdaptorHolder {
 	}
 
 	public void addTask(Task task, long wrID, long time) {
-		tasks.add(task);
-		wrIDs.add(new Long(wrID));
-		resetTimes.add(new Long(time));
-		long tmp = (new Date()).getTime();
-		times.add(new Long(tmp+1000));
-		monitor.updateStartTime(id, tmp+1000);
-		//System.out.println("Interrupting");
+		TaskWrapper tmp = new TaskWrapper(task,time,wrID);
+		tasks.add(tmp);
+		monitor.updateStartTime(id, tmp.getNextTime());
 		sleeper.interrupt();
 	}
 
@@ -104,24 +97,21 @@ public class AdaptorHolder {
 
 	
 	private void prepareAdaptor() {
-		wrSent.clear();
 		long tempTime = System.currentTimeMillis();
 		for (int i=0; i<tasks.size(); i++){
-			if (Math.abs(tempTime - times.get(i))<=threshold) {
-				adaptor.addTask(tasks.get(i));
-				times.set(i, new Long(-1));
-				wrSent.add(wrIDs.get(i));
+			if (Math.abs(tempTime - tasks.get(i).getNextTime())<=threshold) {
+				adaptor.addTask(tasks.get(i).getTask());
+				tasks.get(i).setNextTime(-1);
 			}
 		}
 	}
 
 	public void saveResult(List<Result> results) {
-		//System.out.println("Saving results");
 		List<Long> tmpwr = new ArrayList<Long>();
-		for (int i=0; i<times.size(); i++) {
-			if (times.get(i).longValue()==-1){
-				times.set(i, new Long((new Date()).getTime())+resetTimes.get(i));
-				tmpwr.add(wrIDs.get(i));
+		for (int i=0; i<tasks.size(); i++) {
+			if (tasks.get(i).getNextTime()==-1){
+				tasks.get(i).resetTime();
+				tmpwr.add(tasks.get(i).getWrid());
 			}
 		}
 		updateSleepTime();
@@ -130,12 +120,11 @@ public class AdaptorHolder {
 	}
 	
 	private void updateSleepTime() {
-		long min=times.get(0).longValue(); 
-		for (int i=1; i<times.size(); i++) {
-			if (times.get(i).longValue()<min)
-				min=times.get(i).longValue();
+		long min = tasks.get(0).getNextTime();
+		for (int i=1; i<tasks.size(); i++) {
+			if (tasks.get(i).getNextTime()<min)
+				min=tasks.get(i).getNextTime();
 		}
-		//System.out.println("min time is "+min);
 		monitor.updateStartTime(id, new Long(min));
 		sleeper.interrupt();
 	}

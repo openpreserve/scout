@@ -6,16 +6,81 @@ import java.util.Date;
 import java.util.List;
 
 import eu.scape_project.watch.components.elements.Executor;
-import eu.scape_project.watch.components.elements.Question;
 import eu.scape_project.watch.components.elements.Result;
 import eu.scape_project.watch.components.elements.Task;
 import eu.scape_project.watch.components.interfaces.IAdaptor;
 import eu.scape_project.watch.components.interfaces.IMonitor;
 import eu.scape_project.watch.core.model.EntityType;
+import eu.scape_project.watch.core.model.Question;
 
 public class Monitor extends Thread implements IMonitor{
 	
+	/**
+	 * entity type that is supported with this monitor
+	 */
 	private EntityType entityType;
+	
+	/**
+	 * adaptor holders 
+	 */
+	private List<AdaptorHolder> adaptorsHolders;
+	
+	/**
+	 * date when the adaptor is executed
+	 */
+	private List<Long> sleepTime;
+	
+	private Thread sleeper;
+	private CentralMonitor center;
+
+	
+	public Monitor() {
+		adaptorsHolders = new ArrayList<AdaptorHolder>();
+		sleepTime = new ArrayList<Long>();
+		sleeper = new Thread(this);
+	}
+
+	public Monitor(EntityType t){
+		this();
+		entityType=t;
+	}
+
+	
+	public List<AdaptorHolder> getAdaptorHolder() {
+		return adaptorsHolders;
+	}
+	
+	public void setAdaptorHolder(List<AdaptorHolder> ah){
+		adaptorsHolders=ah;
+	}
+	
+	public List<Long> getSleepTime() {
+		return sleepTime;
+	}
+
+	public void updateStartTime(int id, Long time) {
+		sleepTime.set(id, time);
+	}
+
+	public long minSleepTime(){
+		Calendar cal = Calendar.getInstance();
+		Date curr = new Date();
+		long currTime = curr.getTime();
+		cal.set(2020, 12, 25);
+		long minSt = cal.getTimeInMillis() - currTime; 
+		for (int i=0; i<sleepTime.size(); i++) {
+			if (sleepTime.get(i).longValue()==-1)
+				continue;
+			if (sleepTime.get(i).longValue()-currTime<minSt)
+				minSt=sleepTime.get(i).longValue()-currTime;
+		}
+		return minSt;
+	}
+
+	private void activateAdaptors() {
+		Thread t = new Thread(new Executor(this));
+		t.start();
+	}
 	
 	@Override
 	public boolean checkForEntityType(EntityType t) {
@@ -34,18 +99,6 @@ public class Monitor extends Thread implements IMonitor{
 		
 	}
 
-	private List<AdaptorHolder> adaptorsHolders;
-	
-	/**
-	 * date when the adaptor is executed
-	 */
-	private List<Long> sleepTime;
-	
-	private Thread sleeper;
-	private CentralMonitor center;
-	
-
-	
 
 	@Override
 	public void saveResult(Result result) {
@@ -55,7 +108,7 @@ public class Monitor extends Thread implements IMonitor{
 
 	@Override
 	public synchronized void saveResult(List<Result> results, List<Long> wrIds) {
-		System.out.println("Saving results to a database " +results);
+		//save results to a database
 		center.notifyWatchRequests(wrIds);
 		
 	}
@@ -65,33 +118,8 @@ public class Monitor extends Thread implements IMonitor{
 		center = cm;
 	}
 
-	public Monitor() {
-		adaptorsHolders = new ArrayList<AdaptorHolder>();
-		sleepTime = new ArrayList<Long>();
-		System.out.println("Initial time to sleep is "+sleepTime);
-		sleeper = new Thread(this);
-	}
 	
-	private long minSleepTime(){
-		Calendar cal = Calendar.getInstance();
-		Date curr = new Date();
-		long currTime = curr.getTime();
-		cal.set(2020, 12, 25);
-		long minSt = cal.getTimeInMillis() - currTime; 
-		for (int i=0; i<sleepTime.size(); i++) {
-			if (sleepTime.get(i).longValue()==-1)
-				continue;
-			if (sleepTime.get(i).longValue()-currTime<minSt)
-				minSt=sleepTime.get(i).longValue()-currTime;
-		}
-		return minSt;
-	}
 	
-	public Monitor(EntityType t){
-		this();
-		entityType=t;
-		//System.out.println("Monitor with entity type "+ t.getName()+" started");
-	}
 	
 	@Override
 	public Thread startMonitoring()  {
@@ -99,6 +127,7 @@ public class Monitor extends Thread implements IMonitor{
 		return sleeper;
 	}
 	
+	@Override
 	public void registerAdaptor(IAdaptor adaptor){
 		AdaptorHolder temp = new AdaptorHolder(adaptorsHolders.size(),this,(Adaptor)adaptor,sleeper); //this casting is not a nice solution
 		adaptorsHolders.add(temp);
@@ -106,11 +135,6 @@ public class Monitor extends Thread implements IMonitor{
 		//System.out.println("Adaptor added");
 	}
 
-	public void updateStartTime(int id, Long time) {
-		//System.out.println("Updating time");
-		sleepTime.set(id, time);
-		//System.out.println("SleepTime set to "+sleepTime);
-	}
 	
 	@Override
 	public void run() { 
@@ -130,17 +154,7 @@ public class Monitor extends Thread implements IMonitor{
 		}
 	}
 	
-	private void activateAdaptors() {
-		Thread t = new Thread(new Executor(this));
-		t.start();
-	}
 	
-	public List<AdaptorHolder> getAdaptorHolder() {
-		return adaptorsHolders;
-	}
 	
-	public List<Long> getSleepTime() {
-		return sleepTime;
-	}
 	
 }

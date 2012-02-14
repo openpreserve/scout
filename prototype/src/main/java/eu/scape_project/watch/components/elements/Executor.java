@@ -31,7 +31,7 @@ public class Executor implements Runnable {
 		//System.out.println(sleepTime);
 		long currTime =(new Date()).getTime();
 		//System.out.println("Starting adaptor execution");
-		for (int i=0; i< adaptorsHolders.size(); i++) {
+		for (int i=0; i< sleepTime.size(); i++) {
 			if (sleepTime.get(i)==-1)
 				continue;
 			if (Math.abs(sleepTime.get(i)-currTime)<100 || sleepTime.get(i)<currTime) {

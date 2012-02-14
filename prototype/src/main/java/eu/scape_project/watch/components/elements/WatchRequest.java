@@ -3,6 +3,8 @@ package eu.scape_project.watch.components.elements;
 import java.util.ArrayList;
 import java.util.List;
 
+import eu.scape_project.watch.core.model.Question;
+
 public class WatchRequest {
 	private List<Question> questions; 
 	private long id;

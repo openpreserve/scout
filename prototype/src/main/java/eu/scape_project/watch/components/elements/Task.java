@@ -26,10 +26,18 @@ public class Task {
 		property=p;
 	}
 
+	public void setEntity(Entity e) {
+		entity = e;
+	}
+
 	public Entity getEntity() {
 		return entity;
 	}
-
+	
+	public void setProperty(Property p){
+		property = p;
+	}
+	
 	public Property getProperty() {
 		return property;
 	}

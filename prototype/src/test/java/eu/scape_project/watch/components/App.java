@@ -1,21 +1,17 @@
-package eu.scape_project.pw;
+package eu.scape_project.watch.components;
 
 import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.scape_project.watch.components.CentralMonitor;
-import eu.scape_project.watch.components.DummyAdaptor;
-import eu.scape_project.watch.components.DummyAdaptor2;
-import eu.scape_project.watch.components.Monitor;
-import eu.scape_project.watch.components.elements.Question;
 import eu.scape_project.watch.components.elements.WatchRequest;
 import eu.scape_project.watch.components.interfaces.IAdaptor;
 import eu.scape_project.watch.components.interfaces.IMonitor;
 import eu.scape_project.watch.core.model.Entity;
 import eu.scape_project.watch.core.model.EntityType;
 import eu.scape_project.watch.core.model.Property;
+import eu.scape_project.watch.core.model.Question;
 
 /**
  * Hello world!
@@ -53,7 +49,7 @@ public class App {
     et1.setName("format");
     e1.setName("pdf");
     p1.setName("tool_support");
-    Question q1 = new Question(et1,e1,p1,10000);
+    Question q1 = new Question(" ",et1,e1,p1,10000);
     WatchRequest wr1 = new WatchRequest();
     wr1.addQuestion(q1);
     EntityType et12 = new EntityType();
@@ -62,7 +58,7 @@ public class App {
     et12.setName("format");
     e12.setName("pdf");
     p12.setName("number_of_browser");
-    Question q12 = new Question(et12,e12,p12,20000);
+    Question q12 = new Question(" ",et12,e12,p12,20000);
     wr1.addQuestion(q12);
     cm.addWatchRequest(wr1);
     
@@ -76,7 +72,7 @@ public class App {
     et2.setName("format");
     e2.setName("tiff");
     p2.setName("tool_support");
-    Question q2 = new Question(et2,e2,p2,100);
+    Question q2 = new Question(" ",et2,e2,p2,100);
     WatchRequest wr2 = new WatchRequest();
     wr2.addQuestion(q2);
     cm.addWatchRequest(wr2);

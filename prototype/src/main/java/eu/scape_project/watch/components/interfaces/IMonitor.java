@@ -3,13 +3,13 @@ package eu.scape_project.watch.components.interfaces;
 import java.util.List;
 
 import eu.scape_project.watch.components.CentralMonitor;
-import eu.scape_project.watch.components.elements.Question;
 import eu.scape_project.watch.components.elements.Result;
 import eu.scape_project.watch.core.model.EntityType;
+import eu.scape_project.watch.core.model.Question;
 
 public interface IMonitor {
 
-
+	
 	/**
 	 * Registering a new Adaptor 
 	 * @param adaptor
@@ -19,7 +19,7 @@ public interface IMonitor {
 	/**
 	 * Check if a Monitor can fetch data (through) adaptors about Entities with a specified EntityType
 	 * @param t - specified EntityType
-	 * @return tru if it can fetch data false otherwise
+	 * @return true if it can fetch data false otherwise
 	 */
 	public boolean checkForEntityType(EntityType t);
 	

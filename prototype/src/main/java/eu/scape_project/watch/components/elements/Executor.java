@@ -1,7 +1,6 @@
 package eu.scape_project.watch.components.elements;
 
 
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -27,18 +26,13 @@ public class Executor implements Runnable {
 	@Override
 	public void run() {
 		List<AdaptorHolder> adaptorsHolders = monitor.getAdaptorHolder();
-		List<Long> sleepTime = monitor.getSleepTime();
-		//System.out.println(sleepTime);
-		long currTime =(new Date()).getTime();
-		//System.out.println("Starting adaptor execution");
-		for (int i=0; i< sleepTime.size(); i++) {
-			if (sleepTime.get(i)==-1)
+		long currTime =System.currentTimeMillis();
+		for (int i=0; i< adaptorsHolders.size(); i++) {
+			if (adaptorsHolders.get(i).getNextTime()==Long.MAX_VALUE)
 				continue;
-			if (Math.abs(sleepTime.get(i)-currTime)<100 || sleepTime.get(i)<currTime) {
+			if (Math.abs(adaptorsHolders.get(i).getNextTime()-currTime)<100 || adaptorsHolders.get(i).getNextTime()<currTime) {
 				if (!adaptorsHolders.get(i).isLocked()) {
-					//System.out.println("Adaptor started");
 					adaptorsHolders.get(i).lock();
-					sleepTime.set(i, new Long(-1));
 					pool.submit(adaptorsHolders.get(i).getAdaptor());
 				}
 			}

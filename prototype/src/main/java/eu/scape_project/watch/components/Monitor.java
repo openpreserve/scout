@@ -28,7 +28,7 @@ public class Monitor extends Thread implements IMonitor{
 	/**
 	 * date when the adaptor is executed
 	 */
-	private List<Long> sleepTime;
+	//private List<Long> sleepTime;
 	
 	private Thread sleeper;
 	private CentralMonitor center;
@@ -36,7 +36,7 @@ public class Monitor extends Thread implements IMonitor{
 	
 	public Monitor() {
 		adaptorsHolders = new ArrayList<AdaptorHolder>();
-		sleepTime = new ArrayList<Long>();
+		//sleepTime = new ArrayList<Long>();
 		sleeper = new Thread(this);
 	}
 
@@ -54,25 +54,24 @@ public class Monitor extends Thread implements IMonitor{
 		adaptorsHolders=ah;
 	}
 	
-	public List<Long> getSleepTime() {
+	/*public List<Long> getSleepTime() {
 		return sleepTime;
-	}
+	}*/
 
-	public void updateStartTime(int id, Long time) {
+	/*public void updateStartTime(int id, Long time) {
 		sleepTime.set(id, time);
-	}
+	}*/
 
-	public long minSleepTime(){
+	private long minSleepTime(){
 		Calendar cal = Calendar.getInstance();
-		Date curr = new Date();
-		long currTime = curr.getTime();
+		long currTime = System.currentTimeMillis();
 		cal.set(2020, 12, 25);
 		long minSt = cal.getTimeInMillis() - currTime; 
-		for (int i=0; i<sleepTime.size(); i++) {
-			if (sleepTime.get(i).longValue()==-1)
+		for (int i=0; i<adaptorsHolders.size(); i++) {
+			if (adaptorsHolders.get(i).getNextTime()==Long.MAX_VALUE)
 				continue;
-			if (sleepTime.get(i).longValue()-currTime<minSt)
-				minSt=sleepTime.get(i).longValue()-currTime;
+			if (adaptorsHolders.get(i).getNextTime()-currTime<minSt)
+				minSt=adaptorsHolders.get(i).getNextTime()-currTime;
 		}
 		return minSt;
 	}
@@ -131,7 +130,7 @@ public class Monitor extends Thread implements IMonitor{
 	public void registerAdaptor(IAdaptor adaptor){
 		AdaptorHolder temp = new AdaptorHolder(adaptorsHolders.size(),this,(Adaptor)adaptor,sleeper); //this casting is not a nice solution
 		adaptorsHolders.add(temp);
-		sleepTime.add(new Long(-1));
+		//sleepTime.add(new Long(-1));
 		//System.out.println("Adaptor added");
 	}
 
@@ -147,9 +146,10 @@ public class Monitor extends Thread implements IMonitor{
 				Thread.sleep(tmp);
 			} catch (InterruptedException e) {
 				//System.out.println("Waking up");
-				activateAdaptors();
-				continue;
+				//activateAdaptors();
+				//continue;
 			}
+			//System.out.println("Activating adaptor");
 			activateAdaptors();
 		}
 	}

@@ -17,7 +17,6 @@ public class MonitorTest {
 	public void testMonitor() {
 		Monitor tMonitor = new Monitor();
 		Assert.assertTrue(tMonitor.getAdaptorHolder()!=null);
-		Assert.assertTrue(tMonitor.getSleepTime()!=null);
 	}
 	@Test 
 	public void testRegisterAdaptor() {
@@ -26,7 +25,6 @@ public class MonitorTest {
 		Assert.assertTrue(tMonitor.getAdaptorHolder().size()==1);
 		tMonitor.registerAdaptor(new DummyAdaptor());
 		Assert.assertTrue(tMonitor.getAdaptorHolder().size()==2);
-		Assert.assertTrue(tMonitor.getSleepTime().get(0)==-1 && tMonitor.getSleepTime().get(1)==-1);
 	}
 	
 	@Test 
@@ -35,7 +33,6 @@ public class MonitorTest {
 		tMonitor.registerAdaptor(new DummyAdaptor());
 		tMonitor.registerAdaptor(new DummyAdaptor2());
 		Assert.assertTrue(tMonitor.getAdaptorHolder().size()==2);
-		Assert.assertTrue(tMonitor.getSleepTime().get(0)==-1);
 		
 		EntityType et1 = new EntityType();
 	    Entity e1 = new Entity();
@@ -47,8 +44,6 @@ public class MonitorTest {
 	    
 	    tMonitor.addQuestion(q1, 0, 10000);
 	    Date curr = new Date();
-	    System.out.println(tMonitor.getSleepTime().get(0).longValue()-curr.getTime());
-	    System.out.println(tMonitor.minSleepTime());
-	    Assert.assertTrue(tMonitor.minSleepTime()<=10000);
+	    //Assert.assertTrue(tMonitor.minSleepTime()<=10000);
 	}
 }

@@ -60,6 +60,6 @@ public class TaskWrapper {
 	}
 	
 	public void resetTime() {
-		nextTime = (new Date()).getTime()+period;
+		nextTime = System.currentTimeMillis()+period;
 	}
 }

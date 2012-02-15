@@ -28,7 +28,7 @@ Java > Code Style > Formatter
 
 For Checkstyle open again the preferences window and select Checkstyle. Click on the New button and select
 Project Relative Configuration. Afterwards give a name and browse to the checkstyle.xml file provided in the build-tools-config
-maven module.
+maven module. At the end select this to be the default checkstyle config.
 
 To activate checkstyle for a certain project just right click on it select checkstyle > activate checkstyle.
 This will continouosly check the code as you type and mark the bad spots with yellow and will provide

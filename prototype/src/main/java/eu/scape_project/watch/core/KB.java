@@ -16,6 +16,7 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.tdb.TDB;
 import com.hp.hpl.jena.tdb.TDBFactory;
 
+import eu.scape_project.watch.core.common.ConfigUtils;
 import eu.scape_project.watch.core.model.Entity;
 import eu.scape_project.watch.core.model.EntityType;
 import eu.scape_project.watch.core.model.Property;
@@ -23,144 +24,158 @@ import eu.scape_project.watch.core.model.PropertyValue;
 
 public class KB {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(KB.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(KB.class);
 
-	// private static final String UNION_GRAPH = "urn:x-arq:UnionGraph";
+  private static KB UNIQUE_INSTANCE;
 
-	private static KB UNIQUE_INSTANCE;
+  private static Dataset dataset;
+  private static Model model;
 
-	private static Dataset dataset;
-	private static Model model;
+  public static final String WATCH_NS = "http://watch.scape-project.eu/kb#";
+  public static final String RDFS_NS = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 
-	public static final String WATCH_NS = "http://watch.scape-project.eu/";
-	public static final String RDFS_NS = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+  public static final String ENTITY = "entity";
+  public static final String ENTITY_TYPE = "entitytype";
+  public static final String PROPERTY = "property";
+  public static final String PROPERTY_VALUE = "propertyvalue";
+  public static final String MEASUREMENT = "measurement";
 
-	public static final String ENTITY = "entity";
-	public static final String ENTITY_TYPE = "entitytype";
-	public static final String PROPERTY = "property";
-	public static final String PROPERTY_VALUE = "propertyvalue";
-	public static final String MEASUREMENT = "measurement";
+  private static String DATA_FOLDER;
 
-	// TODO get data folder from config
-	private static String DATA_FOLDER = "/usr/local/watch/data/tdb";
+  public static void setDataFolder(String dataFolder) {
+    DATA_FOLDER = dataFolder;
+  }
 
-	public static void setDataFolder(String dataFolder) {
-		DATA_FOLDER = dataFolder;
-	}
+  public static synchronized KB getInstance() {
+    if (KB.UNIQUE_INSTANCE == null) {
+      KB.UNIQUE_INSTANCE = new KB();
+      KB.init();
+      KB.addShutDownHook();
+    }
 
-	public static synchronized KB getInstance() {
-		if (KB.UNIQUE_INSTANCE == null) {
-			KB.UNIQUE_INSTANCE = new KB();
+    return KB.UNIQUE_INSTANCE;
+  }
 
-			File dataFolderFile = new File(DATA_FOLDER);
-			try {
-				boolean initdata = false;
-				if (!dataFolderFile.exists()) {
-					FileUtils.forceMkdir(dataFolderFile);
-					initdata = true;
-				}
-				dataset = TDBFactory.createDataset(DATA_FOLDER);
-				model = TDBFactory.createModel(DATA_FOLDER);
-				Jenabean.instance().bind(model);
+  public Dataset getDataset() {
+    return KB.dataset;
+  }
 
-				if (initdata) {
-					createInitialData();
-				}
+  public Model getModel() {
+    return model;
+  }
 
-				LOGGER.info("KB manager created at {}", DATA_FOLDER);
+  public RDF2Bean getReader() {
+    return Jenabean.instance().reader();
+  }
 
-			} catch (IOException e) {
-				LOGGER.error("Data folder {} could not be created",
-						e.getMessage());
-			}
+  public Bean2RDF getWriter() {
+    return Jenabean.instance().writer();
+  }
 
-			Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-				@Override
-				public void run() {
-					if (dataset != null) {
-						model.close();
-						dataset.close();
-					}
-					KB.LOGGER.info("closing dataset");
-				}
-			}));
+  @Override
+  protected Object clone() throws CloneNotSupportedException {
+    throw new CloneNotSupportedException("Singletons cannot be cloned");
+  }
 
-		}
+  // --- private
 
-		return KB.UNIQUE_INSTANCE;
-	}
+  private static void init() {
+    
+    if (DATA_FOLDER == null) {
+      ConfigUtils conf = new ConfigUtils();
+      setDataFolder(conf.getStringProperty(ConfigUtils.KB_DATA_FOLDER_KEY));
+    }
+    
+    File dataFolderFile = new File(DATA_FOLDER);
+    try {
+      boolean initdata = false;
+      if (!dataFolderFile.exists()) {
+        FileUtils.forceMkdir(dataFolderFile);
+        initdata = true;
+      }
+      
+      dataset = TDBFactory.createDataset(DATA_FOLDER);
+      model = TDBFactory.createModel(DATA_FOLDER);
+      Jenabean.instance().bind(model);
 
-	private static void createInitialData() {
+      if (initdata) {
+        createInitialData();
+      }
 
-		EntityType formats = new EntityType("format", "File format");
-		Property formatPUID = new Property(formats, "PUID", "PRONOM Id");
-		Property formatMimetype = new Property(formats, "MIME", "MIME type");
+      LOGGER.info("KB manager created at {}", DATA_FOLDER);
 
-		formats.save();
-		formatPUID.save();
-		formatMimetype.save();
+    } catch (IOException e) {
+      LOGGER.error("Data folder {} could not be created", e.getMessage());
+    }
+  }
 
-		EntityType tools = new EntityType("tools",
-				"Applications that read and/or write into diferent file formats");
-		Property toolVersion = new Property(tools, "version", "Tool version");
+  private static void addShutDownHook() {
+    KB.LOGGER.debug("adding shutdown hook to Knowledgebase");
+    
+    Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+      @Override
+      public void run() {
+        KB.LOGGER.info("Shutdown hook invoked, closing dataset");
 
-		tools.save();
-		toolVersion.save();
+        if (dataset != null) {
+          TDB.sync(model);
+          TDB.sync(dataset);
+          
+          model.close();
+          dataset.close();
+        }
+      }
+    }));
+  }
 
-		Entity pdf17Format = new Entity(formats, "PDF-v1.7");
-		Entity tiffFormat = new Entity(formats, "TIFF");
-		Entity imageMagickTool = new Entity(tools, "ImageMagick-v6.6.0");
+  private static void createInitialData() {
+    LOGGER.info("Creating data");
+    EntityType formats = new EntityType("format", "File format");
+    Property formatPUID = new Property(formats, "PUID", "PRONOM Id");
+    Property formatMimetype = new Property(formats, "MIME", "MIME type");
 
-		// save entities
-		pdf17Format.save();
-		tiffFormat.save();
-		imageMagickTool.save();
+    formats.save();
+    formatPUID.save();
+    formatMimetype.save();
 
-		// property value construction also binds to entity
-		PropertyValue pdfPUID = new PropertyValue(pdf17Format, formatPUID,
-				"fmt/276");
-		PropertyValue pdfMime = new PropertyValue(pdf17Format, formatMimetype,
-				"application/pdf");
+    EntityType tools = new EntityType("tools", "Applications that read and/or write into diferent file formats");
+    Property toolVersion = new Property(tools, "version", "Tool version");
 
-		PropertyValue tiffPUID = new PropertyValue(tiffFormat, formatPUID,
-				"fmt/353");
-		PropertyValue tiffMime = new PropertyValue(tiffFormat, formatMimetype,
-				"image/tiff");
+    tools.save();
+    toolVersion.save();
 
-		PropertyValue imageMagickVersion = new PropertyValue(imageMagickTool,
-				toolVersion, "6.6.0");
+    Entity pdf17Format = new Entity(formats, "PDF-v1.7");
+    Entity tiffFormat = new Entity(formats, "TIFF");
+    Entity imageMagickTool = new Entity(tools, "ImageMagick-v6.6.0");
 
-		// save property values
-		pdfPUID.save();
-		pdfMime.save();
-		tiffPUID.save();
-		tiffMime.save();
-		imageMagickVersion.save();
+    // save entities
+    pdf17Format.save();
+    tiffFormat.save();
+    imageMagickTool.save();
 
-	}
+    // property value construction also binds to entity
+    PropertyValue pdfPUID = new PropertyValue(pdf17Format, formatPUID, "fmt/276");
+    PropertyValue pdfMime = new PropertyValue(pdf17Format, formatMimetype, "application/pdf");
 
-	public Dataset getDataset() {
-		return KB.dataset;
-	}
+    PropertyValue tiffPUID = new PropertyValue(tiffFormat, formatPUID, "fmt/353");
+    PropertyValue tiffMime = new PropertyValue(tiffFormat, formatMimetype, "image/tiff");
 
-	public Model getModel() {
-		return model;
-	}
+    PropertyValue imageMagickVersion = new PropertyValue(imageMagickTool, toolVersion, "6.6.0");
 
-	public RDF2Bean getReader() {
-		return Jenabean.instance().reader();
-	}
+    // save property values
+    pdfPUID.save();
+    pdfMime.save();
+    tiffPUID.save();
+    tiffMime.save();
+    imageMagickVersion.save();
+    
+    TDB.sync(model);
+    TDB.sync(dataset);
 
-	public Bean2RDF getWriter() {
-		return Jenabean.instance().writer();
-	}
+  }
 
-	@Override
-	protected Object clone() throws CloneNotSupportedException {
-		throw new CloneNotSupportedException("Singletons cannot be cloned");
-	}
+  private KB() {
 
-	private KB() {
-
-	}
+  }
+  
 }

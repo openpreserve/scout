@@ -5,13 +5,14 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.scape_project.watch.components.elements.WatchRequest;
 import eu.scape_project.watch.components.interfaces.IAdaptor;
 import eu.scape_project.watch.components.interfaces.IMonitor;
+import eu.scape_project.watch.core.model.AsyncRequest;
 import eu.scape_project.watch.core.model.Entity;
 import eu.scape_project.watch.core.model.EntityType;
 import eu.scape_project.watch.core.model.Property;
 import eu.scape_project.watch.core.model.Question;
+import eu.scape_project.watch.core.model.Trigger;
 
 /**
  * Hello world!
@@ -41,7 +42,7 @@ public class App {
     cm.registerMonitor(mon);
     Thread t = new Thread(cm);
     t.start();
-    
+   
     //watch request 1 
     EntityType et1 = new EntityType();
     Entity e1 = new Entity();
@@ -50,8 +51,10 @@ public class App {
     e1.setName("pdf");
     p1.setName("tool_support");
     Question q1 = new Question(" ",et1,e1,p1,100);
-    WatchRequest wr1 = new WatchRequest();
-    wr1.addQuestion(q1);
+    AsyncRequest wr1 = new AsyncRequest();
+    Trigger t1 = new Trigger();
+    t1.setQuestion(q1);
+    wr1.addTrigger(t1);
     EntityType et12 = new EntityType();
     Entity e12 = new Entity();
     Property p12 = new Property();
@@ -59,9 +62,12 @@ public class App {
     e12.setName("pdf");
     p12.setName("number_of_browser");
     Question q12 = new Question(" ",et12,e12,p12,1500);
-    wr1.addQuestion(q12);
-    cm.addWatchRequest(wr1);
+    Trigger t12 = new Trigger();
+    t12.setQuestion(q12);
     
+    wr1.addTrigger(t12);
+    cm.addWatchRequest(wr1);
+    System.out.println("Request UUID: "+wr1.getId());
     
     
     
@@ -72,10 +78,14 @@ public class App {
     et2.setName("format");
     e2.setName("tiff");
     p2.setName("tool_support");
-    Question q2 = new Question(" ",et2,e2,p2,10000);
-    WatchRequest wr2 = new WatchRequest();
-    wr2.addQuestion(q2);
+    Question q2 = new Question(" ",et2,e2,p2,1000);
+    
+    AsyncRequest wr2 = new AsyncRequest();
+    Trigger t2 = new Trigger();
+    t2.setQuestion(q2);
+    wr2.addTrigger(t2);
     cm.addWatchRequest(wr2);
+    System.out.println("Request UUID: "+wr2.getId());
     
     
     try {

@@ -1,5 +1,6 @@
 package eu.scape_project.watch.core.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -48,6 +49,7 @@ public class AsyncRequest extends RdfBean<AsyncRequest> {
   public AsyncRequest() {
     super();
     this.setId(UUID.randomUUID().toString());
+    triggers = new ArrayList<Trigger>();
   }
 
   /**
@@ -98,6 +100,17 @@ public class AsyncRequest extends RdfBean<AsyncRequest> {
    */
   public void setTriggers(final List<Trigger> triggers) {
     this.triggers = triggers;
+  }
+
+  public void addTrigger(Trigger t) {
+    triggers.add(t);
+  }
+  public List<Question> getQuestion() {
+    List<Question> tmp = new ArrayList() ;
+    for (Trigger t : triggers){
+      tmp.add(t.getQuestion());
+    }
+    return tmp;
   }
 
   @Override

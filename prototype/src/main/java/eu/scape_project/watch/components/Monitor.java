@@ -87,7 +87,7 @@ public class Monitor extends Thread implements IMonitor{
 	}
 
 	@Override
-	public void addQuestion(Question q,long wrId, long time) {
+	public void addQuestion(Question q,String wrId, long time) {
 		Task tempTask = new Task(q.getEntity(),q.getProperty());
 		for (int i=0; i<adaptorsHolders.size(); i++){
 			if (adaptorsHolders.get(i).checkForTask(tempTask)) {
@@ -106,7 +106,7 @@ public class Monitor extends Thread implements IMonitor{
 	}
 
 	@Override
-	public synchronized void saveResult(List<Result> results, List<Long> wrIds) {
+	public synchronized void saveResult(List<Result> results, List<String> wrIds) {
 		//save results to a database
 		center.notifyWatchRequests(wrIds);
 		

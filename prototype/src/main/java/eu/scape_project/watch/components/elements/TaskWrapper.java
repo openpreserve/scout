@@ -1,6 +1,5 @@
 package eu.scape_project.watch.components.elements;
 
-import java.util.Date;
 
 
 /**
@@ -16,15 +15,15 @@ public class TaskWrapper {
 	private Task task;
 	private long nextTime;
 	private long period;
-	private long wrid;
+	private String wrid;
 	
 	public TaskWrapper() {}
 	
-	public TaskWrapper(Task t, long p, long w){
+	public TaskWrapper(Task t, long p, String w){
 		task = t;
 		period = p;
 		wrid = w;
-		nextTime = (new Date()).getTime()+period;
+		nextTime = System.currentTimeMillis()+period;
 	}
 
 	public Task getTask() {
@@ -51,11 +50,11 @@ public class TaskWrapper {
 		this.period = period;
 	}
 
-	public long getWrid() {
+	public String getWrid() {
 		return wrid;
 	}
 
-	public void setWrid(long wrid) {
+	public void setWrid(String wrid) {
 		this.wrid = wrid;
 	}
 	

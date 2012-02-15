@@ -86,7 +86,7 @@ public class AdaptorHolder {
 		return adaptor.checkForTask(task);
 	}
 
-	public void addTask(Task task, long wrID, long time) {
+	public void addTask(Task task, String wrID, long time) {
 		TaskWrapper tmp = new TaskWrapper(task,time,wrID);
 		tasks.add(tmp);
 		nextTime = (tmp.getNextTime()<nextTime) ? tmp.getNextTime() : nextTime; 
@@ -132,7 +132,7 @@ public class AdaptorHolder {
 	}
 
 	public void saveResult(List<Result> results) {
-		List<Long> tmpwr = new ArrayList<Long>();
+		List<String> tmpwr = new ArrayList<String>();
 		for (int i=0; i<tasks.size(); i++) {
 			if (tasks.get(i).getNextTime()==Long.MAX_VALUE){
 				tasks.get(i).resetTime();

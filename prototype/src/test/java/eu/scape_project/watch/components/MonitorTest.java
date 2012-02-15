@@ -42,7 +42,7 @@ public class MonitorTest {
 	    p1.setName("tool_support");
 	    Question q1 = new Question(" ",et1,e1,p1,10000);
 	    
-	    tMonitor.addQuestion(q1, 0, 10000);
+	    //tMonitor.addQuestion(q1, 0, 10000);
 	    Date curr = new Date();
 	    //Assert.assertTrue(tMonitor.minSleepTime()<=10000);
 	}

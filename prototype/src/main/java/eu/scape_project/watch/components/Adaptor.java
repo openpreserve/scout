@@ -41,13 +41,11 @@ public abstract class Adaptor implements IAdaptor{
 	
 	public void addAdaptorHolder(AdaptorHolder a) {
 		callback = a;
-		//System.out.println("Added adaptor holder");
 	}
 	
 	@Override
 	public void run() {
 		fetchData();
-		//System.out.println("Data fetched");
 		tasks.clear();
 		callback.saveResult(results);
 		results.clear();
@@ -55,7 +53,7 @@ public abstract class Adaptor implements IAdaptor{
 	
 	
 	/**
-	 * method for fetching the data 
+	 * method for fetching the data , it needs to be implemented in a subclass 
 	 */
 	protected abstract void fetchData();
 	

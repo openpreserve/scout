@@ -27,7 +27,7 @@ public interface IMonitor {
 	 * Add a question to the Monitor 
 	 * @param result
 	 */
-	public void addQuestion(Question q, long wrId, long time);
+	public void addQuestion(Question q, String wrId, long time);
 
 	
 	/**
@@ -40,7 +40,7 @@ public interface IMonitor {
 	 * 
 	 * @param results
 	 */
-	public void saveResult(List<Result> results, List<Long> wrIds); 
+	public void saveResult(List<Result> results, List<String> wrIds); 
 	
 	
 	

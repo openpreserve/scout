@@ -1,6 +1,25 @@
 package eu.scape_project.watch.core.model;
 
-public enum NotificationType {
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlType;
 
-  EMAIL_EVENT, PUSH_EVENT;
+import eu.scape_project.watch.core.KB;
+
+/**
+ * Possible types of {@link Notification}.
+ * 
+ * @author Luis Faria <lfaria@keep.pt>
+ * 
+ */
+@XmlType(name = KB.NOTIFICATION_TYPE)
+@XmlEnum
+public enum NotificationType {
+  /**
+   * Send the notification by email.
+   */
+  EMAIL_EVENT,
+  /**
+   * Push the notification to a REST API.
+   */
+  PUSH_EVENT;
 }

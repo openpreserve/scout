@@ -5,95 +5,116 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import eu.scape_project.watch.core.KB;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
-import eu.scape_project.watch.core.KB;
 
+/**
+ * An entity is a concrete instance of some EntityType. E.g. 'ImageMagick v1.0'
+ * is a concrete instance (an entity) and has the entity type 'Action
+ * component'.
+ * 
+ * @author Luis Faria <lfaria@keep.pt>
+ */
 @Namespace(KB.WATCH_NS)
 @XmlRootElement(name = KB.ENTITY)
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Entity extends RdfBean<Entity> {
 
-	public Entity() {
-		super();
-	}
+  /**
+   * Create a new empty Entity.
+   */
+  public Entity() {
+    super();
+  }
 
-	public Entity(EntityType et, String n) {
-		this.type = et;
-		this.name = n;
-	}
+  /**
+   * Create a new Entity.
+   * 
+   * @param et
+   *          The type of the entity
+   * @param n
+   *          a name that uniquely identifies the entity
+   */
+  public Entity(final EntityType et, final String n) {
+    this.type = et;
+    this.name = n;
+  }
 
-	@Id
-	@XmlElement(required = true)
-	private String name;
+  /**
+   * The unique name of the entity.
+   */
+  @Id
+  @XmlElement(required = true)
+  private String name;
 
-	@XmlElement
-	@JsonProperty
-	private EntityType type;
+  /**
+   * The type of the entity.
+   */
+  @XmlElement
+  @JsonProperty
+  private EntityType type;
 
-	// @XmlElement
-	// @JsonProperty
-	// private List<PropertyValue> propertyValues;
+  public String getName() {
+    return this.name;
+  }
 
-	public String getName() {
-		return name;
-	}
+  public void setName(final String name) {
+    this.name = name;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public EntityType getEntityType() {
+    return this.type;
+  }
 
-	public EntityType getEntityType() {
-		return type;
-	}
+  public void setEntityType(final EntityType entityType) {
+    this.type = entityType;
+  }
 
-	public void setEntityType(EntityType entityType) {
-		this.type = entityType;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((this.type == null) ? 0 : this.type.hashCode());
+    result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
+    return result;
+  }
 
-	// public List<PropertyValue> getPropertyValues() {
-	// return propertyValues;
-	// }
-	//
-	// public void setPropertyValues(List<PropertyValue> propertyValues) {
-	// this.propertyValues = propertyValues;
-	// }
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    final Entity other = (Entity) obj;
+    if (this.type == null) {
+      if (other.type != null) {
+        return false;
+      }
+    } else if (!this.type.equals(other.type)) {
+      return false;
+    }
+    if (this.name == null) {
+      if (other.name != null) {
+        return false;
+      }
+    } else if (!this.name.equals(other.name)) {
+      return false;
+    }
+    return true;
+  }
 
-	// @Override
-	// public int hashCode() {
-	// final int prime = 31;
-	// int result = 1;
-	// result = prime * result + ((type == null) ? 0 : type.hashCode());
-	// result = prime * result + ((name == null) ? 0 : name.hashCode());
-	// return result;
-	// }
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Entity other = (Entity) obj;
-		if (type == null) {
-			if (other.type != null)
-				return false;
-		} else if (!type.equals(other.type))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		return true;
-	}
-
-	public String toString() {
-		return "Entity(name=" + name + ", type=" + type + ")";
-	}
+  @Override
+  public String toString() {
+    return "Entity(name=" + this.name + ", type=" + this.type + ")";
+  }
 }

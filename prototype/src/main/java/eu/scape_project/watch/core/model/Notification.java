@@ -1,36 +1,97 @@
 package eu.scape_project.watch.core.model;
 
 import java.util.Map;
+import java.util.UUID;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import eu.scape_project.watch.core.KB;
+
+import org.codehaus.jackson.annotate.JsonProperty;
+
+import thewebsemantic.Id;
+import thewebsemantic.Namespace;
+
+/**
+ * A Notification describes what should happen when a {@link Trigger} is fired.
+ * Each Notification has a type, e.g. Email, Push Notification, etc.
+ * 
+ * 
+ * @author Luis Faria <lfaria@keep.pt>
+ */
+@Namespace(KB.WATCH_NS)
+@XmlRootElement(name = KB.NOTIFICATION)
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Notification {
-  
+
+  /**
+   * The unique id that identifies the notification.
+   */
+  @Id
+  @XmlElement(required = true)
+  private String id;
+
+  /**
+   * The type of the notification.
+   */
+  @XmlElement
+  @JsonProperty
   private NotificationType type;
 
+  /**
+   * The notification parameters, e.g. email recipients, subject, etc.
+   */
+  @XmlElement
+  @JsonProperty
   private Map<String, String> parameters;
 
+  /**
+   * Create a new empty notification.
+   */
   public Notification() {
     super();
+    this.id = UUID.randomUUID().toString();
   }
 
-  public Notification(NotificationType type, Map<String, String> parameters) {
+  /**
+   * Create a new notification.
+   * 
+   * @param type
+   *          The type of the notification.
+   * @param parameters
+   *          The notification parameters, e.g. email recipients, subject, etc.
+   */
+  public Notification(final NotificationType type, final Map<String, String> parameters) {
     this();
     this.setType(type);
     this.setParameters(parameters);
   }
 
-  public NotificationType getType() {
-    return type;
+  /**
+   * Get the unique Id of this notification.
+   * 
+   * @return the Id
+   */
+  public String getId() {
+    return this.id;
   }
 
-  public void setType(NotificationType type) {
+  public NotificationType getType() {
+    return this.type;
+  }
+
+  public void setType(final NotificationType type) {
     this.type = type;
   }
 
   public Map<String, String> getParameters() {
-    return parameters;
+    return this.parameters;
   }
 
-  public void setParameters(Map<String, String> parameters) {
+  public void setParameters(final Map<String, String> parameters) {
     this.parameters = parameters;
   }
 
@@ -44,21 +105,27 @@ public class Notification {
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
+  public boolean equals(final Object obj) {
+    if (this == obj) {
       return true;
-    if (obj == null)
+    }
+    if (obj == null) {
       return false;
-    if (getClass() != obj.getClass())
+    }
+    if (getClass() != obj.getClass()) {
       return false;
-    Notification other = (Notification) obj;
-    if (parameters == null) {
-      if (other.parameters != null)
+    }
+    final Notification other = (Notification) obj;
+    if (this.parameters == null) {
+      if (other.parameters != null) {
         return false;
-    } else if (!parameters.equals(other.parameters))
+      }
+    } else if (!this.parameters.equals(other.parameters)) {
       return false;
-    if (type != other.type)
+    }
+    if (this.type != other.type) {
       return false;
+    }
     return true;
   }
 

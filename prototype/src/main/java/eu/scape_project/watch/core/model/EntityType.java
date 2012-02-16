@@ -1,104 +1,119 @@
 package eu.scape_project.watch.core.model;
 
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import eu.scape_project.watch.core.KB;
 
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
-import eu.scape_project.watch.core.KB;
 
+/**
+ * An entity type describes the type of an instance. It groups instances of the
+ * same type and helps the Planner to pose meaningful Watch Requests. Some
+ * examples are: Format, PreservationAction, Experiment, etc.
+ * 
+ * @author Luis Faria <lfaria@keep.pt>
+ */
 @Namespace(KB.WATCH_NS)
 @XmlRootElement(name = KB.ENTITY_TYPE)
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EntityType extends RdfBean<EntityType> {
 
-	public EntityType() {
-		super();
-	}
+  /**
+   * Create a new empty entity type.
+   */
+  public EntityType() {
+    super();
+  }
 
-	public EntityType(String n, String d) {
-		super();
-		this.name = n;
-		this.description = d;
-	}
+  /**
+   * Create an entity type.
+   * 
+   * @param n
+   *          the entity type unique name
+   * @param d
+   *          a description
+   */
+  public EntityType(final String n, final String d) {
+    super();
+    this.name = n;
+    this.description = d;
+  }
 
-	@Id
-	@XmlElement
-	private String name;
+  /**
+   * Unique name that identifies the entity type.
+   */
+  @Id
+  @XmlElement
+  private String name;
 
-	@XmlElement
-	private String description;
+  /**
+   * A description of the entity type.
+   */
+  @XmlElement
+  private String description;
 
-	// @XmlElement
-	// @JsonProperty
-	// private List<Property> properties;
+  public String getName() {
+    return this.name;
+  }
 
-	
-	public String getName() {
-		return name;
-	}
+  public void setName(final String name) {
+    this.name = name;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public String getDescription() {
+    return this.description;
+  }
 
-	public String getDescription() {
-		return description;
-	}
+  public void setDescription(final String description) {
+    this.description = description;
+  }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
+    result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
+    return result;
+  }
 
-	// public List<Property> getProperties() {
-	// return properties;
-	// }
-	//
-	// public void setProperties(List<Property> properties) {
-	// this.properties = properties;
-	// }
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    final EntityType other = (EntityType) obj;
+    if (this.description == null) {
+      if (other.description != null) {
+        return false;
+      }
+    } else if (!this.description.equals(other.description)) {
+      return false;
+    }
+    if (this.name == null) {
+      if (other.name != null) {
+        return false;
+      }
+    } else if (!this.name.equals(other.name)) {
+      return false;
+    }
+    return true;
+  }
 
-	// @Override
-	// public int hashCode() {
-	// final int prime = 31;
-	// int result = 1;
-	// result = prime * result
-	// + ((description == null) ? 0 : description.hashCode());
-	// result = prime * result + ((name == null) ? 0 : name.hashCode());
-	// return result;
-	// }
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		EntityType other = (EntityType) obj;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		return true;
-	}
-
-	public String toString() {
-		return "EntityType(name=" + name + ", description=" + description + ")";
-	}
+  @Override
+  public String toString() {
+    return "EntityType(name=" + this.name + ", description=" + this.description + ")";
+  }
 
 }

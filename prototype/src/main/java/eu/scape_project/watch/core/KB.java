@@ -86,6 +86,51 @@ public final class KB {
   public static final String MEASUREMENT = "measurement";
 
   /**
+   * A asynchronous request constant.
+   */
+  public static final String ASYNC_REQUEST = "asyncrequest";
+  
+  /**
+   * A trigger constant.
+   */
+  public static final String TRIGGER = "trigger";
+
+  /**
+   * A notification constant.
+   */
+  public static final String NOTIFICATION = "notification";
+
+  /**
+   * A notification constant.
+   */
+  public static final String NOTIFICATION_TYPE = "notificationtype";
+
+  /**
+   * A data type constant.
+   */
+  public static final String DATA_TYPE = "datatype";
+
+  /**
+   * A plan constant.
+   */
+  public static final String PLAN = "plan";
+
+  /**
+   * A question constant.
+   */
+  public static final String QUESTION = "question";
+
+  /**
+   * A source constant.
+   */
+  public static final String SOURCE = "source";
+
+  /**
+   * A source adaptor constant.
+   */
+  public static final String SOURCE_ADAPTOR = "sourceadaptor";
+
+  /**
    * The data folder to be used to by tdb.
    */
   private static String dataFolder;

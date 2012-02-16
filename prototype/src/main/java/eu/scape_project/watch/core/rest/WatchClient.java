@@ -4,9 +4,6 @@ import java.util.List;
 
 import javax.ws.rs.core.MediaType;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.UniformInterfaceException;
@@ -17,210 +14,398 @@ import eu.scape_project.watch.core.model.Entity;
 import eu.scape_project.watch.core.model.EntityType;
 import eu.scape_project.watch.core.model.Property;
 import eu.scape_project.watch.core.model.PropertyValue;
+import eu.scape_project.watch.core.rest.exception.NotFoundException;
 
+/**
+ * Client for Watch REST service.
+ * 
+ * @author Luis Faria <lfaria@keep.pt>
+ * 
+ */
 public class WatchClient {
-	private final Logger LOG = LoggerFactory.getLogger(WatchClient.class);
+  // private final Logger log = LoggerFactory.getLogger(WatchClient.class);
 
-	private final WebResource resource;
-	private final Format format;
+  /**
+   * Separator between the resource and the format.
+   */
+  private static final String FS = ".";
 
-	public static enum Format {
-		JSON, XML;
+  /**
+   * Separator between the resource and the arguments.
+   */
+  private static final String AS = "/";
 
-		public String toString() {
-			return super.toString().toLowerCase();
-		}
+  /**
+   * Special word that allows listing of a resource.
+   */
+  private static final String LIST = "list";
 
-		public String getMediaType() {
-			if (this.equals(JSON)) {
-				return MediaType.APPLICATION_JSON;
-			} else if (this.equals(XML)) {
-				return MediaType.APPLICATION_XML;
-			} else {
-				return null;
-			}
-		}
-	}
+  /**
+   * Jersey web resource connection.
+   */
+  private final WebResource resource;
 
-	// public WatchClient(WebResource resource) {
-	// this(resource, Format.JSON);
-	// }
+  /**
+   * Output format to use.
+   */
+  private final Format format;
 
-	public WatchClient(WebResource resource, Format format) {
-		super();
-		this.resource = resource;
-		this.format = format;
-	}
+  /**
+   * The format of the output.
+   * 
+   * @author Luis Faria <lfaria@keep.pt>
+   * 
+   */
+  public static enum Format {
+    /**
+     * Use JSON as output format.
+     */
+    JSON,
+    /**
+     * Use XML as output format.
+     */
+    XML;
 
-	/***************** ENTITY ******************************/
+    @Override
+    public String toString() {
+      return super.toString().toLowerCase();
+    }
 
-	public Entity createEntity(String name, String type) {
-		return resource.path(KB.ENTITY + "." + format + "/" + name)
-				.accept(format.getMediaType()).post(Entity.class, type);
-	}
+    /**
+     * Helper method to get related MediaType.
+     * 
+     * @return The related MediaType or <code>null</code> if not applicable
+     */
+    public String getMediaType() {
+      if (this.equals(JSON)) {
+        return MediaType.APPLICATION_JSON;
+      } else if (this.equals(XML)) {
+        return MediaType.APPLICATION_XML;
+      } else {
+        return null;
+      }
+    }
+  }
 
-	public Entity getEntity(String name) {
-		try {
-			return resource.path(KB.ENTITY + "." + format + "/" + name)
-					.accept(format.getMediaType()).get(Entity.class);
-		} catch (UniformInterfaceException e) {
-			ClientResponse resp = e.getResponse();
-			if (resp.getStatus() == 404) {
-				return null;
-			} else {
-				throw e;
-			}
-		}
-	}
+  /**
+   * Create a new Watch client.
+   * 
+   * @param resource
+   *          the jersey web resource to use
+   * @param format
+   *          the output format to use
+   */
+  public WatchClient(final WebResource resource, final Format format) {
+    super();
+    this.resource = resource;
+    this.format = format;
+  }
 
-	public Entity updateEntity(String name, Entity entity) {
-		return resource.path(KB.ENTITY + "." + format + "/" + name)
-				.accept(format.getMediaType()).put(Entity.class, entity);
-	}
+  /**
+   * Create a new {@link Entity}.
+   * 
+   * @param name
+   *          the entity name
+   * @param type
+   *          the name of the entity type
+   * @return the created entity
+   */
+  public Entity createEntity(final String name, final String type) {
+    return this.resource.path(KB.ENTITY + FS + this.format + AS + name).accept(this.format.getMediaType())
+      .post(Entity.class, type);
+  }
 
-	public List<Entity> listEntity() {
-		return (List<Entity>) resource.path(KB.ENTITY + "." + format + "/list")
-				.accept(format.getMediaType())
-				.get(new GenericType<List<Entity>>() {
-				});
-	}
+  /**
+   * Get entity from server.
+   * 
+   * @param name
+   *          the entity name
+   * @return the entity with that name or <code>null</code> if not found
+   */
+  public Entity getEntity(final String name) {
+    try {
+      return this.resource.path(KB.ENTITY + FS + this.format + AS + name).accept(this.format.getMediaType())
+        .get(Entity.class);
+    } catch (final UniformInterfaceException e) {
+      final ClientResponse resp = e.getResponse();
+      if (resp.getStatus() == NotFoundException.CODE) {
+        return null;
+      } else {
+        throw e;
+      }
+    }
+  }
 
-	public Entity deleteEntity(String name) {
-		return resource.path(KB.ENTITY + "." + format + "/" + name)
-				.accept(format.getMediaType()).delete(Entity.class);
-	}
+  /**
+   * Update the entity defined by the name.
+   * 
+   * @param name
+   *          the name of the entity to update
+   * @param entity
+   *          the updated entity that will replace the previous one
+   * @return the updated entity after merged with the knowledge base
+   */
+  public Entity updateEntity(final String name, final Entity entity) {
+    return this.resource.path(KB.ENTITY + FS + this.format + AS + name).accept(this.format.getMediaType())
+      .put(Entity.class, entity);
+  }
 
-	/***************** ENTITY TYPE *************************/
+  /**
+   * List all entities in the knowledge base.
+   * 
+   * @return the complete list of entities.
+   */
+  public List<Entity> listEntity() {
+    return (List<Entity>) this.resource.path(KB.ENTITY + FS + this.format + AS + LIST)
+      .accept(this.format.getMediaType()).get(new GenericType<List<Entity>>() {
+      });
+  }
 
-	public EntityType createEntityType(String name, String description) {
-		return resource.path(KB.ENTITY_TYPE + "." + format + "/" + name)
-				.accept(format.getMediaType())
-				.post(EntityType.class, description);
-	}
+  /**
+   * Delete an entity.
+   * 
+   * @param name
+   *          the name of the entity to delete.
+   * @return the deleted entity.
+   */
+  public Entity deleteEntity(final String name) {
+    return this.resource.path(KB.ENTITY + FS + this.format + AS + name).accept(this.format.getMediaType())
+      .delete(Entity.class);
+  }
 
-	public EntityType getEntityType(String name) {
-		try {
-			return resource.path(KB.ENTITY_TYPE + "." + format + "/" + name)
-					.accept(format.getMediaType()).get(EntityType.class);
-		} catch (UniformInterfaceException e) {
-			ClientResponse resp = e.getResponse();
-			if (resp.getStatus() == 404) {
-				return null;
-			} else {
-				throw e;
-			}
-		}
-	}
+  /**
+   * Create a new entity type.
+   * 
+   * @param name
+   *          a unique name to identify this entity type
+   * @param description
+   *          the entity type description
+   * @return the newly created entity type
+   */
+  public EntityType createEntityType(final String name, final String description) {
+    return this.resource.path(KB.ENTITY_TYPE + FS + this.format + AS + name).accept(this.format.getMediaType())
+      .post(EntityType.class, description);
+  }
 
-	public EntityType updateEntityType(String name, EntityType entity) {
-		return resource.path(KB.ENTITY_TYPE + "." + format + "/" + name)
-				.accept(format.getMediaType()).put(EntityType.class, entity);
-	}
+  /**
+   * Get an entity type.
+   * 
+   * @param name
+   *          the entity type name
+   * @return the {@link EntityType} or <code>null</code> if not found
+   */
+  public EntityType getEntityType(final String name) {
+    try {
+      return this.resource.path(KB.ENTITY_TYPE + FS + this.format + AS + name).accept(this.format.getMediaType())
+        .get(EntityType.class);
+    } catch (final UniformInterfaceException e) {
+      final ClientResponse resp = e.getResponse();
+      if (resp.getStatus() == NotFoundException.CODE) {
+        return null;
+      } else {
+        throw e;
+      }
+    }
+  }
 
-	public List<EntityType> listEntityType() {
-		return (List<EntityType>) resource
-				.path(KB.ENTITY_TYPE + "." + format + "/list")
-				.accept(format.getMediaType())
-				.get(new GenericType<List<EntityType>>() {
-				});
-	}
+  /**
+   * Update an existing entity type.
+   * 
+   * @param name
+   *          the existing entity type name
+   * @param entity
+   *          the new entity type that should replace the old one
+   * @return the updated entity type
+   */
+  public EntityType updateEntityType(final String name, final EntityType entity) {
+    return this.resource.path(KB.ENTITY_TYPE + FS + this.format + AS + name).accept(this.format.getMediaType())
+      .put(EntityType.class, entity);
+  }
 
-	public EntityType deleteEntityType(String name) {
-		return resource.path(KB.ENTITY_TYPE + "." + format + "/" + name)
-				.accept(format.getMediaType()).delete(EntityType.class);
-	}
+  /**
+   * List all existing entity types.
+   * 
+   * @return A complete list of entity types in the KB.
+   */
+  public List<EntityType> listEntityType() {
+    return (List<EntityType>) this.resource.path(KB.ENTITY_TYPE + FS + this.format + AS + LIST)
+      .accept(this.format.getMediaType()).get(new GenericType<List<EntityType>>() {
+      });
+  }
 
-	/***************** PROPERTY *************************/
+  /**
+   * Delete an existing entity type.
+   * 
+   * @param name
+   *          the name of the entity type to delete
+   * @return the deleted entity type
+   */
+  public EntityType deleteEntityType(final String name) {
+    return this.resource.path(KB.ENTITY_TYPE + FS + this.format + AS + name).accept(this.format.getMediaType())
+      .delete(EntityType.class);
+  }
 
-	public Property createProperty(String type, String name, String description) {
-		return resource
-				.path(KB.PROPERTY + "." + format + "/" + type + "/" + name)
-				.accept(format.getMediaType())
-				.post(Property.class, description);
-	}
+  /**
+   * Create a new {@link Property}.
+   * 
+   * @param type
+   *          the {@link EntityType} related with this property
+   * @param name
+   *          a unique name (within this entity type) to identity this property
+   * @param description
+   *          the property description
+   * @return the newly created property
+   */
+  public Property createProperty(final String type, final String name, final String description) {
+    return this.resource.path(KB.PROPERTY + FS + this.format + AS + type + AS + name)
+      .accept(this.format.getMediaType()).post(Property.class, description);
+  }
 
-	public Property getProperty(String type, String name) {
-		try {
-			return resource
-					.path(KB.PROPERTY + "." + format + "/" + type + "/" + name)
-					.accept(format.getMediaType()).get(Property.class);
-		} catch (UniformInterfaceException e) {
-			ClientResponse resp = e.getResponse();
-			if (resp.getStatus() == 404) {
-				return null;
-			} else {
-				throw e;
-			}
-		}
-	}
+  /**
+   * Get an existing property.
+   * 
+   * @param type
+   *          the name of the {@link EntityType} related to this property
+   * @param name
+   *          the name of this property within the {@link EntityType}
+   * @return the {@link Property} or <code>null</code> if not found.
+   */
+  public Property getProperty(final String type, final String name) {
+    try {
+      return this.resource.path(KB.PROPERTY + FS + this.format + AS + type + AS + name)
+        .accept(this.format.getMediaType()).get(Property.class);
+    } catch (final UniformInterfaceException e) {
+      final ClientResponse resp = e.getResponse();
+      if (resp.getStatus() == NotFoundException.CODE) {
+        return null;
+      } else {
+        throw e;
+      }
+    }
+  }
 
-	public Property updateProperty(String type, String name, Property property) {
-		return resource
-				.path(KB.PROPERTY + "." + format + "/" + type + "/" + name)
-				.accept(format.getMediaType()).put(Property.class, property);
-	}
+  /**
+   * Update an existing property.
+   * 
+   * @param type
+   *          the {@link EntityType} related to this property
+   * @param name
+   *          the name of this property within the {@link EntityType}
+   * @param property
+   *          the new update property
+   * @return the updated Property after merging with the KB.
+   */
+  public Property updateProperty(final String type, final String name, final Property property) {
+    return this.resource.path(KB.PROPERTY + FS + this.format + AS + type + AS + name)
+      .accept(this.format.getMediaType()).put(Property.class, property);
+  }
 
-	public List<Property> listProperty() {
-		return (List<Property>) resource
-				.path(KB.PROPERTY + "." + format + "/list")
-				.accept(format.getMediaType())
-				.get(new GenericType<List<Property>>() {
-				});
-	}
+  /**
+   * List all properties in the KB.
+   * 
+   * @return A complete list of all properties in the KB
+   */
+  public List<Property> listProperty() {
+    return (List<Property>) this.resource.path(KB.PROPERTY + FS + this.format + AS + LIST)
+      .accept(this.format.getMediaType()).get(new GenericType<List<Property>>() {
+      });
+  }
 
-	public Property deleteProperty(String type, String name) {
-		return resource
-				.path(KB.PROPERTY + "." + format + "/" + type + "/" + name)
-				.accept(format.getMediaType()).delete(Property.class);
-	}
+  /**
+   * Delete an existing property.
+   * 
+   * @param type
+   *          the {@link EntityType} related to this property
+   * @param name
+   *          the name of this property within the {@link EntityType}
+   * @return The deleted property.
+   */
+  public Property deleteProperty(final String type, final String name) {
+    return this.resource.path(KB.PROPERTY + FS + this.format + AS + type + AS + name)
+      .accept(this.format.getMediaType()).delete(Property.class);
+    // TODO treat the not found exception
+  }
 
-	/***************** PROPERTY VALUE *************************/
+  /**
+   * Create a new {@link PropertyValue}.
+   * 
+   * @param entity
+   *          The {@link Entity} related to this property value
+   * @param property
+   *          the {@link Property} related to this property value
+   * @param value
+   *          the value of the related property for the related entity.
+   * @return the newly created {@link PropertyValue}
+   */
+  public PropertyValue createPropertyValue(final String entity, final String property, final String value) {
+    return this.resource.path(KB.PROPERTY_VALUE + FS + this.format + AS + entity + AS + property)
+      .accept(this.format.getMediaType()).post(PropertyValue.class, value);
+  }
 
-	public PropertyValue createPropertyValue(String entity, String property,
-			String value) {
-		return resource
-				.path(KB.PROPERTY_VALUE + "." + format + "/" + entity + "/"
-						+ property).accept(format.getMediaType())
-				.post(PropertyValue.class, value);
-	}
+  /**
+   * Get an existing {@link PropertyValue}.
+   * 
+   * @param entity
+   *          The {@link Entity} related to this property value
+   * @param property
+   *          the {@link Property} related to this property value
+   * @return the {@link PropertyValue} or <code>null</code> if not found.
+   */
+  public PropertyValue getPropertyValue(final String entity, final String property) {
+    try {
+      return this.resource.path(KB.PROPERTY_VALUE + FS + this.format + AS + entity + AS + property)
+        .accept(this.format.getMediaType()).get(PropertyValue.class);
+    } catch (final UniformInterfaceException e) {
+      final ClientResponse resp = e.getResponse();
+      if (resp.getStatus() == NotFoundException.CODE) {
+        return null;
+      } else {
+        throw e;
+      }
+    }
+  }
 
-	public PropertyValue getPropertyValue(String entity, String property) {
-		try {
-			return resource
-					.path(KB.PROPERTY_VALUE + "." + format + "/" + entity + "/"
-							+ property).accept(format.getMediaType())
-					.get(PropertyValue.class);
-		} catch (UniformInterfaceException e) {
-			ClientResponse resp = e.getResponse();
-			if (resp.getStatus() == 404) {
-				return null;
-			} else {
-				throw e;
-			}
-		}
-	}
+  /**
+   * Update an existing {@link PropertyValue}.
+   * 
+   * @param entity
+   *          The {@link Entity} related to this property value
+   * @param property
+   *          the {@link Property} related to this property value
+   * @param value
+   *          The updated value of the related {@link Property} to the related
+   *          {@link Entity}
+   * @return the updated {@link PropertyValue}
+   */
+  public PropertyValue updatePropertyValue(final String entity, final String property, final String value) {
+    return this.resource.path(KB.PROPERTY_VALUE + FS + this.format + AS + entity + AS + property)
+      .accept(this.format.getMediaType()).put(PropertyValue.class, value);
+  }
 
-	public PropertyValue updatePropertyValue(String entity, String property,
-			String value) {
-		return resource
-				.path(KB.PROPERTY_VALUE + "." + format + "/" + entity + "/"
-						+ property).accept(format.getMediaType())
-				.put(PropertyValue.class, value);
-	}
+  /**
+   * List all property values in the KB.
+   * 
+   * @return the complete list of property values in the KB
+   */
+  public List<PropertyValue> listPropertyValue() {
+    return (List<PropertyValue>) this.resource.path(KB.PROPERTY_VALUE + FS + this.format + AS + LIST)
+      .accept(this.format.getMediaType()).get(new GenericType<List<PropertyValue>>() {
+      });
+  }
 
-	public List<PropertyValue> listPropertyValue() {
-		return (List<PropertyValue>) resource
-				.path(KB.PROPERTY_VALUE + "." + format + "/list")
-				.accept(format.getMediaType())
-				.get(new GenericType<List<PropertyValue>>() {
-				});
-	}
-
-	public PropertyValue deletePropertyValue(String entity, String property) {
-		return resource
-				.path(KB.PROPERTY_VALUE + "." + format + "/" + entity + "/"
-						+ property).accept(format.getMediaType())
-				.delete(PropertyValue.class);
-	}
+  /**
+   * Delete an existing property value.
+   * 
+   * @param entity
+   *          The {@link Entity} related to this property value
+   * @param property
+   *          the {@link Property} related to this property value
+   * @return the deleted property value.
+   */
+  public PropertyValue deletePropertyValue(final String entity, final String property) {
+    return this.resource.path(KB.PROPERTY_VALUE + FS + this.format + AS + entity + AS + property)
+      .accept(this.format.getMediaType()).delete(PropertyValue.class);
+    // TODO treat the not found exception
+  }
 
 }

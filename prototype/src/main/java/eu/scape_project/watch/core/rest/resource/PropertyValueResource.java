@@ -87,7 +87,7 @@ public class PropertyValueResource extends JavaHelp {
 
 		if (entity != null) {
 			String typeName = entity.getEntityType().getName();
-			Property property = PropertyDAO.findByEntityAndName(typeName,
+			Property property = PropertyDAO.findByEntityTypeAndName(typeName,
 					propertyName);
 
 			if (property != null) {

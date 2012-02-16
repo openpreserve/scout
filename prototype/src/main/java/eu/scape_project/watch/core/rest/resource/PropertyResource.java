@@ -48,7 +48,7 @@ public class PropertyResource extends JavaHelp {
 			@ApiParam(value = "Name of the Entity Type", required = true) @PathParam("type") String type,
 			@ApiParam(value = "Name of the Property", required = true) @PathParam("name") String name)
 			throws NotFoundException {
-		Property property = PropertyDAO.findByEntityAndName(type, name);
+		Property property = PropertyDAO.findByEntityTypeAndName(type, name);
 
 		if (property != null) {
 			return Response.ok().entity(property).build();
@@ -116,7 +116,7 @@ public class PropertyResource extends JavaHelp {
 			@ApiParam(value = "Entity type that owns Property", required = true) @PathParam("type") String type,
 			@ApiParam(value = "Name that needs to be deleted", required = true) @PathParam("name") String name,
 			@ApiParam(value = "Updated property object", required = true) Property property) {
-		Property original = PropertyDAO.findByEntityAndName(type, name);
+		Property original = PropertyDAO.findByEntityTypeAndName(type, name);
 		if (original != null) {
 			original.delete();
 			property.save();
@@ -134,7 +134,7 @@ public class PropertyResource extends JavaHelp {
 			@ApiParam(value = "Entity type that owns property", required = true) @PathParam("type") String type,
 			@ApiParam(value = "The name of the property to be deleted", required = true) @PathParam("name") String name)
 			throws ApiException {
-		Property property = PropertyDAO.findByEntityAndName(type, name);
+		Property property = PropertyDAO.findByEntityTypeAndName(type, name);
 
 		if (property != null) {
 			property.delete();

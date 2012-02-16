@@ -3,10 +3,33 @@ package eu.scape_project.watch.core.model;
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlType(name = "datatype")
+import eu.scape_project.watch.core.KB;
+
+/**
+ * Possible data types of {@link Property}.
+ * 
+ * @author Luis Faria <lfaria@keep.pt>
+ * 
+ */
+@XmlType(name = KB.DATA_TYPE)
 @XmlEnum
 public enum DataType {
-
-  INTEGER, TEXT, ORDINAL, URI;
+  /**
+   * A numeric value.
+   */
+  NUMBER,
+  /**
+   * A textual value.
+   */
+  TEXT,
+  /**
+   * A list of possible values.
+   * TODO define the possible values
+   */
+  ORDINAL,
+  /**
+   * A link to an external resource.
+   */
+  URI;
 
 }

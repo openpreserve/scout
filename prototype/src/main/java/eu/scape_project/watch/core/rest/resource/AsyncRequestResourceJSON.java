@@ -7,15 +7,15 @@ import com.sun.jersey.spi.resource.Singleton;
 import com.wordnik.swagger.core.Api;
 
 /**
- * {@link EntityTypeResource} with JSON output.
+ * {@link AsyncRequestResource} with JSON output.
  * 
  * @author Luis Faria <lfaria@keep.pt>
  * 
  */
-@Path("/entitytype.json")
-@Api(value = "/entitytype", description = "Operations about Entity Types")
+@Path("/asyncrequest.json")
+@Api(value = "/asyncrequest", description = "Operations about async requests")
 @Singleton
 @Produces({"application/json"})
-public class EntityTypeResourceJSON extends EntityTypeResource {
+public class AsyncRequestResourceJSON extends AsyncRequestResource {
 
 }

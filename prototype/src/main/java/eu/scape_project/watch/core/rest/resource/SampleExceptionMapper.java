@@ -12,27 +12,19 @@ import eu.scape_project.watch.core.rest.model.ApiResponse;
 
 @Provider
 public class SampleExceptionMapper implements ExceptionMapper<ApiException> {
-	public Response toResponse(ApiException exception) {
-		if (exception instanceof NotFoundException) {
-			return Response
-					.status(Status.NOT_FOUND)
-					.entity(new ApiResponse(ApiResponse.ERROR, exception
-							.getMessage())).build();
-		} else if (exception instanceof BadRequestException) {
-			return Response
-					.status(Status.BAD_REQUEST)
-					.entity(new ApiResponse(ApiResponse.ERROR, exception
-							.getMessage())).build();
-		} else if (exception instanceof ApiException) {
-			return Response
-					.status(Status.BAD_REQUEST)
-					.entity(new ApiResponse(ApiResponse.ERROR, exception
-							.getMessage())).build();
-		} else {
-			return Response
-					.status(Status.INTERNAL_SERVER_ERROR)
-					.entity(new ApiResponse(ApiResponse.ERROR,
-							"a system error occured")).build();
-		}
-	}
+  public Response toResponse(ApiException exception) {
+    if (exception instanceof NotFoundException) {
+      return Response.status(Status.NOT_FOUND).entity(new ApiResponse(ApiResponse.ERROR, exception.getMessage()))
+        .build();
+    } else if (exception instanceof BadRequestException) {
+      return Response.status(Status.BAD_REQUEST).entity(new ApiResponse(ApiResponse.ERROR, exception.getMessage()))
+        .build();
+    } else if (exception instanceof ApiException) {
+      return Response.status(Status.BAD_REQUEST).entity(new ApiResponse(ApiResponse.ERROR, exception.getMessage()))
+        .build();
+    } else {
+      return Response.status(Status.INTERNAL_SERVER_ERROR)
+        .entity(new ApiResponse(ApiResponse.ERROR, "a system error occured")).build();
+    }
+  }
 }

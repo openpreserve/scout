@@ -11,6 +11,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
+import thewebsemantic.binding.RdfBean;
 
 /**
  * Logs the moment when a property value was measured.
@@ -20,7 +21,7 @@ import thewebsemantic.Namespace;
 @Namespace(KB.WATCH_NS)
 @XmlRootElement(name = KB.MEASUREMENT)
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Measurement {
+public class Measurement extends RdfBean<Measurement> {
 
   // private static final Logger LOG = LoggerFactory
   // .getLogger(Measurement.class);

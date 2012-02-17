@@ -1,18 +1,15 @@
 package eu.scape_project.watch.core.dao;
 
-import java.util.Collection;
-import java.util.LinkedList;
-
-import com.hp.hpl.jena.query.QuerySolutionMap;
-
 import eu.scape_project.watch.core.KB;
 import eu.scape_project.watch.core.model.Entity;
 import eu.scape_project.watch.core.model.EntityType;
 
+import java.util.Collection;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import thewebsemantic.Sparql;
 
 /**
  * {@link Entity} data access object.
@@ -31,7 +28,11 @@ public class EntityDAO extends AbstractDAO {
   /**
    * The name of the relationship to {@link EntityType} in {@link Entity}.
    */
-  private static final String ENTITY_TYPE_REL = "type";
+  private static final String ENTITY_TYPE_REL = KB.WATCH_PREFIX + "type";
+
+  public static String getEntityRDFId(String entityName) {
+    return "<" + KB.WATCH_NS + Entity.class.getSimpleName() + "/" + entityName + ">";
+  }
 
   /**
    * Find {@link Entity} by id.
@@ -42,6 +43,35 @@ public class EntityDAO extends AbstractDAO {
    */
   public static Entity findById(final String entityName) {
     return findById(entityName, Entity.class);
+  }
+
+  /**
+   * Query for {@link Entity}.
+   * 
+   * @see #query(Class, String, int, int)
+   * 
+   * @param bindings
+   *          The query bindings, see
+   *          {@link AbstractDAO#query(Class, String, int, int)}
+   * @param start
+   *          The index of the first item to retrieve
+   * @param max
+   *          The maximum number of items to retrieve
+   * @return A list of {@link Entity} filtered by the above constraints
+   */
+  public static List<Entity> query(final String bindings, final int start, final int max) {
+    return query(Entity.class, bindings, start, max);
+  }
+
+  /**
+   * Count the results of a query for {@link Entity}.
+   * 
+   * @param bindings
+   *          The query bindings, see {@link AbstractDAO#count(Class, String)}
+   * @return The number of results expected for the query
+   */
+  public static int count(final String bindings) {
+    return count(Entity.class, bindings);
   }
 
   /**
@@ -56,18 +86,13 @@ public class EntityDAO extends AbstractDAO {
    * @return a list of {@link Entity} filtered by the defined constraints
    */
   public static Collection<Entity> listWithType(final String type, final int start, final int max) {
-    final String rdfstype = KB.RDFS_NS + ENTITY_TYPE_REL;
-    final String idtype = KB.WATCH_NS + Entity.class.getSimpleName();
-    final String typeRlsType = KB.WATCH_NS + ENTITY_TYPE_REL;
-    final String typeType = KB.WATCH_NS + EntityType.class.getSimpleName() + "/" + type;
+    String bindings;
 
-    final String query = String.format("PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
-      + "SELECT ?s WHERE { ?s <%1$s> <%2$s> . ?s <%3$s> <%4$s>}", rdfstype, idtype, typeRlsType, typeType);
-
-    LOG.debug("Query: {}", query);
-
-    final LinkedList<Entity> results = Sparql.exec(KB.getInstance().getReader(), Entity.class, query,
-      new QuerySolutionMap(), start, max);
-    return results;
+    if (StringUtils.isNotBlank(type)) {
+      bindings = String.format("?s %1$s %2$s", ENTITY_TYPE_REL, EntityTypeDAO.getEntityTypeRDFId(type));
+    } else {
+      bindings = "";
+    }
+    return query(bindings, start, max);
   }
 }

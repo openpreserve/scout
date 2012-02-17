@@ -14,7 +14,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
-
+import thewebsemantic.binding.RdfBean;
 
 /**
  * An Asynchronous Request, that will be kept in the KB in order to be monitored
@@ -26,7 +26,7 @@ import thewebsemantic.Namespace;
 @Namespace(KB.WATCH_NS)
 @XmlRootElement(name = KB.ASYNC_REQUEST)
 @XmlAccessorType(XmlAccessType.FIELD)
-public class AsyncRequest {
+public class AsyncRequest extends RdfBean<AsyncRequest> {
 
   /**
    * The unique id that identifies the asynchronous request.
@@ -43,7 +43,7 @@ public class AsyncRequest {
   private List<Trigger> triggers;
 
   /**
-   * Create a new request with a generated Id.
+   * Create a new empty request with a generated Id.
    */
   public AsyncRequest() {
     super();
@@ -51,13 +51,15 @@ public class AsyncRequest {
   }
 
   /**
-   * Create a new request with a defined Id.
+   * Create a new request with a generated Id.
    * 
-   * @param id
-   *          The unique identifier of the request
+   * @param triggers
+   *          The list of triggers to be installed on this request
+   * 
    */
-  public AsyncRequest(final String id) {
-    this.setId(id);
+  public AsyncRequest(final List<Trigger> triggers) {
+    this.setId(UUID.randomUUID().toString());
+    this.setTriggers(triggers);
   }
 
   /**

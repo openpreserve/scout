@@ -3,43 +3,73 @@
  */
 package eu.scape_project.watch.core.rest.resource;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.core.Response;
-
-import com.wordnik.swagger.core.ApiError;
-import com.wordnik.swagger.core.ApiErrors;
 import com.wordnik.swagger.core.ApiOperation;
 import com.wordnik.swagger.core.ApiParam;
 import com.wordnik.swagger.core.JavaHelp;
+import eu.scape_project.watch.core.KBUtils;
+import eu.scape_project.watch.core.dao.RequestDAO;
+import eu.scape_project.watch.core.model.RequestTarget;
 
-import eu.scape_project.watch.core.rest.data.AsyncRequestData;
-import eu.scape_project.watch.core.rest.exception.NotFoundException;
-import eu.scape_project.watch.core.rest.model.AsyncRequest;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.Response;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import thewebsemantic.binding.RdfBean;
 
 /**
- * @author lfaria
+ * REST API for Synchronous Requests.
+ * 
+ * 
+ * @author Luis Faria <lfaria@keep.pt>
  * 
  */
 public class RequestResource extends JavaHelp {
 
-	private static AsyncRequestData asyncRequestData = new AsyncRequestData();
+  /**
+   * The Logger.
+   */
+  private static final Logger LOG = LoggerFactory.getLogger(RequestResource.class);
 
-	@GET
-	@Path("/{requestId}")
-	@ApiOperation(value = "Find AsyncRequest by ID", notes = "ID is a sequential number starting at 0")
-	@ApiErrors(value = { @ApiError(code = 404, reason = "Pet not found") })
-	public Response getRequestById(
-			@ApiParam(value = "ID of the Request", required = true) @PathParam("requestId") String requestId)
-			throws NotFoundException {
-		AsyncRequest asyncRequest = asyncRequestData.getAsyncRequestById(Long
-				.parseLong(requestId));
-		if (asyncRequest != null) {
-			return Response.ok().entity(asyncRequest).build();
-		} else {
-			throw new NotFoundException("AsyncRequest id not found: "
-					+ requestId);
-		}
-	}
+  /**
+   * Get the result of an asynchronous request.
+   * 
+   * @param target
+   *          The request target, as defined in {@link RequestTarget}
+   * @param query
+   *          The query bindings
+   * @param start
+   *          The index of the first item to retrieve
+   * @param max
+   *          The maximum number of items to retrieve
+   * @return A list of the requested target object, filtered by the above
+   *         constraints
+   */
+  @GET
+  @Path("/{target}")
+  @ApiOperation(value = "Make a request", notes = "")
+  public Response getRequest(
+    @ApiParam(value = "Request target", required = true, allowableValues = "entity, entity_type, property, property_value") @PathParam("target") final String target,
+    @ApiParam(value = "Request query", required = true) @QueryParam("query") final String query,
+    @ApiParam(value = "Start index", required = true) @QueryParam("start") final int start,
+    @ApiParam(value = "Max number of items", required = true) @QueryParam("max") final int max) {
+
+    LOG.debug("Making request '{}', target={}, start={}, max={}", new Object[] {query, target, start, max});
+    KBUtils.printStatements();
+    
+    
+    final List<? extends RdfBean<?>> list = RequestDAO.query(RequestTarget.valueOf(target.toUpperCase()), query, start,
+      max);
+
+    return Response.ok().entity(new GenericEntity<List<? extends RdfBean<?>>>(list) {
+    }).build();
+  }
+
 }

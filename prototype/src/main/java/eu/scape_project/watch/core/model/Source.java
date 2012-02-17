@@ -9,6 +9,7 @@ import eu.scape_project.watch.core.KB;
 
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
+import thewebsemantic.binding.RdfBean;
 
 
 /**
@@ -22,7 +23,7 @@ import thewebsemantic.Namespace;
 @Namespace(KB.WATCH_NS)
 @XmlRootElement(name = KB.SOURCE)
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Source {
+public class Source extends RdfBean<Source> {
 
   /**
    * Create a new empty source.

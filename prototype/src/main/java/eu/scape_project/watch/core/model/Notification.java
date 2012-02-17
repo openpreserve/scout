@@ -14,6 +14,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
+import thewebsemantic.binding.RdfBean;
 
 /**
  * A Notification describes what should happen when a {@link Trigger} is fired.
@@ -25,7 +26,7 @@ import thewebsemantic.Namespace;
 @Namespace(KB.WATCH_NS)
 @XmlRootElement(name = KB.NOTIFICATION)
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Notification {
+public class Notification extends RdfBean<Notification> {
 
   /**
    * The unique id that identifies the notification.

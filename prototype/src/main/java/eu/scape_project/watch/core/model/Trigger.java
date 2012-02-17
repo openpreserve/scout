@@ -14,6 +14,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
+import thewebsemantic.binding.RdfBean;
 
 /**
  * A Trigger is a unit that contains conditions used during internal assessment
@@ -26,7 +27,7 @@ import thewebsemantic.Namespace;
 @Namespace(KB.WATCH_NS)
 @XmlRootElement(name = KB.TRIGGER)
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Trigger {
+public class Trigger extends RdfBean<Trigger> {
 
   /**
    * An automatically generated unique Id.
@@ -124,34 +125,45 @@ public class Trigger {
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
+  public boolean equals(final Object obj) {
+    if (this == obj) {
       return true;
-    if (obj == null)
+    }
+    if (obj == null) {
       return false;
-    if (getClass() != obj.getClass())
+    }
+    if (getClass() != obj.getClass()) {
       return false;
-    Trigger other = (Trigger) obj;
-    if (id == null) {
-      if (other.id != null)
+    }
+    final Trigger other = (Trigger) obj;
+    if (this.id == null) {
+      if (other.id != null) {
         return false;
-    } else if (!id.equals(other.id))
+      }
+    } else if (!this.id.equals(other.id)) {
       return false;
-    if (notifications == null) {
-      if (other.notifications != null)
+    }
+    if (this.notifications == null) {
+      if (other.notifications != null) {
         return false;
-    } else if (!notifications.equals(other.notifications))
+      }
+    } else if (!this.notifications.equals(other.notifications)) {
       return false;
-    if (plan == null) {
-      if (other.plan != null)
+    }
+    if (this.plan == null) {
+      if (other.plan != null) {
         return false;
-    } else if (!plan.equals(other.plan))
+      }
+    } else if (!this.plan.equals(other.plan)) {
       return false;
-    if (question == null) {
-      if (other.question != null)
+    }
+    if (this.question == null) {
+      if (other.question != null) {
         return false;
-    } else if (!question.equals(other.question))
+      }
+    } else if (!this.question.equals(other.question)) {
       return false;
+    }
     return true;
   }
 

@@ -2,6 +2,10 @@ package eu.scape_project.watch.core;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.rdf.model.Model;
@@ -9,10 +13,16 @@ import com.hp.hpl.jena.tdb.TDB;
 import com.hp.hpl.jena.tdb.TDBFactory;
 
 import eu.scape_project.watch.core.common.ConfigUtils;
+import eu.scape_project.watch.core.model.AsyncRequest;
 import eu.scape_project.watch.core.model.Entity;
 import eu.scape_project.watch.core.model.EntityType;
+import eu.scape_project.watch.core.model.Notification;
+import eu.scape_project.watch.core.model.NotificationType;
 import eu.scape_project.watch.core.model.Property;
 import eu.scape_project.watch.core.model.PropertyValue;
+import eu.scape_project.watch.core.model.Question;
+import eu.scape_project.watch.core.model.RequestTarget;
+import eu.scape_project.watch.core.model.Trigger;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -21,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import thewebsemantic.Bean2RDF;
 import thewebsemantic.RDF2Bean;
 import thewebsemantic.binding.Jenabean;
+import thewebsemantic.binding.RdfBean;
 
 /**
  * This class provides a single point of reference for knowledge base management
@@ -56,9 +67,84 @@ public final class KB {
   public static final String WATCH_NS = "http://watch.scape-project.eu/kb#";
 
   /**
-   * The default rdf syntax namespaces.
+   * The default RDF syntax namespace.
    */
-  public static final String RDFS_NS = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+  public static final String RDF_NS = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+
+  /**
+   * The default XSD syntax namespace.
+   */
+  public static final String XSD_NS = "http://www.w3.org/2001/XMLSchema#";
+
+  /**
+   * Helper method to create a prefix declaration for SPARQL queries.
+   * 
+   * @param prefix
+   *          The prefix to use
+   * @param namescape
+   *          The namespace to be prefixed
+   * @return the prefix declarion with a new line on the end
+   */
+  private static String createPrefixDecl(final String prefix, final String namescape) {
+    return "PREFIX " + prefix + " <" + namescape + ">\n";
+  }
+
+  /**
+   * The XSD prefix to use in SPARQL queries.
+   */
+  public static final String XSD_PREFIX = "xsd:";
+  /**
+   * The declaration of the XSD prefix to use in SPARQL queries.
+   */
+  public static final String XSD_PREFIX_DECL = createPrefixDecl(XSD_PREFIX, KB.XSD_NS);
+
+  /**
+   * The RDF prefix to use in SPARQL queries.
+   */
+  public static final String RDF_PREFIX = "rdf:";
+  /**
+   * The declaration of the RDF prefix to use in SPARQL queries.
+   */
+  public static final String RDF_PREFIX_DECL = createPrefixDecl(RDF_PREFIX, KB.RDF_NS);
+
+  /**
+   * The WATCH prefix to use in SPARQL queries.
+   */
+  public static final String WATCH_PREFIX = "watch:";
+  /**
+   * The declaration of the WATCH prefix to use in SPARQL queries.
+   */
+  public static final String WATCH_PREFIX_DECL = createPrefixDecl(WATCH_PREFIX, KB.WATCH_NS);
+
+  private static <T extends RdfBean<T>> String getResourcePrefix(Class<T> resourceClass) {
+    return "watch-" + resourceClass.getSimpleName() + ":";
+  }
+
+  private static <T extends RdfBean<T>> String getResourceNamespace(Class<T> resourceClass) {
+    return WATCH_NS + resourceClass.getSimpleName() + "/";
+  }
+
+  private static <T extends RdfBean<T>> String getResourcePrefixDecl(Class<T> resourceClass) {
+    return createPrefixDecl(getResourcePrefix(resourceClass), getResourceNamespace(resourceClass));
+  }
+
+  public static final String WATCH_ENTITY_TYPE_PREFIX = getResourcePrefix(EntityType.class);
+  public static final String WATCH_ENTITY_TYPE_PREFIX_DECL = getResourcePrefixDecl(EntityType.class);
+  public static final String WATCH_PROPERTY_PREFIX = getResourcePrefix(Property.class);
+  public static final String WATCH_PROPERTY_PREFIX_DECL = getResourcePrefixDecl(Property.class);
+  public static final String WATCH_ENTITY_PREFIX = getResourcePrefix(Entity.class);
+  public static final String WATCH_ENTITY_PREFIX_DECL = getResourcePrefixDecl(Entity.class);
+  public static final String WATCH_PROPERTY_VALUE_PREFIX = getResourcePrefix(PropertyValue.class);
+  public static final String WATCH_PROPERTY_VALUE_PREFIX_DECL = getResourcePrefixDecl(PropertyValue.class);
+
+  public static final String PREFIXES_DECL = XSD_PREFIX_DECL + RDF_PREFIX_DECL + WATCH_PREFIX_DECL
+    + WATCH_ENTITY_TYPE_PREFIX_DECL + WATCH_PROPERTY_PREFIX_DECL + WATCH_ENTITY_PREFIX_DECL
+    + WATCH_PROPERTY_VALUE_PREFIX_DECL;
+
+  /**
+   * The RDF type relation.
+   */
+  public static final String RDF_TYPE_REL = RDF_PREFIX + "type";
 
   /**
    * An entity constant.
@@ -89,7 +175,7 @@ public final class KB {
    * A asynchronous request constant.
    */
   public static final String ASYNC_REQUEST = "asyncrequest";
-  
+
   /**
    * A trigger constant.
    */
@@ -119,6 +205,11 @@ public final class KB {
    * A question constant.
    */
   public static final String QUESTION = "question";
+
+  /**
+   * A request target constant.
+   */
+  public static final String REQUEST_TARGET = "target";
 
   /**
    * A source constant.
@@ -301,6 +392,21 @@ public final class KB {
     tiffPUID.save();
     tiffMime.save();
     imageMagickVersion.save();
+
+    // Async Request
+    final Question question1 = new Question("?s watch:type watch-EntityType:tools", RequestTarget.ENTITY,
+      Arrays.asList(tools), Arrays.asList(toolVersion));
+    final Map<String, String> not1config = new HashMap<String, String>();
+    not1config.put("to", "lfaria@keep.pt");
+    final Notification notification1 = new Notification(NotificationType.EMAIL_EVENT, not1config);
+    final Trigger trigger1 = new Trigger(question1, Arrays.asList(notification1), null);
+
+    final AsyncRequest request = new AsyncRequest(Arrays.asList(trigger1));
+
+    question1.save();
+    notification1.save();
+    trigger1.save();
+    request.save();
 
     flush();
   }

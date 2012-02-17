@@ -6,6 +6,12 @@ import javax.ws.rs.Produces;
 import com.sun.jersey.spi.resource.Singleton;
 import com.wordnik.swagger.core.Api;
 
+/**
+ * {@link PropertyValueResource} with JSON output.
+ * 
+ * @author Luis Faria <lfaria@keep.pt>
+ * 
+ */
 @Path("/propertyvalue.json")
 @Api(value = "/propertyvalue", description = "Operations about property values")
 @Singleton

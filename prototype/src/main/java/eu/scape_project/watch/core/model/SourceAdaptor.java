@@ -13,6 +13,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
+import thewebsemantic.binding.RdfBean;
 
 /**
  * A software unit that is able to collect specific information from a specific
@@ -25,7 +26,7 @@ import thewebsemantic.Namespace;
 @Namespace(KB.WATCH_NS)
 @XmlRootElement(name = KB.SOURCE_ADAPTOR)
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SourceAdaptor {
+public class SourceAdaptor extends RdfBean<SourceAdaptor> {
 
   /**
    * Create a unique Id based on the name and version.

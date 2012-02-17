@@ -9,6 +9,7 @@ import eu.scape_project.watch.core.KB;
 
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
+import thewebsemantic.binding.RdfBean;
 
 /**
  * Reference to a preservation plan, to be used by external assessment.
@@ -24,7 +25,7 @@ import thewebsemantic.Namespace;
 @Namespace(KB.WATCH_NS)
 @XmlRootElement(name = KB.PLAN)
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Plan {
+public class Plan extends RdfBean<Plan> {
 
   /**
    * Create a new empty plan.

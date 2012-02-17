@@ -41,6 +41,16 @@ public class WatchClient {
   private static final String LIST = "list";
 
   /**
+   * Query key to define a listing start index.
+   */
+  private static final String START = "start";
+
+  /**
+   * Query key to define a listing maximum number of items.
+   */
+  private static final String MAX = "max";
+
+  /**
    * Jersey web resource connection.
    */
   private final WebResource resource;
@@ -157,6 +167,13 @@ public class WatchClient {
    */
   public List<Entity> listEntity() {
     return (List<Entity>) this.resource.path(KB.ENTITY + FS + this.format + AS + LIST)
+      .accept(this.format.getMediaType()).get(new GenericType<List<Entity>>() {
+      });
+  }
+
+  public List<Entity> listEntity(String type, int start, int max) {
+    return (List<Entity>) this.resource.path(KB.ENTITY + FS + this.format + AS + LIST + AS + type)
+      .queryParam(START, Integer.toString(start)).queryParam(MAX, Integer.toString(max))
       .accept(this.format.getMediaType()).get(new GenericType<List<Entity>>() {
       });
   }

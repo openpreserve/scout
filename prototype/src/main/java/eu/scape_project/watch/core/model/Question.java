@@ -14,6 +14,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
+import thewebsemantic.binding.RdfBean;
 
 /**
  * Questions are predefined points of interest related directly or indirectly to
@@ -26,7 +27,7 @@ import thewebsemantic.Namespace;
 @Namespace(KB.WATCH_NS)
 @XmlRootElement(name = KB.QUESTION)
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Question {
+public class Question extends RdfBean<Question> {
 
   /**
    * The unique identifier of the question.
@@ -40,6 +41,13 @@ public class Question {
    */
   @XmlElement
   private String sparql;
+
+  /**
+   * The target resource type, to which the query result must bind to.
+   */
+  @XmlElement
+  @JsonProperty
+  private RequestTarget target;
 
   /**
    * The entity types that are questioned.
@@ -68,15 +76,19 @@ public class Question {
    * 
    * @param sparql
    *          The SPARQL query to execute in the KB
+   * @param target
+   *          The target resource type, to which the query result must bind to.
    * @param types
    *          The entity types that are questioned
    * @param properties
    *          The properties that are questioned
    */
-  public Question(final String sparql, final List<EntityType> types, final List<Property> properties) {
+  public Question(final String sparql, final RequestTarget target, final List<EntityType> types,
+    final List<Property> properties) {
     super();
     this.id = UUID.randomUUID().toString();
     this.sparql = sparql;
+    this.target = target;
     this.types = types;
     this.properties = properties;
   }
@@ -109,6 +121,14 @@ public class Question {
     this.sparql = sparql;
   }
 
+  public RequestTarget getTarget() {
+    return this.target;
+  }
+
+  public void setTarget(final RequestTarget target) {
+    this.target = target;
+  }
+
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -116,6 +136,7 @@ public class Question {
     result = prime * result + ((id == null) ? 0 : id.hashCode());
     result = prime * result + ((properties == null) ? 0 : properties.hashCode());
     result = prime * result + ((sparql == null) ? 0 : sparql.hashCode());
+    result = prime * result + ((target == null) ? 0 : target.hashCode());
     result = prime * result + ((types == null) ? 0 : types.hashCode());
     return result;
   }
@@ -143,6 +164,8 @@ public class Question {
       if (other.sparql != null)
         return false;
     } else if (!sparql.equals(other.sparql))
+      return false;
+    if (target != other.target)
       return false;
     if (types == null) {
       if (other.types != null)

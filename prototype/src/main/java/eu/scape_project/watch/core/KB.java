@@ -382,11 +382,23 @@ public final class KB {
     final Entity jpeg2000Format = new Entity(formats, "image/jp2;version=1.0.0");
     final Entity imageMagickTool = new Entity(tools, "ImageMagick_6.6.0_all_all_all");
 
+    Entity jpeg = new Entity(formats, "JPEG");
+    Entity jpeg2000 = new Entity(formats, "JPEG2000");
+    Entity png = new Entity(formats,"PNG");
+    Entity doc = new Entity(formats, "DOC");
+    Entity docx = new Entity(formats, "DOCX");
+    Entity bmp = new Entity(formats, "BMP");
+    Entity gif = new Entity(formats, "GIF");
+    
+    
     // save entities
     pdf17Format.save();
     tiffFormat.save();
     jpeg2000Format.save();
     imageMagickTool.save();
+    jpeg.save();
+    jpeg2000.save();
+    png.save();
 
     // property value construction also binds to entity
     final PropertyValue pdfPUID = new PropertyValue(pdf17Format, formatPUID, "fmt/276");
@@ -426,7 +438,13 @@ public final class KB {
     trigger1.save();
     request.save();
 
+    imageMagickVersion.save();
+    
+    
     flush();
+    TDB.sync(model);
+    TDB.sync(dataset);
+
   }
 
   /**

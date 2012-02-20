@@ -1,8 +1,11 @@
 package eu.scape_project.watch.components.adaptors.c3po;
 
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
 
 import eu.scape_project.watch.components.Adaptor;
+import eu.scape_project.watch.components.elements.Result;
 import eu.scape_project.watch.components.elements.Task;
 import eu.scape_project.watch.core.model.Entity;
 import eu.scape_project.watch.core.model.EntityType;
@@ -22,9 +25,13 @@ public class C3POAdaptor extends Adaptor {
 
   private static final Logger LOG = LoggerFactory.getLogger(C3POAdaptor.class);
 
-  private static final String[] SUPPORTED_PROPERTIES = {"name", "count"};
+  private static final String CP_ENDPOINT = "http://localhost:8080/c3po/api";
+
+  private List<String> supportedProperties;
 
   public C3POAdaptor() {
+    this.supportedProperties = Arrays.asList(C3POConstants.CP_COLLECTION_IDENTIFIER, C3POConstants.CP_OBJECTS_COUNT,
+      C3POConstants.CP_FORMAT_MODE, C3POConstants.CP_PUID_MODE);
   }
 
   /**
@@ -45,8 +52,8 @@ public class C3POAdaptor extends Adaptor {
       return false;
     }
 
-    for (String p : SUPPORTED_PROPERTIES) {
-      if (t.getProperty().getName().equalsIgnoreCase(p)) {
+    for (String p : supportedProperties) {
+      if (t.getProperty().getName().equals(p)) {
         return true;
       }
     }
@@ -61,28 +68,53 @@ public class C3POAdaptor extends Adaptor {
   @Override
   protected void fetchData() {
 
-    // TODO fetch get collection name from
+    // TODO use original client
+    IC3POClient client = new C3PODummyClient();
+    List<String> identifiers = client.getCollectionIdentifiers();
 
-    for (Task t : this.tasks) {
+    for (Task t : this.getTasks()) {
 
-      InputStream is = C3POAdaptor.class.getClassLoader().getResourceAsStream("dummy_profile.xml");
-      C3POProfileReader reader = new C3POProfileReader(is);
-      
-      String name = reader.getCollectionName();
-      
-      Entity e = new Entity(t.getEntity().getEntityType(), name);
-      
-      Property p = t.getProperty();
-      PropertyValue pv = null;
-      if (p.getName().equalsIgnoreCase("name")) {
-        pv = new PropertyValue(e, p, name);
-      } else if (p.getName().equalsIgnoreCase("count")) {
-        String count = reader.getObjectsCount();
-        pv = new PropertyValue(e, p, count);
+      String id = t.getEntity().getName();
+      if (identifiers.contains(id)) {
+
+        // this should be t.getProperties();
+        List<String> properties = this.generatePropertyExpansionList(t.getProperty());
+        String uuid = client.submitCollectionProfileJob(id, properties);
+
+        InputStream is = client.pollJobResult(uuid);
+        while (is == null) {
+          is = client.pollJobResult(uuid);
+          try {
+            Thread.sleep(5000);
+          } catch (InterruptedException e) {
+            LOG.warn("An error occurred while waiting for c3po result: {}", e.getMessage());
+          }
+        }
+
+        C3POProfileReader reader = new C3POProfileReader(is);
+        String name = reader.getCollectionName();
+
+        Entity e = new Entity(t.getEntity().getEntityType(), name);
+        Property p = t.getProperty();
+        PropertyValue pv = null;
+
+        if (p.getName().equals(C3POConstants.CP_COLLECTION_IDENTIFIER)) {
+          pv = new PropertyValue(e, p, name);
+        } else if (p.getName().equals(C3POConstants.CP_OBJECTS_COUNT)) {
+          String count = reader.getObjectsCount();
+          pv = new PropertyValue(e, p, count);
+        }
+
+        Result r = new Result(e, p, pv);
+        this.results.add(r);
       }
-      
     }
 
+  }
+
+  private List<String> generatePropertyExpansionList(Property property) {
+    LOG.debug("generating parameter for property {}", property.getName());
+    return Arrays.asList(property.getName());
   }
 
 }

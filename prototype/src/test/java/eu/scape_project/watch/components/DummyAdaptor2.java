@@ -18,12 +18,12 @@ public class DummyAdaptor2 extends Adaptor {
 		try {
 			Thread.sleep(1000);
 			//System.out.println("Adaptor fetching results "+tasks.size());
-			for (int i=0; i<tasks.size(); i++){
-				Task t = tasks.get(i);
+			for (int i=0; i<getTasks().size(); i++){
+				Task t = getTasks().get(i);
 				PropertyValue v = new PropertyValue();
 				v.setValue((new Long(Math.round(Math.random()*10))).toString());
 				Result r = new Result(t.getEntity(),t.getProperty(),v);
-				results.add(r);
+				getResults().add(r);
 			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

@@ -305,7 +305,7 @@ public final class KB {
 
     final File dataFolderFile = new File(dataFolder);
     try {
-      boolean initdata = true;
+      boolean initdata = false;
       if (!dataFolderFile.exists()) {
         FileUtils.forceMkdir(dataFolderFile);
         initdata = true;
@@ -425,13 +425,32 @@ public final class KB {
     imageMagickVersion.save();
 
     PropertyValue jpegMime = new PropertyValue(jpeg,formatMimetype,"image/jpeg");
+    PropertyValue jpegPUID = new PropertyValue(jpeg, formatPUID, "fmt/44");
+    
+    PropertyValue pngPUID = new PropertyValue(png, formatPUID, "fmt/11");
     PropertyValue pngMime = new PropertyValue(png,formatMimetype,"image/png");
+    
+    PropertyValue docPUID = new PropertyValue(doc, formatPUID, "fmt/40");
     PropertyValue docMime = new PropertyValue(doc,formatMimetype,"application/msword");
+    
     PropertyValue docxMime = new PropertyValue(docx,formatMimetype, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+    
+    PropertyValue bmpPUID = new PropertyValue(bmp, formatPUID, "fmt/119");
     PropertyValue bmpMime = new PropertyValue(bmp,formatMimetype,"image/bmp");
+    
+    PropertyValue gifPUID = new PropertyValue(gif, formatPUID, "fmt/4");
     PropertyValue gifMime = new PropertyValue(gif,formatMimetype,"image/gif");
     
-    PropertyValue im = new PropertyValue(imageMagickTool, inputFormat, "fmt/353");
+    PropertyValue ifr1 = new PropertyValue(imageMagickTool, inputFormat, "fmt/353");
+    PropertyValue ifr2 = new PropertyValue(imageMagickTool, inputFormat, "fmt/44");
+    PropertyValue ifr3 = new PropertyValue(imageMagickTool, inputFormat, "fmt/119");
+    PropertyValue ifr4 = new PropertyValue(imageMagickTool, inputFormat, "fmt/4");
+    
+    
+    PropertyValue ofr1 = new PropertyValue(imageMagickTool, outputFormat, "fmt/353");
+    PropertyValue ofr2 = new PropertyValue(imageMagickTool, outputFormat, "fmt/44");
+    PropertyValue ofr3 = new PropertyValue(imageMagickTool, outputFormat, "fmt/119");
+    PropertyValue ofr4 = new PropertyValue(imageMagickTool, outputFormat, "fmt/4");
     
     // save property values
     pdfPUID.save();
@@ -458,14 +477,31 @@ public final class KB {
     request.save();
 
     imageMagickVersion.save();
+    jpegPUID.save();
     jpegMime.save();
+    jpeg2000PUID.save();
     jpeg2000Mime.save();
+    pngPUID.save();
     pngMime.save();
+    docPUID.save();
     docMime.save();
     docxMime.save();
+    bmpPUID.save();
     bmpMime.save();
+    gifPUID.save();
     gifMime.save();
-    im.save();
+    
+    
+    
+    ifr1.save();
+    ifr2.save();
+    ifr3.save();
+    ifr4.save();
+    
+    ofr1.save();
+    ofr2.save();
+    ofr3.save();
+    ofr4.save();
     
     flush();
     TDB.sync(model);

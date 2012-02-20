@@ -1,13 +1,16 @@
 package eu.scape_project.watch.core.model;
 
+import java.util.Collection;
 import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import eu.scape_project.watch.core.KB;
+import eu.scape_project.watch.core.common.ModelUtils;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -79,8 +82,10 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
   /**
    * The source adaptor configuration.
    */
-  @XmlElement
-  private Map<String, String> configuration;
+  @XmlElement(name = "entry")
+  @XmlElementWrapper(name = "parameters")
+  @JsonProperty
+  private Collection<Entry> configuration;
 
   /**
    * Create a new empty source adaptor.
@@ -108,7 +113,7 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
     this.name = name;
     this.version = version;
     this.source = source;
-    this.configuration = configuration;
+    this.configuration = ModelUtils.mapToEntryList(configuration);
 
     this.updateId();
   }
@@ -130,11 +135,11 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
   }
 
   public Map<String, String> getConfiguration() {
-    return this.configuration;
+    return ModelUtils.entryListToMap(this.configuration);
   }
 
   public void setConfiguration(Map<String, String> configuration) {
-    this.configuration = configuration;
+    this.configuration = ModelUtils.mapToEntryList(configuration);
   }
 
   /**

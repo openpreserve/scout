@@ -64,6 +64,19 @@ public class Question extends RdfBean<Question> {
   private List<Property> properties;
 
   /**
+   * The entities that are questioned.
+   */
+  @XmlElement
+  @JsonProperty
+  private List<Entity> entities;
+
+  /**
+   * The preferred period in minutes in which to re-assess this question.
+   */
+  @XmlElement
+  private int period;
+
+  /**
    * Create a new empty question.
    */
   public Question() {
@@ -82,15 +95,23 @@ public class Question extends RdfBean<Question> {
    *          The entity types that are questioned
    * @param properties
    *          The properties that are questioned
+   * @param entities
+   *          The entities that are questioned
+   * @param period
+   *          The preferred period in minutes in which to re-assess this
+   *          question
+   * 
    */
   public Question(final String sparql, final RequestTarget target, final List<EntityType> types,
-    final List<Property> properties) {
+    final List<Property> properties, final List<Entity> entities, final int period) {
     super();
     this.id = UUID.randomUUID().toString();
     this.sparql = sparql;
     this.target = target;
     this.types = types;
     this.properties = properties;
+    this.entities = entities;
+    this.period = period;
   }
 
   public List<EntityType> getTypes() {
@@ -129,11 +150,28 @@ public class Question extends RdfBean<Question> {
     this.target = target;
   }
 
+  public List<Entity> getEntities() {
+    return this.entities;
+  }
+
+  public void setEntities(final List<Entity> entities) {
+    this.entities = entities;
+  }
+
+  public int getPeriod() {
+    return this.period;
+  }
+
+  public void setPeriod(final int period) {
+    this.period = period;
+  }
+
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((id == null) ? 0 : id.hashCode());
+    result = prime * result + ((entities == null) ? 0 : entities.hashCode());
+    result = prime * result + period;
     result = prime * result + ((properties == null) ? 0 : properties.hashCode());
     result = prime * result + ((sparql == null) ? 0 : sparql.hashCode());
     result = prime * result + ((target == null) ? 0 : target.hashCode());
@@ -150,10 +188,12 @@ public class Question extends RdfBean<Question> {
     if (getClass() != obj.getClass())
       return false;
     Question other = (Question) obj;
-    if (id == null) {
-      if (other.id != null)
+    if (entities == null) {
+      if (other.entities != null)
         return false;
-    } else if (!id.equals(other.id))
+    } else if (!entities.equals(other.entities))
+      return false;
+    if (period != other.period)
       return false;
     if (properties == null) {
       if (other.properties != null)
@@ -174,5 +214,4 @@ public class Question extends RdfBean<Question> {
       return false;
     return true;
   }
-
 }

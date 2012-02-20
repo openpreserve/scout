@@ -9,6 +9,7 @@ import com.wordnik.swagger.core.ApiOperation;
 import com.wordnik.swagger.core.ApiParam;
 import com.wordnik.swagger.core.JavaHelp;
 import eu.scape_project.watch.core.KB;
+import eu.scape_project.watch.core.KBUtils;
 import eu.scape_project.watch.core.dao.EntityDAO;
 import eu.scape_project.watch.core.dao.EntityTypeDAO;
 import eu.scape_project.watch.core.model.Entity;
@@ -114,6 +115,8 @@ public class EntityResource extends JavaHelp {
     if (entitytype != null) {
       final Entity entity = new Entity(entitytype, name);
       entity.save();
+      
+      KBUtils.printStatements();
       return Response.ok().entity(entity).build();
     } else {
       throw new NotFoundException("Entity type not found: " + type);

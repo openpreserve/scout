@@ -1,17 +1,19 @@
 package eu.scape_project.watch.core.model;
 
+import eu.scape_project.watch.core.KB;
+import eu.scape_project.watch.core.common.ModelUtils;
+
+import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import eu.scape_project.watch.core.KB;
-
 import org.codehaus.jackson.annotate.JsonProperty;
-
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
@@ -45,9 +47,10 @@ public class Notification extends RdfBean<Notification> {
   /**
    * The notification parameters, e.g. email recipients, subject, etc.
    */
-  @XmlElement
+  @XmlElement(name = "entry")
+  @XmlElementWrapper(name = "parameters")
   @JsonProperty
-  private Map<String, String> parameters;
+  private Collection<Entry> parameters;
 
   /**
    * Create a new empty notification.
@@ -65,10 +68,22 @@ public class Notification extends RdfBean<Notification> {
    * @param parameters
    *          The notification parameters, e.g. email recipients, subject, etc.
    */
-  public Notification(final NotificationType type, final Map<String, String> parameters) {
+  public Notification(final NotificationType type, final Collection<Entry> parameters) {
     this();
     this.setType(type);
     this.setParameters(parameters);
+  }
+
+  /**
+   * Create a new notification.
+   * 
+   * @param type
+   *          The type of the notification.
+   * @param parameters
+   *          The notification parameters, e.g. email recipients, subject, etc.
+   */
+  public Notification(final NotificationType type, final Map<String, String> parameters) {
+    this(type, ModelUtils.mapToEntryList(parameters));
   }
 
   /**
@@ -88,12 +103,26 @@ public class Notification extends RdfBean<Notification> {
     this.type = type;
   }
 
-  public Map<String, String> getParameters() {
+  public Collection<Entry> getParameters() {
     return this.parameters;
   }
 
-  public void setParameters(final Map<String, String> parameters) {
+  public Map<String, String> getParameterMap() {
+    return ModelUtils.entryListToMap(this.getParameters());
+  }
+
+  public void setParameters(final Collection<Entry> parameters) {
     this.parameters = parameters;
+  }
+
+  /**
+   * Set the parameters using a Map<String, String>.
+   * 
+   * @param parameterMap
+   *          The map with the parameters
+   */
+  public void setParameterMap(final Map<String, String> parameterMap) {
+    this.setParameters(ModelUtils.mapToEntryList(parameterMap));
   }
 
   @Override

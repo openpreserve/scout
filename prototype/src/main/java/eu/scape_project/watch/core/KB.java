@@ -1,17 +1,9 @@
 package eu.scape_project.watch.core;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.tdb.TDB;
 import com.hp.hpl.jena.tdb.TDBFactory;
-
 import eu.scape_project.watch.core.common.ConfigUtils;
 import eu.scape_project.watch.core.model.AsyncRequest;
 import eu.scape_project.watch.core.model.Entity;
@@ -24,10 +16,15 @@ import eu.scape_project.watch.core.model.Question;
 import eu.scape_project.watch.core.model.RequestTarget;
 import eu.scape_project.watch.core.model.Trigger;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import thewebsemantic.Bean2RDF;
 import thewebsemantic.RDF2Bean;
 import thewebsemantic.binding.Jenabean;
@@ -222,6 +219,11 @@ public final class KB {
   public static final String SOURCE_ADAPTOR = "sourceadaptor";
 
   /**
+   * A key-value pair entry constant.
+   */
+  public static final String ENTRY = "entry";
+
+  /**
    * The data folder to be used to by tdb.
    */
   private static String dataFolder;
@@ -314,6 +316,8 @@ public final class KB {
 
       LOGGER.info("KB manager created at {}", dataFolder);
 
+      KBUtils.printStatements();
+
     } catch (final IOException e) {
       LOGGER.error("Data folder {} could not be created", e.getMessage());
     }
@@ -395,9 +399,10 @@ public final class KB {
 
     // Async Request
     final Question question1 = new Question("?s watch:type watch-EntityType:tools", RequestTarget.ENTITY,
-      Arrays.asList(tools), Arrays.asList(toolVersion));
+      Arrays.asList(tools), Arrays.asList(toolVersion), Arrays.asList(imageMagickTool), 60);
     final Map<String, String> not1config = new HashMap<String, String>();
     not1config.put("to", "lfaria@keep.pt");
+    not1config.put("subject", "New tools");
     final Notification notification1 = new Notification(NotificationType.EMAIL_EVENT, not1config);
     final Trigger trigger1 = new Trigger(question1, Arrays.asList(notification1), null);
 

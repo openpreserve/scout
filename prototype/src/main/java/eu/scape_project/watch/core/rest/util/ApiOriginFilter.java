@@ -26,22 +26,28 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Filter to add HTTP control headers.
+ * 
+ * @author Luis Faria <lfaria@keep.pt>
+ * 
+ */
 public class ApiOriginFilter implements Filter {
-	@Override
-	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
-		HttpServletResponse res = (HttpServletResponse) response;
-		res.addHeader("Access-Control-Allow-Origin", "*");
-		res.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
-		res.addHeader("Access-Control-Allow-Headers", "Content-Type");
-		chain.doFilter(request, response);
-	}
+  @Override
+  public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
+    throws IOException, ServletException {
+    final HttpServletResponse res = (HttpServletResponse) response;
+    res.addHeader("Access-Control-Allow-Origin", "*");
+    res.addHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
+    res.addHeader("Access-Control-Allow-Headers", "Content-Type");
+    chain.doFilter(request, response);
+  }
 
-	@Override
-	public void destroy() {
-	}
+  @Override
+  public void destroy() {
+  }
 
-	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
-	}
+  @Override
+  public void init(final FilterConfig filterConfig) throws ServletException {
+  }
 }

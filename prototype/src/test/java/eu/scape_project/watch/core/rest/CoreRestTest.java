@@ -223,7 +223,9 @@ public class CoreRestTest extends JerseyTest {
 
     // LIST
     final List<Entity> list = client.listEntity();
+    LOG.info("entity {} in list {}?", new Object[]{entity, list});
     Assert.assertTrue(list.contains(entity));
+    
 
     // TODO test update
 

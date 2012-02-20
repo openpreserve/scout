@@ -305,7 +305,7 @@ public final class KB {
 
     final File dataFolderFile = new File(dataFolder);
     try {
-      boolean initdata = false;
+      boolean initdata = true;
       if (!dataFolderFile.exists()) {
         FileUtils.forceMkdir(dataFolderFile);
         initdata = true;
@@ -374,8 +374,13 @@ public final class KB {
     final EntityType tools = new EntityType("tools", "Applications that read and/or write into diferent file formats");
     final Property toolVersion = new Property(tools, "version", "Tool version");
 
+    Property inputFormat = new Property(tools, "input_format", "Supported input format");
+    Property outputFormat = new Property(tools, "output_format", "Supported output formats");
+    
     tools.save();
     toolVersion.save();
+    inputFormat.save();
+    outputFormat.save();
 
     final Entity pdf17Format = new Entity(formats, "application/pdf;version=1.7");
     final Entity tiffFormat = new Entity(formats, "image/tiff;version=3.0.0");
@@ -399,6 +404,11 @@ public final class KB {
     jpeg.save();
     jpeg2000.save();
     png.save();
+    doc.save();
+    docx.save();
+    bmp.save();
+    gif.save();
+    
 
     // property value construction also binds to entity
     final PropertyValue pdfPUID = new PropertyValue(pdf17Format, formatPUID, "fmt/276");
@@ -414,6 +424,15 @@ public final class KB {
 
     imageMagickVersion.save();
 
+    PropertyValue jpegMime = new PropertyValue(jpeg,formatMimetype,"image/jpeg");
+    PropertyValue pngMime = new PropertyValue(png,formatMimetype,"image/png");
+    PropertyValue docMime = new PropertyValue(doc,formatMimetype,"application/msword");
+    PropertyValue docxMime = new PropertyValue(docx,formatMimetype, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+    PropertyValue bmpMime = new PropertyValue(bmp,formatMimetype,"image/bmp");
+    PropertyValue gifMime = new PropertyValue(gif,formatMimetype,"image/gif");
+    
+    PropertyValue im = new PropertyValue(imageMagickTool, inputFormat, "fmt/353");
+    
     // save property values
     pdfPUID.save();
     pdfMime.save();
@@ -439,7 +458,14 @@ public final class KB {
     request.save();
 
     imageMagickVersion.save();
-    
+    jpegMime.save();
+    jpeg2000Mime.save();
+    pngMime.save();
+    docMime.save();
+    docxMime.save();
+    bmpMime.save();
+    gifMime.save();
+    im.save();
     
     flush();
     TDB.sync(model);

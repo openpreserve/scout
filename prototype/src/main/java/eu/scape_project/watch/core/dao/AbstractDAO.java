@@ -80,7 +80,7 @@ public abstract class AbstractDAO {
     final String sparql = String.format(KB.PREFIXES_DECL + "SELECT ?s WHERE { ?s %1$s %2$s . %3$s}", KB.RDF_TYPE_REL,
       classType, bindings);
 
-    LOG.debug("SPARQL: {}", sparql);
+    LOG.debug("SPARQL:\n {}", sparql);
 
     final LinkedList<T> results = Sparql.exec(KB.getInstance().getReader(), typeClass, sparql, new QuerySolutionMap(),
       start, max);

@@ -1,119 +1,107 @@
 package eu.scape_project.watch.core;
 
+import com.google.common.io.Files;
+import eu.scape_project.watch.core.dao.EntityTypeDAO;
+import eu.scape_project.watch.core.model.EntityType;
+
 import java.io.File;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
 import junit.framework.Assert;
-
 import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import thewebsemantic.Sparql;
 
-import com.google.common.io.Files;
-
-import eu.scape_project.watch.core.dao.EntityTypeDAO;
-import eu.scape_project.watch.core.model.EntityType;
-
+/**
+ * 
+ * Unit tests of the Knowledge Base persistence and access.
+ * 
+ * @author Luis Faria <lfaria@keep.pt>
+ * 
+ */
 public class KBTest {
-	private static final Logger LOG = Logger.getLogger(KBTest.class
-			.getSimpleName());
+  /**
+   * The logger.
+   */
+  private static final Logger LOG = Logger.getLogger(KBTest.class.getSimpleName());
 
-	private final static File tempDir = Files.createTempDir();
+  /**
+   * A temporary directory to hold the data.
+   */
+  private static final File DATA_TEMP_DIR = Files.createTempDir();
 
-	@BeforeClass
-	public static void beforeClass() {
-		LOG.info("Creating data folder at " + tempDir.getPath());
-		KB.setDataFolder(tempDir.getPath());
-	}
+  /**
+   * Initialize the data folder.
+   */
+  @BeforeClass
+  public static void beforeClass() {
+    LOG.info("Creating data folder at " + DATA_TEMP_DIR.getPath());
+    KB.setDataFolder(DATA_TEMP_DIR.getPath());
+  }
 
-	@AfterClass
-	public static void afterClass() {
-		LOG.info("Deleting data folder at " + tempDir.getPath());
-		FileUtils.deleteQuietly(tempDir);
-	}
+  /**
+   * Cleanup the data folder.
+   */
+  @AfterClass
+  public static void afterClass() {
+    LOG.info("Deleting data folder at " + DATA_TEMP_DIR.getPath());
+    FileUtils.deleteQuietly(DATA_TEMP_DIR);
+  }
 
-	// @Test
-	// public void shouldTestDefaultModel() throws Exception {
-	// Dataset dataset = KB.getInstance().getDataset();
-	// Model model = dataset.getDefaultModel();
-	// String url = "http://whatever.test/JohnSmith";
-	// String name = "John Smith";
-	// Resource resource = model.createResource(url);
-	// resource.addProperty(VCARD.FN, name);
-	//
-	// StmtIterator iterator = model.listStatements();
-	//
-	// Assert.assertTrue(iterator.hasNext());
-	//
-	// Statement statement = iterator.nextStatement();
-	// Resource subject = statement.getSubject();
-	// Property predicate = statement.getPredicate();
-	// RDFNode object = statement.getObject();
-	//
-	// Assert.assertEquals(url, subject.getURI());
-	// Assert.assertEquals(VCARD.FN.getURI(), predicate.getURI());
-	// Assert.assertEquals(name, object.toString());
-	//
-	// Assert.assertFalse(iterator.hasNext());
-	//
-	// }
+  /**
+   * Test Entity Type CRUD operations.
+   */
+  @Test
+  public void testEntityType() {
+    KB.getInstance();
 
-	@Test
-	public void testEntityType() {
-		KB.getInstance();
+    // CREATE
+    final EntityType type = new EntityType();
+    type.setName("tests");
+    type.setDescription("Test entities");
 
-		// CREATE
-		EntityType type = new EntityType();
-		type.setName("tests");
-		type.setDescription("Test entities");
+    type.save();
 
-		type.save();
+    KBUtils.printStatements();
 
-		KBUtils.printStatements();
+    // List
+    final Collection<EntityType> types = KB.getInstance().getReader().load(EntityType.class);
 
-		// List
-		Collection<EntityType> types = KB.getInstance().getReader()
-				.load(EntityType.class);
+    Assert.assertTrue(types.contains(type));
 
-		Assert.assertTrue(types.contains(type));
+    // QUERY
+    final String query = KB.PREFIXES_DECL + "SELECT ?s WHERE { ?s rdf:type watch:EntityType }";
+    final List<EntityType> types2 = Sparql.exec(KB.getInstance().getModel(), EntityType.class, query);
 
-		// QUERY
-		String query = "SELECT ?s WHERE { ?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://watch.scape-project.eu/EntityType> }";
-		List<EntityType> types2 = Sparql.exec(KB.getInstance().getModel(),
-				EntityType.class, query);
+    Assert.assertTrue(types2.contains(type));
 
-		Assert.assertTrue(types2.contains(type));
+    // FIND
+    final EntityType type2 = EntityTypeDAO.findById(type.getName());
 
-		// FIND
-		EntityType type2 = EntityTypeDAO.findById(type.getName());
+    Assert.assertNotNull(type2);
+    Assert.assertEquals(type, type2);
 
-		Assert.assertNotNull(type2);
-		Assert.assertEquals(type, type2);
+    // DELETE
+    type.delete();
 
-		// DELETE
-		type.delete();
+    // LIST AGAIN
+    final Collection<EntityType> types3 = KB.getInstance().getReader().load(EntityType.class);
 
-		// LIST AGAIN
-		Collection<EntityType> types3 = KB.getInstance().getReader()
-				.load(EntityType.class);
+    Assert.assertFalse(types3.contains(type));
 
-		Assert.assertFalse(types3.contains(type));
+    // QUERY AGAIN
+    final List<EntityType> types4 = Sparql.exec(KB.getInstance().getModel(), EntityType.class, query);
 
-		// QUERY AGAIN
-		List<EntityType> types4 = Sparql.exec(KB.getInstance().getModel(),
-				EntityType.class, query);
+    Assert.assertFalse(types4.contains(type));
 
-		Assert.assertFalse(types4.contains(type));
+    // FIND AGAIN
+    final EntityType type3 = EntityTypeDAO.findById(type.getName());
+    Assert.assertNull(type3);
 
-		// FIND AGAIN
-		EntityType type3 = EntityTypeDAO.findById(type.getName());
-		Assert.assertNull(type3);
-
-	}
+  }
 
 }

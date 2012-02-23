@@ -34,7 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Unit test of the watch core REST API.
+ * Unit tests of the watch core REST API.
  * 
  * @author Luis Faria <lfaria@keep.pt>
  * 
@@ -222,7 +222,7 @@ public class CoreRestTest extends JerseyTest {
     assertEquals(entity, entity2);
 
     // LIST
-    final List<Entity> list = client.listEntity();
+    final List<Entity> list = client.listEntity(0, 100);
     LOG.info("entity {} in list {}?", new Object[]{entity, list});
     Assert.assertTrue(list.contains(entity));
     
@@ -241,7 +241,7 @@ public class CoreRestTest extends JerseyTest {
     Assert.assertNull(entity4);
 
     // LIST
-    final List<Entity> list2 = client.listEntity();
+    final List<Entity> list2 = client.listEntity(0, 100);
     Assert.assertFalse(list2.contains(entity));
   }
 

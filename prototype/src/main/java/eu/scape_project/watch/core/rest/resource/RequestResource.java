@@ -8,9 +8,12 @@ import com.wordnik.swagger.core.ApiParam;
 import com.wordnik.swagger.core.JavaHelp;
 import eu.scape_project.watch.core.KBUtils;
 import eu.scape_project.watch.core.dao.RequestDAO;
+import eu.scape_project.watch.core.model.Entity;
+import eu.scape_project.watch.core.model.EntityType;
+import eu.scape_project.watch.core.model.Property;
+import eu.scape_project.watch.core.model.PropertyValue;
 import eu.scape_project.watch.core.model.RequestTarget;
 
-import java.util.Arrays;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -52,6 +55,7 @@ public class RequestResource extends JavaHelp {
    * @return A list of the requested target object, filtered by the above
    *         constraints
    */
+  @SuppressWarnings("unchecked")
   @GET
   @Path("/{target}")
   @ApiOperation(value = "Make a request", notes = "")
@@ -63,13 +67,38 @@ public class RequestResource extends JavaHelp {
 
     LOG.debug("Making request '{}', target={}, start={}, max={}", new Object[] {query, target, start, max});
     KBUtils.printStatements();
-    
-    
-    final List<? extends RdfBean<?>> list = RequestDAO.query(RequestTarget.valueOf(target.toUpperCase()), query, start,
-      max);
 
-    return Response.ok().entity(new GenericEntity<List<? extends RdfBean<?>>>(list) {
-    }).build();
+    RequestTarget requestTarget = RequestTarget.valueOf(target.toUpperCase());
+    final List<? extends RdfBean<?>> list = RequestDAO.query(requestTarget, query, start, max);
+
+    // return Response.ok().entity(new GenericEntity<List<? extends
+    // RdfBean<?>>>(list) {
+    // }).build();
+
+    Response ret;
+    switch (requestTarget) {
+      case ENTITY_TYPE:
+        ret = Response.ok().entity(new GenericEntity<List<EntityType>>((List<EntityType>) list) {
+        }).build();
+        break;
+      case PROPERTY:
+        ret = Response.ok().entity(new GenericEntity<List<Property>>((List<Property>) list) {
+        }).build();
+        break;
+      case ENTITY:
+        ret = Response.ok().entity(new GenericEntity<List<Entity>>((List<Entity>) list) {
+        }).build();
+        break;
+      case PROPERTY_VALUE:
+        ret = Response.ok().entity(new GenericEntity<List<PropertyValue>>((List<PropertyValue>) list) {
+        }).build();
+        break;
+      default:
+        LOG.error("Request target not supported {}", requestTarget);
+        ret = null;
+        break;
+    }
+
+    return ret;
   }
-
 }

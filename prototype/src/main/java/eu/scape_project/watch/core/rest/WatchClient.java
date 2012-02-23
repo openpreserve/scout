@@ -51,6 +51,11 @@ public class WatchClient {
   private static final String MAX = "max";
 
   /**
+   * Query key to define a listing filtered by Entity Type.
+   */
+  private static final String TYPE = "type";
+
+  /**
    * Jersey web resource connection.
    */
   private final WebResource resource;
@@ -165,16 +170,14 @@ public class WatchClient {
    * 
    * @return the complete list of entities.
    */
-  public List<Entity> listEntity() {
-    return (List<Entity>) this.resource.path(KB.ENTITY + FS + this.format + AS + LIST)
-      .accept(this.format.getMediaType()).get(new GenericType<List<Entity>>() {
-      });
+  public List<Entity> listEntity(int start, int max) {
+    return listEntity(null, start, max);
   }
 
   public List<Entity> listEntity(String type, int start, int max) {
-    return (List<Entity>) this.resource.path(KB.ENTITY + FS + this.format + AS + LIST + AS + type)
-      .queryParam(START, Integer.toString(start)).queryParam(MAX, Integer.toString(max))
-      .accept(this.format.getMediaType()).get(new GenericType<List<Entity>>() {
+    return (List<Entity>) this.resource.path(KB.ENTITY + FS + this.format + AS + LIST)
+      .queryParam(TYPE, type != null ? type : "").queryParam(START, Integer.toString(start))
+      .queryParam(MAX, Integer.toString(max)).accept(this.format.getMediaType()).get(new GenericType<List<Entity>>() {
       });
   }
 

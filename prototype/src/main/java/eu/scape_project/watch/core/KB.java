@@ -372,13 +372,15 @@ public final class KB {
     tools.save();
     toolVersion.save();
 
-    final Entity pdf17Format = new Entity(formats, "PDF-v1.7");
-    final Entity tiffFormat = new Entity(formats, "TIFF");
-    final Entity imageMagickTool = new Entity(tools, "ImageMagick-v6.6.0");
+    final Entity pdf17Format = new Entity(formats, "application/pdf;version=1.7");
+    final Entity tiffFormat = new Entity(formats, "image/tiff;version=3.0.0");
+    final Entity jpeg2000Format = new Entity(formats, "image/jp2;version=1.0.0");
+    final Entity imageMagickTool = new Entity(tools, "ImageMagick_6.6.0_all_all_all");
 
     // save entities
     pdf17Format.save();
     tiffFormat.save();
+    jpeg2000Format.save();
     imageMagickTool.save();
 
     // property value construction also binds to entity
@@ -387,16 +389,22 @@ public final class KB {
 
     final PropertyValue tiffPUID = new PropertyValue(tiffFormat, formatPUID, "fmt/353");
     final PropertyValue tiffMime = new PropertyValue(tiffFormat, formatMimetype, "image/tiff");
+    
+    final PropertyValue jpeg2000PUID = new PropertyValue(jpeg2000Format, formatPUID, "x-fmt/392");
+    final PropertyValue jpeg2000Mime = new PropertyValue(jpeg2000Format, formatMimetype, "image/jp2");
 
     final PropertyValue imageMagickVersion = new PropertyValue(imageMagickTool, toolVersion, "6.6.0");
 
+    imageMagickVersion.save();
+    
     // save property values
     pdfPUID.save();
     pdfMime.save();
     tiffPUID.save();
     tiffMime.save();
-    imageMagickVersion.save();
-
+    jpeg2000PUID.save();
+    jpeg2000Mime.save();
+    
     // Async Request
     final Question question1 = new Question("?s watch:type watch-EntityType:tools", RequestTarget.ENTITY,
       Arrays.asList(tools), Arrays.asList(toolVersion), Arrays.asList(imageMagickTool), 60);

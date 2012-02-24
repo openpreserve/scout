@@ -19,6 +19,7 @@ import eu.scape_project.watch.core.model.Entity;
 import eu.scape_project.watch.core.model.EntityType;
 import eu.scape_project.watch.core.model.Property;
 import eu.scape_project.watch.core.model.PropertyValue;
+import eu.scape_project.watch.core.model.RequestTarget;
 
 import org.apache.commons.io.FileUtils;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
@@ -32,6 +33,7 @@ import org.junit.rules.TestWatchman;
 import org.junit.runners.model.FrameworkMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import thewebsemantic.binding.RdfBean;
 
 /**
  * Unit tests of the watch core REST API.
@@ -223,9 +225,8 @@ public class CoreRestTest extends JerseyTest {
 
     // LIST
     final List<Entity> list = client.listEntity(0, 100);
-    LOG.info("entity {} in list {}?", new Object[]{entity, list});
+    LOG.info("entity {} in list {}?", new Object[] {entity, list});
     Assert.assertTrue(list.contains(entity));
-    
 
     // TODO test update
 
@@ -398,6 +399,60 @@ public class CoreRestTest extends JerseyTest {
     // LIST
     final List<PropertyValue> list2 = client.listPropertyValue();
     Assert.assertFalse(list2.contains(propertyValue));
+
+  }
+
+  /**
+   * Tests on synchronous requests with XML output.
+   */
+  @Test
+  public void synRequestXML() {
+    syncRequest(WatchClient.Format.XML);
+  }
+
+  /**
+   * Tests on synchronous requests with JSON output.
+   */
+  @Test
+  public void synRequestJSON() {
+    syncRequest(WatchClient.Format.JSON);
+  }
+
+  /**
+   * Tests on synchronous requests.
+   * 
+   * @param format
+   *          The format of the output.
+   */
+  public void syncRequest(final WatchClient.Format format) {
+    final WatchClient client = new WatchClient(this.resource, format);
+
+    // CREATE DATA
+    final String typeName = "test";
+    final String typeDescription = "A test";
+
+    final EntityType entitytype = client.createEntityType(typeName, typeDescription);
+
+    final String entityName = "test01";
+    final Entity entity = client.createEntity(entityName, typeName);
+
+    final String propertyName = "property01";
+    final String propertyDescription = "The property 01";
+    final Property property = client.createProperty(typeName, propertyName, propertyDescription);
+
+    final String value = "99999";
+    final PropertyValue propertyValue = client.createPropertyValue(entity.getName(), property.getName(), value);
+
+    // DO TESTS
+    final List<EntityType> typeList = client.getRequest(EntityType.class, "watch-Entity:" + entityName
+      + " watch:type ?s", 0, 100);
+
+    Assert.assertTrue(typeList.contains(entitytype));
+
+    final List<PropertyValue> pvList = client.getRequest(PropertyValue.class, "?s watch:entity watch-Entity:"
+      + entityName, 0, 100);
+
+    Assert.assertTrue(pvList.contains(propertyValue));
 
   }
 

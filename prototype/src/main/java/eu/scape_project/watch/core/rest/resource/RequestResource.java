@@ -68,12 +68,9 @@ public class RequestResource extends JavaHelp {
     LOG.debug("Making request '{}', target={}, start={}, max={}", new Object[] {query, target, start, max});
     KBUtils.printStatements();
 
-    RequestTarget requestTarget = RequestTarget.valueOf(target.toUpperCase());
-    final List<? extends RdfBean<?>> list = RequestDAO.query(requestTarget, query, start, max);
+    final RequestTarget requestTarget = RequestTarget.valueOf(target.toUpperCase());
 
-    // return Response.ok().entity(new GenericEntity<List<? extends
-    // RdfBean<?>>>(list) {
-    // }).build();
+    final List<? extends RdfBean<?>> list = RequestDAO.query(requestTarget, query, start, max);
 
     Response ret;
     switch (requestTarget) {

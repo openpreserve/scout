@@ -174,6 +174,11 @@ public final class KB {
   public static final String ASYNC_REQUEST = "asyncrequest";
 
   /**
+   * A synchronous request constant.
+   */
+  public static final String SYNC_REQUEST = "request";
+
+  /**
    * A trigger constant.
    */
   public static final String TRIGGER = "trigger";
@@ -389,14 +394,14 @@ public final class KB {
 
     final PropertyValue tiffPUID = new PropertyValue(tiffFormat, formatPUID, "fmt/353");
     final PropertyValue tiffMime = new PropertyValue(tiffFormat, formatMimetype, "image/tiff");
-    
+
     final PropertyValue jpeg2000PUID = new PropertyValue(jpeg2000Format, formatPUID, "x-fmt/392");
     final PropertyValue jpeg2000Mime = new PropertyValue(jpeg2000Format, formatMimetype, "image/jp2");
 
     final PropertyValue imageMagickVersion = new PropertyValue(imageMagickTool, toolVersion, "6.6.0");
 
     imageMagickVersion.save();
-    
+
     // save property values
     pdfPUID.save();
     pdfMime.save();
@@ -404,7 +409,7 @@ public final class KB {
     tiffMime.save();
     jpeg2000PUID.save();
     jpeg2000Mime.save();
-    
+
     // Async Request
     final Question question1 = new Question("?s watch:type watch-EntityType:tools", RequestTarget.ENTITY,
       Arrays.asList(tools), Arrays.asList(toolVersion), Arrays.asList(imageMagickTool), 60);

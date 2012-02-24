@@ -71,10 +71,10 @@ public class Question extends RdfBean<Question> {
   private List<Entity> entities;
 
   /**
-   * The preferred period in minutes in which to re-assess this question.
+   * The preferred period in milliseconds in which to re-assess this question.
    */
   @XmlElement
-  private int period;
+  private long period;
 
   /**
    * Create a new empty question.
@@ -103,7 +103,7 @@ public class Question extends RdfBean<Question> {
    * 
    */
   public Question(final String sparql, final RequestTarget target, final List<EntityType> types,
-    final List<Property> properties, final List<Entity> entities, final int period) {
+    final List<Property> properties, final List<Entity> entities, final long period) {
     super();
     this.id = UUID.randomUUID().toString();
     this.sparql = sparql;
@@ -158,7 +158,7 @@ public class Question extends RdfBean<Question> {
     this.entities = entities;
   }
 
-  public int getPeriod() {
+  public long getPeriod() {
     return this.period;
   }
 
@@ -171,7 +171,7 @@ public class Question extends RdfBean<Question> {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((entities == null) ? 0 : entities.hashCode());
-    result = prime * result + period;
+    result = prime * result + (int) (period ^ (period >>> 32));
     result = prime * result + ((properties == null) ? 0 : properties.hashCode());
     result = prime * result + ((sparql == null) ? 0 : sparql.hashCode());
     result = prime * result + ((target == null) ? 0 : target.hashCode());
@@ -214,4 +214,5 @@ public class Question extends RdfBean<Question> {
       return false;
     return true;
   }
+
 }

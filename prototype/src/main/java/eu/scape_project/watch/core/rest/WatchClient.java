@@ -1,20 +1,25 @@
 package eu.scape_project.watch.core.rest;
 
-import java.util.List;
-
-import javax.ws.rs.core.MediaType;
-
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
-
+import com.sun.jersey.api.client.WebResource.Builder;
 import eu.scape_project.watch.core.KB;
 import eu.scape_project.watch.core.model.Entity;
 import eu.scape_project.watch.core.model.EntityType;
 import eu.scape_project.watch.core.model.Property;
 import eu.scape_project.watch.core.model.PropertyValue;
+import eu.scape_project.watch.core.model.RequestTarget;
 import eu.scape_project.watch.core.rest.exception.NotFoundException;
+
+import java.util.List;
+
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import thewebsemantic.binding.RdfBean;
 
 /**
  * Client for Watch REST service.
@@ -54,6 +59,11 @@ public class WatchClient {
    * Query key to define a listing filtered by Entity Type.
    */
   private static final String TYPE = "type";
+
+  /**
+   * Query key to define a listing filtered by query.
+   */
+  private static final String QUERY = "query";
 
   /**
    * Jersey web resource connection.
@@ -428,4 +438,62 @@ public class WatchClient {
     // TODO treat the not found exception
   }
 
+  /**
+   * Make a synchronous request query.
+   * 
+   * @param <T>
+   *          A class that must extends RdfBean and should be related to
+   *          possible targets of a request.
+   * @param targetClass
+   *          The query target class, that will define the resource type.
+   * @param query
+   *          The SPARQL query bindings.
+   * @param start
+   *          The index of the first item to retrieve.
+   * @param max
+   *          The maximum number of items to retrieve.
+   * @return The list of resources of the type defined by target, filtered by
+   *         the constraints above.
+   */
+  @SuppressWarnings("unchecked")
+  public <T extends RdfBean<T>> List<T> getRequest(final Class<T> targetClass, final String query, final int start,
+    final int max) {
+
+    final RequestTarget target = RequestTarget.getTargetByClass(targetClass);
+
+    final Builder builder = this.resource.path(KB.SYNC_REQUEST + FS + this.format + AS + target)
+      .queryParam(QUERY, query).queryParam(START, Integer.toString(start)).queryParam(MAX, Integer.toString(max))
+      .accept(this.format.getMediaType());
+
+    List<? extends RdfBean<?>> ret;
+    switch (target) {
+      case ENTITY_TYPE:
+        ret = builder.get(new GenericType<List<EntityType>>() {
+        });
+        break;
+      case PROPERTY:
+        ret = builder.get(new GenericType<List<Property>>() {
+        });
+        break;
+      case ENTITY:
+        ret = builder.get(new GenericType<List<Entity>>() {
+        });
+        break;
+      case PROPERTY_VALUE:
+        ret = builder.get(new GenericType<List<PropertyValue>>() {
+        });
+        break;
+      default:
+        ret = null;
+        break;
+    }
+
+    // return this.resource.path(KB.SYNC_REQUEST + FS + this.format + AS +
+    // target).queryParam(QUERY, query)
+    // .queryParam(START, Integer.toString(start)).queryParam(MAX,
+    // Integer.toString(max))
+    // .accept(this.format.getMediaType()).get(new
+    // GenericType<List<T>>(targetClass));
+    return (List<T>) ret;
+  }
 }

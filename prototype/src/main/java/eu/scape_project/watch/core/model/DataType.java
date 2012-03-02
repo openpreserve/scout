@@ -3,7 +3,7 @@ package eu.scape_project.watch.core.model;
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlType;
 
-import eu.scape_project.watch.core.KB;
+import eu.scape_project.watch.core.KBUtils;
 
 /**
  * Possible data types of {@link Property}.
@@ -11,7 +11,7 @@ import eu.scape_project.watch.core.KB;
  * @author Luis Faria <lfaria@keep.pt>
  * 
  */
-@XmlType(name = KB.DATA_TYPE)
+@XmlType(name = KBUtils.DATA_TYPE)
 @XmlEnum
 public enum DataType {
   /**

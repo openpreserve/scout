@@ -65,6 +65,12 @@
 						<resource>
 							<directory>swagger-ui-1.0</directory>
 						</resource>
+                        <resource>
+                            <directory>${project.basedir}/src/test/resources</directory>
+                            <excludes>
+                                <exclude>**/*</exclude>
+                            </excludes>
+                        </resource>
 					</webResources>
 				</configuration>
 			</plugin>

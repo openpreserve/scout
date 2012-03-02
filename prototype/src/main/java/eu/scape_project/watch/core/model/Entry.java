@@ -1,6 +1,6 @@
 package eu.scape_project.watch.core.model;
 
-import eu.scape_project.watch.core.KB;
+import eu.scape_project.watch.core.KBUtils;
 
 import java.util.UUID;
 
@@ -22,8 +22,8 @@ import thewebsemantic.Namespace;
  * @author Luis Faria <lfaria@keep.pt>
  * 
  */
-@Namespace(KB.WATCH_NS)
-@XmlRootElement(name = KB.ENTRY)
+@Namespace(KBUtils.WATCH_NS)
+@XmlRootElement(name = KBUtils.ENTRY)
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Entry {
 

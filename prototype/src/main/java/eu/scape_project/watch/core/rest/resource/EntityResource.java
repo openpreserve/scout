@@ -3,19 +3,6 @@
  */
 package eu.scape_project.watch.core.rest.resource;
 
-import com.wordnik.swagger.core.ApiError;
-import com.wordnik.swagger.core.ApiErrors;
-import com.wordnik.swagger.core.ApiOperation;
-import com.wordnik.swagger.core.ApiParam;
-import com.wordnik.swagger.core.JavaHelp;
-import eu.scape_project.watch.core.KB;
-import eu.scape_project.watch.core.KBUtils;
-import eu.scape_project.watch.core.dao.EntityDAO;
-import eu.scape_project.watch.core.dao.EntityTypeDAO;
-import eu.scape_project.watch.core.model.Entity;
-import eu.scape_project.watch.core.model.EntityType;
-import eu.scape_project.watch.core.rest.exception.NotFoundException;
-
 import java.util.Collection;
 
 import javax.ws.rs.DELETE;
@@ -29,6 +16,19 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
+
+import com.wordnik.swagger.core.ApiError;
+import com.wordnik.swagger.core.ApiErrors;
+import com.wordnik.swagger.core.ApiOperation;
+import com.wordnik.swagger.core.ApiParam;
+import com.wordnik.swagger.core.JavaHelp;
+
+import eu.scape_project.watch.core.KBUtils;
+import eu.scape_project.watch.core.dao.EntityDAO;
+import eu.scape_project.watch.core.dao.EntityTypeDAO;
+import eu.scape_project.watch.core.model.Entity;
+import eu.scape_project.watch.core.model.EntityType;
+import eu.scape_project.watch.core.rest.exception.NotFoundException;
 
 /**
  * 

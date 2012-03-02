@@ -1,20 +1,22 @@
 package eu.scape_project.watch.core;
 
-import com.google.common.io.Files;
-import eu.scape_project.watch.core.dao.EntityTypeDAO;
-import eu.scape_project.watch.core.model.EntityType;
-
 import java.io.File;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
 import junit.framework.Assert;
+
 import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import thewebsemantic.Sparql;
+import thewebsemantic.binding.Jenabean;
+import eu.scape_project.watch.core.dao.EntityTypeDAO;
+import eu.scape_project.watch.core.listener.ApplicationStartupListener;
+import eu.scape_project.watch.core.model.EntityType;
 
 /**
  * 
@@ -32,15 +34,15 @@ public class KBTest {
   /**
    * A temporary directory to hold the data.
    */
-  private static final File DATA_TEMP_DIR = Files.createTempDir();
+  private static final String DATA_TEMP_DIR = "/tmp/watch";
 
   /**
    * Initialize the data folder.
    */
   @BeforeClass
   public static void beforeClass() {
-    LOG.info("Creating data folder at " + DATA_TEMP_DIR.getPath());
-    KB.setDataFolder(DATA_TEMP_DIR.getPath());
+    ApplicationStartupListener startup = new ApplicationStartupListener();
+    startup.contextInitialized(null);
   }
 
   /**
@@ -48,8 +50,8 @@ public class KBTest {
    */
   @AfterClass
   public static void afterClass() {
-    LOG.info("Deleting data folder at " + DATA_TEMP_DIR.getPath());
-    FileUtils.deleteQuietly(DATA_TEMP_DIR);
+    LOG.info("Deleting data folder at " + DATA_TEMP_DIR);
+    FileUtils.deleteQuietly(new File(DATA_TEMP_DIR));
   }
 
   /**
@@ -57,7 +59,6 @@ public class KBTest {
    */
   @Test
   public void testEntityType() {
-    KB.getInstance();
 
     // CREATE
     final EntityType type = new EntityType();
@@ -69,13 +70,13 @@ public class KBTest {
     KBUtils.printStatements();
 
     // List
-    final Collection<EntityType> types = KB.getInstance().getReader().load(EntityType.class);
+    final Collection<EntityType> types = Jenabean.instance().reader().load(EntityType.class);
 
     Assert.assertTrue(types.contains(type));
 
     // QUERY
-    final String query = KB.PREFIXES_DECL + "SELECT ?s WHERE { ?s rdf:type watch:EntityType }";
-    final List<EntityType> types2 = Sparql.exec(KB.getInstance().getModel(), EntityType.class, query);
+    final String query = KBUtils.PREFIXES_DECL + "SELECT ?s WHERE { ?s rdf:type watch:EntityType }";
+    final List<EntityType> types2 = Sparql.exec(Jenabean.instance().model(), EntityType.class, query);
 
     Assert.assertTrue(types2.contains(type));
 
@@ -89,12 +90,12 @@ public class KBTest {
     type.delete();
 
     // LIST AGAIN
-    final Collection<EntityType> types3 = KB.getInstance().getReader().load(EntityType.class);
+    final Collection<EntityType> types3 = Jenabean.instance().reader().load(EntityType.class);
 
     Assert.assertFalse(types3.contains(type));
 
     // QUERY AGAIN
-    final List<EntityType> types4 = Sparql.exec(KB.getInstance().getModel(), EntityType.class, query);
+    final List<EntityType> types4 = Sparql.exec(Jenabean.instance().model(), EntityType.class, query);
 
     Assert.assertFalse(types4.contains(type));
 

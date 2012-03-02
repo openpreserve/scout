@@ -14,20 +14,21 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.Logger;
+
+import thewebsemantic.binding.Jenabean;
+
 import com.wordnik.swagger.core.ApiError;
 import com.wordnik.swagger.core.ApiErrors;
 import com.wordnik.swagger.core.ApiOperation;
 import com.wordnik.swagger.core.ApiParam;
 import com.wordnik.swagger.core.JavaHelp;
 
-import eu.scape_project.watch.core.KB;
 import eu.scape_project.watch.core.dao.EntityTypeDAO;
 import eu.scape_project.watch.core.dao.PropertyDAO;
 import eu.scape_project.watch.core.model.EntityType;
 import eu.scape_project.watch.core.model.Property;
 import eu.scape_project.watch.core.rest.exception.NotFoundException;
-
-import org.apache.log4j.Logger;
 
 /**
  * 
@@ -78,7 +79,7 @@ public class PropertyResource extends JavaHelp {
   @Path("/list")
   @ApiOperation(value = "List all properties", notes = "")
   public Response listProperty() {
-    final Collection<Property> list = KB.getInstance().getReader().load(Property.class);
+    final Collection<Property> list = Jenabean.instance().reader().load(Property.class);
     return Response.ok().entity(new GenericEntity<Collection<Property>>(list) {
     }).build();
   }

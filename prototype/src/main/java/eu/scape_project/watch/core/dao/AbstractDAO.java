@@ -3,6 +3,14 @@ package eu.scape_project.watch.core.dao;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import thewebsemantic.NotFoundException;
+import thewebsemantic.Sparql;
+import thewebsemantic.binding.Jenabean;
+import thewebsemantic.binding.RdfBean;
+
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
@@ -12,15 +20,7 @@ import com.hp.hpl.jena.query.QuerySolutionMap;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Literal;
 
-import eu.scape_project.watch.core.KB;
-import eu.scape_project.watch.core.model.Entity;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import thewebsemantic.NotFoundException;
-import thewebsemantic.Sparql;
-import thewebsemantic.binding.RdfBean;
+import eu.scape_project.watch.core.KBUtils;
 
 /**
  * Abstract class to base Data Access Object class creation.
@@ -47,7 +47,7 @@ public abstract class AbstractDAO {
    */
   protected static <T extends RdfBean<T>> T findById(final String id, final Class<T> typeClass) {
     try {
-      return KB.getInstance().getReader().load(typeClass, id);
+      return Jenabean.instance().reader().load(typeClass, id);
     } catch (final NotFoundException e) {
       return null;
     }
@@ -75,14 +75,14 @@ public abstract class AbstractDAO {
   protected static <T extends RdfBean<T>> List<T> query(final Class<T> typeClass, final String bindings,
     final int start, final int max) {
 
-    final String classType = KB.WATCH_PREFIX + typeClass.getSimpleName();
+    final String classType = KBUtils.WATCH_PREFIX + typeClass.getSimpleName();
 
-    final String sparql = String.format(KB.PREFIXES_DECL + "SELECT ?s WHERE { ?s %1$s %2$s . %3$s}", KB.RDF_TYPE_REL,
+    final String sparql = String.format(KBUtils.PREFIXES_DECL + "SELECT ?s WHERE { ?s %1$s %2$s . %3$s}", KBUtils.RDF_TYPE_REL,
       classType, bindings);
 
     LOG.debug("SPARQL:\n {}", sparql);
 
-    final LinkedList<T> results = Sparql.exec(KB.getInstance().getReader(), typeClass, sparql, new QuerySolutionMap(),
+    final LinkedList<T> results = Sparql.exec(Jenabean.instance().reader(), typeClass, sparql, new QuerySolutionMap(),
       start, max);
 
     return results;
@@ -106,13 +106,13 @@ public abstract class AbstractDAO {
   protected static <T extends RdfBean<T>> int count(final Class<T> typeClass, final String bindings) {
     int count = -1;
 
-    final String classType = KB.WATCH_PREFIX + typeClass.getSimpleName();
+    final String classType = KBUtils.WATCH_PREFIX + typeClass.getSimpleName();
 
-    final String sparql = String.format(KB.XSD_PREFIX_DECL + KB.RDF_PREFIX_DECL + KB.WATCH_PREFIX_DECL
-      + "SELECT count(?s) WHERE { ?s %1$s %2$s . %3$s}", KB.RDF_TYPE_REL, classType, bindings);
+    final String sparql = String.format(KBUtils.XSD_PREFIX_DECL + KBUtils.RDF_PREFIX_DECL + KBUtils.WATCH_PREFIX_DECL
+      + "SELECT count(?s) WHERE { ?s %1$s %2$s . %3$s}", KBUtils.RDF_TYPE_REL, classType, bindings);
 
     final Query query = QueryFactory.create(sparql);
-    final QueryExecution qexec = QueryExecutionFactory.create(query, KB.getInstance().getModel());
+    final QueryExecution qexec = QueryExecutionFactory.create(query, Jenabean.instance().model());
     try {
       final ResultSet results = qexec.execSelect();
       if (results.hasNext()) {

@@ -14,18 +14,19 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.Logger;
+
+import thewebsemantic.binding.Jenabean;
+
 import com.wordnik.swagger.core.ApiError;
 import com.wordnik.swagger.core.ApiErrors;
 import com.wordnik.swagger.core.ApiOperation;
 import com.wordnik.swagger.core.ApiParam;
 import com.wordnik.swagger.core.JavaHelp;
 
-import eu.scape_project.watch.core.KB;
 import eu.scape_project.watch.core.dao.EntityTypeDAO;
 import eu.scape_project.watch.core.model.EntityType;
 import eu.scape_project.watch.core.rest.exception.NotFoundException;
-
-import org.apache.log4j.Logger;
 
 /**
  * 
@@ -35,11 +36,6 @@ import org.apache.log4j.Logger;
  * 
  */
 public class EntityTypeResource extends JavaHelp {
-
-  static {
-    // Binding KB with Jenabean
-    KB.getInstance();
-  }
 
   /**
    * Logger.
@@ -77,7 +73,7 @@ public class EntityTypeResource extends JavaHelp {
   @Path("/list")
   @ApiOperation(value = "List all entity types", notes = "")
   public Response listEntityType() {
-    final Collection<EntityType> list = KB.getInstance().getReader().load(EntityType.class);
+    final Collection<EntityType> list = Jenabean.instance().reader().load(EntityType.class);
     return Response.ok().entity(new GenericEntity<Collection<EntityType>>(list) {
     }).build();
   }

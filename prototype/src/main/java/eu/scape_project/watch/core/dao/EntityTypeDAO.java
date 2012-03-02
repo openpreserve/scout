@@ -2,7 +2,7 @@ package eu.scape_project.watch.core.dao;
 
 import java.util.List;
 
-import eu.scape_project.watch.core.KB;
+import eu.scape_project.watch.core.KBUtils;
 import eu.scape_project.watch.core.model.EntityType;
 
 /**
@@ -21,7 +21,7 @@ public class EntityTypeDAO extends AbstractDAO {
    * @return the complete RDF Id, using namespace prefix.
    */
   public static String getEntityTypeRDFId(final String entityTypeName) {
-    return "<" + KB.WATCH_NS + EntityType.class.getSimpleName() + "/" + entityTypeName + ">";
+    return "<" + KBUtils.WATCH_NS + EntityType.class.getSimpleName() + "/" + entityTypeName + ">";
   }
 
   /**

@@ -5,22 +5,6 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 import java.util.List;
 
-import com.google.common.io.Files;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.json.JSONConfiguration;
-import com.sun.jersey.test.framework.JerseyTest;
-import com.sun.jersey.test.framework.WebAppDescriptor;
-
-import eu.scape_project.watch.core.KB;
-import eu.scape_project.watch.core.model.Entity;
-import eu.scape_project.watch.core.model.EntityType;
-import eu.scape_project.watch.core.model.Property;
-import eu.scape_project.watch.core.model.PropertyValue;
-import eu.scape_project.watch.core.model.RequestTarget;
-
 import org.apache.commons.io.FileUtils;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.junit.AfterClass;
@@ -33,7 +17,20 @@ import org.junit.rules.TestWatchman;
 import org.junit.runners.model.FrameworkMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import thewebsemantic.binding.RdfBean;
+
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
+import com.sun.jersey.test.framework.JerseyTest;
+import com.sun.jersey.test.framework.WebAppDescriptor;
+
+import eu.scape_project.watch.core.listener.ApplicationStartupListener;
+import eu.scape_project.watch.core.model.Entity;
+import eu.scape_project.watch.core.model.EntityType;
+import eu.scape_project.watch.core.model.Property;
+import eu.scape_project.watch.core.model.PropertyValue;
 
 /**
  * Unit tests of the watch core REST API.
@@ -70,24 +67,24 @@ public class CoreRestTest extends JerseyTest {
   /**
    * Temporary directory to keep the KB data.
    */
-  private static final File DATA_TEMP_DIR = Files.createTempDir();
+  private static final String DATA_TEMP_DIR = "/tmp/watch";
 
   /**
-   * Initialize data folder.
+   * Initialize the data folder.
    */
   @BeforeClass
   public static void beforeClass() {
-    LOG.info("Creating data folder at " + DATA_TEMP_DIR.getPath());
-    KB.setDataFolder(DATA_TEMP_DIR.getPath());
+    ApplicationStartupListener startup = new ApplicationStartupListener();
+    startup.contextInitialized(null);
   }
 
   /**
-   * Cleanup data folder.
+   * Cleanup the data folder.
    */
   @AfterClass
   public static void afterClass() {
-    LOG.info("Deleting data folder at " + DATA_TEMP_DIR.getPath());
-    FileUtils.deleteQuietly(DATA_TEMP_DIR);
+    LOG.info("Deleting data folder at " + DATA_TEMP_DIR);
+    FileUtils.deleteQuietly(new File(DATA_TEMP_DIR));
   }
 
   /**

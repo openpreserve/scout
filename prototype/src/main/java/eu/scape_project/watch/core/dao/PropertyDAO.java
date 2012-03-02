@@ -1,6 +1,6 @@
 package eu.scape_project.watch.core.dao;
 
-import eu.scape_project.watch.core.KB;
+import eu.scape_project.watch.core.KBUtils;
 import eu.scape_project.watch.core.model.EntityType;
 import eu.scape_project.watch.core.model.Property;
 
@@ -17,7 +17,7 @@ public class PropertyDAO extends AbstractDAO {
   /**
    * The name of the relationship to {@link EntityType} in {@link Property}.
    */
-  private static final String ENTITY_TYPE_REL = KB.WATCH_PREFIX + "type";
+  private static final String ENTITY_TYPE_REL = KBUtils.WATCH_PREFIX + "type";
 
   /**
    * Logger.
@@ -35,7 +35,7 @@ public class PropertyDAO extends AbstractDAO {
    * @return The complete Property RDF Id using namescape prefix
    */
   public static String getPropertyRDFId(final String entityType, final String propertyName) {
-    return KB.WATCH_NS + Property.class.getSimpleName() + "/" + Property.createId(entityType, propertyName);
+    return KBUtils.WATCH_NS + Property.class.getSimpleName() + "/" + Property.createId(entityType, propertyName);
   }
 
   /**

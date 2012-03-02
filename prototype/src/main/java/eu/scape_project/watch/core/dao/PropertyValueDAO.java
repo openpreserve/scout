@@ -1,6 +1,6 @@
 package eu.scape_project.watch.core.dao;
 
-import eu.scape_project.watch.core.KB;
+import eu.scape_project.watch.core.KBUtils;
 import eu.scape_project.watch.core.model.Entity;
 import eu.scape_project.watch.core.model.EntityType;
 import eu.scape_project.watch.core.model.Property;
@@ -20,12 +20,12 @@ public class PropertyValueDAO extends AbstractDAO {
   /**
    * The name of the relationship to {@link Entity} in {@link PropertyValue}.
    */
-  private static final String ENTITY_REL = KB.WATCH_PREFIX + "entity";
+  private static final String ENTITY_REL = KBUtils.WATCH_PREFIX + "entity";
 
   /**
    * The name of the relationship to {@link Property} in {@link PropertyValue}.
    */
-  private static final String PROPERTY_REL = KB.WATCH_PREFIX + "property";
+  private static final String PROPERTY_REL = KBUtils.WATCH_PREFIX + "property";
 
   /**
    * Find {@link PropertyValue} by the related {@link Entity} and

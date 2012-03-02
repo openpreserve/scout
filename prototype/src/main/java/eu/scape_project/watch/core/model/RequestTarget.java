@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import thewebsemantic.binding.RdfBean;
 
-import eu.scape_project.watch.core.KB;
+import eu.scape_project.watch.core.KBUtils;
 
 /**
  * 
@@ -14,7 +14,7 @@ import eu.scape_project.watch.core.KB;
  * @author Luis Faria <lfaria@keep.pt>
  * 
  */
-@XmlType(name = KB.REQUEST_TARGET)
+@XmlType(name = KBUtils.REQUEST_TARGET)
 @XmlEnum
 public enum RequestTarget {
   /**

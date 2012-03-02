@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import eu.scape_project.watch.core.KB;
+import eu.scape_project.watch.core.KBUtils;
 import eu.scape_project.watch.core.common.ModelUtils;
 
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -26,8 +26,8 @@ import thewebsemantic.binding.RdfBean;
  * @author Luis Faria <lfaria@keep.pt>
  * 
  */
-@Namespace(KB.WATCH_NS)
-@XmlRootElement(name = KB.SOURCE_ADAPTOR)
+@Namespace(KBUtils.WATCH_NS)
+@XmlRootElement(name = KBUtils.SOURCE_ADAPTOR)
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SourceAdaptor extends RdfBean<SourceAdaptor> {
 

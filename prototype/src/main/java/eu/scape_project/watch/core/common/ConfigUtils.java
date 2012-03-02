@@ -22,6 +22,8 @@ public class ConfigUtils {
 
   public static final String KB_DATA_FOLDER_KEY = "watch.kb.data_folder";
 
+  public static final String KB_INSERT_TEST_DATA = "watch.kb.test_data";
+
   private static final String DEFAULT_PROPERTIES = "watchconfig.properties";
 
   private static final String USER_PROPERTIES = System.getProperty("user.home") + "/.watchconfig";
@@ -29,6 +31,7 @@ public class ConfigUtils {
   private static final String SYSTEM_PROPERTIES = "/etc/watchconfig";
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ConfigUtils.class);
+
 
   private Properties config;
 
@@ -107,6 +110,10 @@ public class ConfigUtils {
 
   public int getIntProperty(String key) {
     return Integer.parseInt(this.config.getProperty(key, "-1"));
+  }
+  
+  public boolean getBooleanProperty(String key) {
+    return Boolean.valueOf(this.config.getProperty(key, "false"));
   }
 
 }

@@ -3,24 +3,8 @@
  */
 package eu.scape_project.watch.core.rest.resource;
 
-import com.wordnik.swagger.core.ApiError;
-import com.wordnik.swagger.core.ApiErrors;
-import com.wordnik.swagger.core.ApiOperation;
-import com.wordnik.swagger.core.ApiParam;
-import com.wordnik.swagger.core.JavaHelp;
-import eu.scape_project.watch.core.KB;
-import eu.scape_project.watch.core.dao.EntityDAO;
-import eu.scape_project.watch.core.dao.PropertyDAO;
-import eu.scape_project.watch.core.dao.PropertyValueDAO;
-import eu.scape_project.watch.core.model.Entity;
-import eu.scape_project.watch.core.model.Property;
-import eu.scape_project.watch.core.model.PropertyValue;
-import eu.scape_project.watch.core.rest.exception.ApiException;
-import eu.scape_project.watch.core.rest.exception.NotFoundException;
-
 import java.util.Collection;
 
-import javax.persistence.EntityExistsException;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -29,9 +13,22 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
-import javax.xml.bind.PropertyException;
 
-import org.omg.CosNaming.NamingContextPackage.NotFound;
+import thewebsemantic.binding.Jenabean;
+
+import com.wordnik.swagger.core.ApiError;
+import com.wordnik.swagger.core.ApiErrors;
+import com.wordnik.swagger.core.ApiOperation;
+import com.wordnik.swagger.core.ApiParam;
+import com.wordnik.swagger.core.JavaHelp;
+
+import eu.scape_project.watch.core.dao.EntityDAO;
+import eu.scape_project.watch.core.dao.PropertyDAO;
+import eu.scape_project.watch.core.dao.PropertyValueDAO;
+import eu.scape_project.watch.core.model.Entity;
+import eu.scape_project.watch.core.model.Property;
+import eu.scape_project.watch.core.model.PropertyValue;
+import eu.scape_project.watch.core.rest.exception.NotFoundException;
 
 /**
  * REST API for {@link PropertyValue} operations.
@@ -85,7 +82,7 @@ public class PropertyValueResource extends JavaHelp {
   public Response listPropertyValue() {
     // TODO list property values of an entity
     // TODO list property values of an entity and property
-    final Collection<PropertyValue> list = KB.getInstance().getReader().load(PropertyValue.class);
+    final Collection<PropertyValue> list = Jenabean.instance().reader().load(PropertyValue.class);
     return Response.ok().entity(new GenericEntity<Collection<PropertyValue>>(list) {
     }).build();
   }

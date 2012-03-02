@@ -5,7 +5,7 @@ import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
-import eu.scape_project.watch.core.KB;
+import eu.scape_project.watch.core.KBUtils;
 import eu.scape_project.watch.core.model.Entity;
 import eu.scape_project.watch.core.model.EntityType;
 import eu.scape_project.watch.core.model.Property;
@@ -136,7 +136,7 @@ public class WatchClient {
    * @return the created entity
    */
   public Entity createEntity(final String name, final String type) {
-    return this.resource.path(KB.ENTITY + FS + this.format + AS + name).accept(this.format.getMediaType())
+    return this.resource.path(KBUtils.ENTITY + FS + this.format + AS + name).accept(this.format.getMediaType())
       .post(Entity.class, type);
   }
 
@@ -149,7 +149,7 @@ public class WatchClient {
    */
   public Entity getEntity(final String name) {
     try {
-      return this.resource.path(KB.ENTITY + FS + this.format + AS + name).accept(this.format.getMediaType())
+      return this.resource.path(KBUtils.ENTITY + FS + this.format + AS + name).accept(this.format.getMediaType())
         .get(Entity.class);
     } catch (final UniformInterfaceException e) {
       final ClientResponse resp = e.getResponse();
@@ -171,7 +171,7 @@ public class WatchClient {
    * @return the updated entity after merged with the knowledge base
    */
   public Entity updateEntity(final String name, final Entity entity) {
-    return this.resource.path(KB.ENTITY + FS + this.format + AS + name).accept(this.format.getMediaType())
+    return this.resource.path(KBUtils.ENTITY + FS + this.format + AS + name).accept(this.format.getMediaType())
       .put(Entity.class, entity);
   }
 
@@ -185,7 +185,7 @@ public class WatchClient {
   }
 
   public List<Entity> listEntity(String type, int start, int max) {
-    return (List<Entity>) this.resource.path(KB.ENTITY + FS + this.format + AS + LIST)
+    return (List<Entity>) this.resource.path(KBUtils.ENTITY + FS + this.format + AS + LIST)
       .queryParam(TYPE, type != null ? type : "").queryParam(START, Integer.toString(start))
       .queryParam(MAX, Integer.toString(max)).accept(this.format.getMediaType()).get(new GenericType<List<Entity>>() {
       });
@@ -199,7 +199,7 @@ public class WatchClient {
    * @return the deleted entity.
    */
   public Entity deleteEntity(final String name) {
-    return this.resource.path(KB.ENTITY + FS + this.format + AS + name).accept(this.format.getMediaType())
+    return this.resource.path(KBUtils.ENTITY + FS + this.format + AS + name).accept(this.format.getMediaType())
       .delete(Entity.class);
   }
 
@@ -213,7 +213,7 @@ public class WatchClient {
    * @return the newly created entity type
    */
   public EntityType createEntityType(final String name, final String description) {
-    return this.resource.path(KB.ENTITY_TYPE + FS + this.format + AS + name).accept(this.format.getMediaType())
+    return this.resource.path(KBUtils.ENTITY_TYPE + FS + this.format + AS + name).accept(this.format.getMediaType())
       .post(EntityType.class, description);
   }
 
@@ -226,7 +226,7 @@ public class WatchClient {
    */
   public EntityType getEntityType(final String name) {
     try {
-      return this.resource.path(KB.ENTITY_TYPE + FS + this.format + AS + name).accept(this.format.getMediaType())
+      return this.resource.path(KBUtils.ENTITY_TYPE + FS + this.format + AS + name).accept(this.format.getMediaType())
         .get(EntityType.class);
     } catch (final UniformInterfaceException e) {
       final ClientResponse resp = e.getResponse();
@@ -248,7 +248,7 @@ public class WatchClient {
    * @return the updated entity type
    */
   public EntityType updateEntityType(final String name, final EntityType entity) {
-    return this.resource.path(KB.ENTITY_TYPE + FS + this.format + AS + name).accept(this.format.getMediaType())
+    return this.resource.path(KBUtils.ENTITY_TYPE + FS + this.format + AS + name).accept(this.format.getMediaType())
       .put(EntityType.class, entity);
   }
 
@@ -258,7 +258,7 @@ public class WatchClient {
    * @return A complete list of entity types in the KB.
    */
   public List<EntityType> listEntityType() {
-    return (List<EntityType>) this.resource.path(KB.ENTITY_TYPE + FS + this.format + AS + LIST)
+    return (List<EntityType>) this.resource.path(KBUtils.ENTITY_TYPE + FS + this.format + AS + LIST)
       .accept(this.format.getMediaType()).get(new GenericType<List<EntityType>>() {
       });
   }
@@ -271,7 +271,7 @@ public class WatchClient {
    * @return the deleted entity type
    */
   public EntityType deleteEntityType(final String name) {
-    return this.resource.path(KB.ENTITY_TYPE + FS + this.format + AS + name).accept(this.format.getMediaType())
+    return this.resource.path(KBUtils.ENTITY_TYPE + FS + this.format + AS + name).accept(this.format.getMediaType())
       .delete(EntityType.class);
   }
 
@@ -287,7 +287,7 @@ public class WatchClient {
    * @return the newly created property
    */
   public Property createProperty(final String type, final String name, final String description) {
-    return this.resource.path(KB.PROPERTY + FS + this.format + AS + type + AS + name)
+    return this.resource.path(KBUtils.PROPERTY + FS + this.format + AS + type + AS + name)
       .accept(this.format.getMediaType()).post(Property.class, description);
   }
 
@@ -302,7 +302,7 @@ public class WatchClient {
    */
   public Property getProperty(final String type, final String name) {
     try {
-      return this.resource.path(KB.PROPERTY + FS + this.format + AS + type + AS + name)
+      return this.resource.path(KBUtils.PROPERTY + FS + this.format + AS + type + AS + name)
         .accept(this.format.getMediaType()).get(Property.class);
     } catch (final UniformInterfaceException e) {
       final ClientResponse resp = e.getResponse();
@@ -326,7 +326,7 @@ public class WatchClient {
    * @return the updated Property after merging with the KB.
    */
   public Property updateProperty(final String type, final String name, final Property property) {
-    return this.resource.path(KB.PROPERTY + FS + this.format + AS + type + AS + name)
+    return this.resource.path(KBUtils.PROPERTY + FS + this.format + AS + type + AS + name)
       .accept(this.format.getMediaType()).put(Property.class, property);
   }
 
@@ -336,7 +336,7 @@ public class WatchClient {
    * @return A complete list of all properties in the KB
    */
   public List<Property> listProperty() {
-    return (List<Property>) this.resource.path(KB.PROPERTY + FS + this.format + AS + LIST)
+    return (List<Property>) this.resource.path(KBUtils.PROPERTY + FS + this.format + AS + LIST)
       .accept(this.format.getMediaType()).get(new GenericType<List<Property>>() {
       });
   }
@@ -351,7 +351,7 @@ public class WatchClient {
    * @return The deleted property.
    */
   public Property deleteProperty(final String type, final String name) {
-    return this.resource.path(KB.PROPERTY + FS + this.format + AS + type + AS + name)
+    return this.resource.path(KBUtils.PROPERTY + FS + this.format + AS + type + AS + name)
       .accept(this.format.getMediaType()).delete(Property.class);
     // TODO treat the not found exception
   }
@@ -368,7 +368,7 @@ public class WatchClient {
    * @return the newly created {@link PropertyValue}
    */
   public PropertyValue createPropertyValue(final String entity, final String property, final String value) {
-    return this.resource.path(KB.PROPERTY_VALUE + FS + this.format + AS + entity + AS + property)
+    return this.resource.path(KBUtils.PROPERTY_VALUE + FS + this.format + AS + entity + AS + property)
       .accept(this.format.getMediaType()).post(PropertyValue.class, value);
   }
 
@@ -383,7 +383,7 @@ public class WatchClient {
    */
   public PropertyValue getPropertyValue(final String entity, final String property) {
     try {
-      return this.resource.path(KB.PROPERTY_VALUE + FS + this.format + AS + entity + AS + property)
+      return this.resource.path(KBUtils.PROPERTY_VALUE + FS + this.format + AS + entity + AS + property)
         .accept(this.format.getMediaType()).get(PropertyValue.class);
     } catch (final UniformInterfaceException e) {
       final ClientResponse resp = e.getResponse();
@@ -408,7 +408,7 @@ public class WatchClient {
    * @return the updated {@link PropertyValue}
    */
   public PropertyValue updatePropertyValue(final String entity, final String property, final String value) {
-    return this.resource.path(KB.PROPERTY_VALUE + FS + this.format + AS + entity + AS + property)
+    return this.resource.path(KBUtils.PROPERTY_VALUE + FS + this.format + AS + entity + AS + property)
       .accept(this.format.getMediaType()).put(PropertyValue.class, value);
   }
 
@@ -418,7 +418,7 @@ public class WatchClient {
    * @return the complete list of property values in the KB
    */
   public List<PropertyValue> listPropertyValue() {
-    return (List<PropertyValue>) this.resource.path(KB.PROPERTY_VALUE + FS + this.format + AS + LIST)
+    return (List<PropertyValue>) this.resource.path(KBUtils.PROPERTY_VALUE + FS + this.format + AS + LIST)
       .accept(this.format.getMediaType()).get(new GenericType<List<PropertyValue>>() {
       });
   }
@@ -433,7 +433,7 @@ public class WatchClient {
    * @return the deleted property value.
    */
   public PropertyValue deletePropertyValue(final String entity, final String property) {
-    return this.resource.path(KB.PROPERTY_VALUE + FS + this.format + AS + entity + AS + property)
+    return this.resource.path(KBUtils.PROPERTY_VALUE + FS + this.format + AS + entity + AS + property)
       .accept(this.format.getMediaType()).delete(PropertyValue.class);
     // TODO treat the not found exception
   }
@@ -461,7 +461,7 @@ public class WatchClient {
 
     final RequestTarget target = RequestTarget.getTargetByClass(targetClass);
 
-    final Builder builder = this.resource.path(KB.SYNC_REQUEST + FS + this.format + AS + target)
+    final Builder builder = this.resource.path(KBUtils.SYNC_REQUEST + FS + this.format + AS + target)
       .queryParam(QUERY, query).queryParam(START, Integer.toString(start)).queryParam(MAX, Integer.toString(max))
       .accept(this.format.getMediaType());
 

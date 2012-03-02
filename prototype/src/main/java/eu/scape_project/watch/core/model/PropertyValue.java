@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import eu.scape_project.watch.core.KB;
+import eu.scape_project.watch.core.KBUtils;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -21,8 +21,8 @@ import thewebsemantic.binding.RdfBean;
  * 
  * @author Luis Faria <lfaria@keep.pt>
  */
-@Namespace(KB.WATCH_NS)
-@XmlRootElement(name = KB.PROPERTY_VALUE)
+@Namespace(KBUtils.WATCH_NS)
+@XmlRootElement(name = KBUtils.PROPERTY_VALUE)
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PropertyValue extends RdfBean<PropertyValue> {
 

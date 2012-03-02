@@ -1,6 +1,6 @@
 package eu.scape_project.watch.core.model;
 
-import eu.scape_project.watch.core.KB;
+import eu.scape_project.watch.core.KBUtils;
 import eu.scape_project.watch.core.common.ModelUtils;
 
 import java.util.Collection;
@@ -25,8 +25,8 @@ import thewebsemantic.binding.RdfBean;
  * 
  * @author Luis Faria <lfaria@keep.pt>
  */
-@Namespace(KB.WATCH_NS)
-@XmlRootElement(name = KB.NOTIFICATION)
+@Namespace(KBUtils.WATCH_NS)
+@XmlRootElement(name = KBUtils.NOTIFICATION)
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Notification extends RdfBean<Notification> {
 

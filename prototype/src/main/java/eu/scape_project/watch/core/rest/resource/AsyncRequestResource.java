@@ -3,16 +3,6 @@
  */
 package eu.scape_project.watch.core.rest.resource;
 
-import com.wordnik.swagger.core.ApiError;
-import com.wordnik.swagger.core.ApiErrors;
-import com.wordnik.swagger.core.ApiOperation;
-import com.wordnik.swagger.core.ApiParam;
-import com.wordnik.swagger.core.JavaHelp;
-import eu.scape_project.watch.core.KB;
-import eu.scape_project.watch.core.dao.AsyncRequestDAO;
-import eu.scape_project.watch.core.model.AsyncRequest;
-import eu.scape_project.watch.core.rest.exception.NotFoundException;
-
 import java.util.Collection;
 
 import javax.ws.rs.GET;
@@ -20,6 +10,18 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
+
+import thewebsemantic.binding.Jenabean;
+
+import com.wordnik.swagger.core.ApiError;
+import com.wordnik.swagger.core.ApiErrors;
+import com.wordnik.swagger.core.ApiOperation;
+import com.wordnik.swagger.core.ApiParam;
+import com.wordnik.swagger.core.JavaHelp;
+
+import eu.scape_project.watch.core.dao.AsyncRequestDAO;
+import eu.scape_project.watch.core.model.AsyncRequest;
+import eu.scape_project.watch.core.rest.exception.NotFoundException;
 
 /**
  * REST API for {@link AsyncRequest} operations.
@@ -63,7 +65,7 @@ public class AsyncRequestResource extends JavaHelp {
   @Path("/list")
   @ApiOperation(value = "List all async requests", notes = "")
   public Response listAsyncRequest() {
-    final Collection<AsyncRequest> list = KB.getInstance().getReader().load(AsyncRequest.class);
+    final Collection<AsyncRequest> list = Jenabean.instance().reader().load(AsyncRequest.class);
     return Response.ok().entity(new GenericEntity<Collection<AsyncRequest>>(list) {
     }).build();
   }

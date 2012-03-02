@@ -1,6 +1,6 @@
 package eu.scape_project.watch.core.dao;
 
-import eu.scape_project.watch.core.KB;
+import eu.scape_project.watch.core.KBUtils;
 import eu.scape_project.watch.core.model.Entity;
 import eu.scape_project.watch.core.model.EntityType;
 
@@ -28,10 +28,10 @@ public class EntityDAO extends AbstractDAO {
   /**
    * The name of the relationship to {@link EntityType} in {@link Entity}.
    */
-  private static final String ENTITY_TYPE_REL = KB.WATCH_PREFIX + "type";
+  private static final String ENTITY_TYPE_REL = KBUtils.WATCH_PREFIX + "type";
 
   public static String getEntityRDFId(String entityName) {
-    return "<" + KB.WATCH_NS + Entity.class.getSimpleName() + "/" + entityName + ">";
+    return "<" + KBUtils.WATCH_NS + Entity.class.getSimpleName() + "/" + entityName + ">";
   }
 
   /**

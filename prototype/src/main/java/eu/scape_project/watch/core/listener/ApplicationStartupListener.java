@@ -19,6 +19,14 @@ import com.hp.hpl.jena.tdb.TDBFactory;
 import eu.scape_project.watch.core.KBUtils;
 import eu.scape_project.watch.core.common.ConfigUtils;
 
+/**
+ * An application startup listener, that is invoked by the container on
+ * application launch. It is currently used to initialize and insert some test
+ * data.
+ * 
+ * @author petar
+ * 
+ */
 public class ApplicationStartupListener implements ServletContextListener {
 
   private static final Logger LOG = LoggerFactory.getLogger(ApplicationStartupListener.class);
@@ -45,13 +53,13 @@ public class ApplicationStartupListener implements ServletContextListener {
     final ConfigUtils conf = new ConfigUtils();
     String datafolder = conf.getStringProperty(ConfigUtils.KB_DATA_FOLDER_KEY);
     boolean initdata = conf.getBooleanProperty(ConfigUtils.KB_INSERT_TEST_DATA);
-    
+
     final File dataFolderFile = new File(datafolder);
     try {
-      
+
       if (!dataFolderFile.exists()) {
         FileUtils.forceMkdir(dataFolderFile);
-        initdata = true; //init first time.. later we should remove this line
+        initdata = true; // init first time.. later we should remove this line
       }
 
       Model model = TDBFactory.createModel(datafolder);
@@ -69,11 +77,13 @@ public class ApplicationStartupListener implements ServletContextListener {
       LOG.error("Data folder {} could not be created", e.getMessage());
     }
   }
-  
+
+  /**
+   * Syncs the jena model and closes it.
+   */
   private void destroy() {
     TDB.sync(Jenabean.instance().model());
     Jenabean.instance().model().close();
   }
-  
 
 }

@@ -218,7 +218,7 @@ public class Question extends RdfBean<Question> {
   
   /*
    * THESE METHODS ARE GOING TO BE REIMPLEMENTED OR COMPLETELY REMOVED
-   * AT THE MOMENT SYSTEM SUPPORT ONLY ONE ENTITYTYPE - ENTITY PER QUESTION  
+   * AT THE MOMENT SYSTEM SUPPORTS ONLY ONE ENTITYTYPE - ENTITY PER QUESTION  
    */
   public EntityType getEntityType() {
     return this.types.get(0);

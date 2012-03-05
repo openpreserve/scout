@@ -1,5 +1,6 @@
 package eu.scape_project.watch.core.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -8,13 +9,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import eu.scape_project.watch.core.KB;
-
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
+import eu.scape_project.watch.core.KB;
 
 /**
  * Questions are predefined points of interest related directly or indirectly to
@@ -215,19 +215,31 @@ public class Question extends RdfBean<Question> {
     return true;
   }
 
+  
+  /*
+   * THESE METHODS ARE GOING TO BE REIMPLEMENTED OR COMPLETELY REMOVED
+   * AT THE MOMENT SYSTEM SUPPORT ONLY ONE ENTITYTYPE - ENTITY PER QUESTION  
+   */
   public EntityType getEntityType() {
-    // TODO Auto-generated method stub
-    return null;
+    return this.types.get(0);
   }
 
   public Entity getEntity() {
-    // TODO Auto-generated method stub
-    return null;
+    return this.entities.get(0);
   }
 
   public Property getProperty() {
-    // TODO Auto-generated method stub
-    return null;
+    return this.properties.get(0);
   }
 
+  public Question(String sparql, EntityType et, Entity e, Property p, long per) {
+    this.sparql = sparql;
+    this.types = new ArrayList<EntityType>();
+    this.types.add(et);
+    this.entities = new ArrayList<Entity>();
+    this.entities.add(e);
+    this.properties = new ArrayList<Property>();
+    this.properties.add(p);
+    this.period = per;
+  }
 }

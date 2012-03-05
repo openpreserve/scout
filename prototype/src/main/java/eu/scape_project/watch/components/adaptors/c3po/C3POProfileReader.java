@@ -53,6 +53,12 @@ public class C3POProfileReader {
     Element collection = this.getCollectionElement();
     return this.getAttributeValue(collection, "elements");
   }
+  
+  public Statistics getStatistics(String property) {
+    Element collection = this.getCollectionElement();
+    Element properties = collection.element("properties");
+    return null;
+  }
 
   private Element getCollectionElement() {
     if (this.doc == null) {

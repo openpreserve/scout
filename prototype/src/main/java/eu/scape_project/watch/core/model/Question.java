@@ -15,7 +15,6 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
-import eu.scape_project.watch.core.KB;
 
 /**
  * Questions are predefined points of interest related directly or indirectly to

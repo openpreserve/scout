@@ -1,10 +1,15 @@
 package eu.scape_project.watch.core.rest;
 
+import java.util.List;
+
+import javax.ws.rs.core.MediaType;
+
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
+
 import eu.scape_project.watch.core.KBUtils;
 import eu.scape_project.watch.core.model.Entity;
 import eu.scape_project.watch.core.model.EntityType;
@@ -12,13 +17,6 @@ import eu.scape_project.watch.core.model.Property;
 import eu.scape_project.watch.core.model.PropertyValue;
 import eu.scape_project.watch.core.model.RequestTarget;
 import eu.scape_project.watch.core.rest.exception.NotFoundException;
-
-import java.util.List;
-
-import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 import thewebsemantic.binding.RdfBean;
 
 /**

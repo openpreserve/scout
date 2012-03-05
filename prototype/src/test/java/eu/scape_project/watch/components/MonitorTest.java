@@ -40,7 +40,7 @@ public class MonitorTest {
 	    et1.setName("format");
 	    e1.setName("pdf");
 	    p1.setName("tool_support");
-	    Question q1 = new Question(" ",et1,e1,p1,10000);
+//	    Question q1 = new Question(" ",et1,e1,p1,10000);
 	    
 	    //tMonitor.addQuestion(q1, 0, 10000);
 	    Date curr = new Date();

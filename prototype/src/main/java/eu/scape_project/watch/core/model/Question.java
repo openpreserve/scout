@@ -215,4 +215,19 @@ public class Question extends RdfBean<Question> {
     return true;
   }
 
+  public EntityType getEntityType() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public Entity getEntity() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public Property getProperty() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
 }

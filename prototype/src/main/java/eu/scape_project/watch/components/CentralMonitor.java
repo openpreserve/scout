@@ -51,7 +51,7 @@ public class CentralMonitor extends Thread{
 		for (int i=0; i<monitors.size(); i++) {
 			if (monitors.get(i).checkForEntityType(q.getEntityType())) {
 				//System.out.println("Adding watch question");
-				monitors.get(i).addQuestion(q,wr.getId(),q.getTime());
+				monitors.get(i).addQuestion(q,wr.getId(),q.getPeriod());
 				return; //only one monitor will answer question 
 			}
 		}

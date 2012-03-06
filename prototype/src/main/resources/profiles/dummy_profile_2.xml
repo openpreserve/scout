@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<collection-profile date="Mon Mar 05 17:31:36 CET 2012">
+  <collection name="coll-0-test" elements="3128" properties="72">
+    <properties>
+      <property id="aperture.value" name="Aperture Value" type="FLOAT" count="13" mode="4.0" expanded="false"/>
+      <property id="aperture.value.max" name="Maximum Aperture Value" type="FLOAT" count="16" mode="2.0" expanded="false"/>
+      <property id="author" name="Author" type="STRING" count="706" mode="U.S. Government Printing Office" expanded="false"/>
+      <property id="bitspersample" name="Bits Per Sample" type="DEFAULT" count="269" mode="8 8 8" expanded="false"/>
+      <property id="brightnessvalue" name="Brightness Value" type="FLOAT" count="1" mode="3.671875" expanded="false"/>
+      <property id="byteorder" name="Byte Order" type="STRING" count="216" mode="big endian" expanded="false"/>
+      <property id="capturedevice" name="Capture Device" type="STRING" count="16" mode="digital still camera" expanded="false"/>
+      <property id="characterCount" name="characterCount" type="DEFAULT" count="244" mode="7209" expanded="false"/>
+      <property id="charset" name="Character Set" type="STRING" count="896" mode="US-ASCII" expanded="false"/>
+      <property id="checksum.md5" name="MD5 Checksum" type="STRING" count="3128" mode="30d25127bce83cc8205d5cffa812380d" expanded="false"/>
+      <property id="colorspace" name="Color Space" type="STRING" count="218" mode="YCbCr" expanded="false"/>
+      <property id="compressionscheme" name="Compression Scheme" type="STRING" count="271" mode="JPEG (old-style)" expanded="false"/>
+      <property id="copyrightNote" name="copyrightNote" type="DEFAULT" count="1" mode="NOAA" expanded="false"/>
+      <property id="created" name="Created At Date" type="STRING" count="1348" mode="0" expanded="false"/>
+      <property id="creating.application.name" name="Creating Application Name" type="STRING" count="1059" mode="Microsoft Office Word" expanded="false"/>
+      <property id="creating.application.version" name="Creating Application Version" type="STRING" count="252" mode="0xe063" expanded="false"/>
+      <property id="creating.os" name="Creating Application Operating System" type="STRING" count="16" mode="Unix" expanded="false"/>
+      <property id="digitalcamera.manufacturer" name="Digital Camera Manufacturer" type="STRING" count="18" mode="Canon" expanded="false"/>
+      <property id="digitalcamera.modelname" name="Digital Camera Model Name" type="STRING" count="18" mode="Canon EOS D60" expanded="false"/>
+      <property id="exifversion" name="EXIF Version" type="DEFAULT" count="18" mode="0220" expanded="false"/>
+      <property id="exposure.biasvalue" name="Exposure Bias Value" type="DEFAULT" count="18" mode="0" expanded="false"/>
+      <property id="exposure.program" name="Exposure Program" type="STRING" count="8" mode="Normal program" expanded="false"/>
+      <property id="exposureIndex" name="exposureIndex" type="DEFAULT" count="1" mode="140" expanded="false"/>
+      <property id="file.name" name="File Name" type="STRING" count="3128" mode="/home/petrov/taverna/tmp/001/001295.ps" expanded="false"/>
+      <property id="file.path" name="File Path" type="STRING" count="3128" mode="/home/petrov/taverna/tmp/001/001961.pdf" expanded="false"/>
+      <property id="flash" name="Flash" type="STRING" count="18" mode="Flash did not fire" expanded="false"/>
+      <property id="fnumber" name="Focal Ratio" type="FLOAT" count="18" mode="2.8" expanded="false"/>
+      <property id="focallength" name="Focal Length" type="FLOAT" count="18" mode="16.0" expanded="false"/>
+      <property id="format" name="Format" type="STRING" count="3128" mode="Portable Document Format" expanded="true">
+        <item value="Portable Document Format" count="700"/>
+        <item value="Plain text" count="536"/>
+        <item value="Hypertext Markup Language" count="460"/>
+        <item value="Microsoft Word" count="245"/>
+        <item value="JPEG File Interchange Format" count="228"/>
+        <item value="XLS" count="95"/>
+        <item value="Graphics Interchange Format" count="64"/>
+        <item value="Postscript" count="35"/>
+        <item value="Extensible Markup Language" count="29"/>
+        <item value="GZIP Format" count="12"/>
+        <item value="Microsoft Office Document" count="8"/>
+        <item value="PDF/X" count="7"/>
+        <item value="PDF/A" count="7"/>
+        <item value="Microsoft Powerpoint Presentation" count="5"/>
+        <item value="Unknown Binary" count="5"/>
+        <item value="Portable Network Graphics" count="3"/>
+        <item value="DBase 3 data file (50 records)" count="3"/>
+        <item value="(Corel/WP)" count="3"/>
+        <item value="Microsoft Excel Format" count="2"/>
+        <item value="DBase 3 data file (12 records)" count="2"/>
+        <item value="GLS_BINARY_LSB_FIRST" count="1"/>
+        <item value="DBase 3 data file (58 records)" count="1"/>
+        <item value="DBase 3 data file (6 records)" count="1"/>
+        <item value="Par archive data" count="1"/>
+        <item value="SoundBlaster instrument data" count="1"/>
+        <item value="Exchangeable Image File Format" count="1"/>
+      </property>
+      <property id="format.version" name="Format Version" type="STRING" count="1816" mode="1.4" expanded="false"/>
+      <property id="has.annotations" name="Has Annotations" type="BOOL" count="717" mode="false" expanded="false"/>
+      <property id="has.forms" name="Has Forms" type="BOOL" count="702" mode="false" expanded="false"/>
+      <property id="has.outline" name="Has Outline" type="BOOL" count="718" mode="false" expanded="false"/>
+      <property id="icc.profile.name" name="ICC Profile Name" type="STRING" count="45" mode="sRGB IEC61966-2.1" expanded="false"/>
+      <property id="icc.profile.version" name="ICC Profile Version" type="STRING" count="45" mode="2.1.0" expanded="false"/>
+      <property id="image.height" name="Image Height" type="NUMERIC" count="272" mode="505" avg="465.19117647058823" min="19" max="5575" expanded="false"/>
+      <property id="image.width" name="Image Width" type="NUMERIC" count="272" mode="721" avg="548.125" min="16" max="3072" expanded="false"/>
+      <property id="inhibitortype" name="Inhibitor Type" type="STRING" count="32" mode="Standard v2.3" expanded="false"/>
+      <property id="is.protected" name="Is Protected" type="BOOL" count="957" mode="false" expanded="false"/>
+      <property id="is.rightsmanaged" name="Is Rights Managed" type="BOOL" count="957" mode="false" expanded="false"/>
+      <property id="is.tagged" name="Is Tagged" type="BOOL" count="718" mode="false" expanded="false"/>
+      <property id="isospeedrating" name="ISO Speed Rating" type="STRING" count="18" mode="400" expanded="false"/>
+      <property id="language" name="language" type="DEFAULT" count="308" mode="U.S. English" expanded="false"/>
+      <property id="lastmodified" name="Last Modified Date" type="STRING" count="3128" mode="1324979102000" expanded="false"/>
+      <property id="lightsource" name="Light Source" type="DEFAULT" count="229" mode="unknown" expanded="false"/>
+      <property id="linebreak" name="Line Break" type="STRING" count="526" mode="LF" expanded="false"/>
+      <property id="markupbasis" name="Markup Basis" type="STRING" count="666" mode="HTML" expanded="false"/>
+      <property id="markupBasisVersion" name="markupBasisVersion" type="DEFAULT" count="419" mode="1.0" expanded="false"/>
+      <property id="markupLanguage" name="markupLanguage" type="DEFAULT" count="13" mode="http://lcweb2.loc.gov/natlib/schemas/teixlite.dtd" expanded="false"/>
+      <property id="message" name="Message" type="STRING" count="707" mode="TargetNamespace.2: Expecting no namespace, but the schema document has a target namespace of 'http://www.iupac.org/namespaces/ThermoML'. Line = 3, Column = 236" expanded="false"/>
+      <property id="meteringmode" name="Metering Mode" type="STRING" count="18" mode="Pattern" expanded="false"/>
+      <property id="mimetype" name="MimeType" type="STRING" count="3128" mode="application/pdf" expanded="true">
+        <item value="application/pdf" count="726"/>
+        <item value="text/plain" count="533"/>
+        <item value="text/html" count="472"/>
+        <item value="application/msword" count="245"/>
+        <item value="image/jpeg" count="229"/>
+        <item value="application/vnd.ms-excel" count="98"/>
+        <item value="image/gif" count="40"/>
+        <item value="application/postscript" count="35"/>
+        <item value="text/xml" count="29"/>
+        <item value="application/octet-stream" count="24"/>
+        <item value="application/x-gzip" count="12"/>
+        <item value="application/vnd.ms-powerpoint" count="5"/>
+        <item value="image/png" count="3"/>
+        <item value="text/x-c++" count="2"/>
+        <item value="audio/x-unknown" count="1"/>
+        <item value="text/x-lisp" count="1"/>
+      </property>
+      <property id="orientation" name="Orientation" type="STRING" count="91" mode="normal*" expanded="false"/>
+      <property id="pagecount" name="Page Count" type="NUMERIC" count="961" mode="1" avg="21.803329864724244" min="0" max="1000" expanded="false"/>
+      <property id="puid" name="Pronom UID" type="STRING" count="2533" mode="x-fmt/111" expanded="true">
+        <item value="x-fmt/111" count="479"/>
+        <item value="fmt/18" count="277"/>
+        <item value="fmt/96" count="274"/>
+        <item value="fmt/44" count="161"/>
+        <item value="fmt/17" count="154"/>
+        <item value="fmt/40" count="130"/>
+        <item value="fmt/16" count="128"/>
+        <item value="fmt/20" count="71"/>
+        <item value="fmt/100" count="68"/>
+        <item value="fmt/43" count="63"/>
+        <item value="fmt/19" count="60"/>
+        <item value="fmt/99" count="46"/>
+        <item value="fmt/101" count="27"/>
+        <item value="fmt/4" count="20"/>
+        <item value="fmt/3" count="20"/>
+        <item value="fmt/15" count="20"/>
+        <item value="x-fmt/406" count="19"/>
+        <item value="fmt/98" count="16"/>
+        <item value="x-fmt/408" count="13"/>
+        <item value="x-fmt/266" count="12"/>
+        <item value="fmt/147" count="7"/>
+        <item value="fmt/146" count="7"/>
+        <item value="fmt/144" count="7"/>
+        <item value="fmt/145" count="7"/>
+        <item value="fmt/158" count="7"/>
+        <item value="fmt/157" count="7"/>
+        <item value="fmt/148" count="7"/>
+        <item value="fmt/126" count="5"/>
+        <item value="fmt/42" count="4"/>
+        <item value="fmt/11" count="3"/>
+        <item value="fmt/39" count="3"/>
+        <item value="fmt/14" count="2"/>
+        <item value="fmt/95" count="2"/>
+        <item value="x-fmt/391" count="1"/>
+        <item value="fmt/38" count="1"/>
+      </property>
+      <property id="samplesperpixel" name="Samples Per Pixel" type="NUMERIC" count="178" mode="3" avg="2.8876404494382024" min="1" max="3" expanded="false"/>
+      <property id="sampling.frequency.unit" name="Sampling Frequency Unit" type="STRING" count="229" mode="in." expanded="false"/>
+      <property id="sampling.frequency.x" name="Sampling Frequency X" type="NUMERIC" count="229" mode="100" avg="219.04803493449782" min="0" max="25293" expanded="false"/>
+      <property id="sampling.frequency.y" name="Sampling Frequency Y" type="NUMERIC" count="229" mode="100" avg="219.04803493449782" min="0" max="25293" expanded="false"/>
+      <property id="scanner.softwarename" name="Scanner Software Name" type="STRING" count="52" mode="Adobe Photoshop 7.0" expanded="false"/>
+      <property id="sensingmethod" name="Sensing Method" type="STRING" count="12" mode="One-chip color area sensor" expanded="false"/>
+      <property id="shutterspeedvalue" name="Shutter Speed Value" type="DEFAULT" count="13" mode="1/60" expanded="false"/>
+      <property id="size" name="Size" type="NUMERIC" count="3128" mode="501907" avg="570806.2419409569" min="26" max="108560208" expanded="false"/>
+      <property id="title" name="Title" type="STRING" count="812" mode="Document" expanded="false"/>
+      <property id="valid" name="Valid" type="BOOL" count="2104" mode="true" expanded="false"/>
+      <property id="wellformed" name="Well-Formed" type="BOOL" count="2104" mode="true" expanded="false"/>
+      <property id="wordCount" name="wordCount" type="DEFAULT" count="244" mode="1264" expanded="false"/>
+      <property id="YCbCrPositioning" name="YCbCrPositioning" type="DEFAULT" count="18" mode="1" expanded="false"/>
+      <property id="YCbCrSubSampling" name="YCbCrSubSampling" type="DEFAULT" count="215" mode="1 1" expanded="false"/>
+    </properties>
+  </collection>
+</collection-profile>

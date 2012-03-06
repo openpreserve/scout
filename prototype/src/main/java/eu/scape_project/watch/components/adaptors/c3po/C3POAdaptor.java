@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 /**
  * A watch conforming adaptor for a collection profile source called c3po.
  * 
- * @author peter
+ * @author Petrov <me@petarpetrov.org>
  * @version 0.1
  */
 public class C3POAdaptor extends Adaptor {

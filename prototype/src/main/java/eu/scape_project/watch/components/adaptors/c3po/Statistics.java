@@ -9,7 +9,7 @@ import com.hp.hpl.jena.tdb.store.Hash;
  * A simple helper class used to store some statics on property bases while
  * adapting the profile values to the internal knowledge base.
  * 
- * @author peter
+ * @author Petrov <me@petarpetrov.org>
  * 
  */
 public class Statistics {

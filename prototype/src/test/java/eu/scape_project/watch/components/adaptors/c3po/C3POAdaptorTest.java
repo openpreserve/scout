@@ -19,22 +19,23 @@ public class C3POAdaptorTest {
     C3POAdaptor adaptor = new C3POAdaptor();
     EntityType et = new EntityType("COLLECTION_PROFILE", "This is a collection profile");
     Entity e = new Entity(et, "Test");
-    Property p = new Property(et, C3POConstants.CP_OBJECTS_COUNT, "Retrieves the count of elements in a collection profile");
+    Property p = new Property(et, C3POConstants.CP_OBJECTS_COUNT,
+      "Retrieves the count of elements in a collection profile");
     Task t = new Task(e, p);
-    
+
     boolean supported = adaptor.checkForTask(t);
     Assert.assertTrue(supported);
-    
+
     adaptor.addTask(t);
     adaptor.fetchData();
-    
+
     List<Result> results = adaptor.getResults();
     Assert.assertEquals(1, results.size());
-    
+
     Result result = results.get(0);
     Assert.assertNotNull(result.getPropertyValue());
     Assert.assertNotSame("", result.getPropertyValue().getValue());
     Assert.assertEquals("502", result.getPropertyValue().getValue());
-    
+
   }
 }

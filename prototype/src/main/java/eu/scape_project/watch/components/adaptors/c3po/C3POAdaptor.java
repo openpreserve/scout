@@ -1,8 +1,10 @@
 package eu.scape_project.watch.components.adaptors.c3po;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 import eu.scape_project.watch.components.Adaptor;
 import eu.scape_project.watch.components.elements.Result;
@@ -18,20 +20,42 @@ import org.slf4j.LoggerFactory;
 /**
  * A watch conforming adaptor for a collection profile source called c3po.
  * 
- * @author Petrov <me@petarpetrov.org>
+ * @author Petar Petrov <me@petarpetrov.org>
  * @version 0.1
  */
 public class C3POAdaptor extends Adaptor {
 
+  /**
+   * Default logger for this adaptor.
+   */
   private static final Logger LOG = LoggerFactory.getLogger(C3POAdaptor.class);
 
-  private static final String CP_ENDPOINT = "http://localhost:8080/c3po/api";
+  /**
+   * The api endpoint of the c3po source.
+   */
+  private static String cpEndpoint = "";
 
+  /**
+   * The properties supported by this version of the adaptor.
+   */
   private List<String> supportedProperties;
 
+  /**
+   * The configuration of this adaptor instance.
+   */
+  private Properties properties;
+
+  /**
+   * The source client.
+   */
+  private IC3POClient source;
+
+  /**
+   * The default constructor inits the supported properties and reads in the
+   * default configuration.
+   */
   public C3POAdaptor() {
-    this.supportedProperties = Arrays.asList(C3POConstants.CP_COLLECTION_IDENTIFIER, C3POConstants.CP_OBJECTS_COUNT,
-      C3POConstants.CP_FORMAT_MODE, C3POConstants.CP_PUID_MODE);
+    this.init();
   }
 
   /**
@@ -52,7 +76,7 @@ public class C3POAdaptor extends Adaptor {
       return false;
     }
 
-    for (String p : supportedProperties) {
+    for (String p : this.supportedProperties) {
       if (t.getProperty().getName().equals(p)) {
         return true;
       }
@@ -62,15 +86,32 @@ public class C3POAdaptor extends Adaptor {
   }
 
   /**
+   * Retrieves the configuration value for the passed key of the loaded
+   * properties. If the key is missing or the properties were not loaded
+   * successfully the empty string is returned.
+   * 
+   * @param key
+   *          the key of the config.
+   * @return retrieves the value of the configuration key or the empty string if
+   *         not present.
+   */
+  public String getConfig(final String key) {
+    String config = "";
+    if (this.properties != null) {
+      config = this.properties.getProperty(key, "");
+    }
+
+    return config;
+  }
+
+  /**
    * Fetches dummy data from a profile output. However the no real calls to the
    * REST API of c3po are done yet.
    */
   @Override
   protected void fetchData() {
 
-    // TODO use original client
-    IC3POClient client = new C3PODummyClient();
-    List<String> identifiers = client.getCollectionIdentifiers();
+    List<String> identifiers = this.source.getCollectionIdentifiers();
 
     for (Task t : this.getTasks()) {
 
@@ -79,11 +120,11 @@ public class C3POAdaptor extends Adaptor {
 
         // this should be t.getProperties();
         List<String> properties = this.generatePropertyExpansionList(t.getProperty());
-        String uuid = client.submitCollectionProfileJob(id, properties);
+        String uuid = this.source.submitCollectionProfileJob(id, properties);
 
-        InputStream is = client.pollJobResult(uuid);
+        InputStream is = this.source.pollJobResult(uuid);
         while (is == null) {
-          is = client.pollJobResult(uuid);
+          is = this.source.pollJobResult(uuid);
           try {
             Thread.sleep(5000);
           } catch (InterruptedException e) {
@@ -117,4 +158,43 @@ public class C3POAdaptor extends Adaptor {
     return Arrays.asList(property.getName());
   }
 
+  private void init() {
+    // may be this should be determined by the config
+    this.supportedProperties = new ArrayList<String>();
+    this.supportedProperties.add(C3POConstants.CP_COLLECTION_IDENTIFIER);
+    this.supportedProperties.add(C3POConstants.CP_COLLECTION_SIZE);
+    this.supportedProperties.add(C3POConstants.CP_OBJECTS_COUNT);
+    this.supportedProperties.add(C3POConstants.CP_OBJECTS_AVG_SIZE);
+    this.supportedProperties.add(C3POConstants.CP_OBJECTS_MAX_SIZE);
+    this.supportedProperties.add(C3POConstants.CP_OBJECTS_MIN_SIZE);
+    this.supportedProperties.add(C3POConstants.CP_FORMAT_DISTRIBUTION);
+    this.supportedProperties.add(C3POConstants.CP_FORMAT_MODE);
+    this.supportedProperties.add(C3POConstants.CP_MIMETYPE_DISTRIBUTION);
+    this.supportedProperties.add(C3POConstants.CP_MIMETYPE_MODE);
+    this.supportedProperties.add(C3POConstants.CP_PUID_DISTRIBUTION);
+    this.supportedProperties.add(C3POConstants.CP_PUID_MODE);
+
+    try {
+      final InputStream stream = this.getClass().getClassLoader()
+        .getResourceAsStream("adaptors/c3po/config.properties");
+      this.properties = new Properties();
+      this.properties.load(stream);
+      stream.close();
+    } catch (final Exception e) {
+      LOG.error("An error occurred while reading the config file: {}", e.getMessage());
+    }
+
+    this.initSourceClient();
+  }
+
+  private void initSourceClient() {
+    cpEndpoint = this.getConfig("c3po.endpoint");
+    if (cpEndpoint.equals("") || cpEndpoint.equals("dummy")) {
+      LOG.info("initializing a dummy source client for the c3po adaptor");
+      this.source = new C3PODummyClient();
+    } else {
+      LOG.info("initializing a production source client for the c3po adaptor with api bound at: {}", cpEndpoint);
+      this.source = new C3POClient(cpEndpoint);
+    }
+  }
 }

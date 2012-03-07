@@ -7,7 +7,7 @@ import java.util.List;
  * A simple client interface to the c3po content profiler tool. It allows the
  * client application to query c3po and fetch content profiles.
  * 
- * @author Petrov <me@petarpetrov.org>
+ * @author Petar Petrov <me@petarpetrov.org>
  * 
  */
 public interface IC3POClient {

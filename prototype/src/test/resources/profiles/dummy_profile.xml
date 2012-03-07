@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <collection-profile date="Sun Jan 29 17:22:19 CET 2012">
-  <collection name="Test" elements="502" properties="49">
+  <collection name="coll-0-test" elements="502" properties="49">
     <properties>
       <property id="author" name="Author" type="STRING" count="140" mode="U.S. Government Printing Office" expanded="false"/>
       <property id="bitspersample" name="Bits Per Sample" type="DEFAULT" count="67" mode="8 8 8" expanded="false"/>
@@ -79,7 +79,7 @@
       <property id="sampling.frequency.unit" name="Sampling Frequency Unit" type="STRING" count="53" mode="no absolute unit of measurement" expanded="false"/>
       <property id="sampling.frequency.x" name="Sampling Frequency X" type="NUMERIC" count="53" mode="100" expanded="false"/>
       <property id="sampling.frequency.y" name="Sampling Frequency Y" type="NUMERIC" count="53" mode="100" expanded="false"/>
-      <property id="size" name="Size" type="NUMERIC" count="502" mode="11563" expanded="false"/>
+      <property id="size" name="Size" type="NUMERIC" count="502" mode="10000" avg="35000.42" min="42" max="10000000" expanded="false"/>
       <property id="title" name="Title" type="STRING" count="152" mode="Document" expanded="false"/>
       <property id="valid" name="Valid" type="BOOL" count="410" mode="true" expanded="false"/>
       <property id="wellformed" name="Well-Formed" type="BOOL" count="410" mode="true" expanded="false"/>

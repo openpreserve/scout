@@ -63,6 +63,11 @@ public class C3POAdaptor extends Adaptor {
    */
   @Override
   public boolean checkForTask(final Task t) {
+    if (t == null) {
+      LOG.warn("Null tasks are not supported");
+      return false;
+    }
+    
     final EntityType type = t.getEntity().getEntityType();
 
     if (type == null) {
@@ -111,46 +116,76 @@ public class C3POAdaptor extends Adaptor {
   @Override
   protected void fetchData() {
 
-    List<String> identifiers = this.source.getCollectionIdentifiers();
+    final List<String> identifiers = this.source.getCollectionIdentifiers();
 
     for (Task t : this.getTasks()) {
 
-      String id = t.getEntity().getName();
+      final String id = t.getEntity().getName();
+
       if (identifiers.contains(id)) {
-
         // this should be t.getProperties();
-        List<String> properties = this.generatePropertyExpansionList(t.getProperty());
-        String uuid = this.source.submitCollectionProfileJob(id, properties);
+        final List<String> expanded = this.generatePropertyExpansionList(t.getProperty());
+        final String uuid = this.source.submitCollectionProfileJob(id, expanded);
 
+        // TODO add some escape mechanism of the endless loop.
+        // e.g. if after 10 minutes no result is generated, stop and return
+        // error...
         InputStream is = this.source.pollJobResult(uuid);
         while (is == null) {
           is = this.source.pollJobResult(uuid);
           try {
             Thread.sleep(5000);
-          } catch (InterruptedException e) {
-            LOG.warn("An error occurred while waiting for c3po result: {}", e.getMessage());
+          } catch (final InterruptedException e) {
+            LOG.warn("An error occurred while waiting for c3po's result: {}", e.getMessage());
           }
         }
 
-        C3POProfileReader reader = new C3POProfileReader(is);
-        String name = reader.getCollectionName();
-
-        Entity e = new Entity(t.getEntity().getEntityType(), name);
-        Property p = t.getProperty();
+        final C3POProfileReader reader = new C3POProfileReader(is);
+        final String name = reader.getCollectionName();
+        final Entity cp = getCollectionProfileEntity(t.getEntity().getEntityType(), name);
+        final Property p = t.getProperty();
         PropertyValue pv = null;
 
-        if (p.getName().equals(C3POConstants.CP_COLLECTION_IDENTIFIER)) {
-          pv = new PropertyValue(e, p, name);
-        } else if (p.getName().equals(C3POConstants.CP_OBJECTS_COUNT)) {
-          String count = reader.getObjectsCount();
-          pv = new PropertyValue(e, p, count);
+        if (this.supportedProperties.contains(p.getName())) {
+          pv = this.getPropertyValueForProperty(reader, p);
+          pv.setEntity(cp);
+          
+        } else {
+          LOG.warn("The property '{}' is not supported by this adaptor", p.getName());
+          // TODO report error back to framework.
         }
 
-        Result r = new Result(e, p, pv);
+        final Result r = new Result(cp, p, pv);
         this.results.add(r);
       }
     }
 
+  }
+
+  private PropertyValue getPropertyValueForProperty(C3POProfileReader reader, Property p) {
+    PropertyValue pv = null;
+    String prop = C3POProfileReader.MISSING_VALUE;
+    
+    if (p.getName().equals(C3POConstants.CP_COLLECTION_SIZE)) {
+      prop = reader.getCollectionSize();
+    } else if (p.getName().equals(C3POConstants.CP_OBJECTS_COUNT)) {
+      prop = reader.getObjectsCount();
+    } else if (p.getName().equals(C3POConstants.CP_OBJECTS_MAX_SIZE)) {
+      prop = reader.getObjectsMaxSize();
+    } else if (p.getName().equals(C3POConstants.CP_OBJECTS_MIN_SIZE)) {
+      prop = reader.getObjectsMinSize();
+    } else if (p.getName().equals(C3POConstants.CP_OBJECTS_AVG_SIZE)) {
+      prop = reader.getObjectsAvgSize();
+    }
+
+    if (!prop.equals(C3POProfileReader.MISSING_VALUE)) {
+      pv = new PropertyValue(null, p, prop);
+    }
+    return pv;
+  }
+
+  private Entity getCollectionProfileEntity(EntityType et, String name) {
+    return new Entity(et, name);
   }
 
   private List<String> generatePropertyExpansionList(Property property) {
@@ -176,7 +211,7 @@ public class C3POAdaptor extends Adaptor {
 
     try {
       final InputStream stream = this.getClass().getClassLoader()
-        .getResourceAsStream("adaptors/c3po/config.properties");
+        .getResourceAsStream("./adaptors/c3po/config.properties");
       this.properties = new Properties();
       this.properties.load(stream);
       stream.close();

@@ -10,7 +10,7 @@ import java.util.Random;
  * A dummy client that always returns the same job uuid and returns a random
  * collection profile for its only collection named 'Test'.
  * 
- * @author Petrov <me@petarpetrov.org>
+ * @author Petar Petrov <me@petarpetrov.org>
  * 
  */
 public class C3PODummyClient implements IC3POClient {

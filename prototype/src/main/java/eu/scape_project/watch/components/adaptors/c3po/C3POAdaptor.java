@@ -4,14 +4,17 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import eu.scape_project.watch.components.Adaptor;
 import eu.scape_project.watch.components.elements.Result;
 import eu.scape_project.watch.components.elements.Task;
+import eu.scape_project.watch.core.model.DictionaryItem;
 import eu.scape_project.watch.core.model.Entity;
 import eu.scape_project.watch.core.model.EntityType;
 import eu.scape_project.watch.core.model.Property;
+import eu.scape_project.watch.core.model.PropertyDataStructure;
 import eu.scape_project.watch.core.model.PropertyValue;
 
 import org.slf4j.Logger;
@@ -67,7 +70,7 @@ public class C3POAdaptor extends Adaptor {
       LOG.warn("Null tasks are not supported");
       return false;
     }
-    
+
     final EntityType type = t.getEntity().getEntityType();
 
     if (type == null) {
@@ -119,7 +122,6 @@ public class C3POAdaptor extends Adaptor {
     final List<String> identifiers = this.source.getCollectionIdentifiers();
 
     for (Task t : this.getTasks()) {
-
       final String id = t.getEntity().getName();
 
       if (identifiers.contains(id)) {
@@ -149,7 +151,7 @@ public class C3POAdaptor extends Adaptor {
         if (this.supportedProperties.contains(p.getName())) {
           pv = this.getPropertyValueForProperty(reader, p);
           pv.setEntity(cp);
-          
+
         } else {
           LOG.warn("The property '{}' is not supported by this adaptor", p.getName());
           // TODO report error back to framework.
@@ -157,30 +159,53 @@ public class C3POAdaptor extends Adaptor {
 
         final Result r = new Result(cp, p, pv);
         this.results.add(r);
+      } else {
+        LOG.warn("No collection for entity {} found", t.getEntity().getName());
       }
     }
 
   }
 
+  // this method sucks...
+  // TODO get rid of if, else if... may be command pattern?
   private PropertyValue getPropertyValueForProperty(C3POProfileReader reader, Property p) {
     PropertyValue pv = null;
-    String prop = C3POProfileReader.MISSING_VALUE;
-    
-    if (p.getName().equals(C3POConstants.CP_COLLECTION_SIZE)) {
-      prop = reader.getCollectionSize();
-    } else if (p.getName().equals(C3POConstants.CP_OBJECTS_COUNT)) {
-      prop = reader.getObjectsCount();
-    } else if (p.getName().equals(C3POConstants.CP_OBJECTS_MAX_SIZE)) {
-      prop = reader.getObjectsMaxSize();
-    } else if (p.getName().equals(C3POConstants.CP_OBJECTS_MIN_SIZE)) {
-      prop = reader.getObjectsMinSize();
-    } else if (p.getName().equals(C3POConstants.CP_OBJECTS_AVG_SIZE)) {
-      prop = reader.getObjectsAvgSize();
-    }
 
-    if (!prop.equals(C3POProfileReader.MISSING_VALUE)) {
-      pv = new PropertyValue(null, p, prop);
+    if (p.getStructure().equals(PropertyDataStructure.SINGLE)) {
+      String prop = C3POProfileReader.MISSING_VALUE;
+
+      if (p.getName().equals(C3POConstants.CP_COLLECTION_SIZE)) {
+        prop = reader.getCollectionSize();
+      } else if (p.getName().equals(C3POConstants.CP_OBJECTS_COUNT)) {
+        prop = reader.getObjectsCount();
+      } else if (p.getName().equals(C3POConstants.CP_OBJECTS_MAX_SIZE)) {
+        prop = reader.getObjectsMaxSize();
+      } else if (p.getName().equals(C3POConstants.CP_OBJECTS_MIN_SIZE)) {
+        prop = reader.getObjectsMinSize();
+      } else if (p.getName().equals(C3POConstants.CP_OBJECTS_AVG_SIZE)) {
+        prop = reader.getObjectsAvgSize();
+      }
+
+      if (!prop.equals(C3POProfileReader.MISSING_VALUE)) {
+        pv = new PropertyValue(null, p, prop);
+      }
+
+    } else if (p.getStructure().equals(PropertyDataStructure.DICTIONARY)) {
+
+      if (p.getName().equals((C3POConstants.CP_FORMAT_DISTRIBUTION))) {
+        final Map<String, String> d = reader.getDistribution("format");
+        final List<Object> distr = new ArrayList<Object>();
+
+        for (String key : d.keySet()) {
+          distr.add(new DictionaryItem(key, d.get(key)));
+        }
+
+        pv = new PropertyValue(null, p, distr);
+      }
+
     }
+    
+    LOG.info("Returning property...");
     return pv;
   }
 

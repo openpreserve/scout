@@ -22,7 +22,7 @@ public class DictionaryItem {
   public DictionaryItem() {
     super();
   }
-  
+
   public DictionaryItem(final String key, final String value) {
     this.key = key;
     this.value = value;
@@ -73,6 +73,11 @@ public class DictionaryItem {
     } else if (!this.value.equals(other.value))
       return false;
     return true;
+  }
+
+  @Override
+  public String toString() {
+    return this.key + " : " + this.value;
   }
 
 }

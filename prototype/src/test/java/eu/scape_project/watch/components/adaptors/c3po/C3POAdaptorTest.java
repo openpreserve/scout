@@ -1,5 +1,7 @@
 package eu.scape_project.watch.components.adaptors.c3po;
 
+import static org.junit.Assert.*;
+
 import java.util.List;
 
 import junit.framework.Assert;
@@ -8,6 +10,7 @@ import eu.scape_project.watch.components.elements.Task;
 import eu.scape_project.watch.core.model.Entity;
 import eu.scape_project.watch.core.model.EntityType;
 import eu.scape_project.watch.core.model.Property;
+import eu.scape_project.watch.core.model.PropertyDataStructure;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -61,6 +64,23 @@ public class C3POAdaptorTest {
 
   }
   
+  @Test
+  public void shouldTestFormatDistributionTask() throws Exception {
+    final Task task = this.getMockTask(true);
+    Mockito.when(task.getProperty().getName()).thenReturn(C3POConstants.CP_FORMAT_DISTRIBUTION);
+    Mockito.when(task.getProperty().getStructure()).thenReturn(PropertyDataStructure.DICTIONARY);
+    
+    this.adaptor.addTask(task);
+    this.adaptor.fetchData();
+    
+    final List<Result> results = this.adaptor.getResults();
+    Assert.assertEquals(1, results.size());
+    
+    final Result result = results.get(0);
+    Assert.assertNotNull(result.getPropertyValue());
+    Assert.assertFalse(result.getPropertyValue().getValues().isEmpty());
+  }
+  
   private Task getMockTask(final boolean valid) {
     final EntityType et = Mockito.mock(EntityType.class);
     final Entity e = Mockito.mock(Entity.class);
@@ -78,8 +98,8 @@ public class C3POAdaptorTest {
     if (valid) {
       Mockito.when(et.getName()).thenReturn(COLLECTION_PROFILE);
       Mockito.when(p.getName()).thenReturn(C3POConstants.CP_OBJECTS_COUNT);
+      Mockito.when(e.getName()).thenReturn("coll-0-test");
     }
-
     
     return task;
   }

@@ -5,7 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.dom4j.Attribute;
 import org.dom4j.Document;
@@ -124,6 +126,28 @@ public class C3POProfileReader {
     return this.getAttributeValue(size, "avg");
   }
 
+  public Map<String, String> getDistribution(String name) {
+    final Element property = this.getPropertyElement(name);
+    final boolean exists = Boolean.valueOf(this.getAttributeValue(property, "expanded"));
+
+    if (exists) {
+      final Map<String, String> distribution = new HashMap<String, String>();
+      final List items = property.selectNodes("//properties/property[@id='" + name + "']/*");
+
+      for (Object o : items) {
+        final Element e = (Element) o;
+        final String key = this.getAttributeValue(e, "value");
+        final String value = this.getAttributeValue(e, "count");
+        distribution.put(key, value);
+      }
+      
+      return distribution;
+        
+    }
+
+    return null;
+  }
+
   /**
    * Returns the collection element tag.
    * 
@@ -146,8 +170,12 @@ public class C3POProfileReader {
    * @return the property tag with id = size.
    */
   private Element getSizePropertyElement() {
+    return this.getPropertyElement("size");
+  }
+
+  private Element getPropertyElement(String name) {
     final Element collection = this.getCollectionElement();
-    final List nodes = collection.selectNodes("//properties/property[@id='size']");
+    final List nodes = collection.selectNodes("//properties/property[@id='" + name + "']");
     return (Element) nodes.get(0);
   }
 

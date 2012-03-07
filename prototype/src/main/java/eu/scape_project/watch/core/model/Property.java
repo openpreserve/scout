@@ -27,29 +27,6 @@ import thewebsemantic.binding.RdfBean;
 public class Property extends RdfBean<Property> {
 
   /**
-   * Get the property id based on the entity type and property name.
-   * 
-   * @param entityTypeName
-   *          the related entity type
-   * @param propertyName
-   *          the property name, unique for the related entity type
-   * @return The identifier
-   */
-  public static String createId(final String entityTypeName, final String propertyName) {
-    return entityTypeName + "/" + propertyName;
-  }
-
-  /**
-   * Update property Id based on the related {@link EntityType} and property
-   * name.
-   */
-  private void updateId() {
-    if (type != null && name != null) {
-      id = createId(type.getName(), name);
-    }
-  }
-
-  /**
    * The unique Id.
    */
   @Id
@@ -83,6 +60,13 @@ public class Property extends RdfBean<Property> {
   private DataType datatype;
 
   /**
+   * The datastructure of the property values.
+   */
+  @XmlElement
+  @JsonProperty
+  private PropertyDataStructure structure;
+
+  /**
    * Create a new empty property.
    */
   public Property() {
@@ -90,7 +74,9 @@ public class Property extends RdfBean<Property> {
   }
 
   /**
-   * Create a new property of type {@link DataType#TEXT}.
+   * Create a new property of type {@link DataType#TEXT}. Sets the datatype to
+   * {@link DataType#TEXT} and the property datastructure to
+   * {@link PropertyDataStructure#SINGLE} by default.
    * 
    * @param t
    *          The related entity type.
@@ -105,12 +91,14 @@ public class Property extends RdfBean<Property> {
     this.name = n;
     this.description = d;
     this.datatype = DataType.TEXT;
+    this.structure = PropertyDataStructure.SINGLE;
 
     this.updateId();
   }
 
   /**
-   * Create a new property.
+   * Create a new property. Sets the property datastructure to
+   * {@link PropertyDataStructure#SINGLE}
    * 
    * @param t
    *          The related entity type.
@@ -124,6 +112,53 @@ public class Property extends RdfBean<Property> {
   public Property(final EntityType t, final String n, final String d, final DataType dt) {
     this(t, n, d);
     this.datatype = dt;
+  }
+
+  /**
+   * Create a new property. Sets the data type to {@link DataType#TEXT}.
+   * 
+   * @param t
+   *          the related entity type.
+   * @param n
+   *          the name, unique within properties of the same type.
+   * @param d
+   *          the description of the Property.
+   * @param st
+   *          the data structure type of the related values.
+   */
+  public Property(final EntityType t, final String n, final String d, final PropertyDataStructure st) {
+    this(t, n, d);
+    this.structure = st;
+  }
+
+  /**
+   * Create a new property.
+   * 
+   * @param t
+   *          the related entity type.
+   * @param n
+   *          the name, unique within properties of the same type.
+   * @param d
+   *          the description of the Property.
+   * @param dt
+   *          the type of data defined by this property.
+   * @param st
+   *          the data structure type of the related values.
+   */
+  public Property(final EntityType t, final String n, final String d, final DataType dt, final PropertyDataStructure st) {
+    this(t, n, d);
+    this.datatype = dt;
+    this.structure = st;
+  }
+
+  /**
+   * Update property Id based on the related {@link EntityType} and property
+   * name.
+   */
+  private void updateId() {
+    if (this.type != null && this.name != null) {
+      this.id = createId(this.type.getName(), this.name);
+    }
   }
 
   public String getId() {
@@ -175,36 +210,71 @@ public class Property extends RdfBean<Property> {
   public void setDatatype(final DataType datatype) {
     this.datatype = datatype;
   }
-  
-  // TODO define hashCode()
+
+  public PropertyDataStructure getStructure() {
+    return this.structure;
+  }
+
+  public void setStructure(final PropertyDataStructure structure) {
+    this.structure = structure;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((this.datatype == null) ? 0 : this.datatype.hashCode());
+    result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
+    result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
+    result = prime * result + ((this.structure == null) ? 0 : this.structure.hashCode());
+    result = prime * result + ((this.type == null) ? 0 : this.type.hashCode());
+    return result;
+  }
 
   @Override
   public boolean equals(final Object obj) {
-    if (this == obj) {
+    if (this == obj)
       return true;
-    }
-    if (obj == null) {
+    if (obj == null)
       return false;
-    }
-    if (getClass() != obj.getClass()) {
+    if (getClass() != obj.getClass())
       return false;
-    }
-    final Property other = (Property) obj;
+    Property other = (Property) obj;
+    if (this.datatype != other.datatype)
+      return false;
     if (this.description == null) {
-      if (other.description != null) {
+      if (other.description != null)
         return false;
-      }
-    } else if (!this.description.equals(other.description)) {
+    } else if (!this.description.equals(other.description))
       return false;
-    }
     if (this.name == null) {
-      if (other.name != null) {
+      if (other.name != null)
         return false;
-      }
-    } else if (!this.name.equals(other.name)) {
+    } else if (!this.name.equals(other.name))
       return false;
-    }
+    if (this.structure != other.structure)
+      return false;
+    if (this.type == null) {
+      if (other.type != null)
+        return false;
+    } else if (!this.type.equals(other.type))
+      return false;
     return true;
+  }
+
+  // ######################## static ######################
+
+  /**
+   * Get the property id based on the entity type and property name.
+   * 
+   * @param entityTypeName
+   *          the related entity type
+   * @param propertyName
+   *          the property name, unique for the related entity type
+   * @return The identifier
+   */
+  public static String createId(final String entityTypeName, final String propertyName) {
+    return entityTypeName + "/" + propertyName;
   }
 
 }

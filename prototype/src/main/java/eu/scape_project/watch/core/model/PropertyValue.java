@@ -1,8 +1,12 @@
 package eu.scape_project.watch.core.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import eu.scape_project.watch.core.KBUtils;
@@ -27,28 +31,46 @@ import thewebsemantic.binding.RdfBean;
 public class PropertyValue extends RdfBean<PropertyValue> {
 
   /**
-   * Create a unique Id based on the related {@link Entity} name and related
-   * {@link Property} name.
-   * 
-   * @param entityName
-   *          The related {@link Entity} name.
-   * @param propertyName
-   *          The related {@link Property} name.
-   * @return The {@link PropertyValue} unique Id.
+   * A unique identifier.
    */
-  public static String createId(final String entityName, final String propertyName) {
-    return entityName + "/" + propertyName;
-  }
+  @Id
+  @JsonIgnore
+  private String id;
 
   /**
-   * Update Id for new {@link Entity} or {@link Property} values.
+   * The value of the related {@link Property} for the related {@link Entity}.
    */
-  private void updateId() {
-    if (entity != null && property != null) {
-      id = createId(entity.getName(), property.getName());
-    }
-  }
+  @XmlElement
+  private String value;
 
+  /**
+   * The value of the property represented as a list.
+   */
+  @XmlElements({@XmlElement(name = "stringvalue", type = String.class),
+    @XmlElement(name = "intvalue", type = Integer.class), @XmlElement(name = "floatvalue", type = Float.class)})
+  private List<String> values;
+
+  /**
+   * The value of the property represented as a map.
+   */
+  @XmlElement
+  @JsonProperty
+  private List<DictionaryItem> dictionary;
+
+  /**
+   * The related {@link Entity}.
+   */
+  @XmlElement
+  @JsonProperty
+  private Entity entity;
+
+  /**
+   * The {@link Property} being measured.
+   */
+  @XmlElement
+  @JsonProperty
+  private Property property;
+  
   /**
    * Create a new empty property value.
    */
@@ -72,35 +94,15 @@ public class PropertyValue extends RdfBean<PropertyValue> {
     this.property = p;
     this.value = v;
 
+    this.init();
     this.updateId();
   }
 
-  /**
-   * A unique identifier.
-   */
-  @Id
-  @JsonIgnore
-  private String id;
-
-  /**
-   * The value of the related {@link Property} for the related {@link Entity}.
-   */
-  @XmlElement
-  private String value;
-
-  /**
-   * The related {@link Entity}.
-   */
-  @XmlElement
-  @JsonProperty
-  private Entity entity;
-
-  /**
-   * The {@link Property} being measured.
-   */
-  @XmlElement
-  @JsonProperty
-  private Property property;
+  public PropertyValue(final Entity e, final Property p, final List<String> v, final List<DictionaryItem> d) {
+    this(e, p, (String) null);
+    this.setValues(v);
+    this.setDictionary(d);
+  }
 
   public String getId() {
     return this.id;
@@ -112,6 +114,22 @@ public class PropertyValue extends RdfBean<PropertyValue> {
 
   public void setValue(final String value) {
     this.value = value;
+  }
+
+  public List<String> getValues() {
+    return this.values;
+  }
+
+  public void setValues(final List<String> values) {
+    this.values = values;
+  }
+
+  public List<DictionaryItem> getDictionary() {
+    return this.dictionary;
+  }
+  
+  public void setDictionary(final List<DictionaryItem> dictionary) {
+    this.dictionary = dictionary;
   }
 
   public Entity getEntity() {
@@ -142,11 +160,8 @@ public class PropertyValue extends RdfBean<PropertyValue> {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-
-    // TODO Auto-generated method stub
-
-    result = prime * result + ((property == null) ? 0 : property.hashCode());
-    result = prime * result + ((value == null) ? 0 : value.hashCode());
+    result = prime * result + ((this.property == null) ? 0 : this.property.hashCode());
+    result = prime * result + ((this.value == null) ? 0 : this.value.hashCode());
     return result;
   }
 
@@ -178,5 +193,38 @@ public class PropertyValue extends RdfBean<PropertyValue> {
     }
     return true;
   }
+  
+  /**
+   * Update Id for new {@link Entity} or {@link Property} values.
+   */
+  private void updateId() {
+    if (this.entity != null && this.property != null) {
+      this.id = createId(this.entity.getName(), this.property.getName());
+    }
+  }
+
+  /**
+   * Initializes empty lists and maps.
+   */
+  private void init() {
+    this.values = new ArrayList<String>();
+    this.setDictionary(new ArrayList<DictionaryItem>());
+  }
+  
+  /**
+   * Create a unique Id based on the related {@link Entity} name and related
+   * {@link Property} name.
+   * 
+   * @param entityName
+   *          The related {@link Entity} name.
+   * @param propertyName
+   *          The related {@link Property} name.
+   * @return The {@link PropertyValue} unique Id.
+   */
+  public static String createId(final String entityName, final String propertyName) {
+    return entityName + "/" + propertyName;
+  }
+
+
 
 }

@@ -1,14 +1,10 @@
 package eu.scape_project.watch.core;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import thewebsemantic.binding.Jenabean;
-import thewebsemantic.binding.RdfBean;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -17,17 +13,36 @@ import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.tdb.TDB;
 
 import eu.scape_project.watch.core.model.AsyncRequest;
+import eu.scape_project.watch.core.model.DictionaryItem;
 import eu.scape_project.watch.core.model.Entity;
 import eu.scape_project.watch.core.model.EntityType;
 import eu.scape_project.watch.core.model.Notification;
 import eu.scape_project.watch.core.model.NotificationType;
 import eu.scape_project.watch.core.model.Property;
+import eu.scape_project.watch.core.model.PropertyDataStructure;
 import eu.scape_project.watch.core.model.PropertyValue;
 import eu.scape_project.watch.core.model.Question;
 import eu.scape_project.watch.core.model.RequestTarget;
 import eu.scape_project.watch.core.model.Trigger;
 
-public class KBUtils {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import thewebsemantic.binding.Jenabean;
+import thewebsemantic.binding.RdfBean;
+
+/**
+ * A utility class that holds some constants for the RDF schema and provides
+ * some static utility methods.
+ * 
+ * @author Petar Petrov <me@petarpetrov.org>
+ * @author Luis Faria <lfaria@keep.pt>
+ */
+public final class KBUtils {
+
+  /**
+   * A default logger for this utility class.
+   */
   private static final Logger LOG = LoggerFactory.getLogger(KBUtils.class);
 
   /**
@@ -121,6 +136,11 @@ public class KBUtils {
   public static final String DATA_TYPE = "datatype";
 
   /**
+   * A data structure constant.
+   */
+  public static final String DATA_STRUCTURE_TYPE = "datastructure";
+
+  /**
    * A plan constant.
    */
   public static final String PLAN = "plan";
@@ -174,8 +194,8 @@ public class KBUtils {
   public static final String WATCH_PROPERTY_VALUE_PREFIX_DECL = getResourcePrefixDecl(PropertyValue.class);
 
   public static final String PREFIXES_DECL = XSD_PREFIX_DECL + RDF_PREFIX_DECL + WATCH_PREFIX_DECL
-      + WATCH_ENTITY_TYPE_PREFIX_DECL + WATCH_PROPERTY_PREFIX_DECL + WATCH_ENTITY_PREFIX_DECL
-      + WATCH_PROPERTY_VALUE_PREFIX_DECL;
+    + WATCH_ENTITY_TYPE_PREFIX_DECL + WATCH_PROPERTY_PREFIX_DECL + WATCH_ENTITY_PREFIX_DECL
+    + WATCH_PROPERTY_VALUE_PREFIX_DECL;
 
   public static void printStatements() {
 
@@ -207,7 +227,7 @@ public class KBUtils {
         } else if (o.isLiteral()) {
           oinfo = "'" + o.asLiteral() + "'";
         }
-        LOG.debug("({}, {}, {})", new Object[] { sinfo, pinfo, oinfo });
+        LOG.debug("({}, {}, {})", new Object[] {sinfo, pinfo, oinfo});
       }
     } catch (Throwable e) {
       LOG.info(e.getMessage());
@@ -221,40 +241,45 @@ public class KBUtils {
    */
   public static void createInitialData() {
     LOG.info("Creating initial data");
-    final EntityType formats = new EntityType("format", "File format");
-    final Property formatPUID = new Property(formats, "PUID", "PRONOM Id");
-    final Property formatMimetype = new Property(formats, "MIME", "MIME type");
-
-    formats.save();
-    formatPUID.save();
-    formatMimetype.save();
 
     final EntityType tools = new EntityType("tools", "Applications that read and/or write into diferent file formats");
-    final Property toolVersion = new Property(tools, "version", "Tool version");
+    final EntityType formats = new EntityType("format", "File format");
+    final EntityType profile = new EntityType("profile", "A content profile of a specific collection");
 
-    Property inputFormat = new Property(tools, "input_format", "Supported input format");
-    Property outputFormat = new Property(tools, "output_format", "Supported output formats");
-    
     tools.save();
+    formats.save();
+    profile.save();
+
+    final Property formatPUID = new Property(formats, "PUID", "PRONOM Id");
+    final Property formatMimetype = new Property(formats, "MIME", "MIME type");
+    final Property toolVersion = new Property(tools, "version", "Tool version");
+    final Property inputFormat = new Property(tools, "input_format", "Supported input format",
+      PropertyDataStructure.LIST);
+    final Property outputFormat = new Property(tools, "output_format", "Supported output formats",
+      PropertyDataStructure.LIST);
+    final Property formatDistribution = new Property(profile, "format_distribution",
+      "The format distribution of the content", PropertyDataStructure.DICTIONARY);
+
+    formatPUID.save();
+    formatMimetype.save();
     toolVersion.save();
     inputFormat.save();
     outputFormat.save();
+    formatDistribution.save();
 
     final Entity pdf17Format = new Entity(formats, "application/pdf;version=1.7");
     final Entity tiffFormat = new Entity(formats, "image/tiff;version=3.0.0");
     final Entity jpeg2000Format = new Entity(formats, "image/jp2;version=1.0.0");
     final Entity imageMagickTool = new Entity(tools, "ImageMagick_6.6.0_all_all_all");
+    final Entity jpeg = new Entity(formats, "JPEG");
+    final Entity jpeg2000 = new Entity(formats, "JPEG2000");
+    final Entity png = new Entity(formats, "PNG");
+    final Entity doc = new Entity(formats, "DOC");
+    final Entity docx = new Entity(formats, "DOCX");
+    final Entity bmp = new Entity(formats, "BMP");
+    final Entity gif = new Entity(formats, "GIF");
+    final Entity cp0 = new Entity(profile, "collection0");
 
-    Entity jpeg = new Entity(formats, "JPEG");
-    Entity jpeg2000 = new Entity(formats, "JPEG2000");
-    Entity png = new Entity(formats,"PNG");
-    Entity doc = new Entity(formats, "DOC");
-    Entity docx = new Entity(formats, "DOCX");
-    Entity bmp = new Entity(formats, "BMP");
-    Entity gif = new Entity(formats, "GIF");
-    
-    
-    // save entities
     pdf17Format.save();
     tiffFormat.save();
     jpeg2000Format.save();
@@ -266,79 +291,48 @@ public class KBUtils {
     docx.save();
     bmp.save();
     gif.save();
-    
 
     // property value construction also binds to entity
     final PropertyValue pdfPUID = new PropertyValue(pdf17Format, formatPUID, "fmt/276");
     final PropertyValue pdfMime = new PropertyValue(pdf17Format, formatMimetype, "application/pdf");
-
     final PropertyValue tiffPUID = new PropertyValue(tiffFormat, formatPUID, "fmt/353");
     final PropertyValue tiffMime = new PropertyValue(tiffFormat, formatMimetype, "image/tiff");
-
     final PropertyValue jpeg2000PUID = new PropertyValue(jpeg2000Format, formatPUID, "x-fmt/392");
     final PropertyValue jpeg2000Mime = new PropertyValue(jpeg2000Format, formatMimetype, "image/jp2");
-
     final PropertyValue imageMagickVersion = new PropertyValue(imageMagickTool, toolVersion, "6.6.0");
+    final PropertyValue jpegMime = new PropertyValue(jpeg, formatMimetype, "image/jpeg");
+    final PropertyValue jpegPUID = new PropertyValue(jpeg, formatPUID, "fmt/44");
+    final PropertyValue pngPUID = new PropertyValue(png, formatPUID, "fmt/11");
+    final PropertyValue pngMime = new PropertyValue(png, formatMimetype, "image/png");
+    final PropertyValue docPUID = new PropertyValue(doc, formatPUID, "fmt/40");
+    final PropertyValue docMime = new PropertyValue(doc, formatMimetype, "application/msword");
+    final PropertyValue docxMime = new PropertyValue(docx, formatMimetype,
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+    final PropertyValue bmpPUID = new PropertyValue(bmp, formatPUID, "fmt/119");
+    final PropertyValue bmpMime = new PropertyValue(bmp, formatMimetype, "image/bmp");
+    final PropertyValue gifPUID = new PropertyValue(gif, formatPUID, "fmt/4");
+    final PropertyValue gifMime = new PropertyValue(gif, formatMimetype, "image/gif");
 
-    imageMagickVersion.save();
+    final List<String> values = new ArrayList<String>(Arrays.asList("fmt/353", "fmt/44", "fmt/119", "fmt/4"));
+    final PropertyValue ifr = new PropertyValue(imageMagickTool, inputFormat, values, null);
+    final PropertyValue ofr = new PropertyValue(imageMagickTool, outputFormat, values, null);
+    
+    final List<DictionaryItem> distr = new ArrayList<DictionaryItem>();
+    distr.add(new DictionaryItem(pdf17Format.getName(), "133"));
+    distr.add(new DictionaryItem(tiffFormat.getName(), "123"));
+    distr.add(new DictionaryItem(jpeg2000.getName(), "42"));
+    
+    final PropertyValue distribution = new PropertyValue(cp0, formatDistribution, null, distr);
 
-    PropertyValue jpegMime = new PropertyValue(jpeg,formatMimetype,"image/jpeg");
-    PropertyValue jpegPUID = new PropertyValue(jpeg, formatPUID, "fmt/44");
-    
-    PropertyValue pngPUID = new PropertyValue(png, formatPUID, "fmt/11");
-    PropertyValue pngMime = new PropertyValue(png,formatMimetype,"image/png");
-    
-    PropertyValue docPUID = new PropertyValue(doc, formatPUID, "fmt/40");
-    PropertyValue docMime = new PropertyValue(doc,formatMimetype,"application/msword");
-    
-    PropertyValue docxMime = new PropertyValue(docx,formatMimetype, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-    
-    PropertyValue bmpPUID = new PropertyValue(bmp, formatPUID, "fmt/119");
-    PropertyValue bmpMime = new PropertyValue(bmp,formatMimetype,"image/bmp");
-    
-    PropertyValue gifPUID = new PropertyValue(gif, formatPUID, "fmt/4");
-    PropertyValue gifMime = new PropertyValue(gif,formatMimetype,"image/gif");
-    
-    PropertyValue ifr1 = new PropertyValue(imageMagickTool, inputFormat, "fmt/353");
-    PropertyValue ifr2 = new PropertyValue(imageMagickTool, inputFormat, "fmt/44");
-    PropertyValue ifr3 = new PropertyValue(imageMagickTool, inputFormat, "fmt/119");
-    PropertyValue ifr4 = new PropertyValue(imageMagickTool, inputFormat, "fmt/4");
-    
-    
-    PropertyValue ofr1 = new PropertyValue(imageMagickTool, outputFormat, "fmt/353");
-    PropertyValue ofr2 = new PropertyValue(imageMagickTool, outputFormat, "fmt/44");
-    PropertyValue ofr3 = new PropertyValue(imageMagickTool, outputFormat, "fmt/119");
-    PropertyValue ofr4 = new PropertyValue(imageMagickTool, outputFormat, "fmt/4");
-    
-    // save property values
     pdfPUID.save();
     pdfMime.save();
     tiffPUID.save();
     tiffMime.save();
     jpeg2000PUID.save();
     jpeg2000Mime.save();
-
-    // Async Request
-    final Question question1 = new Question("?s watch:type watch-EntityType:tools", RequestTarget.ENTITY,
-      Arrays.asList(tools), Arrays.asList(toolVersion), Arrays.asList(imageMagickTool), 60);
-    final Map<String, String> not1config = new HashMap<String, String>();
-    not1config.put("to", "lfaria@keep.pt");
-    not1config.put("subject", "New tools");
-    final Notification notification1 = new Notification(NotificationType.EMAIL_EVENT, not1config);
-    final Trigger trigger1 = new Trigger(question1, Arrays.asList(notification1), null);
-
-    final AsyncRequest request = new AsyncRequest(Arrays.asList(trigger1));
-
-    question1.save();
-    notification1.save();
-    trigger1.save();
-    request.save();
-
     imageMagickVersion.save();
-    jpegPUID.save();
     jpegMime.save();
-    jpeg2000PUID.save();
-    jpeg2000Mime.save();
+    jpegPUID.save();
     pngPUID.save();
     pngMime.save();
     docPUID.save();
@@ -348,19 +342,26 @@ public class KBUtils {
     bmpMime.save();
     gifPUID.save();
     gifMime.save();
-    
-    
-    
-    ifr1.save();
-    ifr2.save();
-    ifr3.save();
-    ifr4.save();
-    
-    ofr1.save();
-    ofr2.save();
-    ofr3.save();
-    ofr4.save();
-    
+    ifr.save();
+    ofr.save();
+    distribution.save();
+
+    final Question question1 = new Question("?s watch:type watch-EntityType:tools", RequestTarget.ENTITY,
+      Arrays.asList(tools), Arrays.asList(toolVersion), Arrays.asList(imageMagickTool), 60);
+    final Map<String, String> not1config = new HashMap<String, String>();
+    not1config.put("to", "lfaria@keep.pt");
+    not1config.put("subject", "New tools");
+    final Notification notification1 = new Notification(NotificationType.EMAIL_EVENT, not1config);
+
+    final Trigger trigger1 = new Trigger(question1, Arrays.asList(notification1), null);
+
+    final AsyncRequest request = new AsyncRequest(Arrays.asList(trigger1));
+
+    question1.save();
+    notification1.save();
+    trigger1.save();
+    request.save();
+
     TDB.sync(Jenabean.instance().model());
   }
 
@@ -387,6 +388,16 @@ public class KBUtils {
 
   static <T extends RdfBean<T>> String getResourcePrefixDecl(Class<T> resourceClass) {
     return createPrefixDecl(getResourcePrefix(resourceClass), getResourceNamespace(resourceClass));
+  }
+
+  /*
+   * hidden constructor.
+   */
+  /**
+   * Utility classes do not have public constructors.
+   */
+  private KBUtils() {
+
   }
 
 }

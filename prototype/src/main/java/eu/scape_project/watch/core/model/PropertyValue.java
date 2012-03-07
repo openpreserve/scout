@@ -6,7 +6,6 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import eu.scape_project.watch.core.KBUtils;
@@ -44,18 +43,11 @@ public class PropertyValue extends RdfBean<PropertyValue> {
   private String value;
 
   /**
-   * The value of the property represented as a list.
-   */
-  @XmlElements({@XmlElement(name = "stringvalue", type = String.class),
-    @XmlElement(name = "intvalue", type = Integer.class), @XmlElement(name = "floatvalue", type = Float.class)})
-  private List<String> values;
-
-  /**
-   * The value of the property represented as a map.
+   * The value of the property represented as a list. This shall be used
+   * when the datastructure is one of {@link PropertyDataStructure#LIST} or {@link PropertyDataStructure#DICTIONARY}
    */
   @XmlElement
-  @JsonProperty
-  private List<DictionaryItem> dictionary;
+  private List<Object> values;
 
   /**
    * The related {@link Entity}.
@@ -98,10 +90,9 @@ public class PropertyValue extends RdfBean<PropertyValue> {
     this.updateId();
   }
 
-  public PropertyValue(final Entity e, final Property p, final List<String> v, final List<DictionaryItem> d) {
+  public PropertyValue(final Entity e, final Property p, final List<Object> v) {
     this(e, p, (String) null);
     this.setValues(v);
-    this.setDictionary(d);
   }
 
   public String getId() {
@@ -116,20 +107,12 @@ public class PropertyValue extends RdfBean<PropertyValue> {
     this.value = value;
   }
 
-  public List<String> getValues() {
+  public List<Object> getValues() {
     return this.values;
   }
 
-  public void setValues(final List<String> values) {
+  public void setValues(final List<Object> values) {
     this.values = values;
-  }
-
-  public List<DictionaryItem> getDictionary() {
-    return this.dictionary;
-  }
-  
-  public void setDictionary(final List<DictionaryItem> dictionary) {
-    this.dictionary = dictionary;
   }
 
   public Entity getEntity() {
@@ -207,8 +190,7 @@ public class PropertyValue extends RdfBean<PropertyValue> {
    * Initializes empty lists and maps.
    */
   private void init() {
-    this.values = new ArrayList<String>();
-    this.setDictionary(new ArrayList<DictionaryItem>());
+    this.values = new ArrayList<Object>();
   }
   
   /**

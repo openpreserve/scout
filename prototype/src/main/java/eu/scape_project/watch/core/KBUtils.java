@@ -313,16 +313,16 @@ public final class KBUtils {
     final PropertyValue gifPUID = new PropertyValue(gif, formatPUID, "fmt/4");
     final PropertyValue gifMime = new PropertyValue(gif, formatMimetype, "image/gif");
 
-    final List<String> values = new ArrayList<String>(Arrays.asList("fmt/353", "fmt/44", "fmt/119", "fmt/4"));
-    final PropertyValue ifr = new PropertyValue(imageMagickTool, inputFormat, values, null);
-    final PropertyValue ofr = new PropertyValue(imageMagickTool, outputFormat, values, null);
+    final List<Object> values = new ArrayList<Object>(Arrays.asList("fmt/353", "fmt/44", "fmt/119", "fmt/4"));
+    final PropertyValue ifr = new PropertyValue(imageMagickTool, inputFormat, values);
+    final PropertyValue ofr = new PropertyValue(imageMagickTool, outputFormat, values);
     
-    final List<DictionaryItem> distr = new ArrayList<DictionaryItem>();
+    final List<Object> distr = new ArrayList<Object>();
     distr.add(new DictionaryItem(pdf17Format.getName(), "133"));
     distr.add(new DictionaryItem(tiffFormat.getName(), "123"));
     distr.add(new DictionaryItem(jpeg2000.getName(), "42"));
     
-    final PropertyValue distribution = new PropertyValue(cp0, formatDistribution, null, distr);
+    final PropertyValue distribution = new PropertyValue(cp0, formatDistribution, distr);
 
     pdfPUID.save();
     pdfMime.save();

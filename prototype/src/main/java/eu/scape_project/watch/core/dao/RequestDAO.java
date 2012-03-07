@@ -17,7 +17,31 @@ import thewebsemantic.binding.RdfBean;
  * @author Luis Faria <lfaria@keep.pt>
  * 
  */
-public class RequestDAO extends AbstractDAO {
+public class RequestDAO extends AbstractDO {
+
+  /**
+   * Singleton instance.
+   */
+  private static RequestDAO instance = null;
+
+  /**
+   * Get singleton instance.
+   * 
+   * @return The singleton instance
+   */
+  public static RequestDAO getInstance() {
+    if (instance == null) {
+      instance = new RequestDAO();
+    }
+    return instance;
+  }
+
+  /**
+   * No other instances can exist as this is a singleton.
+   */
+  private RequestDAO() {
+
+  }
 
   /**
    * Make a synchronous request to the KB.
@@ -34,21 +58,21 @@ public class RequestDAO extends AbstractDAO {
    * @return A list of resources, of the type defined in the target, filtered by
    *         the above constraints
    */
-  public static List<? extends RdfBean<?>> query(final RequestTarget target, final String query, final int start,
-    final int max) {
+  @SuppressWarnings("unchecked")
+  public List<? extends RdfBean<?>> query(final RequestTarget target, final String query, final int start, final int max) {
     List<? extends RdfBean<?>> ret;
     switch (target) {
       case ENTITY_TYPE:
-        ret = query(EntityType.class, query, start, max);
+        ret = super.query(EntityType.class, query, start, max);
         break;
       case PROPERTY:
-        ret = query(Property.class, query, start, max);
+        ret = super.query(Property.class, query, start, max);
         break;
       case ENTITY:
-        ret = query(Entity.class, query, start, max);
+        ret = super.query(Entity.class, query, start, max);
         break;
       case PROPERTY_VALUE:
-        ret = query(PropertyValue.class, query, start, max);
+        ret = super.query(PropertyValue.class, query, start, max);
         break;
       default:
         ret = null;

@@ -12,7 +12,7 @@ import java.util.List;
  * @author Luis Faria <lfaria@keep.pt>
  * 
  */
-public class PropertyDAO extends AbstractDAO {
+public final class PropertyDAO extends AbstractDO<Property> {
 
   /**
    * The name of the relationship to {@link EntityType} in {@link Property}.
@@ -39,6 +39,30 @@ public class PropertyDAO extends AbstractDAO {
   }
 
   /**
+   * Singleton instance.
+   */
+  private static PropertyDAO instance = null;
+
+  /**
+   * Get singleton instance.
+   * 
+   * @return The singleton instance
+   */
+  public static PropertyDAO getInstance() {
+    if (instance == null) {
+      instance = new PropertyDAO();
+    }
+    return instance;
+  }
+
+  /**
+   * No other instances can exist as this is a singleton.
+   */
+  private PropertyDAO() {
+
+  }
+
+  /**
    * Find a {@link Property} by the related {@link EntityType} and name.
    * 
    * @param entityTypeName
@@ -47,9 +71,9 @@ public class PropertyDAO extends AbstractDAO {
    *          the name of the {@link Property}
    * @return the {@link Property} or <code>null</code> if not found
    */
-  public static Property findByEntityTypeAndName(final String entityTypeName, final String name) {
+  public Property findByEntityTypeAndName(final String entityTypeName, final String name) {
     final String id = Property.createId(entityTypeName, name);
-    return findById(id, Property.class);
+    return super.findById(id, Property.class);
   }
 
   /**
@@ -59,26 +83,26 @@ public class PropertyDAO extends AbstractDAO {
    * 
    * @param bindings
    *          The query bindings, see
-   *          {@link AbstractDAO#query(Class, String, int, int)}
+   *          {@link AbstractDO#query(Class, String, int, int)}
    * @param start
    *          The index of the first item to retrieve
    * @param max
    *          The maximum number of items to retrieve
    * @return A list of {@link Property} filtered by the above constraints
    */
-  public static List<Property> query(final String bindings, final int start, final int max) {
-    return query(Property.class, bindings, start, max);
+  public List<Property> query(final String bindings, final int start, final int max) {
+    return super.query(Property.class, bindings, start, max);
   }
 
   /**
    * Count the results of a query for {@link Property}.
    * 
    * @param bindings
-   *          The query bindings, see {@link AbstractDAO#count(Class, String)}
+   *          The query bindings, see {@link AbstractDO#count(Class, String)}
    * @return The number of results expected for the query
    */
-  public static int count(final String bindings) {
-    return count(Property.class, bindings);
+  public int count(final String bindings) {
+    return super.count(Property.class, bindings);
   }
 
   /**
@@ -92,9 +116,9 @@ public class PropertyDAO extends AbstractDAO {
    *          the maximum number of items to retrieve
    * @return The list of properties filtered by the above constraints
    */
-  public static Collection<Property> listWithType(final String type, final int start, final int max) {
+  public Collection<Property> listWithType(final String type, final int start, final int max) {
     final String bindings = String.format("?s %1$s %2$s", ENTITY_TYPE_REL, EntityTypeDAO.getEntityTypeRDFId(type));
-    return query(bindings, start, max);
+    return this.query(bindings, start, max);
   }
 
 }

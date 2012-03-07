@@ -11,6 +11,7 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 
 import eu.scape_project.watch.core.KBUtils;
+import eu.scape_project.watch.core.model.AsyncRequest;
 import eu.scape_project.watch.core.model.Entity;
 import eu.scape_project.watch.core.model.EntityType;
 import eu.scape_project.watch.core.model.Property;
@@ -493,5 +494,17 @@ public class WatchClient {
     // .accept(this.format.getMediaType()).get(new
     // GenericType<List<T>>(targetClass));
     return (List<T>) ret;
+  }
+
+  /**
+   * Create a new async request.
+   * 
+   * @param request
+   *          The new async request to insert into the KB.
+   * @return The created async request after merging with the KB
+   */
+  public AsyncRequest createAsyncRequest(final AsyncRequest request) {
+    return this.resource.path(KBUtils.ASYNC_REQUEST + FS + this.format).accept(this.format.getMediaType())
+      .post(AsyncRequest.class, request);
   }
 }

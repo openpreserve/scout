@@ -61,7 +61,7 @@ public class PropertyValueResource extends JavaHelp {
   public Response getPropertyValueByName(
     @ApiParam(value = "Name of the entity type", required = true) @PathParam("entity") final String entityName,
     @ApiParam(value = "Name of the property", required = true) @PathParam("property") final String propertyName) {
-    final PropertyValue propertyValue = PropertyValueDAO.findByEntityAndName(entityName, propertyName);
+    final PropertyValue propertyValue = PropertyValueDAO.getInstance().findByEntityAndName(entityName, propertyName);
 
     if (propertyValue != null) {
       return Response.ok().entity(propertyValue).build();
@@ -107,11 +107,11 @@ public class PropertyValueResource extends JavaHelp {
     @ApiParam(value = "Property name (must exist)", required = true) @PathParam("property") final String propertyName,
     @ApiParam(value = "Property value", required = false) final String value) {
 
-    final Entity entity = EntityDAO.findById(entityName);
+    final Entity entity = EntityDAO.getInstance().findById(entityName);
 
     if (entity != null) {
       final String typeName = entity.getEntityType().getName();
-      final Property property = PropertyDAO.findByEntityTypeAndName(typeName, propertyName);
+      final Property property = PropertyDAO.getInstance().findByEntityTypeAndName(typeName, propertyName);
 
       if (property != null) {
         final PropertyValue propertyValue = new PropertyValue(entity, property, value);
@@ -146,7 +146,7 @@ public class PropertyValueResource extends JavaHelp {
     @ApiParam(value = "Property related to the property value", required = true) @PathParam("property") final String propertyName,
     @ApiParam(value = "Updated value", required = true) final String value) {
     // TODO support several property values, by versioning
-    final PropertyValue propertyValue = PropertyValueDAO.findByEntityAndName(entityName, propertyName);
+    final PropertyValue propertyValue = PropertyValueDAO.getInstance().findByEntityAndName(entityName, propertyName);
 
     if (propertyValue != null) {
       propertyValue.setValue(value);
@@ -174,7 +174,7 @@ public class PropertyValueResource extends JavaHelp {
   public Response deletePropertyValue(
     @ApiParam(value = "Entity related with the property value", required = true) @PathParam("entity") final String entityName,
     @ApiParam(value = "Property related with the property value", required = true) @PathParam("property") final String propertyName) {
-    final PropertyValue propertyValue = PropertyValueDAO.findByEntityAndName(entityName, propertyName);
+    final PropertyValue propertyValue = PropertyValueDAO.getInstance().findByEntityAndName(entityName, propertyName);
 
     if (propertyValue != null) {
       propertyValue.delete();

@@ -134,6 +134,10 @@ public class Question extends RdfBean<Question> {
     return this.id;
   }
 
+  public void setId(final String id) {
+    this.id = id;
+  }
+
   public String getSparql() {
     return this.sparql;
   }
@@ -162,7 +166,7 @@ public class Question extends RdfBean<Question> {
     return this.period;
   }
 
-  public void setPeriod(final int period) {
+  public void setPeriod(final long period) {
     this.period = period;
   }
 
@@ -171,6 +175,7 @@ public class Question extends RdfBean<Question> {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((entities == null) ? 0 : entities.hashCode());
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
     result = prime * result + (int) (period ^ (period >>> 32));
     result = prime * result + ((properties == null) ? 0 : properties.hashCode());
     result = prime * result + ((sparql == null) ? 0 : sparql.hashCode());
@@ -192,6 +197,11 @@ public class Question extends RdfBean<Question> {
       if (other.entities != null)
         return false;
     } else if (!entities.equals(other.entities))
+      return false;
+    if (id == null) {
+      if (other.id != null)
+        return false;
+    } else if (!id.equals(other.id))
       return false;
     if (period != other.period)
       return false;
@@ -215,10 +225,15 @@ public class Question extends RdfBean<Question> {
     return true;
   }
 
-  
+  @Override
+  public String toString() {
+    return "Question [id=" + id + ", sparql=" + sparql + ", target=" + target + ", types=" + types + ", properties="
+      + properties + ", entities=" + entities + ", period=" + period + "]";
+  }
+
   /*
-   * THESE METHODS ARE GOING TO BE REIMPLEMENTED OR COMPLETELY REMOVED
-   * AT THE MOMENT SYSTEM SUPPORTS ONLY ONE ENTITYTYPE - ENTITY PER QUESTION  
+   * THESE METHODS ARE GOING TO BE REIMPLEMENTED OR COMPLETELY REMOVED AT THE
+   * MOMENT SYSTEM SUPPORTS ONLY ONE ENTITYTYPE - ENTITY PER QUESTION
    */
   public EntityType getEntityType() {
     return this.types.get(0);

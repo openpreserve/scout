@@ -12,6 +12,7 @@ import eu.scape_project.watch.core.KBUtils;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import scala.actors.threadpool.Arrays;
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
@@ -87,6 +88,10 @@ public class Trigger extends RdfBean<Trigger> {
 
   public String getId() {
     return this.id;
+  }
+
+  public void setId(final String id) {
+    this.id = id;
   }
 
   public Question getQuestion() {
@@ -165,6 +170,12 @@ public class Trigger extends RdfBean<Trigger> {
       return false;
     }
     return true;
+  }
+
+  @Override
+  public String toString() {
+    return String.format("Trigger(id=%1$s, plan=%2$s, question=%3$s, notifications=%4$s)", id, plan, question,
+      notifications);
   }
 
 }

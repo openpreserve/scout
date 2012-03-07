@@ -81,7 +81,7 @@ public class KBTest {
     Assert.assertTrue(types2.contains(type));
 
     // FIND
-    final EntityType type2 = EntityTypeDAO.findById(type.getName());
+    final EntityType type2 = EntityTypeDAO.getInstance().findById(type.getName());
 
     Assert.assertNotNull(type2);
     Assert.assertEquals(type, type2);
@@ -100,7 +100,7 @@ public class KBTest {
     Assert.assertFalse(types4.contains(type));
 
     // FIND AGAIN
-    final EntityType type3 = EntityTypeDAO.findById(type.getName());
+    final EntityType type3 = EntityTypeDAO.getInstance().findById(type.getName());
     Assert.assertNull(type3);
 
   }

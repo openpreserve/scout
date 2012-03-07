@@ -1,8 +1,29 @@
 package eu.scape_project.watch.core.rest;
 
 import static org.junit.Assert.assertEquals;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
+import com.sun.jersey.test.framework.JerseyTest;
+import com.sun.jersey.test.framework.WebAppDescriptor;
+import eu.scape_project.watch.core.dao.PropertyDAO;
+import eu.scape_project.watch.core.listener.ApplicationStartupListener;
+import eu.scape_project.watch.core.model.AsyncRequest;
+import eu.scape_project.watch.core.model.Entity;
+import eu.scape_project.watch.core.model.EntityType;
+import eu.scape_project.watch.core.model.Entry;
+import eu.scape_project.watch.core.model.Notification;
+import eu.scape_project.watch.core.model.NotificationType;
+import eu.scape_project.watch.core.model.Property;
+import eu.scape_project.watch.core.model.PropertyValue;
+import eu.scape_project.watch.core.model.Question;
+import eu.scape_project.watch.core.model.RequestTarget;
+import eu.scape_project.watch.core.model.Trigger;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -17,20 +38,6 @@ import org.junit.rules.TestWatchman;
 import org.junit.runners.model.FrameworkMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.json.JSONConfiguration;
-import com.sun.jersey.test.framework.JerseyTest;
-import com.sun.jersey.test.framework.WebAppDescriptor;
-
-import eu.scape_project.watch.core.listener.ApplicationStartupListener;
-import eu.scape_project.watch.core.model.Entity;
-import eu.scape_project.watch.core.model.EntityType;
-import eu.scape_project.watch.core.model.Property;
-import eu.scape_project.watch.core.model.PropertyValue;
 
 /**
  * Unit tests of the watch core REST API.
@@ -451,6 +458,65 @@ public class CoreRestTest extends JerseyTest {
 
     Assert.assertTrue(pvList.contains(propertyValue));
 
+  }
+
+  /**
+   * Tests on asynchronous requests with XML output.
+   */
+  @Test
+  public void asynRequestXML() {
+    asyncRequest(WatchClient.Format.XML);
+  }
+
+  /**
+   * Tests on asynchronous requests with JSON output.
+   */
+  @Test
+  public void asynRequestJSON() {
+    asyncRequest(WatchClient.Format.JSON);
+  }
+
+  /**
+   * Tests on asynchronous requests.
+   * 
+   * @param format
+   *          The format of the output.
+   */
+  public void asyncRequest(final WatchClient.Format format) {
+    final WatchClient client = new WatchClient(this.resource, format);
+
+    // CREATE DATA
+    final String typeName = "test";
+    final String typeDescription = "A test";
+
+    final EntityType entitytype = client.createEntityType(typeName, typeDescription);
+
+    final String entityName = "test01";
+    final Entity entity = client.createEntity(entityName, typeName);
+
+    final String propertyName = "property01";
+    final String propertyDescription = "The property 01";
+    final Property property = client.createProperty(typeName, propertyName, propertyDescription);
+
+    final String value = "99999";
+    final PropertyValue propertyValue = client.createPropertyValue(entity.getName(), property.getName(), value);
+
+    // TESTS
+
+    // CREATE
+    final Question q = new Question("?s watch:entity watch-Entity:" + entityName
+      + ". ?s watch:property watch-Property:" + PropertyDAO.getPropertyRDFId(typeName, propertyName)
+      + " . ?s watch:value ?v . FILTER (?v >= 100000)", RequestTarget.PROPERTY_VALUE, Arrays.asList(entitytype),
+      Arrays.asList(property), Arrays.asList(entity), 60000L);
+    final Notification n = new Notification(NotificationType.EMAIL_EVENT, Arrays.asList(new Entry("recepients",
+      "test@scape-project.eu")));
+    final Trigger trigger = new Trigger(q, Arrays.asList(n), null);
+    final AsyncRequest areq = new AsyncRequest(Arrays.asList(trigger));
+    final AsyncRequest areq2 = client.createAsyncRequest(areq);
+    Assert.assertEquals(areq, areq2);
+    
+    // GET
+    
   }
 
 }

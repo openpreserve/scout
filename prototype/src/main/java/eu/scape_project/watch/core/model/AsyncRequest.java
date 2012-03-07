@@ -18,8 +18,8 @@ import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
 
 /**
- * An Asynchronous Request, that will be kept in the KBUtils in order to be monitored
- * an acted upon.
+ * An Asynchronous Request, that will be kept in the KBUtils in order to be
+ * monitored an acted upon.
  * 
  * @author Luis Faria <lfaria@keep.pt>
  * 
@@ -105,9 +105,10 @@ public class AsyncRequest extends RdfBean<AsyncRequest> {
   public void addTrigger(Trigger t) {
     triggers.add(t);
   }
+
   public List<Question> getQuestion() {
-    List<Question> tmp = new ArrayList() ;
-    for (Trigger t : triggers){
+    List<Question> tmp = new ArrayList();
+    for (Trigger t : triggers) {
       tmp.add(t.getQuestion());
     }
     return tmp;

@@ -6,8 +6,10 @@ package eu.scape_project.watch.core.rest.resource;
 import java.util.Collection;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
@@ -19,8 +21,12 @@ import com.wordnik.swagger.core.ApiOperation;
 import com.wordnik.swagger.core.ApiParam;
 import com.wordnik.swagger.core.JavaHelp;
 
+import eu.scape_project.watch.core.KBUtils;
 import eu.scape_project.watch.core.dao.AsyncRequestDAO;
+import eu.scape_project.watch.core.dao.EntityTypeDAO;
 import eu.scape_project.watch.core.model.AsyncRequest;
+import eu.scape_project.watch.core.model.Entity;
+import eu.scape_project.watch.core.model.EntityType;
 import eu.scape_project.watch.core.rest.exception.NotFoundException;
 
 /**
@@ -47,7 +53,7 @@ public class AsyncRequestResource extends JavaHelp {
   public Response getAsyncRequestById(
     @ApiParam(value = "Request Id", required = true) @PathParam("id") final String requestId) {
 
-    final AsyncRequest request = AsyncRequestDAO.findById(requestId);
+    final AsyncRequest request = AsyncRequestDAO.getInstance().findById(requestId);
 
     if (request != null) {
       return Response.ok().entity(request).build();
@@ -57,15 +63,38 @@ public class AsyncRequestResource extends JavaHelp {
   }
 
   /**
+   * Create a new {@link AsyncRequest}.
+   * 
+   * @param request
+   *          The async request to save
+   * @return The created async request
+   */
+  @POST
+  @Path("/")
+  @ApiOperation(value = "Create Async Request", notes = "This can only be done by a logged user (TODO)")
+  public Response createAsyncRequest(@ApiParam(value = "Async Request", required = true) final AsyncRequest request) {
+    AsyncRequestDAO.getInstance().save(request);
+    return Response.ok().entity(request).build();
+  }
+
+  /**
    * List all {@link AsyncRequest} in KB.
+   * 
+   * @param start
+   *          The index of the first item to retrieve
+   * 
+   * @param max
+   *          The maximum number of items to retrieve
    * 
    * @return A list will all {@link AsyncRequest}.
    */
   @GET
   @Path("/list")
   @ApiOperation(value = "List all async requests", notes = "")
-  public Response listAsyncRequest() {
-    final Collection<AsyncRequest> list = Jenabean.instance().reader().load(AsyncRequest.class);
+  public Response listAsyncRequest(
+    @ApiParam(value = "Index of first item to retrieve", required = true) @QueryParam("start") final int start,
+    @ApiParam(value = "Maximum number of items to retrieve", required = true) @QueryParam("max") final int max) {
+    final Collection<AsyncRequest> list = AsyncRequestDAO.getInstance().list(start, max);
     return Response.ok().entity(new GenericEntity<Collection<AsyncRequest>>(list) {
     }).build();
   }

@@ -60,7 +60,7 @@ public class EntityResource extends JavaHelp {
   public Response getEntityByName(
     @ApiParam(value = "Name of the Entity", required = true) @PathParam("name") final String name) {
 
-    final Entity entity = EntityDAO.findById(name);
+    final Entity entity = EntityDAO.getInstance().findById(name);
 
     if (entity != null) {
       return Response.ok().entity(entity).build();
@@ -87,7 +87,7 @@ public class EntityResource extends JavaHelp {
     @ApiParam(value = "Entity type", required = true) @QueryParam("type") final String type,
     @ApiParam(value = "Index of first item to retrieve", required = true) @QueryParam("start") final int start,
     @ApiParam(value = "Maximum number of items to retrieve", required = true) @QueryParam("max") final int max) {
-    final Collection<Entity> list = EntityDAO.listWithType(type, start, max);
+    final Collection<Entity> list = EntityDAO.getInstance().listWithType(type, start, max);
     return Response.ok().entity(new GenericEntity<Collection<Entity>>(list) {
     }).build();
   }
@@ -110,12 +110,12 @@ public class EntityResource extends JavaHelp {
     @ApiParam(value = "Entity name (must be unique)", required = true) @PathParam("name") final String name,
     @ApiParam(value = "Entity Type (must exist)", required = true) final String type) {
 
-    final EntityType entitytype = EntityTypeDAO.findById(type);
+    final EntityType entitytype = EntityTypeDAO.getInstance().findById(type);
 
     if (entitytype != null) {
       final Entity entity = new Entity(entitytype, name);
       entity.save();
-      
+
       KBUtils.printStatements();
       return Response.ok().entity(entity).build();
     } else {
@@ -140,7 +140,7 @@ public class EntityResource extends JavaHelp {
   public Response updateEntity(
     @ApiParam(value = "Name that need to be deleted", required = true) @PathParam("name") final String name,
     @ApiParam(value = "Updated Entity object", required = true) final Entity entity) {
-    final Entity original = EntityDAO.findById(name);
+    final Entity original = EntityDAO.getInstance().findById(name);
     if (original != null) {
       original.delete();
       entity.save();
@@ -166,7 +166,7 @@ public class EntityResource extends JavaHelp {
   public Response deleteEntity(
     @ApiParam(value = "The name of the Entity to be deleted", required = true) @PathParam("name") final String name) {
     LOG.info("deleting entity name: " + name);
-    final Entity entity = EntityDAO.findById(name);
+    final Entity entity = EntityDAO.getInstance().findById(name);
     if (entity != null) {
       entity.delete();
       return Response.ok().entity(entity).build();

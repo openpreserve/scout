@@ -11,7 +11,11 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.tdb.TDB;
-
+import eu.scape_project.watch.core.dao.AsyncRequestDAO;
+import eu.scape_project.watch.core.dao.EntityDAO;
+import eu.scape_project.watch.core.dao.EntityTypeDAO;
+import eu.scape_project.watch.core.dao.PropertyDAO;
+import eu.scape_project.watch.core.dao.PropertyValueDAO;
 import eu.scape_project.watch.core.model.AsyncRequest;
 import eu.scape_project.watch.core.model.DictionaryItem;
 import eu.scape_project.watch.core.model.Entity;
@@ -24,6 +28,13 @@ import eu.scape_project.watch.core.model.PropertyValue;
 import eu.scape_project.watch.core.model.Question;
 import eu.scape_project.watch.core.model.RequestTarget;
 import eu.scape_project.watch.core.model.Trigger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -184,28 +195,62 @@ public final class KBUtils {
    */
   public static final String WATCH_PREFIX_DECL = createPrefixDecl(WATCH_PREFIX, WATCH_NS);
 
+  /**
+   * {@link EntityType} prefix to use in SPARQL queries.
+   */
   public static final String WATCH_ENTITY_TYPE_PREFIX = getResourcePrefix(EntityType.class);
+
+  /**
+   * {@link EntityType} prefix declaration to use in SPARQL queries.
+   */
   public static final String WATCH_ENTITY_TYPE_PREFIX_DECL = getResourcePrefixDecl(EntityType.class);
+  /**
+   * {@link Property} prefix to use in SPARQL queries.
+   */
   public static final String WATCH_PROPERTY_PREFIX = getResourcePrefix(Property.class);
+
+  /**
+   * {@link Property} prefix declaration to use in SPARQL queries.
+   */
   public static final String WATCH_PROPERTY_PREFIX_DECL = getResourcePrefixDecl(Property.class);
+  /**
+   * {@link Entity} prefix to use in SPARQL queries.
+   */
   public static final String WATCH_ENTITY_PREFIX = getResourcePrefix(Entity.class);
+
+  /**
+   * {@link Entity} prefix declaration to use in SPARQL queries.
+   */
   public static final String WATCH_ENTITY_PREFIX_DECL = getResourcePrefixDecl(Entity.class);
+  /**
+   * {@link PropertyValue} prefix to use in SPARQL queries.
+   */
   public static final String WATCH_PROPERTY_VALUE_PREFIX = getResourcePrefix(PropertyValue.class);
+
+  /**
+   * {@link PropertyValue} prefix declaration to use in SPARQL queries.
+   */
   public static final String WATCH_PROPERTY_VALUE_PREFIX_DECL = getResourcePrefixDecl(PropertyValue.class);
 
+  /**
+   * List of all defined prefixes declarations to help creating SPARQL queries.
+   */
   public static final String PREFIXES_DECL = XSD_PREFIX_DECL + RDF_PREFIX_DECL + WATCH_PREFIX_DECL
     + WATCH_ENTITY_TYPE_PREFIX_DECL + WATCH_PROPERTY_PREFIX_DECL + WATCH_ENTITY_PREFIX_DECL
     + WATCH_PROPERTY_VALUE_PREFIX_DECL;
 
+  /**
+   * Debugging method that prints all statements in triple store.
+   */
   public static void printStatements() {
 
-    StmtIterator statements = Jenabean.instance().model().listStatements();
+    final StmtIterator statements = Jenabean.instance().model().listStatements();
     try {
       while (statements.hasNext()) {
-        Statement stmt = statements.next();
-        Resource s = stmt.getSubject();
-        Resource p = stmt.getPredicate();
-        RDFNode o = stmt.getObject();
+        final Statement stmt = statements.next();
+        final Resource s = stmt.getSubject();
+        final Resource p = stmt.getPredicate();
+        final RDFNode o = stmt.getObject();
 
         String sinfo = "";
         String pinfo = "";
@@ -217,8 +262,9 @@ public final class KBUtils {
           sinfo = "" + s.getId();
         }
 
-        if (p.isURIResource())
+        if (p.isURIResource()) {
           pinfo = "<" + p.getURI() + ">";
+        }
 
         if (o.isURIResource()) {
           oinfo = "<" + o.toString() + ">";
@@ -229,7 +275,7 @@ public final class KBUtils {
         }
         LOG.debug("({}, {}, {})", new Object[] {sinfo, pinfo, oinfo});
       }
-    } catch (Throwable e) {
+    } catch (final Throwable e) {
       LOG.info(e.getMessage());
     } finally {
       statements.close();
@@ -246,12 +292,10 @@ public final class KBUtils {
     final EntityType formats = new EntityType("format", "File format");
     final EntityType profile = new EntityType("profile", "A content profile of a specific collection");
 
-    tools.save();
-    formats.save();
-    profile.save();
-
     final Property formatPUID = new Property(formats, "PUID", "PRONOM Id");
     final Property formatMimetype = new Property(formats, "MIME", "MIME type");
+
+    final EntityType tools = new EntityType("tools", "Applications that read and/or write into diferent file formats");
     final Property toolVersion = new Property(tools, "version", "Tool version");
     final Property inputFormat = new Property(tools, "input_format", "Supported input format",
       PropertyDataStructure.LIST);
@@ -260,12 +304,9 @@ public final class KBUtils {
     final Property formatDistribution = new Property(profile, "format_distribution",
       "The format distribution of the content", PropertyDataStructure.DICTIONARY);
 
-    formatPUID.save();
-    formatMimetype.save();
-    toolVersion.save();
-    inputFormat.save();
-    outputFormat.save();
-    formatDistribution.save();
+    EntityTypeDAO.getInstance().save(formats, tools, profile);
+    PropertyDAO.getInstance().save(formatPUID, formatMimetype, toolVersion, inputFormat, outputFormat,
+      formatDistribution);
 
     final Entity pdf17Format = new Entity(formats, "application/pdf;version=1.7");
     final Entity tiffFormat = new Entity(formats, "image/tiff;version=3.0.0");
@@ -280,17 +321,9 @@ public final class KBUtils {
     final Entity gif = new Entity(formats, "GIF");
     final Entity cp0 = new Entity(profile, "collection0");
 
-    pdf17Format.save();
-    tiffFormat.save();
-    jpeg2000Format.save();
-    imageMagickTool.save();
-    jpeg.save();
-    jpeg2000.save();
-    png.save();
-    doc.save();
-    docx.save();
-    bmp.save();
-    gif.save();
+    // save entities
+    EntityDAO.getInstance().save(pdf17Format, tiffFormat, jpeg2000Format, imageMagickTool, jpeg, jpeg2000, png, doc,
+      docx, bmp, gif, cp0);
 
     // property value construction also binds to entity
     final PropertyValue pdfPUID = new PropertyValue(pdf17Format, formatPUID, "fmt/276");
@@ -300,6 +333,7 @@ public final class KBUtils {
     final PropertyValue jpeg2000PUID = new PropertyValue(jpeg2000Format, formatPUID, "x-fmt/392");
     final PropertyValue jpeg2000Mime = new PropertyValue(jpeg2000Format, formatMimetype, "image/jp2");
     final PropertyValue imageMagickVersion = new PropertyValue(imageMagickTool, toolVersion, "6.6.0");
+
     final PropertyValue jpegMime = new PropertyValue(jpeg, formatMimetype, "image/jpeg");
     final PropertyValue jpegPUID = new PropertyValue(jpeg, formatPUID, "fmt/44");
     final PropertyValue pngPUID = new PropertyValue(png, formatPUID, "fmt/11");
@@ -316,35 +350,28 @@ public final class KBUtils {
     final List<Object> values = new ArrayList<Object>(Arrays.asList("fmt/353", "fmt/44", "fmt/119", "fmt/4"));
     final PropertyValue ifr = new PropertyValue(imageMagickTool, inputFormat, values);
     final PropertyValue ofr = new PropertyValue(imageMagickTool, outputFormat, values);
-    
+
     final List<Object> distr = new ArrayList<Object>();
     distr.add(new DictionaryItem(pdf17Format.getName(), "133"));
     distr.add(new DictionaryItem(tiffFormat.getName(), "123"));
     distr.add(new DictionaryItem(jpeg2000.getName(), "42"));
-    
+
     final PropertyValue distribution = new PropertyValue(cp0, formatDistribution, distr);
 
-    pdfPUID.save();
-    pdfMime.save();
-    tiffPUID.save();
-    tiffMime.save();
-    jpeg2000PUID.save();
-    jpeg2000Mime.save();
-    imageMagickVersion.save();
-    jpegMime.save();
-    jpegPUID.save();
-    pngPUID.save();
-    pngMime.save();
-    docPUID.save();
-    docMime.save();
-    docxMime.save();
-    bmpPUID.save();
-    bmpMime.save();
-    gifPUID.save();
-    gifMime.save();
-    ifr.save();
-    ofr.save();
-    distribution.save();
+    final PropertyValue ifr1 = new PropertyValue(imageMagickTool, inputFormat, "fmt/353");
+    final PropertyValue ifr2 = new PropertyValue(imageMagickTool, inputFormat, "fmt/44");
+    final PropertyValue ifr3 = new PropertyValue(imageMagickTool, inputFormat, "fmt/119");
+    final PropertyValue ifr4 = new PropertyValue(imageMagickTool, inputFormat, "fmt/4");
+
+    final PropertyValue ofr1 = new PropertyValue(imageMagickTool, outputFormat, "fmt/353");
+    final PropertyValue ofr2 = new PropertyValue(imageMagickTool, outputFormat, "fmt/44");
+    final PropertyValue ofr3 = new PropertyValue(imageMagickTool, outputFormat, "fmt/119");
+    final PropertyValue ofr4 = new PropertyValue(imageMagickTool, outputFormat, "fmt/4");
+
+    // save property values
+    PropertyValueDAO.getInstance().save(imageMagickVersion, pdfPUID, pdfMime, tiffPUID, tiffMime, jpeg2000PUID,
+      jpeg2000Mime, jpegPUID, jpegMime, pngPUID, pngMime, docPUID, docMime, docxMime, bmpPUID, bmpMime, gifPUID,
+      gifMime, ifr, ofr, ifr1, ifr2, ifr3, ifr4, ofr1, ofr2, ofr3, ofr4, distribution);
 
     final Question question1 = new Question("?s watch:type watch-EntityType:tools", RequestTarget.ENTITY,
       Arrays.asList(tools), Arrays.asList(toolVersion), Arrays.asList(imageMagickTool), 60);
@@ -357,10 +384,8 @@ public final class KBUtils {
 
     final AsyncRequest request = new AsyncRequest(Arrays.asList(trigger1));
 
-    question1.save();
-    notification1.save();
-    trigger1.save();
-    request.save();
+    // save request
+    AsyncRequestDAO.getInstance().save(request);
 
     TDB.sync(Jenabean.instance().model());
   }
@@ -378,15 +403,45 @@ public final class KBUtils {
     return "PREFIX " + prefix + " <" + namescape + ">\n";
   }
 
-  static <T extends RdfBean<T>> String getResourcePrefix(Class<T> resourceClass) {
+  /**
+   * Get a resource class prefix to be used in SPARQL queries.
+   * 
+   * @param <T>
+   *          The resource class type.
+   * 
+   * @param resourceClass
+   *          The resource class.
+   * @return The prefix, starting with "watch-", the resource class simple name,
+   *         and finishing with ":"
+   */
+  static <T extends RdfBean<T>> String getResourcePrefix(final Class<T> resourceClass) {
     return "watch-" + resourceClass.getSimpleName() + ":";
   }
 
-  static <T extends RdfBean<T>> String getResourceNamespace(Class<T> resourceClass) {
+  /**
+   * Get a resource class RDF name space, to use in SPARQL queries.
+   * 
+   * @param <T>
+   *          The resource class type.
+   * @param resourceClass
+   *          The resource class.
+   * @return The resource namespace, that start with the watch namespace
+   *         {@link #WATCH_NS}.
+   */
+  static <T extends RdfBean<T>> String getResourceNamespace(final Class<T> resourceClass) {
     return WATCH_NS + resourceClass.getSimpleName() + "/";
   }
 
-  static <T extends RdfBean<T>> String getResourcePrefixDecl(Class<T> resourceClass) {
+  /**
+   * Get the resource class prefix declaration to use in SPARQL queries.
+   * 
+   * @param <T>
+   *          The resource class type.
+   * @param resourceClass
+   *          The resource class.
+   * @return The prefix declaration.
+   */
+  static <T extends RdfBean<T>> String getResourcePrefixDecl(final Class<T> resourceClass) {
     return createPrefixDecl(getResourcePrefix(resourceClass), getResourceNamespace(resourceClass));
   }
 

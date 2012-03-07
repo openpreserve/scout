@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
  * @author Luis Faria <lfaria@keep.pt>
  * 
  */
-public class EntityDAO extends AbstractDAO {
+public final class EntityDAO extends AbstractDO<Entity> {
 
   /**
    * Logger.
@@ -30,8 +30,39 @@ public class EntityDAO extends AbstractDAO {
    */
   private static final String ENTITY_TYPE_REL = KBUtils.WATCH_PREFIX + "type";
 
-  public static String getEntityRDFId(String entityName) {
+  /**
+   * Get Entity RDF ID.
+   * 
+   * @param entityName
+   *          The entity name that uniquely identifies this entity.
+   * @return Get the RDF ID.
+   */
+  public static String getEntityRDFId(final String entityName) {
     return "<" + KBUtils.WATCH_NS + Entity.class.getSimpleName() + "/" + entityName + ">";
+  }
+
+  /**
+   * Singleton instance.
+   */
+  private static EntityDAO instance = null;
+
+  /**
+   * Get singleton instance.
+   * 
+   * @return The singleton instance
+   */
+  public static EntityDAO getInstance() {
+    if (instance == null) {
+      instance = new EntityDAO();
+    }
+    return instance;
+  }
+
+  /**
+   * No other instances can exist as this is a singleton.
+   */
+  private EntityDAO() {
+
   }
 
   /**
@@ -41,8 +72,8 @@ public class EntityDAO extends AbstractDAO {
    *          the entity name
    * @return the {@link Entity} or <code>null</code> if not found
    */
-  public static Entity findById(final String entityName) {
-    return findById(entityName, Entity.class);
+  public Entity findById(final String entityName) {
+    return super.findById(entityName, Entity.class);
   }
 
   /**
@@ -52,26 +83,26 @@ public class EntityDAO extends AbstractDAO {
    * 
    * @param bindings
    *          The query bindings, see
-   *          {@link AbstractDAO#query(Class, String, int, int)}
+   *          {@link AbstractDO#query(Class, String, int, int)}
    * @param start
    *          The index of the first item to retrieve
    * @param max
    *          The maximum number of items to retrieve
    * @return A list of {@link Entity} filtered by the above constraints
    */
-  public static List<Entity> query(final String bindings, final int start, final int max) {
-    return query(Entity.class, bindings, start, max);
+  public List<Entity> query(final String bindings, final int start, final int max) {
+    return super.query(Entity.class, bindings, start, max);
   }
 
   /**
    * Count the results of a query for {@link Entity}.
    * 
    * @param bindings
-   *          The query bindings, see {@link AbstractDAO#count(Class, String)}
+   *          The query bindings, see {@link AbstractDO#count(Class, String)}
    * @return The number of results expected for the query
    */
-  public static int count(final String bindings) {
-    return count(Entity.class, bindings);
+  public int count(final String bindings) {
+    return super.count(Entity.class, bindings);
   }
 
   /**
@@ -85,7 +116,7 @@ public class EntityDAO extends AbstractDAO {
    *          the maximum number of items to return
    * @return a list of {@link Entity} filtered by the defined constraints
    */
-  public static Collection<Entity> listWithType(final String type, final int start, final int max) {
+  public Collection<Entity> listWithType(final String type, final int start, final int max) {
     String bindings;
 
     if (StringUtils.isNotBlank(type)) {
@@ -93,6 +124,7 @@ public class EntityDAO extends AbstractDAO {
     } else {
       bindings = "";
     }
-    return query(bindings, start, max);
+    return this.query(bindings, start, max);
   }
+
 }

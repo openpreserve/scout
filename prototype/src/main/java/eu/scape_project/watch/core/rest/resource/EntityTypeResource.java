@@ -55,7 +55,7 @@ public class EntityTypeResource extends JavaHelp {
   @ApiErrors(value = {@ApiError(code = NotFoundException.CODE, reason = "Entity Type not found")})
   public Response getEntityTypeByName(
     @ApiParam(value = "Name of the Entity Type", required = true) @PathParam("name") final String name) {
-    final EntityType entitytype = EntityTypeDAO.findById(name);
+    final EntityType entitytype = EntityTypeDAO.getInstance().findById(name);
 
     if (entitytype != null) {
       return Response.ok().entity(entitytype).build();
@@ -116,7 +116,7 @@ public class EntityTypeResource extends JavaHelp {
   public Response updateEntityType(
     @ApiParam(value = "Name that need to be deleted", required = true) @PathParam("name") final String name,
     @ApiParam(value = "Updated Entity Type object", required = true) final EntityType entitytype) {
-    final EntityType original = EntityTypeDAO.findById(name);
+    final EntityType original = EntityTypeDAO.getInstance().findById(name);
     if (original != null) {
       original.delete();
       entitytype.save();
@@ -142,7 +142,7 @@ public class EntityTypeResource extends JavaHelp {
     @ApiParam(value = "The name of the Entity Type to be deleted", required = true) @PathParam("name") final String name) {
     LOG.info("deleting entity type name: " + name);
 
-    final EntityType entitytype = EntityTypeDAO.findById(name);
+    final EntityType entitytype = EntityTypeDAO.getInstance().findById(name);
     if (entitytype != null) {
       entitytype.delete();
       return Response.ok().entity(entitytype).build();

@@ -70,7 +70,7 @@ public class RequestResource extends JavaHelp {
 
     final RequestTarget requestTarget = RequestTarget.valueOf(target.toUpperCase());
 
-    final List<? extends RdfBean<?>> list = RequestDAO.query(requestTarget, query, start, max);
+    final List<? extends RdfBean<?>> list = RequestDAO.getInstance().query(requestTarget, query, start, max);
 
     Response ret;
     switch (requestTarget) {

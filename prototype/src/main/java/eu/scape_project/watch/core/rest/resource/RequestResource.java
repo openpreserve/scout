@@ -66,7 +66,6 @@ public class RequestResource extends JavaHelp {
     @ApiParam(value = "Max number of items", required = true) @QueryParam("max") final int max) {
 
     LOG.debug("Making request '{}', target={}, start={}, max={}", new Object[] {query, target, start, max});
-    KBUtils.printStatements();
 
     final RequestTarget requestTarget = RequestTarget.valueOf(target.toUpperCase());
 

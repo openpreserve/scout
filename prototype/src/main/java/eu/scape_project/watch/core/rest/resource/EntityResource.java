@@ -115,8 +115,6 @@ public class EntityResource extends JavaHelp {
     if (entitytype != null) {
       final Entity entity = new Entity(entitytype, name);
       entity.save();
-
-      KBUtils.printStatements();
       return Response.ok().entity(entity).build();
     } else {
       throw new NotFoundException("Entity type not found: " + type);

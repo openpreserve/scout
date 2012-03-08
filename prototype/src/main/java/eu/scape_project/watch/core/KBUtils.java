@@ -1,11 +1,5 @@
 package eu.scape_project.watch.core;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
@@ -29,16 +23,14 @@ import eu.scape_project.watch.core.model.Question;
 import eu.scape_project.watch.core.model.RequestTarget;
 import eu.scape_project.watch.core.model.Trigger;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import thewebsemantic.binding.Jenabean;
 import thewebsemantic.binding.RdfBean;
 
@@ -175,6 +167,11 @@ public final class KBUtils {
    * A key-value pair entry constant.
    */
   public static final String ENTRY = "entry";
+  
+  /**
+   * A key-value pair item constant.
+   */
+  public static final String DICTIONARY_ITEM = "item";
   /**
    * A source adaptor constant.
    */
@@ -295,7 +292,6 @@ public final class KBUtils {
     final Property formatPUID = new Property(formats, "PUID", "PRONOM Id");
     final Property formatMimetype = new Property(formats, "MIME", "MIME type");
 
-    final EntityType tools = new EntityType("tools", "Applications that read and/or write into diferent file formats");
     final Property toolVersion = new Property(tools, "version", "Tool version");
     final Property inputFormat = new Property(tools, "input_format", "Supported input format",
       PropertyDataStructure.LIST);

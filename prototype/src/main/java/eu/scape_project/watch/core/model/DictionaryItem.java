@@ -1,13 +1,17 @@
 package eu.scape_project.watch.core.model;
 
+import eu.scape_project.watch.core.KBUtils;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.annotate.JsonProperty;
+import thewebsemantic.Namespace;
 
-@XmlRootElement(name = "item")
+@Namespace(KBUtils.WATCH_NS)
+@XmlRootElement(name = KBUtils.DICTIONARY_ITEM)
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DictionaryItem {
 

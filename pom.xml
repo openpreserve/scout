@@ -1,118 +1,118 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-	<groupId>eu.scape-project</groupId>
-	<artifactId>watch</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
-	<description>The Watch component is a monitor component as defined in the SCAPE project</description>
-	<name>Watch Component</name>
-	<url>http://www.scape-project.eu</url>
+  <groupId>eu.scape-project</groupId>
+  <artifactId>watch</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <description>The Watch component is a monitor component as defined in the SCAPE project</description>
+  <name>Watch Component</name>
+  <url>http://www.scape-project.eu</url>
 
-	<licenses>
-		<license>
-			<name>The Apache Software License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-	<developers>
-		<developer>
-			<id>PP</id>
-			<name>Petar Petrov</name>
-			<email>petrov@ifs.tuwien.ac.at</email>
-			<organization>IMP, IFS, UT Vienna</organization>
-			<organizationUrl>http://ifs.tuwien.ac.at/imp</organizationUrl>
-		</developer>
-		<developer>
-			<id>KD</id>
-			<name>Kresimir Duretec</name>
-			<email>duretec@ifs.tuwien.ac.at</email>
-			<organization>IMP, IFS, UT Vienna</organization>
-			<organizationUrl>http://ifs.tuwien.ac.at/imp</organizationUrl>
-		</developer>
-		<developer>
-			<id>CB</id>
-			<name>Christoph Becker</name>
-			<email>becker@ifs.tuwien.ac.at</email>
-			<organization>IMP, IFS, UT Vienna</organization>
-			<organizationUrl>http://ifs.tuwien.ac.at/imp</organizationUrl>
-		</developer>
-		<developer>
-			<id>MH</id>
-			<name>Markus Hamm</name>
-			<email>hamm@ifs.tuwien.ac.at</email>
-			<organization>IMP, IFS, UT Vienna</organization>
-			<organizationUrl>http://ifs.tuwien.ac.at/imp</organizationUrl>
-		</developer>
-		<developer>
-			<id>LF</id>
-			<name>Luis Faria</name>
-			<email>lfaria@keep.pt</email>
-			<organization>KEEP Solutions</organization>
-			<organizationUrl>http://keep.pt/</organizationUrl>
-		</developer>
-	</developers>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>PP</id>
+      <name>Petar Petrov</name>
+      <email>petrov@ifs.tuwien.ac.at</email>
+      <organization>IMP, IFS, UT Vienna</organization>
+      <organizationUrl>http://ifs.tuwien.ac.at/imp</organizationUrl>
+    </developer>
+    <developer>
+      <id>KD</id>
+      <name>Kresimir Duretec</name>
+      <email>duretec@ifs.tuwien.ac.at</email>
+      <organization>IMP, IFS, UT Vienna</organization>
+      <organizationUrl>http://ifs.tuwien.ac.at/imp</organizationUrl>
+    </developer>
+    <developer>
+      <id>CB</id>
+      <name>Christoph Becker</name>
+      <email>becker@ifs.tuwien.ac.at</email>
+      <organization>IMP, IFS, UT Vienna</organization>
+      <organizationUrl>http://ifs.tuwien.ac.at/imp</organizationUrl>
+    </developer>
+    <developer>
+      <id>MH</id>
+      <name>Markus Hamm</name>
+      <email>hamm@ifs.tuwien.ac.at</email>
+      <organization>IMP, IFS, UT Vienna</organization>
+      <organizationUrl>http://ifs.tuwien.ac.at/imp</organizationUrl>
+    </developer>
+    <developer>
+      <id>LF</id>
+      <name>Luis Faria</name>
+      <email>lfaria@keep.pt</email>
+      <organization>KEEP Solutions</organization>
+      <organizationUrl>http://keep.pt/</organizationUrl>
+    </developer>
+  </developers>
 
-	<!-- <scm> <connection>scm:git:git@github.com:openplanets/scape-pw.git</connection> 
-		<developerConnection>scm:git:git@github.com:openplanets/scape-pw.git</developerConnection> 
-		<url>git@github.com:openplanets/scape-pw.git</url> </scm> -->
+  <!-- <scm> <connection>scm:git:git@github.com:openplanets/scape-pw.git</connection> <developerConnection>scm:git:git@github.com:openplanets/scape-pw.git</developerConnection> 
+    <url>git@github.com:openplanets/scape-pw.git</url> </scm> -->
 
-	<modules>
-		<module>prototype</module>
+  <modules>
+    <module>prototype</module>
     <module>build-tools-config</module>
   </modules>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jdk.version>1.6</jdk.version>
-	</properties>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jdk.version>1.6</jdk.version>
+  </properties>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<source>${jdk.version}</source>
-					<target>${jdk.version}</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>4.8.2</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>1.6.1</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-log4j12</artifactId>
-				<version>1.6.1</version>
-			</dependency>
-			<dependency>
-				<groupId>com.clarkparsia</groupId>
-				<artifactId>Empire-fourstore</artifactId>
-				<version>0.7</version>
-				<exclusions>
-					<exclusion>
-						<groupId>org.slf4j</groupId>
-						<artifactId>slf4j-jdk14</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+          <source>${jdk.version}</source>
+          <target>${jdk.version}</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+ 
+    <dependencyManagement>
+      <dependencies>
+        <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>4.8.2</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+          <version>1.6.1</version>
+        </dependency>
+        <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-log4j12</artifactId>
+          <version>1.6.1</version>
+        </dependency>
+        <dependency>
+          <groupId>com.clarkparsia</groupId>
+          <artifactId>Empire-fourstore</artifactId>
+          <version>0.7</version>
+          <exclusions>
+            <exclusion>
+              <groupId>org.slf4j</groupId>
+              <artifactId>slf4j-jdk14</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
+      </dependencies>
+    </dependencyManagement>
 
 </project>

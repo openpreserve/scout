@@ -276,5 +276,10 @@ public class Property extends RdfBean<Property> {
   public static String createId(final String entityTypeName, final String propertyName) {
     return entityTypeName + "/" + propertyName;
   }
+  
+  @Override
+  public String toString() {
+    return this.getName() + " " + this.getDescription() + " " + this.getType() + " " + this.getDatatype()  + " " + this.getStructure();
+  }
 
 }

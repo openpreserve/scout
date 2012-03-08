@@ -9,11 +9,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import thewebsemantic.Namespace;
+import thewebsemantic.binding.RdfBean;
 
 @Namespace(KBUtils.WATCH_NS)
 @XmlRootElement(name = KBUtils.DICTIONARY_ITEM)
 @XmlAccessorType(XmlAccessType.FIELD)
-public class DictionaryItem {
+public class DictionaryItem extends RdfBean<DictionaryItem>{
 
   @XmlElement
   @JsonProperty

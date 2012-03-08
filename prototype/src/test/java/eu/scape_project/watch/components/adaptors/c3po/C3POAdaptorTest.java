@@ -1,20 +1,19 @@
 package eu.scape_project.watch.components.adaptors.c3po;
 
-import static org.junit.Assert.*;
-
 import java.util.List;
 
 import junit.framework.Assert;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+
 import eu.scape_project.watch.components.elements.Result;
 import eu.scape_project.watch.components.elements.Task;
 import eu.scape_project.watch.core.model.Entity;
 import eu.scape_project.watch.core.model.EntityType;
 import eu.scape_project.watch.core.model.Property;
 import eu.scape_project.watch.core.model.PropertyDataStructure;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
 
 public class C3POAdaptorTest {
 

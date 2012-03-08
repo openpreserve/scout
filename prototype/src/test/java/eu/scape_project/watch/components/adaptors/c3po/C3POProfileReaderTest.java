@@ -1,7 +1,5 @@
 package eu.scape_project.watch.components.adaptors.c3po;
 
-import static org.junit.Assert.*;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 

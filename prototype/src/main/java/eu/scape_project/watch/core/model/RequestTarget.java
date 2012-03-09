@@ -44,7 +44,7 @@ public enum RequestTarget {
    *          The target class.
    * @return The request target value or null if not found.
    */
-  public static <T extends RdfBean<T>> RequestTarget getTargetByClass(final Class<T> targetClass) {
+  public static RequestTarget getTargetByClass(final Class<? extends RdfBean<?>> targetClass) {
     RequestTarget ret = null;
     if (targetClass == EntityType.class) {
       ret = ENTITY_TYPE;

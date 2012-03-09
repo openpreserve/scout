@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import eu.scape_project.watch.core.KBUtils;
+import eu.scape_project.watch.core.dao.EntityDAO;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -111,6 +112,19 @@ public class Entity extends RdfBean<Entity> {
       return false;
     }
     return true;
+  }
+
+  @Override
+  public Entity save() {
+    final Entity entity = super.save();
+    EntityDAO.getInstance().fireOnUpdated(this);
+    return entity;
+  }
+
+  @Override
+  public void delete() {
+    super.delete();
+    EntityDAO.getInstance().fireOnRemoved(this);
   }
 
   @Override

@@ -155,7 +155,7 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
    * @param object
    *          The created or updated object.
    */
-  protected void fireOnUpdated(final T object) {
+  public void fireOnUpdated(final T object) {
     for (DOListener<T> listener : this.listeners) {
       listener.onUpdated(object);
     }
@@ -167,7 +167,7 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
    * @param object
    *          The removed object.
    */
-  protected void fireOnRemoved(final T object) {
+  public void fireOnRemoved(final T object) {
     for (DOListener<T> listener : this.listeners) {
       listener.onRemoved(object);
     }

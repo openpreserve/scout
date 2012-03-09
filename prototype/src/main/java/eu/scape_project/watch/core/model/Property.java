@@ -6,6 +6,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import eu.scape_project.watch.core.KBUtils;
+import eu.scape_project.watch.core.dao.EntityTypeDAO;
+import eu.scape_project.watch.core.dao.PropertyDAO;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -25,6 +27,19 @@ import thewebsemantic.binding.RdfBean;
 @XmlRootElement(name = KBUtils.PROPERTY)
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Property extends RdfBean<Property> {
+
+  /**
+   * Get the property id based on the entity type and property name.
+   * 
+   * @param entityTypeName
+   *          the related entity type
+   * @param propertyName
+   *          the property name, unique for the related entity type
+   * @return The identifier
+   */
+  public static String createId(final String entityTypeName, final String propertyName) {
+    return entityTypeName + "/" + propertyName;
+  }
 
   /**
    * The unique Id.
@@ -262,24 +277,23 @@ public class Property extends RdfBean<Property> {
     return true;
   }
 
-  // ######################## static ######################
-
-  /**
-   * Get the property id based on the entity type and property name.
-   * 
-   * @param entityTypeName
-   *          the related entity type
-   * @param propertyName
-   *          the property name, unique for the related entity type
-   * @return The identifier
-   */
-  public static String createId(final String entityTypeName, final String propertyName) {
-    return entityTypeName + "/" + propertyName;
+  @Override
+  public Property save() {
+    final Property property = super.save();
+    PropertyDAO.getInstance().fireOnUpdated(this);
+    return property;
   }
-  
+
+  @Override
+  public void delete() {
+    super.delete();
+    PropertyDAO.getInstance().fireOnRemoved(this);
+  }
+
   @Override
   public String toString() {
-    return this.getName() + " " + this.getDescription() + " " + this.getType() + " " + this.getDatatype()  + " " + this.getStructure();
+    return this.getName() + " " + this.getDescription() + " " + this.getType() + " " + this.getDatatype() + " "
+      + this.getStructure();
   }
 
 }

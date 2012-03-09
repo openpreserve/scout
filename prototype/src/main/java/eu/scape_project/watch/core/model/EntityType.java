@@ -6,6 +6,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import eu.scape_project.watch.core.KBUtils;
+import eu.scape_project.watch.core.dao.EntityDAO;
+import eu.scape_project.watch.core.dao.EntityTypeDAO;
 
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
@@ -109,6 +111,19 @@ public class EntityType extends RdfBean<EntityType> {
       return false;
     }
     return true;
+  }
+
+  @Override
+  public EntityType save() {
+    final EntityType type = super.save();
+    EntityTypeDAO.getInstance().fireOnUpdated(this);
+    return type;
+  }
+
+  @Override
+  public void delete() {
+    super.delete();
+    EntityTypeDAO.getInstance().fireOnRemoved(this);
   }
 
   @Override

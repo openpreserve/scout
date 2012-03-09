@@ -10,6 +10,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import eu.scape_project.watch.core.KBUtils;
+import eu.scape_project.watch.core.dao.AsyncRequestDAO;
+import eu.scape_project.watch.core.dao.EntityDAO;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -156,4 +158,18 @@ public class AsyncRequest extends RdfBean<AsyncRequest> {
   public String toString() {
     return "AsyncRequest(id=" + this.id + ", triggers=" + this.triggers + ")";
   }
+
+  @Override
+  public AsyncRequest save() {
+    final AsyncRequest req = super.save();
+    AsyncRequestDAO.getInstance().fireOnUpdated(this);
+    return req;
+  }
+
+  @Override
+  public void delete() {
+    super.delete();
+    AsyncRequestDAO.getInstance().fireOnRemoved(this);
+  }
+
 }

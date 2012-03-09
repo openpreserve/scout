@@ -1,6 +1,7 @@
 package eu.scape_project.watch.core.model;
 
 import eu.scape_project.watch.core.KBUtils;
+import eu.scape_project.watch.core.dao.AsyncRequestDAO;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -84,5 +85,5 @@ public class DictionaryItem extends RdfBean<DictionaryItem>{
   public String toString() {
     return this.key + " : " + this.value;
   }
-
+  
 }

@@ -9,6 +9,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import eu.scape_project.watch.core.KBUtils;
+import eu.scape_project.watch.core.dao.PropertyDAO;
+import eu.scape_project.watch.core.dao.PropertyValueDAO;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -43,8 +45,9 @@ public class PropertyValue extends RdfBean<PropertyValue> {
   private String value;
 
   /**
-   * The value of the property represented as a list. This shall be used
-   * when the datastructure is one of {@link PropertyDataStructure#LIST} or {@link PropertyDataStructure#DICTIONARY}
+   * The value of the property represented as a list. This shall be used when
+   * the datastructure is one of {@link PropertyDataStructure#LIST} or
+   * {@link PropertyDataStructure#DICTIONARY}
    */
   @XmlElement
   private List<Object> values;
@@ -62,7 +65,7 @@ public class PropertyValue extends RdfBean<PropertyValue> {
   @XmlElement
   @JsonProperty
   private Property property;
-  
+
   /**
    * Create a new empty property value.
    */
@@ -176,7 +179,7 @@ public class PropertyValue extends RdfBean<PropertyValue> {
     }
     return true;
   }
-  
+
   /**
    * Update Id for new {@link Entity} or {@link Property} values.
    */
@@ -192,7 +195,20 @@ public class PropertyValue extends RdfBean<PropertyValue> {
   private void init() {
     this.values = new ArrayList<Object>();
   }
-  
+
+  @Override
+  public PropertyValue save() {
+    final PropertyValue propertyValue = super.save();
+    PropertyValueDAO.getInstance().fireOnUpdated(this);
+    return propertyValue;
+  }
+
+  @Override
+  public void delete() {
+    super.delete();
+    PropertyValueDAO.getInstance().fireOnRemoved(this);
+  }
+
   /**
    * Create a unique Id based on the related {@link Entity} name and related
    * {@link Property} name.
@@ -206,7 +222,5 @@ public class PropertyValue extends RdfBean<PropertyValue> {
   public static String createId(final String entityName, final String propertyName) {
     return entityName + "/" + propertyName;
   }
-
-
 
 }

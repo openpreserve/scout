@@ -7,6 +7,7 @@ import junit.framework.Assert;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -48,7 +49,7 @@ public class C3POProfileReaderTest {
     Assert.assertEquals("502", count);
   }
 
-  @Test
+  @Ignore("Overall size feature not yet implemented") @Test
   public void shouldObtainCollectionSize() throws Exception {
     final String size = this.reader.getCollectionSize();
     Assert.assertEquals("fail", size);

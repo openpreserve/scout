@@ -14,10 +14,10 @@
 		<appender-ref ref="CONSOLE" />
 	</logger>
 
-	<logger name="org.quartz" additivity="false">
+	 <!--<logger name="org.quartz" additivity="false">
 		<level value="DEBUG" />
 		<appender-ref ref="CONSOLE" />
-	</logger>
+	</logger>-->
 	
 	<root>
 		<priority value="WARN" />

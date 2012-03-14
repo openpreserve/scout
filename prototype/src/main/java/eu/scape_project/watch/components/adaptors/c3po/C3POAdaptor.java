@@ -12,9 +12,12 @@ import org.slf4j.LoggerFactory;
 
 import eu.scape_project.watch.components.elements.Result;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import eu.scape_project.watch.components.elements.Task;
 >>>>>>> removing old core components code , adding Quartz as a scheduler
+=======
+>>>>>>> removing some old components and test, adapting Adaptor to work as Quartz jobs
 import eu.scape_project.watch.components.interfaces.IAdaptor;
 import eu.scape_project.watch.core.model.DictionaryItem;
 import eu.scape_project.watch.core.model.Entity;

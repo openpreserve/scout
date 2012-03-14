@@ -16,9 +16,8 @@ public interface Plugin {
 
   /**
    * Initializes the plugin. This method gets called exactly once by the
-   * PluginManager before the plugin gets executed. Before its calling, the
-   * parameter values will be set. This method is responsible for checking them
-   * and initializing itself accordingly.
+   * PluginManager before the plugin gets executed. and initializing itself
+   * accordingly.
    * 
    * @throws PluginException
    *           if something goes wrong during the initialization process.
@@ -57,6 +56,13 @@ public interface Plugin {
   String getDescription();
 
   /**
+   * Retrieves the type of the plugin.
+   * 
+   * @return the plugin type.
+   */
+  PluginType getPluginType();
+
+  /**
    * Retrieves a list with {@link ConfigParameter} objects needed/supported by
    * this plugin. Note the not all config parameters have to be requried (
    * {@link ConfigParameter#isRequired()} )
@@ -77,10 +83,21 @@ public interface Plugin {
   /**
    * Sets the config parameters.
    * 
-   * @param values sets the values.
+   * @param values
+   *          sets the values.
    * @throws InvalidParameterException
+   *           if some required parameters are not provided, or other problems
+   *           occur.
    */
   void setParameterValues(Map<String, String> values) throws InvalidParameterException;
 
-  void execute() throws PluginException;
+  /**
+   * Executes this plugin and returns a specific {@link Result} implementation.
+   * The execution has to be done according to the current parameter setting.
+   * 
+   * @return the result of the execution.
+   * @throws PluginException
+   *           if an error occurs.
+   */
+  Result execute() throws PluginException;
 }

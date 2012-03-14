@@ -14,10 +14,17 @@
 		<appender-ref ref="CONSOLE" />
 	</logger>
 
+<<<<<<< HEAD
 	 <!--<logger name="org.quartz" additivity="false">
 		<level value="DEBUG" />
 		<appender-ref ref="CONSOLE" />
 	</logger>-->
+=======
+	<logger name="org.quartz" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="CONSOLE" />
+	</logger>
+>>>>>>> removing old core components code , adding Quartz as a scheduler
 	
 	<root>
 		<priority value="WARN" />

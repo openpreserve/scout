@@ -1,6 +1,7 @@
 package eu.scape_project.watch.components.interfaces;
 
-import eu.scape_project.watch.components.elements.Result;
+import org.quartz.Job;
+
 
 /**
  * Adaptor interface Adaptor know which tasks can it perform and it can accept
@@ -9,10 +10,12 @@ import eu.scape_project.watch.components.elements.Result;
  * @author kresimir
  * 
  */
-public interface IAdaptor {
-
-  public Result execute();
-
-  public void configure(/*add argument*/);
   
+public interface IAdaptor extends Job {
+
+	
+	
+	
+	
+	
 }

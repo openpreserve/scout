@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.scape_project.watch.components.elements.Result;
-import eu.scape_project.watch.components.elements.Task;
 import eu.scape_project.watch.components.interfaces.IAdaptor;
 import eu.scape_project.watch.core.model.DictionaryItem;
 import eu.scape_project.watch.core.model.Entity;
@@ -120,7 +119,7 @@ public class C3POAdaptor implements IAdaptor {
    * Fetches dummy data from a profile output. However the no real calls to the
    * REST API of c3po are done yet.
    */
-  @Override
+ /*
   protected void fetchData() {
 
     final List<String> identifiers = this.source.getCollectionIdentifiers();
@@ -169,7 +168,7 @@ public class C3POAdaptor implements IAdaptor {
     }
 
   }
-
+*/
   // this method sucks...
   // TODO get rid of if, else if... may be command pattern?
   private PropertyValue getPropertyValueForProperty(C3POProfileReader reader, Property p) {
@@ -261,4 +260,18 @@ public class C3POAdaptor implements IAdaptor {
       this.source = new C3POClient(cpEndpoint);
     }
   }
+
+  @Override
+  public Result execute() {
+    LOG.info("Hello from c3po");
+    return null;
+  }
+
+  @Override
+  public void configure() {
+    // TODO Auto-generated method stub
+    
+  }
+
+  
 }

@@ -43,6 +43,9 @@
     <listener>
         <listener-class>eu.scape_project.watch.core.listener.ApplicationStartupListener</listener-class>
     </listener>
+    <listener>
+        <listener-class>eu.scape_project.watch.core.listener.StartupListener</listener-class>
+    </listener>
     
 	<filter>
 		<filter-name>ApiOriginFilter</filter-name>

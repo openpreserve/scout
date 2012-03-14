@@ -3,6 +3,7 @@ package eu.scape_project.watch.core.plugins;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -65,7 +66,6 @@ public class PluginManagerTest {
 
     final File path = new File("src/test/resources/plugins");
     this.deleteFolder(path);
-    path.mkdir();
   }
 
   /**
@@ -190,11 +190,16 @@ public class PluginManagerTest {
    * 
    * @param path
    *          the path to delete.
-   * @return true if succeeded.
    */
-  private boolean deleteFolder(File path) {
+  private void deleteFolder(final File path) {
     if (path.exists()) {
-      final File[] files = path.listFiles();
+      final File[] files = path.listFiles(new FilenameFilter() {
+
+        @Override
+        public boolean accept(final File file, final String name) {
+          return name.endsWith(".jar");
+        }
+      });
       for (final File f : files) {
         if (f.isDirectory()) {
           this.deleteFolder(f);
@@ -204,7 +209,6 @@ public class PluginManagerTest {
       }
     }
 
-    return path.delete();
   }
 
   /**

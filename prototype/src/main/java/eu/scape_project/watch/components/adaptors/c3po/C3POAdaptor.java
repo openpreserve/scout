@@ -7,9 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import eu.scape_project.watch.components.Adaptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import eu.scape_project.watch.components.elements.Result;
 import eu.scape_project.watch.components.elements.Task;
+import eu.scape_project.watch.components.interfaces.IAdaptor;
 import eu.scape_project.watch.core.model.DictionaryItem;
 import eu.scape_project.watch.core.model.Entity;
 import eu.scape_project.watch.core.model.EntityType;
@@ -17,16 +20,13 @@ import eu.scape_project.watch.core.model.Property;
 import eu.scape_project.watch.core.model.PropertyDataStructure;
 import eu.scape_project.watch.core.model.PropertyValue;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * A watch conforming adaptor for a collection profile source called c3po.
  * 
  * @author Petar Petrov <me@petarpetrov.org>
  * @version 0.1
  */
-public class C3POAdaptor extends Adaptor {
+public class C3POAdaptor implements IAdaptor {
 
   /**
    * Default logger for this adaptor.
@@ -64,6 +64,7 @@ public class C3POAdaptor extends Adaptor {
   /**
    * {@inheritDoc}
    */
+ /*
   @Override
   public boolean checkForTask(final Task t) {
     if (t == null) {
@@ -93,6 +94,9 @@ public class C3POAdaptor extends Adaptor {
     return false;
   }
 
+  */
+  
+  
   /**
    * Retrieves the configuration value for the passed key of the loaded
    * properties. If the key is missing or the properties were not loaded

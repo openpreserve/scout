@@ -24,7 +24,7 @@ public class ConfigUtils {
 
   public static final String KB_INSERT_TEST_DATA = "watch.kb.test_data";
 
-  private static final String DEFAULT_PROPERTIES = "watchconfig.properties";
+  private static final String DEFAULT_PROPERTIES = "config/watchconfig.properties";
 
   private static final String USER_PROPERTIES = System.getProperty("user.home") + "/.watchconfig";
 

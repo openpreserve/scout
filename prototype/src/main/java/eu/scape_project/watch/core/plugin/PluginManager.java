@@ -2,7 +2,6 @@ package eu.scape_project.watch.core.plugin;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
@@ -14,11 +13,12 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+
+import eu.scape_project.watch.core.common.ConfigUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,11 @@ import org.slf4j.LoggerFactory;
  */
 /**
  * This is the watch plugin manager. It is responsible for loading
- * {@link Plugin}s.
+ * {@link Plugin}s. Currently it loads all jar files in a pre defined location
+ * and builds an internal registry of all {@link Plugin} classes in there. As
+ * soon as the {@link PluginManager#getPlugin(String, String)} method is called
+ * a new plugin is created and its init method is called. Calling the shutdown
+ * method of the plugin is the responsibility of the user of the Plugin.
  * 
  * @author Petar Petrov - <me@petarpetrov.org>
  */
@@ -40,9 +44,15 @@ public final class PluginManager {
   private static final Logger LOGGER = LoggerFactory.getLogger(PluginManager.class);
 
   /**
-   * The default scanning period, currently set to 30 seconds.
+   * The default scanning period, currently set to 60 seconds.
    */
-  private static final long SCANNER_PERIOD = 30L * 1000;
+  private static final long SCANNER_PERIOD = 60L * 1000;
+
+  /**
+   * A helper string for .class.
+   */
+  private static final String CLASS_EXTENSION = ".class";
+
   /**
    * The default Plugin Manager instance.
    */
@@ -55,6 +65,7 @@ public final class PluginManager {
    */
   public static synchronized PluginManager getDefaultPluginManager() {
     if (PluginManager.defaultPluginManager == null) {
+      LOGGER.debug("Craeting new default instance of the plugin manager");
       PluginManager.defaultPluginManager = new PluginManager();
     }
     return PluginManager.defaultPluginManager;
@@ -76,91 +87,94 @@ public final class PluginManager {
   private Map<File, JarPlugin> pluginRegistry = new HashMap<File, JarPlugin>();
 
   /**
-   * Returns all {@link Plugin}s present in all jars.
-   * 
-   * @return a {@link List} of {@link Plugin}s.
-   */
-  public List<Plugin> getPlugins() {
-    final List<Plugin> plugins = new ArrayList<Plugin>();
-
-    for (JarPlugin jarPlugin : this.pluginRegistry.values()) {
-      if (jarPlugin.plugin != null) {
-        plugins.add(jarPlugin.plugin);
-      }
-    }
-    return plugins;
-  }
-
-  // /**
-  // * Returns the {@link PluginInfo}s for all {@link Plugin}s.
-  // *
-  // * @return a {@link List} of {@link PluginInfo}s.
-  // */
-  // public List<PluginInfo> getPluginsInfo() {
-  // List<PluginInfo> pluginsInfo = new ArrayList<PluginInfo>();
-  //
-  // for (Plugin plugin : getPlugins()) {
-  // pluginsInfo.add(getPluginInfo(plugin));
-  // }
-  //
-  // return pluginsInfo;
-  // }
-
-  /**
    * Returns an instance of the {@link Plugin} with the specified ID
    * (classname).
    * 
    * @param pluginID
    *          the ID (classname) of the {@link Plugin}.
+   * @param version
+   *          the version of the plugin, as there might be some ambiguities.
    * 
    * @return a {@link Plugin} or <code>null</code> if the specified classname if
    *         not a {@link Plugin}.
    */
-  public Plugin getPlugin(final String pluginID) {
+  public Plugin getPlugin(final String pluginID, final String version) {
     Plugin plugin = null;
     for (JarPlugin jarPlugin : this.pluginRegistry.values()) {
-      if (jarPlugin.plugin != null && jarPlugin.plugin.getClass().getName().equals(pluginID)) {
-        plugin = jarPlugin.plugin;
+      final Plugin tmp = jarPlugin.plugin;
+      if (tmp != null && tmp.getClass().getName().equals(pluginID) && tmp.getVersion().equals(version)) {
+        plugin = this.createInstance(jarPlugin.plugin.getClass());
         break;
+      }
+    }
+
+    if (plugin != null) {
+      try {
+        plugin.init();
+      } catch (final PluginException e) {
+        // TODO what shall we du here..
+        LOGGER.warn("An error occurred during plugin initialization: {}", e.getMessage());
       }
     }
     return plugin;
   }
 
-  // /**
-  // * @param pluginID
-  // *
-  // * @return {@link PluginInfo} or <code>null</code>.
-  // */
-  // public PluginInfo getPluginInfo(String pluginID) {
-  // Plugin plugin = getPlugin(pluginID);
-  // if (plugin != null) {
-  // return getPluginInfo(plugin);
-  // } else {
-  // return null;
-  // }
-  // }
+  /**
+   * Retrieves info for all plugins currently in the registry.
+   * 
+   * @return a list of {@link PluginInfo}s
+   */
+  public List<PluginInfo> getPluginInfo() {
+    return this.getPluginInfo(null);
+  }
+
+  /**
+   * Obtain plugin information about all plugins of the given type.
+   * 
+   * @param type
+   *          the type of the Plugin
+   * @return a list with {@link PluginInfo}s
+   * @see {@link PluginType}
+   */
+  public List<PluginInfo> getPluginInfo(final PluginType type) {
+    final List<PluginInfo> info = new ArrayList<PluginInfo>();
+
+    if (type == null) {
+      for (JarPlugin jp : this.pluginRegistry.values()) {
+        final Plugin p = jp.plugin;
+        info.add(new PluginInfo(p.getName(), p.getVersion(), p.getDescription(), p.getClass().getName()));
+      }
+    } else {
+      for (JarPlugin jp : this.pluginRegistry.values()) {
+        final Plugin p = jp.plugin;
+        if (p.getPluginType() == type) {
+          info.add(new PluginInfo(p.getName(), p.getVersion(), p.getDescription(), p.getClass().getName()));
+        }
+      }
+    }
+
+    return info;
+  }
+
+  /**
+   * Rescans the plugins folder on demand.
+   */
+  public void reScan() {
+    this.startTimer();
+  }
 
   /**
    * This method should be called to stop {@link PluginManager} and all
    * {@link Plugin}s currently loaded.
    */
-  public void shutdown() {
+  public synchronized void shutdown() {
 
-    if (this.scannerTimer != null) {
-      // Stop the plugin loader timer
-      this.scannerTimer.cancel();
-    }
+    this.cancelTimer();
 
-    for (JarPlugin jarPlugin : this.pluginRegistry.values()) {
-      if (jarPlugin.plugin != null) {
-        try {
-          jarPlugin.plugin.shutdown();
-        } catch (final PluginException e) {
-          LOGGER.warn("Plugin {} did not perform a clean shutdown: ", e.getMessage());
-        }
-      }
-    }
+    // TODO how do we shutdown the plugins
+    // in a clean fashion.
+
+    PluginManager.defaultPluginManager = null;
   }
 
   /**
@@ -169,44 +183,37 @@ public final class PluginManager {
    * 
    */
   private PluginManager() {
-    try {
-      final Properties configuration = getConfiguration("plugins.properties");
-      final String dir = configuration.getProperty("pluginsDirectory");
-      final File pluginDir = new File(dir);
+    final ConfigUtils config = new ConfigUtils();
+    final String dir = config.getStringProperty("watch.plugins.directory");
+    final File pluginDir = new File(dir);
 
-      LOGGER.debug("Plugin directory is " + pluginDir);
+    LOGGER.debug("Plugin directory is " + pluginDir);
 
-      this.setPluginDirectory(pluginDir);
-    } catch (final IOException e) {
-      LOGGER.debug("Error reading plugins.properties - " + e.getMessage(), e);
-    }
+    this.setPluginDirectory(pluginDir);
 
     LOGGER.debug("Starting plugin scanner timer...");
+    this.startTimer();
 
-    this.scannerTimer = new Timer("Plugin scanner timer", true);
-    this.scannerTimer.schedule(new SearchPluginsTask(), new Date(), SCANNER_PERIOD);
-
-    LOGGER.info(getClass().getSimpleName() + " init OK");
+    LOGGER.info(getClass().getSimpleName() + " is started");
   }
 
   /**
-   * Return the configuration properties with the specified name.
-   * 
-   * @param configFile
-   *          the name of the configuration file.
-   * 
-   * @return a {@link Properties} with the properties of the specified name.
-   * 
-   * @throws IOException
-   *           if the config file cannot be loaded.
+   * Cancels the timer if it is already running, and starts it again. The task
+   * is executed immediately and then every 60 seconds (per default).
    */
-  private Properties getConfiguration(final String configFile) throws IOException {
-    LOGGER.info("Loading default configuration " + configFile);
+  private void startTimer() {
+    this.cancelTimer();
+    this.scannerTimer = new Timer("Plugin scanner timer", true);
+    this.scannerTimer.schedule(new SearchPluginsTask(), new Date(), SCANNER_PERIOD);
+  }
 
-    final Properties config = new Properties();
-    config.load(new FileInputStream(configFile));
-
-    return config;
+  /**
+   * Stops the timer task if there is one.
+   */
+  private void cancelTimer() {
+    if (this.scannerTimer != null) {
+      this.scannerTimer.cancel();
+    }
   }
 
   /**
@@ -234,13 +241,6 @@ public final class PluginManager {
     }
   }
 
-  // private PluginInfo getPluginInfo(Plugin plugin) {
-  // List<PluginParameter> parameters = plugin.getParameters();
-  // return new PluginInfo(plugin.getClass().getName(), plugin.getName(),
-  // plugin.getVersion(), plugin.getDescription(),
-  // parameters.toArray(new PluginParameter[parameters.size()]));
-  // }
-
   /**
    * Checks if there are any new jars in the plugin directory or if any of the
    * old ones has a new last modified date and loads all new plugins.
@@ -253,17 +253,9 @@ public final class PluginManager {
       }
     });
 
-    final URL[] jarURLs = new URL[jarFiles.length];
-    for (int i = 0; i < jarFiles.length; i++) {
-      try {
-        jarURLs[i] = jarFiles[i].toURI().toURL();
-      } catch (final MalformedURLException e) {
-        LOGGER.warn("Error getting jar file URL - " + e.getMessage(), e);
-      }
-    }
-
     for (File jarFile : jarFiles) {
-      if (this.pluginRegistry.containsKey(jarFile) && jarFile.lastModified() == this.pluginRegistry.get(jarFile).lastModified) {
+      if (this.pluginRegistry.containsKey(jarFile)
+        && jarFile.lastModified() == this.pluginRegistry.get(jarFile).lastModified) {
         // The plugin already exists
         LOGGER.debug(jarFile.getName() + " is already loaded");
       } else {
@@ -271,26 +263,20 @@ public final class PluginManager {
         // different. Let's load the Plugin
         LOGGER.debug(jarFile.getName() + " is not loaded or modification dates differ. Inspecting Jar...");
 
-        final Plugin plugin = loadPlugin(jarFile, jarURLs);
-
         try {
-          if (plugin != null) {
+          final URL[] urls = {jarFile.toURI().toURL()};
 
-            plugin.init();
-            LOGGER.debug("Plugin started " + plugin.getName() + " (version " + plugin.getVersion() + ")");
+          final Plugin plugin = loadPlugin(jarFile, urls);
 
-          } else {
-
+          if (plugin == null) {
             LOGGER.trace(jarFile.getName() + " is not a Plugin");
-
           }
 
           synchronized (this.pluginRegistry) {
             this.pluginRegistry.put(jarFile, new JarPlugin(plugin, jarFile.lastModified()));
           }
-
-        } catch (final PluginException e) {
-          LOGGER.error("Plugin failed to initialize", e);
+        } catch (final MalformedURLException e) {
+          e.printStackTrace();
         }
       }
 
@@ -320,37 +306,61 @@ public final class PluginManager {
     }
 
     final Enumeration<JarEntry> entries = jar.entries();
-    final URLClassLoader loader = new URLClassLoader(jarURLs, PluginManager.class.getClassLoader());
+    final URLClassLoader loader = URLClassLoader.newInstance(jarURLs);
 
+    LOGGER.debug("Looking inside jar file: {}", jarFile);
     while (entries.hasMoreElements()) {
       final JarEntry entry = entries.nextElement();
-      if (entry.getName().endsWith(".class")) {
-        final String className = entry.getName().replaceAll("/", ".").replaceAll(".class", "");
-        LOGGER.trace("Found class: {}, trying to load it", className);
+      if (entry.getName().endsWith(CLASS_EXTENSION)) {
+        final String className = entry.getName().replaceAll("/", ".").replaceAll(CLASS_EXTENSION, "");
+        LOGGER.debug("Found class: {}, trying to load it", className);
         try {
-
           final Class<?> clazz = loader.loadClass(className);
-          if (Plugin.class.isAssignableFrom(clazz) && !clazz.isInterface()
-            && !Modifier.isAbstract(clazz.getModifiers())) {
-            LOGGER.debug("class is a plugin, instantiating");
-            plugin = (Plugin) clazz.newInstance();
+          LOGGER.debug("Loaded {}", className);
+          final Plugin tmp = this.createInstance(clazz);
+          if (tmp != null) {
+            // set the plugin only if it was really loaded
+            // otherwise continue to load classes.
+            plugin = tmp;
+            LOGGER.debug("PLugin instantiated");
           }
         } catch (final ClassNotFoundException e) {
           LOGGER.error("Class Not Found {}: {}", className, e.getMessage());
-        } catch (final InstantiationException e) {
-          LOGGER.error("Could not instantiate class {}: {}", className, e.getMessage());
-        } catch (final IllegalAccessException e) {
-          LOGGER.error("Illegal Access on class {}: {} ", className, e.getMessage());
-        } finally {
-          if (jar != null) {
-            try {
-              jar.close();
-            } catch (final IOException e) {
-              LOGGER.warn("Could not close the jar: {}", e.getMessage());
-            }
-          }
         }
       }
+    }
+
+    if (jar != null) {
+      try {
+        jar.close();
+      } catch (final IOException e) {
+        LOGGER.warn("Could not close the jar: {}", e.getMessage());
+      }
+    }
+
+    return plugin;
+  }
+
+  /**
+   * Creates a plugin instance if the class is of a plugin type.
+   * 
+   * @param clazz
+   *          the class of the plugin.
+   * @return the plugin or null.
+   */
+  private Plugin createInstance(final Class<?> clazz) {
+    Plugin plugin = null;
+
+    try {
+      if (Plugin.class.isAssignableFrom(clazz) && !clazz.isInterface() && !Modifier.isAbstract(clazz.getModifiers())) {
+        LOGGER.debug("class is a plugin, instantiating");
+        plugin = (Plugin) clazz.newInstance();
+      }
+
+    } catch (final InstantiationException e) {
+      LOGGER.error("Could not instantiate class {}: {}", clazz.getName(), e.getMessage());
+    } catch (final IllegalAccessException e) {
+      LOGGER.error("Illegal Access on class {}: {} ", clazz.getName(), e.getMessage());
     }
 
     return plugin;

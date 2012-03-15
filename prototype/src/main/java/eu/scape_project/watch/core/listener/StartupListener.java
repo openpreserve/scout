@@ -13,7 +13,7 @@ import org.quartz.impl.matchers.GroupMatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.scape_project.watch.components.AdaptorJob;
+import eu.scape_project.watch.components.SimpleAdaptorJob;
 import eu.scape_project.watch.components.listeners.CollectionProfilerListener;
 import eu.scape_project.watch.core.CoreScheduler;
 
@@ -36,7 +36,7 @@ public class StartupListener implements ServletContextListener {
   public void contextInitialized(ServletContextEvent sce) {
     LOG.info("Hello from Startup");
     CoreScheduler cs = CoreScheduler.getCoreScheduler();
-    JobDetail job = JobBuilder.newJob(AdaptorJob.class).withIdentity("c3po", "CollectionProfileAdaptors")
+    JobDetail job = JobBuilder.newJob(SimpleAdaptorJob.class).withIdentity("c3po", "CollectionProfileAdaptors")
       .usingJobData("adaptor", "eu.scape_project.watch.components.adaptors.c3po.C3POAdaptor").build();
 
     Trigger trigger = TriggerBuilder.newTrigger().withIdentity("trigger1", "CollectionProfileAdaptors").startNow()

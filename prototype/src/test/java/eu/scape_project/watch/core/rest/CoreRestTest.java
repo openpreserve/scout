@@ -521,12 +521,4 @@ public class CoreRestTest extends JerseyTest {
 
   }
 
-  /**
-   * Test if Bamboo is sending notifications.
-   */
-  @Test
-  public void riggedToFail() {
-    Assert.assertTrue(false);
-  }
-
 }

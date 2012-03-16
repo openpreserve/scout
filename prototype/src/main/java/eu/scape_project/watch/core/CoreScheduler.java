@@ -8,6 +8,7 @@ import org.quartz.Trigger;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.matchers.GroupMatcher;
 
+import eu.scape_project.watch.components.interfaces.IAdaptorJob;
 import eu.scape_project.watch.components.listeners.CollectionProfilerListener;
 
 /**
@@ -73,6 +74,10 @@ public class CoreScheduler {
 
   }
 
+  public void scheduleAdaptorJob(IAdaptorJob job) {
+    scheduleJob(job.getJobDetail(), job.getTrigger());
+  }
+  
   public void adddGroupJobListener(JobListener jobListener, String group) {
     try {
       scheduler.getListenerManager().addJobListener(jobListener, GroupMatcher.jobGroupEquals(group));

@@ -10,14 +10,6 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.scape_project.watch.components.elements.Result;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-import eu.scape_project.watch.components.elements.Task;
->>>>>>> removing old core components code , adding Quartz as a scheduler
-=======
->>>>>>> removing some old components and test, adapting Adaptor to work as Quartz jobs
 import eu.scape_project.watch.components.interfaces.IAdaptor;
 import eu.scape_project.watch.core.model.DictionaryItem;
 import eu.scape_project.watch.core.model.Entity;
@@ -25,6 +17,11 @@ import eu.scape_project.watch.core.model.EntityType;
 import eu.scape_project.watch.core.model.Property;
 import eu.scape_project.watch.core.model.PropertyDataStructure;
 import eu.scape_project.watch.core.model.PropertyValue;
+import eu.scape_project.watch.core.plugin.ConfigParameter;
+import eu.scape_project.watch.core.plugin.InvalidParameterException;
+import eu.scape_project.watch.core.plugin.PluginException;
+import eu.scape_project.watch.core.plugin.PluginType;
+import eu.scape_project.watch.core.plugin.Result;
 
 /**
  * A watch conforming adaptor for a collection profile source called c3po.
@@ -64,7 +61,12 @@ public class C3POAdaptor implements IAdaptor {
    * default configuration.
    */
   public C3POAdaptor() {
-    this.init();
+    try {
+      this.init();
+    } catch (PluginException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
   /**
@@ -228,7 +230,8 @@ public class C3POAdaptor implements IAdaptor {
     return Arrays.asList(property.getName());
   }
 
-  private void init() {
+  @Override
+  public void init() throws PluginException{
     // may be this should be determined by the config
     this.supportedProperties = new ArrayList<String>();
     this.supportedProperties.add(C3POConstants.CP_COLLECTION_IDENTIFIER);
@@ -275,10 +278,68 @@ public class C3POAdaptor implements IAdaptor {
   }
 
   @Override
-  public void configure() {
+  public void configureWithFile(String filePath) {
     // TODO Auto-generated method stub
     
   }
+
+  @Override
+  public void configureWithString(String config) {
+    // TODO Auto-generated method stub
+    
+  }
+
+ 
+
+  @Override
+  public void shutdown() throws PluginException {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public String getName() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public String getVersion() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public String getDescription() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public PluginType getPluginType() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public List<ConfigParameter> getParameters() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Map<String, String> getParameterValues() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public void setParameterValues(Map<String, String> values) throws InvalidParameterException {
+    // TODO Auto-generated method stub
+    
+  }
+
+ 
 
   
 }

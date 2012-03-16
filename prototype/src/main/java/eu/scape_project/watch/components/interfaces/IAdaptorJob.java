@@ -1,17 +1,21 @@
 package eu.scape_project.watch.components.interfaces;
 
+import java.util.Properties;
+
 import org.quartz.Job;
 import org.quartz.JobDetail;
 import org.quartz.Trigger;
 
-import eu.scape_project.watch.components.elements.Result;
-
 public interface IAdaptorJob extends Job {
   
-  public void setAdaptor(String className);
+  public void setAdaptorClassName(String className);
+  
+  public void setAdaptorVersion(String version);
   
   public JobDetail getJobDetail();
   
   public Trigger getTrigger();
+  
+  public void initialize(Properties properties);
   
 }

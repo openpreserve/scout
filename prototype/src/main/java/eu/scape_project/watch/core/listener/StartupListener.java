@@ -36,15 +36,9 @@ public class StartupListener implements ServletContextListener {
   public void contextInitialized(ServletContextEvent sce) {
     LOG.info("Hello from Startup");
     CoreScheduler cs = CoreScheduler.getCoreScheduler();
-    JobDetail job = JobBuilder.newJob(SimpleAdaptorJob.class).withIdentity("c3po", "CollectionProfileAdaptors")
-      .usingJobData("adaptor", "eu.scape_project.watch.components.adaptors.c3po.C3POAdaptor").build();
-
-    Trigger trigger = TriggerBuilder.newTrigger().withIdentity("trigger1", "CollectionProfileAdaptors").startNow()
-      .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(10).repeatForever()).build();
 
     cs.adddGroupJobListener(new CollectionProfilerListener(), "CollectionProfileAdaptors");
 
-    cs.scheduleJob(job, trigger);
     cs.start();
   }
 

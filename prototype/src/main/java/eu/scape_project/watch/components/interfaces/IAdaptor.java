@@ -1,6 +1,6 @@
 package eu.scape_project.watch.components.interfaces;
 
-import eu.scape_project.watch.components.elements.Result;
+import eu.scape_project.watch.core.plugin.Plugin;
 
 /**
  * Adaptor interface Adaptor know which tasks can it perform and it can accept
@@ -9,10 +9,22 @@ import eu.scape_project.watch.components.elements.Result;
  * @author kresimir
  * 
  */
-public interface IAdaptor {
+public interface IAdaptor extends Plugin {
 
-  public Result execute();
 
-  public void configure(/*add argument*/);
+
+  /**
+   * Enables adaptor to read its config from a file. This will be used for constant properties 
+   * like url of foreign servers, default properties that adaptor always fetches .. 
+   * @param filePath
+   */
+  public void configureWithFile(String filePath);
+  
+  /**
+   * Allows adaptor configuration with string. In this way adaptor will be configured 
+   * dynamically. 
+   * @param config
+   */
+  public void configureWithString(String config);
   
 }

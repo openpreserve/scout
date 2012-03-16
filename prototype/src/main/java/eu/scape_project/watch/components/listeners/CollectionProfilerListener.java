@@ -35,7 +35,6 @@ public class CollectionProfilerListener implements JobListener, IMonitor {
   public void jobWasExecuted(JobExecutionContext arg0, JobExecutionException arg1) {
     LOG.info("Collection Profiler Monitor is executed");
     
-    
   }
 
   @Override

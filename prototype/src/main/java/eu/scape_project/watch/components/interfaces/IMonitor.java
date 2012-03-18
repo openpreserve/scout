@@ -1,9 +1,15 @@
 package eu.scape_project.watch.components.interfaces;
 
-import eu.scape_project.watch.components.CentralMonitor;
+import org.quartz.JobListener;
 
-public interface IMonitor {
+import eu.scape_project.watch.components.CentralMonitor;
+import eu.scape_project.watch.core.CoreScheduler;
+
+public interface IMonitor extends JobListener {
 
   public void registerCentralMonitor(CentralMonitor cm);
   
+  public void registerScheduler(CoreScheduler cs);
+  
+  public String getGroup();
 }

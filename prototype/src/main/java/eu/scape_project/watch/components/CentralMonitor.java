@@ -1,5 +1,41 @@
 package eu.scape_project.watch.components;
 
-public class CentralMonitor {
+import java.util.ArrayList;
+import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import thewebsemantic.binding.RdfBean;
+
+import eu.scape_project.watch.components.interfaces.IMonitor;
+import eu.scape_project.watch.core.dao.DOListener;
+
+public class CentralMonitor implements DOListener{
+
+	private static final Logger LOG = LoggerFactory.getLogger(CentralMonitor.class);
+	
+	private List<IMonitor> monitors;
+	
+	public CentralMonitor() {
+		monitors = new ArrayList<IMonitor>();
+		LOG.info("CentralMonitor initialized");
+	}
+	
+	public void addMonitor(IMonitor monitor) {
+		monitors.add(monitor);
+		monitor.registerCentralMonitor(this);
+	}
+
+	@Override
+	public void onUpdated(RdfBean object) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRemoved(RdfBean object) {
+		// TODO Auto-generated method stub
+		
+	}
 }

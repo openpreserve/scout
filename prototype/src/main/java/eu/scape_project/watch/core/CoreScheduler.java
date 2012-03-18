@@ -18,14 +18,12 @@ import eu.scape_project.watch.components.listeners.CollectionProfilerListener;
  */
 public class CoreScheduler {
 
-  private static CoreScheduler coreScheduler;
 
   private Scheduler scheduler;
 
-  public static CoreScheduler getCoreScheduler() {
-    if (coreScheduler == null)
-      coreScheduler = new CoreScheduler();
-    return coreScheduler;
+  
+  public CoreScheduler() {
+	  init();
   }
 
   public void init() {
@@ -91,7 +89,4 @@ public class CoreScheduler {
     return scheduler;
   }
 
-  private CoreScheduler() {
-    init();
-  }
 }

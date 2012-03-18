@@ -3,19 +3,16 @@ package eu.scape_project.watch.core.listener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
-import org.quartz.SchedulerException;
-import org.quartz.SimpleScheduleBuilder;
-import org.quartz.Trigger;
-import org.quartz.TriggerBuilder;
-import org.quartz.impl.matchers.GroupMatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.scape_project.watch.components.SimpleAdaptorJob;
+import eu.scape_project.watch.components.CentralMonitor;
+import eu.scape_project.watch.components.interfaces.IMonitor;
 import eu.scape_project.watch.components.listeners.CollectionProfilerListener;
+import eu.scape_project.watch.core.ComponentContainer;
 import eu.scape_project.watch.core.CoreScheduler;
+import eu.scape_project.watch.core.loader.AdaptorLoader;
+import eu.scape_project.watch.core.plugin.PluginManager;
 
 /**
  * 
@@ -28,18 +25,30 @@ public class StartupListener implements ServletContextListener {
 
   @Override
   public void contextDestroyed(ServletContextEvent sce) {
-    CoreScheduler cs = CoreScheduler.getCoreScheduler();
-    cs.shutdown();
+    ComponentContainer componentContainer = (ComponentContainer) sce.getServletContext().getAttribute("componentContainer");
+    componentContainer.destroy();
   }
 
   @Override
   public void contextInitialized(ServletContextEvent sce) {
-    LOG.info("Hello from Startup");
-    CoreScheduler cs = CoreScheduler.getCoreScheduler();
-
-    cs.adddGroupJobListener(new CollectionProfilerListener(), "CollectionProfileAdaptors");
-
-    cs.start();
+    LOG.info("Starting up core components");
+    
+    
+    ComponentContainer componentContainer = new ComponentContainer();
+    
+    componentContainer.setCoreScheduler(new CoreScheduler());
+    componentContainer.setCentralMonitor(new CentralMonitor());
+    componentContainer.setAdaptorLoader(new AdaptorLoader());
+    
+    
+    IMonitor monitor = new CollectionProfilerListener();
+    componentContainer.addMonitor(monitor); 
+    
+    componentContainer.init();
+    
+    sce.getServletContext().setAttribute("componentContainer", componentContainer);
+    
+    
   }
 
 }

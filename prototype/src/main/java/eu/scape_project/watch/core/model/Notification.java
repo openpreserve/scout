@@ -42,7 +42,7 @@ public class Notification extends RdfBean<Notification> {
    */
   @XmlElement
   @JsonProperty
-  private NotificationType type;
+  private String type;
 
   /**
    * The notification parameters, e.g. email recipients, subject, etc.
@@ -68,7 +68,7 @@ public class Notification extends RdfBean<Notification> {
    * @param parameters
    *          The notification parameters, e.g. email recipients, subject, etc.
    */
-  public Notification(final NotificationType type, final Collection<Entry> parameters) {
+  public Notification(final String type, final Collection<Entry> parameters) {
     this();
     this.setType(type);
     this.setParameters(parameters);
@@ -82,7 +82,7 @@ public class Notification extends RdfBean<Notification> {
    * @param parameters
    *          The notification parameters, e.g. email recipients, subject, etc.
    */
-  public Notification(final NotificationType type, final Map<String, String> parameters) {
+  public Notification(final String type, final Map<String, String> parameters) {
     this(type, ModelUtils.mapToEntryList(parameters));
   }
 
@@ -99,11 +99,11 @@ public class Notification extends RdfBean<Notification> {
     this.id = id;
   }
 
-  public NotificationType getType() {
+  public String getType() {
     return this.type;
   }
 
-  public void setType(final NotificationType type) {
+  public void setType(final String type) {
     this.type = type;
   }
 
@@ -158,7 +158,10 @@ public class Notification extends RdfBean<Notification> {
         return false;
     } else if (!parameters.equals(other.parameters))
       return false;
-    if (type != other.type)
+    if (type == null) {
+      if (other.type != null)
+        return false;
+    } else if (!type.equals(other.type))
       return false;
     return true;
   }

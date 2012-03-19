@@ -1,0 +1,149 @@
+package eu.scape_project.watch.components.notification;
+
+import eu.scape_project.watch.components.interfaces.INotificationAdaptor;
+import eu.scape_project.watch.core.model.Notification;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * 
+ * Singleton that allows sending of notifications.
+ * 
+ * @author Luis Faria <lfaria@keep.pt>
+ * 
+ */
+public final class NotificationService {
+
+  /**
+   * The singleton instance.
+   */
+  private static NotificationService instance = null;
+
+  /**
+   * Get the singleton instance.
+   * 
+   * @return The existing instance if exists or a creates a new one.
+   */
+  public static synchronized NotificationService getInstance() {
+    if (instance == null) {
+      instance = new NotificationService();
+    }
+    return instance;
+  }
+
+  /**
+   * Logger.
+   */
+  private static final Logger LOG = LoggerFactory.getLogger(NotificationService.class);
+
+  /**
+   * Registered adaptors.
+   */
+  private final Set<INotificationAdaptor> adaptors;
+
+  /**
+   * Index of adaptors by type.
+   */
+  private final Map<String, Set<INotificationAdaptor>> adaptorsIndex;
+
+  /**
+   * Private constructor for the singleton.
+   */
+  private NotificationService() {
+    this.adaptors = new HashSet<INotificationAdaptor>();
+    this.adaptorsIndex = new HashMap<String, Set<INotificationAdaptor>>();
+  }
+
+  /**
+   * Add a new notification adaptor and update index.
+   * 
+   * @param adaptor
+   *          The notification adaptor to add.
+   * @return <code>true</code> if did not already contain the specified adaptor
+   */
+  public boolean addAdaptor(final INotificationAdaptor adaptor) {
+    final boolean ret = this.adaptors.add(adaptor);
+
+    // update index
+    for (final String type : adaptor.getSupportedTypes()) {
+      Set<INotificationAdaptor> typeAdaptors = this.adaptorsIndex.get(type);
+
+      // add type if this is the first adaptor to support it
+      if (typeAdaptors == null) {
+        typeAdaptors = new HashSet<INotificationAdaptor>();
+        this.adaptorsIndex.put(type, typeAdaptors);
+      }
+
+      typeAdaptors.add(adaptor);
+    }
+
+    LOG.debug("Registered " + adaptor);
+
+    return ret;
+  }
+
+  /**
+   * Remove an existing adaptor, updating index.
+   * 
+   * @param adaptor
+   *          The adaptor to remove
+   * @return <code>true</code> if contained the specified adaptor
+   */
+  public boolean removeAdaptor(final INotificationAdaptor adaptor) {
+    final boolean ret = this.adaptors.remove(adaptor);
+
+    // update index
+    for (final String type : adaptor.getSupportedTypes()) {
+      final Set<INotificationAdaptor> typeAdaptors = this.adaptorsIndex.get(type);
+
+      if (typeAdaptors != null) {
+        typeAdaptors.remove(adaptor);
+      }
+
+      // Remove type if no adaptor supports it
+      if (typeAdaptors.isEmpty()) {
+        this.adaptorsIndex.remove(type);
+      }
+    }
+
+    LOG.debug("Unregistered " + adaptor);
+
+    return ret;
+  }
+
+  public Set<INotificationAdaptor> getAdaptors() {
+    return this.adaptors;
+  }
+
+  public Set<String> getTypes() {
+    return this.adaptorsIndex.keySet();
+  }
+
+  /**
+   * Send a notification by all adaptors that support the notification type.
+   * 
+   * @param notification
+   *          The notification to send
+   * @return <code>true</code> if notification sent by one or more adaptors
+   */
+  public boolean send(final Notification notification) {
+    boolean ret;
+    final String type = notification.getType();
+
+    final Set<INotificationAdaptor> typeAdaptors = this.adaptorsIndex.get(type);
+    ret = !typeAdaptors.isEmpty();
+
+    for (INotificationAdaptor adaptor : typeAdaptors) {
+      adaptor.send(notification);
+    }
+
+    return ret;
+  }
+
+}

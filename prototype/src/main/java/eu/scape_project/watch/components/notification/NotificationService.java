@@ -1,6 +1,6 @@
 package eu.scape_project.watch.components.notification;
 
-import eu.scape_project.watch.components.interfaces.INotificationAdaptor;
+import eu.scape_project.watch.components.interfaces.NotificationAdaptorInterface;
 import eu.scape_project.watch.core.model.Notification;
 
 import java.util.HashMap;
@@ -45,19 +45,19 @@ public final class NotificationService {
   /**
    * Registered adaptors.
    */
-  private final Set<INotificationAdaptor> adaptors;
+  private final Set<NotificationAdaptorInterface> adaptors;
 
   /**
    * Index of adaptors by type.
    */
-  private final Map<String, Set<INotificationAdaptor>> adaptorsIndex;
+  private final Map<String, Set<NotificationAdaptorInterface>> adaptorsIndex;
 
   /**
    * Private constructor for the singleton.
    */
   private NotificationService() {
-    this.adaptors = new HashSet<INotificationAdaptor>();
-    this.adaptorsIndex = new HashMap<String, Set<INotificationAdaptor>>();
+    this.adaptors = new HashSet<NotificationAdaptorInterface>();
+    this.adaptorsIndex = new HashMap<String, Set<NotificationAdaptorInterface>>();
   }
 
   /**
@@ -67,16 +67,16 @@ public final class NotificationService {
    *          The notification adaptor to add.
    * @return <code>true</code> if did not already contain the specified adaptor
    */
-  public boolean addAdaptor(final INotificationAdaptor adaptor) {
+  public boolean addAdaptor(final NotificationAdaptorInterface adaptor) {
     final boolean ret = this.adaptors.add(adaptor);
 
     // update index
     for (final String type : adaptor.getSupportedTypes()) {
-      Set<INotificationAdaptor> typeAdaptors = this.adaptorsIndex.get(type);
+      Set<NotificationAdaptorInterface> typeAdaptors = this.adaptorsIndex.get(type);
 
       // add type if this is the first adaptor to support it
       if (typeAdaptors == null) {
-        typeAdaptors = new HashSet<INotificationAdaptor>();
+        typeAdaptors = new HashSet<NotificationAdaptorInterface>();
         this.adaptorsIndex.put(type, typeAdaptors);
       }
 
@@ -95,12 +95,12 @@ public final class NotificationService {
    *          The adaptor to remove
    * @return <code>true</code> if contained the specified adaptor
    */
-  public boolean removeAdaptor(final INotificationAdaptor adaptor) {
+  public boolean removeAdaptor(final NotificationAdaptorInterface adaptor) {
     final boolean ret = this.adaptors.remove(adaptor);
 
     // update index
     for (final String type : adaptor.getSupportedTypes()) {
-      final Set<INotificationAdaptor> typeAdaptors = this.adaptorsIndex.get(type);
+      final Set<NotificationAdaptorInterface> typeAdaptors = this.adaptorsIndex.get(type);
 
       if (typeAdaptors != null) {
         typeAdaptors.remove(adaptor);
@@ -117,7 +117,7 @@ public final class NotificationService {
     return ret;
   }
 
-  public Set<INotificationAdaptor> getAdaptors() {
+  public Set<NotificationAdaptorInterface> getAdaptors() {
     return this.adaptors;
   }
 
@@ -136,11 +136,15 @@ public final class NotificationService {
     boolean ret;
     final String type = notification.getType();
 
-    final Set<INotificationAdaptor> typeAdaptors = this.adaptorsIndex.get(type);
+    final Set<NotificationAdaptorInterface> typeAdaptors = this.adaptorsIndex.get(type);
     ret = !typeAdaptors.isEmpty();
 
-    for (INotificationAdaptor adaptor : typeAdaptors) {
-      adaptor.send(notification);
+    for (NotificationAdaptorInterface adaptor : typeAdaptors) {
+      final boolean consume = adaptor.send(notification);
+
+      if (consume) {
+        break;
+      }
     }
 
     return ret;

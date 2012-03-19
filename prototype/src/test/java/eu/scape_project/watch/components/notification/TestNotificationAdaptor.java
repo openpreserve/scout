@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import eu.scape_project.watch.components.interfaces.INotificationAdaptor;
+import eu.scape_project.watch.components.interfaces.NotificationAdaptorInterface;
 import eu.scape_project.watch.core.model.Notification;
 
 /**
@@ -16,7 +16,7 @@ import eu.scape_project.watch.core.model.Notification;
  * @author Luis Faria <lfaria@keep.pt>
  * 
  */
-public class TestNotificationAdaptor implements INotificationAdaptor {
+public class TestNotificationAdaptor implements NotificationAdaptorInterface {
 
   /**
    * Test notification type.
@@ -31,7 +31,12 @@ public class TestNotificationAdaptor implements INotificationAdaptor {
   /**
    * List of sent notifications.
    */
-  private static final List<Notification> NOTIFICATIONS = new ArrayList<Notification>();
+  private final List<Notification> notifications = new ArrayList<Notification>();
+
+  /**
+   * Whereas this adaptor should consume the events or not.
+   */
+  private boolean consumeEvent = false;
 
   @Override
   public Set<String> getSupportedTypes() {
@@ -39,12 +44,21 @@ public class TestNotificationAdaptor implements INotificationAdaptor {
   }
 
   @Override
-  public void send(final Notification notification) {
-    NOTIFICATIONS.add(notification);
+  public boolean send(final Notification notification) {
+    this.notifications.add(notification);
+    return this.consumeEvent;
   }
 
-  public static List<Notification> getNotifications() {
-    return NOTIFICATIONS;
+  public List<Notification> getNotifications() {
+    return this.notifications;
+  }
+
+  public boolean isConsumeEvent() {
+    return this.consumeEvent;
+  }
+
+  public void setConsumeEvent(final boolean consumeEvent) {
+    this.consumeEvent = consumeEvent;
   }
 
 }

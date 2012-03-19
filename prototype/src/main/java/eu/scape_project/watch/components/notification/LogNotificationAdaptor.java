@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import eu.scape_project.watch.components.interfaces.INotificationAdaptor;
+import eu.scape_project.watch.components.interfaces.NotificationAdaptorInterface;
 import eu.scape_project.watch.core.model.Entry;
 import eu.scape_project.watch.core.model.Notification;
 
@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
  * @author Luis Faria <lfaria@keep.pt>
  * 
  */
-public class LogNotificationAdaptor implements INotificationAdaptor {
+public class LogNotificationAdaptor implements NotificationAdaptorInterface {
 
   /**
    * Supported types.
@@ -35,7 +35,7 @@ public class LogNotificationAdaptor implements INotificationAdaptor {
   }
 
   @Override
-  public void send(final Notification notification) {
+  public boolean send(final Notification notification) {
     final StringBuilder message = new StringBuilder();
 
     message.append("NOTIFICATION LOG ");
@@ -54,6 +54,7 @@ public class LogNotificationAdaptor implements INotificationAdaptor {
     message.append("}");
 
     this.log.info(message.toString());
+    return false;
   }
 
 }

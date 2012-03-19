@@ -11,7 +11,7 @@ import eu.scape_project.watch.core.model.Notification;
  * @author Luis Faria <lfaria@keep.pt>
  * 
  */
-public interface INotificationAdaptor {
+public interface NotificationAdaptorInterface {
 
   /**
    * Get Notification types this adaptors supports.
@@ -25,7 +25,9 @@ public interface INotificationAdaptor {
    * 
    * @param notification
    *          The notification to send
+   * @return <code>true</code> if notification should be consumed, i.e. should
+   *         not be relayed to any other adaptor
    */
-  void send(Notification notification);
+  boolean send(Notification notification);
 
 }

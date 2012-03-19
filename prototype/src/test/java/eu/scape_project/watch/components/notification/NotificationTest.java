@@ -1,6 +1,6 @@
 package eu.scape_project.watch.components.notification;
 
-import eu.scape_project.watch.components.interfaces.INotificationAdaptor;
+import eu.scape_project.watch.components.interfaces.NotificationAdaptorInterface;
 import eu.scape_project.watch.core.model.Notification;
 
 import java.util.HashMap;
@@ -55,7 +55,7 @@ public class NotificationTest {
    */
   @Test
   public void testGetAdaptors() {
-    final Set<INotificationAdaptor> adaptors = service.getAdaptors();
+    final Set<NotificationAdaptorInterface> adaptors = service.getAdaptors();
     Assert.assertTrue(adaptors.contains(adaptor));
   }
 
@@ -75,13 +75,61 @@ public class NotificationTest {
   @Test
   public void testSend() {
     final Map<String, String> parameters = new HashMap<String, String>();
-    parameters.put("test", "test01");
     final Notification notification = new Notification(TestNotificationAdaptor.TEST_TYPE, parameters);
     service.send(notification);
 
-    final List<Notification> sentNotifications = TestNotificationAdaptor.getNotifications();
+    final List<Notification> sentNotifications = adaptor.getNotifications();
     Assert.assertTrue(sentNotifications.contains(notification));
-
   }
 
+  /**
+   * Test the sending of a notification.
+   */
+  @Test
+  public void testEventConsuming() {
+
+    // set up
+    service.removeAdaptor(adaptor);
+
+    final TestNotificationAdaptor adaptor1 = new TestNotificationAdaptor();
+    final TestNotificationAdaptor adaptor2 = new TestNotificationAdaptor();
+
+    service.addAdaptor(adaptor1);
+    service.addAdaptor(adaptor2);
+
+    final Map<String, String> parameters = new HashMap<String, String>();
+    parameters.put("test", "test01");
+    final Notification notification = new Notification(TestNotificationAdaptor.TEST_TYPE, parameters);
+
+    // test not consume
+    adaptor1.setConsumeEvent(false);
+    adaptor2.setConsumeEvent(false);
+
+    service.send(notification);
+
+    boolean adaptor1Contains = adaptor1.getNotifications().contains(notification);
+    boolean adaptor2Contains = adaptor2.getNotifications().contains(notification);
+    Assert.assertTrue(adaptor1Contains);
+    Assert.assertTrue(adaptor2Contains);
+
+    // clean notifications
+    adaptor1.getNotifications().clear();
+    adaptor2.getNotifications().clear();
+
+    // test consume
+    adaptor1.setConsumeEvent(true);
+    adaptor2.setConsumeEvent(true);
+
+    service.send(notification);
+    adaptor1Contains = adaptor1.getNotifications().contains(notification);
+    adaptor2Contains = adaptor2.getNotifications().contains(notification);
+    Assert.assertFalse(adaptor1Contains && adaptor2Contains);
+    Assert.assertTrue(adaptor1Contains || adaptor2Contains);
+
+    // clean up
+    service.removeAdaptor(adaptor1);
+    service.removeAdaptor(adaptor2);
+
+    service.addAdaptor(adaptor);
+  }
 }

@@ -1,4 +1,4 @@
-package eu.scape_project.watch.components.adaptors.c3po;
+package eu.scape_project.watch.adaptor.c3po;
 
 public class C3POConstants {
 

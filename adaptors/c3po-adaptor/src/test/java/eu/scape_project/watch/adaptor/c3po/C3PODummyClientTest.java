@@ -1,6 +1,6 @@
-package eu.scape_project.watch.components.adaptors.c3po;
+package eu.scape_project.watch.adaptor.c3po;
 
-import static eu.scape_project.watch.components.adaptors.c3po.C3PODummyClient.COLLECTION_NAME;
+import static eu.scape_project.watch.adaptor.c3po.C3PODummyClient.COLLECTION_NAME;
 
 import java.io.InputStream;
 import java.util.List;

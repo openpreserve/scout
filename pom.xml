@@ -63,6 +63,7 @@
 	<modules>
 		<module>prototype</module>
 		<module>build-tools-config</module>
+		<module>adaptors</module>
 	</modules>
 
 	<properties>
@@ -175,6 +176,7 @@
 			</distributionManagement>
 		</profile>
 	</profiles>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -182,6 +184,11 @@
 				<artifactId>junit</artifactId>
 				<version>4.8.2</version>
 				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-all</artifactId>
+				<version>1.9.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>

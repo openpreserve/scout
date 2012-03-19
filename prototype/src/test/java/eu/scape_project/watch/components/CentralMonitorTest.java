@@ -4,7 +4,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import eu.scape_project.watch.components.interfaces.IMonitor;
-import eu.scape_project.watch.core.dao.AsyncRequestDAO;
 
 public class CentralMonitorTest {
 
@@ -16,11 +15,5 @@ public class CentralMonitorTest {
     Mockito.verify(mockMonitor).registerCentralMonitor(cm);
   }
   
-  @Test
-  public void testRegisterToAsyncRequest() {
-    CentralMonitor cm = new CentralMonitor();
-    AsyncRequestDAO mockAR = Mockito.mock(AsyncRequestDAO.class);
-    cm.registerToAsyncRequest(mockAR);
-    Mockito.verify(mockAR).addDOListener(cm);
-  }
+
 }

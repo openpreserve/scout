@@ -27,148 +27,144 @@ import eu.scape_project.watch.core.common.ConfigUtils;
  */
 public class AdaptorLoader {
 
-	private static final Logger LOG = LoggerFactory
-			.getLogger(AdaptorLoader.class);
+  private static final Logger LOG = LoggerFactory.getLogger(AdaptorLoader.class);
 
-	private static final long LOADER_PERIOD = 2 * 10 * 1000L;
-	
-	private static String EXTENSION = ".properties";
+  private static final long LOADER_PERIOD = 2 * 10 * 1000L;
 
-	private static final String ADAPTOR_JOB_PACKAGE = "eu.scape_project.watch.components";
+  private static String EXTENSION = ".properties";
 
-	private File adaptorFolder;
-	private List<File> adaptorConfigs;
+  private static final String ADAPTOR_JOB_PACKAGE = "eu.scape_project.watch.components";
 
-	private List<File> tempAdaptorConfigs;
+  private File adaptorFolder;
+  private List<File> adaptorConfigs;
 
-	private Timer loaderTimer;
-	
-	private CoreScheduler coreScheduler;
+  private List<File> tempAdaptorConfigs;
 
-	public CoreScheduler getCoreScheduler() {
-		return coreScheduler;
-	}
+  private Timer loaderTimer;
 
-	public void setCoreScheduler(CoreScheduler coreScheduler) {
-		this.coreScheduler = coreScheduler;
-	}
+  private CoreScheduler coreScheduler;
 
-	public AdaptorLoader() {
-		ConfigUtils conf = new ConfigUtils();
-		adaptorFolder = new File(
-				conf.getStringProperty("watch.adaptors.folder"));
-		adaptorConfigs = new ArrayList<File>();
-		tempAdaptorConfigs = new ArrayList<File>();
-		LOG.info("AdaptorLoader initialized");
-	}
+  public CoreScheduler getCoreScheduler() {
+    return coreScheduler;
+  }
 
-	public void startLoader() {
-		cancelLoader();
-		loaderTimer = new Timer();
-		loaderTimer.schedule(new LoaderTask(), new Date(), LOADER_PERIOD);
-	}
+  public void setCoreScheduler(CoreScheduler coreScheduler) {
+    this.coreScheduler = coreScheduler;
+  }
 
-	public void cancelLoader() {
-		if (loaderTimer != null)
-			loaderTimer.cancel();
-	}
+  public AdaptorLoader() {
+    ConfigUtils conf = new ConfigUtils();
+    adaptorFolder = new File(conf.getStringProperty("watch.adaptors.folder"));
+    adaptorConfigs = new ArrayList<File>();
+    tempAdaptorConfigs = new ArrayList<File>();
+    LOG.info("AdaptorLoader initialized");
+  }
 
-	public boolean configFileExist(File f) {
-		// WARNING THIS WON'T WORK IN WINDOWS
-		return adaptorConfigs.contains(f);
-	}
+  public void startLoader() {
+    cancelLoader();
+    loaderTimer = new Timer();
+    loaderTimer.schedule(new LoaderTask(), new Date(), LOADER_PERIOD);
+  }
 
-	public void addToTempAdaptorConfigs(File f) {
-		tempAdaptorConfigs.add(f);
-	}
+  public void cancelLoader() {
+    if (loaderTimer != null)
+      loaderTimer.cancel();
+  }
 
-	public File getAdaptorFolder() {
-		return this.adaptorFolder;
-	}
+  public boolean configFileExist(File f) {
+    // WARNING THIS WON'T WORK IN WINDOWS
+    return adaptorConfigs.contains(f);
+  }
 
-	public void setAdaptorHolder(File f) {
-		this.adaptorFolder = f;
-	}
+  public void addToTempAdaptorConfigs(File f) {
+    tempAdaptorConfigs.add(f);
+  }
 
-	public void loadAdaptors() {
-		LOG.info(tempAdaptorConfigs.size()+" new adaptors found");
-		for (File cf : tempAdaptorConfigs) {
-			Properties properties = getProperties(cf);
+  public File getAdaptorFolder() {
+    return this.adaptorFolder;
+  }
 
-			String ajName = this.ADAPTOR_JOB_PACKAGE + "."
-					+ properties.getProperty("adaptor.adaptorjob.type");
+  public void setAdaptorHolder(File f) {
+    this.adaptorFolder = f;
+  }
 
-			IAdaptorJob adaptorJob = createAdaptorJob(ajName);
-			adaptorJob.initialize(properties);
+  public void loadAdaptors() {
+    LOG.info(tempAdaptorConfigs.size() + " new adaptors found");
+    for (File cf : tempAdaptorConfigs) {
+      Properties properties = getProperties(cf);
 
-			coreScheduler.scheduleAdaptorJob(adaptorJob);
-			
-			adaptorConfigs.add(cf);
-		}
-		tempAdaptorConfigs.clear();
-		
-	}
+      String ajName = this.ADAPTOR_JOB_PACKAGE + "." + properties.getProperty("adaptor.adaptorjob.type");
 
-	private Properties getProperties(File file) {
-		Properties tmp = new Properties();
-		try {
-			tmp.load(new FileInputStream(file));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return tmp;
-	}
+      IAdaptorJob adaptorJob = createAdaptorJob(ajName);
+      adaptorJob.initialize(properties);
 
-	private IAdaptorJob createAdaptorJob(String name) {
-		IAdaptorJob adaptorJob;
-		try {
-			adaptorJob = (IAdaptorJob) Class.forName(name).newInstance();
-			return adaptorJob;
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
+      coreScheduler.scheduleAdaptorJob(adaptorJob);
 
-	class LoaderTask extends TimerTask {
+      adaptorConfigs.add(cf);
+    }
+    tempAdaptorConfigs.clear();
 
+  }
 
-		public LoaderTask() {
-		
-		}
+  private Properties getProperties(File file) {
+    Properties tmp = new Properties();
+    try {
+      tmp.load(new FileInputStream(file));
+    } catch (FileNotFoundException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return tmp;
+  }
 
-		private void scanForAdaptors(File f) {
-			File[] tempList;
-			if (f.isDirectory()) {
-				tempList = f.listFiles();
-				for (File i : tempList)
-					scanForAdaptors(i);
-			} else {
-				if (f.getAbsolutePath().endsWith(EXTENSION)){
-					if (!configFileExist(f))
-						addToTempAdaptorConfigs(f);
-				}
-			}
-		}
+  private IAdaptorJob createAdaptorJob(String name) {
+    IAdaptorJob adaptorJob;
+    try {
+      adaptorJob = (IAdaptorJob) Class.forName(name).newInstance();
+      return adaptorJob;
+    } catch (InstantiationException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (IllegalAccessException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (ClassNotFoundException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return null;
+  }
 
-		@Override
-		public void run() {
-			LOG.info("Scanning "+ adaptorFolder.getAbsolutePath()+" for adaptors");
-			scanForAdaptors(adaptorFolder);
-			loadAdaptors();
-		}
+  class LoaderTask extends TimerTask {
 
-	}
+    public LoaderTask() {
+
+    }
+
+    private void scanForAdaptors(File f) {
+      File[] tempList;
+      if (f.isDirectory()) {
+        tempList = f.listFiles();
+        for (File i : tempList)
+          scanForAdaptors(i);
+      } else {
+        if (f.getAbsolutePath().endsWith(EXTENSION)) {
+          if (!configFileExist(f))
+            addToTempAdaptorConfigs(f);
+        }
+      }
+    }
+
+    @Override
+    public void run() {
+      LOG.info("Scanning " + adaptorFolder.getAbsolutePath() + " for adaptors");
+      scanForAdaptors(adaptorFolder);
+      loadAdaptors();
+    }
+
+  }
 
 }

@@ -158,7 +158,10 @@ public class Notification extends RdfBean<Notification> {
         return false;
     } else if (!parameters.equals(other.parameters))
       return false;
-    if (type != other.type)
+    if (type == null) {
+      if (other.type != null)
+        return false;
+    } else if (!type.equals(other.type))
       return false;
     return true;
   }

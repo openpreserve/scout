@@ -15,7 +15,6 @@ import eu.scape_project.watch.core.model.DictionaryItem;
 import eu.scape_project.watch.core.model.Entity;
 import eu.scape_project.watch.core.model.EntityType;
 import eu.scape_project.watch.core.model.Notification;
-import eu.scape_project.watch.core.model.NotificationType;
 import eu.scape_project.watch.core.model.Property;
 import eu.scape_project.watch.core.model.PropertyDataStructure;
 import eu.scape_project.watch.core.model.PropertyValue;
@@ -374,7 +373,7 @@ public final class KBUtils {
     final Map<String, String> not1config = new HashMap<String, String>();
     not1config.put("to", "lfaria@keep.pt");
     not1config.put("subject", "New tools");
-    final Notification notification1 = new Notification(NotificationType.EMAIL_EVENT, not1config);
+    final Notification notification1 = new Notification("log", not1config);
 
     final Trigger trigger1 = new Trigger(question1, Arrays.asList(notification1), null);
 

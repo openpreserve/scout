@@ -20,6 +20,7 @@ import java.util.jar.JarFile;
 
 import eu.scape_project.watch.core.common.ConfigUtils;
 
+import org.openjena.atlas.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -87,8 +88,13 @@ public final class PluginManager {
   private Map<File, JarPlugin> pluginRegistry = new HashMap<File, JarPlugin>();
 
   /**
-   * Returns an instance of the {@link Plugin} with the specified ID
-   * (classname).
+   * The loaded plugins.
+   */
+  private List<Plugin> pluginCache = new ArrayList<Plugin>();
+
+  /**
+   * Returns an initialized instance of the {@link Plugin} with the specified ID
+   * (classname) or null if the initializing process failed.
    * 
    * @param pluginID
    *          the ID (classname) of the {@link Plugin}.
@@ -111,9 +117,11 @@ public final class PluginManager {
     if (plugin != null) {
       try {
         plugin.init();
+        this.pluginCache.add(plugin);
       } catch (final PluginException e) {
-        // TODO what shall we du here..
+        // TODO what shall we do here..
         LOGGER.warn("An error occurred during plugin initialization: {}", e.getMessage());
+        return null;
       }
     }
     return plugin;
@@ -168,12 +176,20 @@ public final class PluginManager {
    * {@link Plugin}s currently loaded.
    */
   public synchronized void shutdown() {
+    LOGGER.info("Shutting down plugin manager");
 
     this.cancelTimer();
 
-    // TODO how do we shutdown the plugins
-    // in a clean fashion.
+    for (Plugin p : this.pluginCache) {
+      try {
+        p.shutdown();
+      } catch (final PluginException e) {
+        LOGGER.warn("Plugin {} did not shutdown correctly: {}", p.getName(), e.getMessage());
+      }
+    }
 
+    this.pluginCache.clear();
+    this.pluginRegistry.clear();
     PluginManager.defaultPluginManager = null;
   }
 

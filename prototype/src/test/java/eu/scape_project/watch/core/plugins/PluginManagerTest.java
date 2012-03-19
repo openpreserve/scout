@@ -74,6 +74,7 @@ public class PluginManagerTest {
    */
   @Test
   public void shouldObtainPluginManager() {
+    LOG.debug("------ Should Start Plugin Manager Test ------");
     this.manager = PluginManager.getDefaultPluginManager();
     Assert.assertNotNull(this.manager);
 
@@ -87,6 +88,7 @@ public class PluginManagerTest {
    */
   @Test
   public void shouldLoadPlugin() throws Exception {
+    LOG.debug("------ Should Load Plugin Test ------");
     List<PluginInfo> info = this.manager.getPluginInfo();
     Assert.assertEquals(0, info.size());
     copyTestJar("testadaptor.jar");
@@ -112,6 +114,7 @@ public class PluginManagerTest {
    */
   @Test(expected = PluginException.class)
   public void shouldNotCallInitTwoTimes() throws Exception {
+    LOG.debug("------ Should Not Allow Two Init Calls Test ------");
     copyTestJar("testadaptor.jar");
 
     this.manager.reScan();
@@ -133,6 +136,7 @@ public class PluginManagerTest {
    */
   @Test
   public void shouldLoadTwoVersionsOfAdaptor() throws Exception {
+    LOG.debug("------ Should Load Two Versions Of Adaptor Test ------");
     copyTestJar("testadaptor.jar");
     copyTestJar("testadaptor-0.2.jar");
     this.manager.reScan();
@@ -150,6 +154,26 @@ public class PluginManagerTest {
     p1.execute();
     LOG.debug("Executing plugin 2: {}-{}", p2.getName(), p2.getVersion());
     p2.execute();
+  }
+
+  @Test
+  public void shouldShutdownCorrectly() {
+    LOG.debug("------ Should Shutdown Manager Test ------");
+    copyTestJar("testadaptor.jar");
+    this.manager.reScan();
+    this.sleep();
+
+    List<PluginInfo> info = this.manager.getPluginInfo();
+    final PluginInfo i1 = info.get(0);
+    final Plugin plugin = this.manager.getPlugin(i1.getClassName(), i1.getVersion());
+
+    this.manager.shutdown();
+    
+    this.setUp();
+
+    info = this.manager.getPluginInfo();
+    Assert.assertEquals(0, info.size());
+
   }
 
   /**

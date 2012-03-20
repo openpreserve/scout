@@ -3,9 +3,11 @@ package eu.scape_project.watch.components.adaptors.c3po;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import eu.scape_project.watch.components.interfaces.AdaptorPluginInterface;
 import eu.scape_project.watch.core.model.DictionaryItem;
@@ -42,9 +44,14 @@ public class C3POAdaptor implements AdaptorPluginInterface {
   private static String cpEndpoint = "";
 
   /**
-   * The properties supported by this version of the adaptor.
+   * The current config of c3po.
    */
-  private List<String> supportedProperties;
+  private Map<String, String> config;
+
+  /**
+   * The default configs.
+   */
+  private List<ConfigParameter> defaultConfig;
 
   /**
    * The configuration of this adaptor instance.
@@ -56,55 +63,6 @@ public class C3POAdaptor implements AdaptorPluginInterface {
    */
   private IC3POClient source;
 
-  /**
-   * The default constructor inits the supported properties and reads in the
-   * default configuration.
-   */
-  public C3POAdaptor() {
-    try {
-      this.init();
-    } catch (PluginException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-  }
-
-  /**
-   * {@inheritDoc}
-   */
- /*
-  @Override
-  public boolean checkForTask(final Task t) {
-    if (t == null) {
-      LOG.warn("Null tasks are not supported");
-      return false;
-    }
-
-    final EntityType type = t.getEntity().getEntityType();
-
-    if (type == null) {
-      LOG.warn("EntityType of the provided entity is null. Cannot determine if supported.");
-      return false;
-    }
-
-    // TODO this should be a constant or similar.
-    if (!type.getName().equals("COLLECTION_PROFILE")) {
-      LOG.warn("EntityType {} is not supported", type.getName());
-      return false;
-    }
-
-    for (String p : this.supportedProperties) {
-      if (t.getProperty().getName().equals(p)) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  */
-  
-  
   /**
    * Retrieves the configuration value for the passed key of the loaded
    * properties. If the key is missing or the properties were not loaded
@@ -124,214 +82,164 @@ public class C3POAdaptor implements AdaptorPluginInterface {
     return config;
   }
 
-  /**
-   * Fetches dummy data from a profile output. However the no real calls to the
-   * REST API of c3po are done yet.
-   */
- /*
-  protected void fetchData() {
-
-    final List<String> identifiers = this.source.getCollectionIdentifiers();
-
-    for (Task t : this.getTasks()) {
-      final String id = t.getEntity().getName();
-
-      if (identifiers.contains(id)) {
-        // this should be t.getProperties();
-        final List<String> expanded = this.generatePropertyExpansionList(t.getProperty());
-        final String uuid = this.source.submitCollectionProfileJob(id, expanded);
-
-        // TODO add some escape mechanism of the endless loop.
-        // e.g. if after 10 minutes no result is generated, stop and return
-        // error...
-        InputStream is = this.source.pollJobResult(uuid);
-        while (is == null) {
-          is = this.source.pollJobResult(uuid);
-          try {
-            Thread.sleep(5000);
-          } catch (final InterruptedException e) {
-            LOG.warn("An error occurred while waiting for c3po's result: {}", e.getMessage());
-          }
-        }
-
-        final C3POProfileReader reader = new C3POProfileReader(is);
-        final String name = reader.getCollectionName();
-        final Entity cp = getCollectionProfileEntity(t.getEntity().getEntityType(), name);
-        final Property p = t.getProperty();
-        PropertyValue pv = null;
-
-        if (this.supportedProperties.contains(p.getName())) {
-          pv = this.getPropertyValueForProperty(reader, p);
-          pv.setEntity(cp);
-
-        } else {
-          LOG.warn("The property '{}' is not supported by this adaptor", p.getName());
-          // TODO report error back to framework.
-        }
-
-        final Result r = new Result(cp, p, pv);
-        this.results.add(r);
-      } else {
-        LOG.warn("No collection for entity {} found", t.getEntity().getName());
-      }
-    }
-
-  }
-*/
-  // this method sucks...
-  // TODO get rid of if, else if... may be command pattern?
-  private PropertyValue getPropertyValueForProperty(C3POProfileReader reader, Property p) {
-    PropertyValue pv = null;
-
-    if (p.getStructure().equals(PropertyDataStructure.SINGLE)) {
-      String prop = C3POProfileReader.MISSING_VALUE;
-
-      if (p.getName().equals(C3POConstants.CP_COLLECTION_SIZE)) {
-        prop = reader.getCollectionSize();
-      } else if (p.getName().equals(C3POConstants.CP_OBJECTS_COUNT)) {
-        prop = reader.getObjectsCount();
-      } else if (p.getName().equals(C3POConstants.CP_OBJECTS_MAX_SIZE)) {
-        prop = reader.getObjectsMaxSize();
-      } else if (p.getName().equals(C3POConstants.CP_OBJECTS_MIN_SIZE)) {
-        prop = reader.getObjectsMinSize();
-      } else if (p.getName().equals(C3POConstants.CP_OBJECTS_AVG_SIZE)) {
-        prop = reader.getObjectsAvgSize();
-      }
-
-      if (!prop.equals(C3POProfileReader.MISSING_VALUE)) {
-        pv = new PropertyValue(null, p, prop);
-      }
-
-    } else if (p.getStructure().equals(PropertyDataStructure.DICTIONARY)) {
-
-      if (p.getName().equals((C3POConstants.CP_FORMAT_DISTRIBUTION))) {
-        final Map<String, String> d = reader.getDistribution("format");
-        final List<Object> distr = new ArrayList<Object>();
-
-        for (String key : d.keySet()) {
-          distr.add(new DictionaryItem(key, d.get(key)));
-        }
-
-        pv = new PropertyValue(null, p, distr);
-      }
-
-    }
-    
-    LOG.info("Returning property...");
-    return pv;
-  }
-
-  private Entity getCollectionProfileEntity(EntityType et, String name) {
-    return new Entity(et, name);
-  }
-
-  private List<String> generatePropertyExpansionList(Property property) {
-    LOG.debug("generating parameter for property {}", property.getName());
-    return Arrays.asList(property.getName());
-  }
-
   @Override
-  public void init() throws PluginException{
-    // may be this should be determined by the config
-    this.supportedProperties = new ArrayList<String>();
-    this.supportedProperties.add(C3POConstants.CP_COLLECTION_IDENTIFIER);
-    this.supportedProperties.add(C3POConstants.CP_COLLECTION_SIZE);
-    this.supportedProperties.add(C3POConstants.CP_OBJECTS_COUNT);
-    this.supportedProperties.add(C3POConstants.CP_OBJECTS_AVG_SIZE);
-    this.supportedProperties.add(C3POConstants.CP_OBJECTS_MAX_SIZE);
-    this.supportedProperties.add(C3POConstants.CP_OBJECTS_MIN_SIZE);
-    this.supportedProperties.add(C3POConstants.CP_FORMAT_DISTRIBUTION);
-    this.supportedProperties.add(C3POConstants.CP_FORMAT_MODE);
-    this.supportedProperties.add(C3POConstants.CP_MIMETYPE_DISTRIBUTION);
-    this.supportedProperties.add(C3POConstants.CP_MIMETYPE_MODE);
-    this.supportedProperties.add(C3POConstants.CP_PUID_DISTRIBUTION);
-    this.supportedProperties.add(C3POConstants.CP_PUID_MODE);
-
-    try {
-      final InputStream stream = this.getClass().getClassLoader()
-        .getResourceAsStream("./adaptors/c3po/config.properties");
-      this.properties = new Properties();
-      this.properties.load(stream);
-      stream.close();
-    } catch (final Exception e) {
-      LOG.error("An error occurred while reading the config file: {}", e.getMessage());
-    }
-
-    this.initSourceClient();
-  }
-
-  private void initSourceClient() {
-    cpEndpoint = this.getConfig("c3po.endpoint");
-    if (cpEndpoint.equals("") || cpEndpoint.equals("dummy")) {
-      LOG.info("initializing a dummy source client for the c3po adaptor");
-      this.source = new C3PODummyClient();
-    } else {
-      LOG.info("initializing a production source client for the c3po adaptor with api bound at: {}", cpEndpoint);
-      this.source = new C3POClient(cpEndpoint);
-    }
-  }
-
-  @Override
-  public Result execute() {
-    LOG.info("Hello from c3po");
-    return null;
+  public void init() throws PluginException {
+    this.initConfigs();
   }
 
   @Override
   public void shutdown() throws PluginException {
-    // TODO Auto-generated method stub
-    
+    this.defaultConfig.clear();
+    this.config.clear();
+
+    // close connections, cancel jobs, etc.
   }
 
   @Override
   public String getName() {
-    // TODO Auto-generated method stub
-    return null;
+    return "c3po";
   }
 
   @Override
   public String getVersion() {
-    // TODO Auto-generated method stub
-    return null;
+    return "0.1";
   }
 
   @Override
   public String getDescription() {
-    // TODO Auto-generated method stub
-    return null;
+    return "A watch adaptor for the c3po content profiler source";
   }
 
   @Override
   public PluginType getPluginType() {
-    // TODO Auto-generated method stub
-    return null;
+    return PluginType.ADAPTOR;
   }
 
   @Override
   public List<ConfigParameter> getParameters() {
-    // TODO Auto-generated method stub
-    return null;
+    return this.defaultConfig;
   }
 
   @Override
   public Map<String, String> getParameterValues() {
-    // TODO Auto-generated method stub
+    return this.config;
+  }
+
+  @Override
+  public void setParameterValues(final Map<String, String> values) throws InvalidParameterException {
+    final Set<String> keys = values.keySet();
+
+    for (ConfigParameter cp : this.defaultConfig) {
+      final String key = cp.getKey();
+      if (cp.isRequired() && (!keys.contains(key) || values.get(key) == null)) {
+        throw new InvalidParameterException("No value set for the required config parameter: " + key);
+      }
+    }
+
+    this.config = values;
+
+  }
+
+  @Override
+  public Result execute() throws PluginException {
+    LOG.info("Hello from c3po");
+    this.createSource();
+    final List<String> identifiers = this.source.getCollectionIdentifiers();
+    for (String id : identifiers) {
+      this.getPropertyValues(id, null);
+      // TODO capture result and generate real result object.
+    }
+
     return null;
   }
 
   @Override
-  public void setParameterValues(Map<String, String> values) throws InvalidParameterException {
-    // TODO Auto-generated method stub
-    
-  }
+  public Result execute(final Map<Entity, List<Property>> context) throws PluginException {
+    LOG.info("Hello from c3po, reading config...");
+    this.createSource();
 
-  @Override
-  public Result execute(Map<Entity, List<Property>> config) throws PluginException {
-    // TODO Auto-generated method stub
+    final List<String> identifiers = this.source.getCollectionIdentifiers();
+    for (Entity e : context.keySet()) {
+      if (identifiers.contains(e.getName())) {
+        this.getPropertyValues(e.getName(), context.get(e));
+        // TODO capture result and generate real result object.
+      }
+    }
+
     return null;
   }
 
- 
+  private void initConfigs() {
+    this.config = new HashMap<String, String>();
 
-  
+    this.defaultConfig = new ArrayList<ConfigParameter>();
+    this.defaultConfig.add(new ConfigParameter(C3POConstants.ENDPOINT_CNF, C3POConstants.ENDPOINT_DEFAULT,
+      C3POConstants.ENDPOINT_DESC, true));
+
+    for (ConfigParameter cp : this.defaultConfig) {
+      this.config.put(cp.getKey(), cp.getValue());
+    }
+  }
+
+  private InputStream getCollectionProfile(String id) {
+    final List<String> expanded = this.generatePropertyExpansionList(null);
+    final String uuid = this.source.submitCollectionProfileJob(id, expanded);
+    int counter = 1;
+
+    InputStream is = this.source.pollJobResult(uuid);
+    while (is == null && counter < 10) {
+      is = this.source.pollJobResult(uuid);
+      counter++;
+      try {
+        Thread.sleep(5000);
+      } catch (final InterruptedException e) {
+        LOG.warn("An error occurred while waiting for c3po's result: {}", e.getMessage());
+      }
+    }
+
+    return is;
+  }
+
+  private void createSource() throws PluginException {
+    final String endpoint = this.getParameterValues().get(C3POConstants.ENDPOINT_CNF);
+    if (endpoint == null || endpoint.equals("")) {
+      throw new PluginException("The endpoint value is invalued: " + endpoint);
+    }
+
+    if (endpoint.equals(C3POConstants.ENDPOINT_DEFAULT)) {
+      this.source = new C3PODummyClient();
+    } else {
+      this.source = new C3POClient(endpoint);
+    }
+
+    if (this.source == null) {
+      throw new PluginException("An error occurred, could not initialize a c3po client");
+    }
+  }
+
+  private List<PropertyValue> getPropertyValues(final String id, final List<Property> props) {
+    final InputStream stream = this.getCollectionProfile(id);
+
+    if (stream != null) {
+      final C3POProfileReader reader = new C3POProfileReader(stream);
+      if (props == null || props.size() == 0) {
+        // TODO start all commands
+      } else {
+        // TODO start only those matching the property names.
+      }
+    }
+
+    LOG.info("Returning property values...");
+    return new ArrayList<PropertyValue>();
+  }
+
+  private List<String> generatePropertyExpansionList(Property property) {
+    List<String> props = new ArrayList<String>();
+    if (property != null) {
+      LOG.debug("generating parameter for property {}", property.getName());
+      props = Arrays.asList(property.getName());
+    }
+    return props;
+  }
+
 }

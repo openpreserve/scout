@@ -10,9 +10,10 @@ import java.io.OutputStream;
 import java.util.List;
 
 import junit.framework.Assert;
-import eu.scape_project.watch.core.plugin.Plugin;
+import eu.scape_project.watch.components.interfaces.AdaptorPluginInterface;
 import eu.scape_project.watch.core.plugin.PluginException;
 import eu.scape_project.watch.core.plugin.PluginInfo;
+import eu.scape_project.watch.core.plugin.PluginInterface;
 import eu.scape_project.watch.core.plugin.PluginManager;
 
 import org.junit.After;
@@ -74,7 +75,7 @@ public class PluginManagerTest {
    */
   @Test
   public void shouldObtainPluginManager() {
-    LOG.debug("------ Should Start Plugin Manager Test ------");
+    LOG.debug("------ Should Start PluginInterface Manager Test ------");
     this.manager = PluginManager.getDefaultPluginManager();
     Assert.assertNotNull(this.manager);
 
@@ -88,7 +89,7 @@ public class PluginManagerTest {
    */
   @Test
   public void shouldLoadPlugin() throws Exception {
-    LOG.debug("------ Should Load Plugin Test ------");
+    LOG.debug("------ Should Load PluginInterface Test ------");
     List<PluginInfo> info = this.manager.getPluginInfo();
     Assert.assertEquals(0, info.size());
     copyTestJar("testadaptor.jar");
@@ -100,7 +101,8 @@ public class PluginManagerTest {
     Assert.assertEquals(1, info.size());
 
     final PluginInfo i1 = info.get(0);
-    final Plugin plugin = this.manager.getPlugin(i1.getClassName(), i1.getVersion());
+    final AdaptorPluginInterface plugin = (AdaptorPluginInterface) this.manager.getPlugin(i1.getClassName(),
+      i1.getVersion());
     plugin.execute();
     Assert.assertNotNull(plugin);
     Assert.assertEquals("0.1", plugin.getVersion());
@@ -122,7 +124,7 @@ public class PluginManagerTest {
 
     final List<PluginInfo> info = this.manager.getPluginInfo();
     final PluginInfo i1 = info.get(0);
-    final Plugin plugin = this.manager.getPlugin(i1.getClassName(), i1.getVersion());
+    final PluginInterface plugin = this.manager.getPlugin(i1.getClassName(), i1.getVersion());
     plugin.init();
 
     Assert.fail("This code should not have been executed!");
@@ -146,8 +148,10 @@ public class PluginManagerTest {
     Assert.assertEquals(2, info.size());
     final PluginInfo i1 = info.get(0);
     final PluginInfo i2 = info.get(1);
-    final Plugin p1 = this.manager.getPlugin(i1.getClassName(), i1.getVersion());
-    final Plugin p2 = this.manager.getPlugin(i2.getClassName(), i2.getVersion());
+    final AdaptorPluginInterface p1 = (AdaptorPluginInterface) this.manager.getPlugin(i1.getClassName(),
+      i1.getVersion());
+    final AdaptorPluginInterface p2 = (AdaptorPluginInterface) this.manager.getPlugin(i2.getClassName(),
+      i2.getVersion());
     Assert.assertNotSame(i1.getVersion(), i2.getVersion());
 
     LOG.debug("Executing plugin 1: {}-{}", p1.getName(), p1.getVersion());
@@ -165,10 +169,10 @@ public class PluginManagerTest {
 
     List<PluginInfo> info = this.manager.getPluginInfo();
     final PluginInfo i1 = info.get(0);
-    final Plugin plugin = this.manager.getPlugin(i1.getClassName(), i1.getVersion());
+    final PluginInterface plugin = this.manager.getPlugin(i1.getClassName(), i1.getVersion());
 
     this.manager.shutdown();
-    
+
     this.setUp();
 
     info = this.manager.getPluginInfo();
@@ -203,7 +207,7 @@ public class PluginManagerTest {
       }
       inStream.close();
       outStream.close();
-      LOG.debug("Plugin is copied successful!");
+      LOG.debug("PluginInterface is copied successful!");
     } catch (final IOException e) {
       e.printStackTrace();
     }

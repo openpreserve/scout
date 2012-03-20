@@ -7,6 +7,8 @@ import java.util.Set;
 import eu.scape_project.watch.components.interfaces.NotificationAdaptorInterface;
 import eu.scape_project.watch.core.model.Entry;
 import eu.scape_project.watch.core.model.Notification;
+import eu.scape_project.watch.core.plugin.PluginException;
+import eu.scape_project.watch.core.plugin.PluginType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,6 +57,42 @@ public class LogNotificationAdaptor implements NotificationAdaptorInterface {
 
     this.log.info(message.toString());
     return false;
+  }
+
+  @Override
+  public void init() throws PluginException {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void shutdown() throws PluginException {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public String getName() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public String getVersion() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public String getDescription() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public PluginType getPluginType() {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 }

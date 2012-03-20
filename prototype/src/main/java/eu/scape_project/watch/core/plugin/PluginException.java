@@ -52,4 +52,5 @@ public class PluginException extends Exception {
   public PluginException(final String msg, final Throwable cause) {
     super(msg, cause);
   }
+  
 }

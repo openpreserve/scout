@@ -29,11 +29,11 @@ import org.slf4j.LoggerFactory;
  */
 /**
  * This is the watch plugin manager. It is responsible for loading
- * {@link Plugin}s. Currently it loads all jar files in a pre defined location
- * and builds an internal registry of all {@link Plugin} classes in there. As
+ * {@link PluginInterface}s. Currently it loads all jar files in a pre defined location
+ * and builds an internal registry of all {@link PluginInterface} classes in there. As
  * soon as the {@link PluginManager#getPlugin(String, String)} method is called
  * a new plugin is created and its init method is called. Calling the shutdown
- * method of the plugin is the responsibility of the user of the Plugin.
+ * method of the plugin is the responsibility of the user of the PluginInterface.
  * 
  * @author Petar Petrov - <me@petarpetrov.org>
  */
@@ -55,7 +55,7 @@ public final class PluginManager {
   private static final String CLASS_EXTENSION = ".class";
 
   /**
-   * The default Plugin Manager instance.
+   * The default PluginInterface Manager instance.
    */
   private static PluginManager defaultPluginManager = null;
 
@@ -90,24 +90,24 @@ public final class PluginManager {
   /**
    * The loaded plugins.
    */
-  private List<Plugin> pluginCache = new ArrayList<Plugin>();
+  private List<PluginInterface> pluginCache = new ArrayList<PluginInterface>();
 
   /**
-   * Returns an initialized instance of the {@link Plugin} with the specified ID
+   * Returns an initialized instance of the {@link PluginInterface} with the specified ID
    * (classname) or null if the initializing process failed.
    * 
    * @param pluginID
-   *          the ID (classname) of the {@link Plugin}.
+   *          the ID (classname) of the {@link PluginInterface}.
    * @param version
    *          the version of the plugin, as there might be some ambiguities.
    * 
-   * @return a {@link Plugin} or <code>null</code> if the specified classname if
-   *         not a {@link Plugin}.
+   * @return a {@link PluginInterface} or <code>null</code> if the specified classname if
+   *         not a {@link PluginInterface}.
    */
-  public Plugin getPlugin(final String pluginID, final String version) {
-    Plugin plugin = null;
+  public PluginInterface getPlugin(final String pluginID, final String version) {
+    PluginInterface plugin = null;
     for (JarPlugin jarPlugin : this.pluginRegistry.values()) {
-      final Plugin tmp = jarPlugin.plugin;
+      final PluginInterface tmp = jarPlugin.plugin;
       if (tmp != null && tmp.getClass().getName().equals(pluginID) && tmp.getVersion().equals(version)) {
         plugin = this.createInstance(jarPlugin.plugin.getClass());
         break;
@@ -140,7 +140,7 @@ public final class PluginManager {
    * Obtain plugin information about all plugins of the given type.
    * 
    * @param type
-   *          the type of the Plugin
+   *          the type of the PluginInterface
    * @return a list with {@link PluginInfo}s
    * @see {@link PluginType}
    */
@@ -149,12 +149,12 @@ public final class PluginManager {
 
     if (type == null) {
       for (JarPlugin jp : this.pluginRegistry.values()) {
-        final Plugin p = jp.plugin;
+        final PluginInterface p = jp.plugin;
         info.add(new PluginInfo(p.getName(), p.getVersion(), p.getDescription(), p.getClass().getName()));
       }
     } else {
       for (JarPlugin jp : this.pluginRegistry.values()) {
-        final Plugin p = jp.plugin;
+        final PluginInterface p = jp.plugin;
         if (p.getPluginType() == type) {
           info.add(new PluginInfo(p.getName(), p.getVersion(), p.getDescription(), p.getClass().getName()));
         }
@@ -173,18 +173,18 @@ public final class PluginManager {
 
   /**
    * This method should be called to stop {@link PluginManager} and all
-   * {@link Plugin}s currently loaded.
+   * {@link PluginInterface}s currently loaded.
    */
   public synchronized void shutdown() {
     LOGGER.info("Shutting down plugin manager");
 
     this.cancelTimer();
 
-    for (Plugin p : this.pluginCache) {
+    for (PluginInterface p : this.pluginCache) {
       try {
         p.shutdown();
       } catch (final PluginException e) {
-        LOGGER.warn("Plugin {} did not shutdown correctly: {}", p.getName(), e.getMessage());
+        LOGGER.warn("PluginInterface {} did not shutdown correctly: {}", p.getName(), e.getMessage());
       }
     }
 
@@ -203,7 +203,7 @@ public final class PluginManager {
     final String dir = config.getStringProperty("watch.plugins.directory");
     final File pluginDir = new File(dir);
 
-    LOGGER.debug("Plugin directory is " + pluginDir);
+    LOGGER.debug("PluginInterface directory is " + pluginDir);
 
     this.setPluginDirectory(pluginDir);
 
@@ -219,7 +219,7 @@ public final class PluginManager {
    */
   private void startTimer() {
     this.cancelTimer();
-    this.scannerTimer = new Timer("Plugin scanner timer", true);
+    this.scannerTimer = new Timer("PluginInterface scanner timer", true);
     this.scannerTimer.schedule(new SearchPluginsTask(), new Date(), SCANNER_PERIOD);
   }
 
@@ -276,16 +276,16 @@ public final class PluginManager {
         LOGGER.debug(jarFile.getName() + " is already loaded");
       } else {
         // The plugin doesn't exist or the modification date is
-        // different. Let's load the Plugin
+        // different. Let's load the PluginInterface
         LOGGER.debug(jarFile.getName() + " is not loaded or modification dates differ. Inspecting Jar...");
 
         try {
           final URL[] urls = {jarFile.toURI().toURL()};
 
-          final Plugin plugin = loadPlugin(jarFile, urls);
+          final PluginInterface plugin = loadPlugin(jarFile, urls);
 
           if (plugin == null) {
-            LOGGER.trace(jarFile.getName() + " is not a Plugin");
+            LOGGER.trace(jarFile.getName() + " is not a PluginInterface");
           }
 
           synchronized (this.pluginRegistry) {
@@ -309,10 +309,10 @@ public final class PluginManager {
    *          the jar file urls in the plugin directory.
    * @return the plugin or null, if no plugin was found.
    */
-  private Plugin loadPlugin(final File jarFile, final URL[] jarURLs) {
+  private PluginInterface loadPlugin(final File jarFile, final URL[] jarURLs) {
 
     JarFile jar = null;
-    Plugin plugin = null;
+    PluginInterface plugin = null;
 
     try {
       jar = new JarFile(jarFile);
@@ -333,7 +333,7 @@ public final class PluginManager {
         try {
           final Class<?> clazz = loader.loadClass(className);
           LOGGER.debug("Loaded {}", className);
-          final Plugin tmp = this.createInstance(clazz);
+          final PluginInterface tmp = this.createInstance(clazz);
           if (tmp != null) {
             // set the plugin only if it was really loaded
             // otherwise continue to load classes.
@@ -364,13 +364,13 @@ public final class PluginManager {
    *          the class of the plugin.
    * @return the plugin or null.
    */
-  private Plugin createInstance(final Class<?> clazz) {
-    Plugin plugin = null;
+  private PluginInterface createInstance(final Class<?> clazz) {
+    PluginInterface plugin = null;
 
     try {
-      if (Plugin.class.isAssignableFrom(clazz) && !clazz.isInterface() && !Modifier.isAbstract(clazz.getModifiers())) {
+      if (PluginInterface.class.isAssignableFrom(clazz) && !clazz.isInterface() && !Modifier.isAbstract(clazz.getModifiers())) {
         LOGGER.debug("class is a plugin, instantiating");
-        plugin = (Plugin) clazz.newInstance();
+        plugin = (PluginInterface) clazz.newInstance();
       }
 
     } catch (final InstantiationException e) {
@@ -404,7 +404,7 @@ public final class PluginManager {
 
       for (File jarFile : PluginManager.this.pluginRegistry.keySet()) {
 
-        final Plugin plugin = PluginManager.this.pluginRegistry.get(jarFile).plugin;
+        final PluginInterface plugin = PluginManager.this.pluginRegistry.get(jarFile).plugin;
 
         if (plugin != null) {
           LOGGER.debug("- " + jarFile.getName());
@@ -425,7 +425,7 @@ public final class PluginManager {
     /**
      * The plugin.
      */
-    private Plugin plugin = null;
+    private PluginInterface plugin = null;
     /**
      * The last modified date of this plugin.
      */
@@ -439,7 +439,7 @@ public final class PluginManager {
      * @param lastModified
      *          the last modified date.
      */
-    JarPlugin(final Plugin plugin, final long lastModified) {
+    JarPlugin(final PluginInterface plugin, final long lastModified) {
       this.plugin = plugin;
       this.lastModified = lastModified;
     }

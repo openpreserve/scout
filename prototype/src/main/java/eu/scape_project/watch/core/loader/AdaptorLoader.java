@@ -11,16 +11,15 @@ import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import eu.scape_project.watch.components.interfaces.IAdaptor;
 import eu.scape_project.watch.components.interfaces.IAdaptorJob;
 import eu.scape_project.watch.core.CoreScheduler;
 import eu.scape_project.watch.core.common.ConfigUtils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
- * Class that enables loading adaptors with their config dynamically
+ * Class that enables loading adaptors with their config dynamically.
  * 
  * @author kresimir
  * 

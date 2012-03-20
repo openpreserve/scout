@@ -7,10 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import eu.scape_project.watch.components.interfaces.IAdaptor;
+import eu.scape_project.watch.components.interfaces.AdaptorPluginInterface;
 import eu.scape_project.watch.core.model.DictionaryItem;
 import eu.scape_project.watch.core.model.Entity;
 import eu.scape_project.watch.core.model.EntityType;
@@ -23,13 +20,16 @@ import eu.scape_project.watch.core.plugin.PluginException;
 import eu.scape_project.watch.core.plugin.PluginType;
 import eu.scape_project.watch.core.plugin.Result;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * A watch conforming adaptor for a collection profile source called c3po.
  * 
  * @author Petar Petrov <me@petarpetrov.org>
  * @version 0.1
  */
-public class C3POAdaptor implements IAdaptor {
+public class C3POAdaptor implements AdaptorPluginInterface {
 
   /**
    * Default logger for this adaptor.
@@ -278,20 +278,6 @@ public class C3POAdaptor implements IAdaptor {
   }
 
   @Override
-  public void configureWithFile(String filePath) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void configureWithString(String config) {
-    // TODO Auto-generated method stub
-    
-  }
-
- 
-
-  @Override
   public void shutdown() throws PluginException {
     // TODO Auto-generated method stub
     
@@ -337,6 +323,12 @@ public class C3POAdaptor implements IAdaptor {
   public void setParameterValues(Map<String, String> values) throws InvalidParameterException {
     // TODO Auto-generated method stub
     
+  }
+
+  @Override
+  public Result execute(Map<Entity, List<Property>> config) throws PluginException {
+    // TODO Auto-generated method stub
+    return null;
   }
 
  

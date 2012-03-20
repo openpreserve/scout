@@ -3,6 +3,7 @@ package eu.scape_project.watch.components.interfaces;
 import java.util.Set;
 
 import eu.scape_project.watch.core.model.Notification;
+import eu.scape_project.watch.core.plugin.PluginInterface;
 
 /**
  * 
@@ -11,7 +12,7 @@ import eu.scape_project.watch.core.model.Notification;
  * @author Luis Faria <lfaria@keep.pt>
  * 
  */
-public interface NotificationAdaptorInterface {
+public interface NotificationAdaptorInterface extends PluginInterface {
 
   /**
    * Get Notification types this adaptors supports.

@@ -16,8 +16,8 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.tdb.TDB;
 import com.hp.hpl.jena.tdb.TDBFactory;
 
-import eu.scape_project.watch.core.KBUtils;
 import eu.scape_project.watch.core.common.ConfigUtils;
+import eu.scape_project.watch.utils.KBUtils;
 
 /**
  * An application startup listener, that is invoked by the container on

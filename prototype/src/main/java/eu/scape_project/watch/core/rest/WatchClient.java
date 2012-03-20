@@ -10,14 +10,14 @@ import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 
-import eu.scape_project.watch.core.KBUtils;
-import eu.scape_project.watch.core.model.AsyncRequest;
-import eu.scape_project.watch.core.model.Entity;
-import eu.scape_project.watch.core.model.EntityType;
-import eu.scape_project.watch.core.model.Property;
-import eu.scape_project.watch.core.model.PropertyValue;
-import eu.scape_project.watch.core.model.RequestTarget;
 import eu.scape_project.watch.core.rest.exception.NotFoundException;
+import eu.scape_project.watch.domain.AsyncRequest;
+import eu.scape_project.watch.domain.Entity;
+import eu.scape_project.watch.domain.EntityType;
+import eu.scape_project.watch.domain.Property;
+import eu.scape_project.watch.domain.PropertyValue;
+import eu.scape_project.watch.domain.RequestTarget;
+import eu.scape_project.watch.utils.KBUtils;
 import thewebsemantic.binding.RdfBean;
 
 /**

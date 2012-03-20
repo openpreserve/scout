@@ -7,11 +7,11 @@ import java.util.Map;
 import java.util.Set;
 
 import eu.scape_project.watch.components.interfaces.NotificationAdaptorInterface;
-import eu.scape_project.watch.core.model.DataType;
-import eu.scape_project.watch.core.model.Entry;
-import eu.scape_project.watch.core.model.Notification;
 import eu.scape_project.watch.core.plugin.PluginException;
 import eu.scape_project.watch.core.plugin.PluginType;
+import eu.scape_project.watch.domain.DataType;
+import eu.scape_project.watch.domain.Entry;
+import eu.scape_project.watch.domain.Notification;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

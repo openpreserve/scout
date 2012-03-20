@@ -1,6 +1,11 @@
 package eu.scape_project.watch.core.rest;
 
 import static org.junit.Assert.assertEquals;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
@@ -8,22 +13,19 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.test.framework.JerseyTest;
 import com.sun.jersey.test.framework.WebAppDescriptor;
-import eu.scape_project.watch.core.dao.PropertyDAO;
-import eu.scape_project.watch.core.listener.ApplicationStartupListener;
-import eu.scape_project.watch.core.model.AsyncRequest;
-import eu.scape_project.watch.core.model.Entity;
-import eu.scape_project.watch.core.model.EntityType;
-import eu.scape_project.watch.core.model.Entry;
-import eu.scape_project.watch.core.model.Notification;
-import eu.scape_project.watch.core.model.Property;
-import eu.scape_project.watch.core.model.PropertyValue;
-import eu.scape_project.watch.core.model.Question;
-import eu.scape_project.watch.core.model.RequestTarget;
-import eu.scape_project.watch.core.model.Trigger;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
+import eu.scape_project.watch.core.listener.ApplicationStartupListener;
+import eu.scape_project.watch.dao.PropertyDAO;
+import eu.scape_project.watch.domain.AsyncRequest;
+import eu.scape_project.watch.domain.Entity;
+import eu.scape_project.watch.domain.EntityType;
+import eu.scape_project.watch.domain.Entry;
+import eu.scape_project.watch.domain.Notification;
+import eu.scape_project.watch.domain.Property;
+import eu.scape_project.watch.domain.PropertyValue;
+import eu.scape_project.watch.domain.Question;
+import eu.scape_project.watch.domain.RequestTarget;
+import eu.scape_project.watch.domain.Trigger;
 
 import org.apache.commons.io.FileUtils;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;

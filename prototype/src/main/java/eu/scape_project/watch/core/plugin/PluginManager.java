@@ -20,7 +20,6 @@ import java.util.jar.JarFile;
 
 import eu.scape_project.watch.core.common.ConfigUtils;
 
-import org.openjena.atlas.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

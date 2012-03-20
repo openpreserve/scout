@@ -25,31 +25,6 @@
 		</license>
 	</licenses>
 
-	<!-- This should be moved in a different maven module, when we split up 
-		the project -->
-	<repositories>
-		<repository>
-			<id>jboss</id>
-			<url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
-		</repository>
-		<repository>
-			<id>KEEP Artifacts</id>
-			<name>KEEP Artifacts-releases</name>
-			<url>http://artifactory.keep.pt/keep</url>
-		</repository>
-		<repository>
-			<id>apache-repo-releases</id>
-			<url>https://repository.apache.org/content/repositories/releases/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-		<repository>
-			<id>apache-repo-snapshots</id>
-			<url>https://repository.apache.org/content/repositories/snapshots/</url>
-		</repository>
-	</repositories>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -216,11 +191,6 @@
 			<version>1.12</version>
 		</dependency>
 		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.4</version>
-		</dependency>
-		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>1.9.3</version>
@@ -247,21 +217,6 @@
 			<artifactId>jersey-test-framework-grizzly2</artifactId>
 			<version>1.12</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.hp.hpl.jena</groupId>
-			<artifactId>jena</artifactId>
-			<version>2.6.4</version>
-		</dependency>
-		<dependency>
-			<groupId>com.hp.hpl.jena</groupId>
-			<artifactId>tdb</artifactId>
-			<version>0.8.10</version>
-		</dependency>
-		<dependency>
-			<groupId>com.thewebsemantic</groupId>
-			<artifactId>jenabean</artifactId>
-			<version>1.0.6</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -309,7 +264,12 @@
 			<artifactId>quartz-jboss</artifactId>
 			<version>2.1.2</version>
 		</dependency>
-
+		<dependency>
+        <groupId>eu.scape-project</groupId>
+        <artifactId>model</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+		
 	</dependencies>
 	<scm>
 		<connection>scm:git:git://github.com/openplanets/scape-pw.git</connection>

@@ -14,21 +14,21 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
-
-import thewebsemantic.binding.Jenabean;
-
 import com.wordnik.swagger.core.ApiError;
 import com.wordnik.swagger.core.ApiErrors;
 import com.wordnik.swagger.core.ApiOperation;
 import com.wordnik.swagger.core.ApiParam;
 import com.wordnik.swagger.core.JavaHelp;
 
-import eu.scape_project.watch.core.dao.EntityTypeDAO;
-import eu.scape_project.watch.core.dao.PropertyDAO;
-import eu.scape_project.watch.core.model.EntityType;
-import eu.scape_project.watch.core.model.Property;
 import eu.scape_project.watch.core.rest.exception.NotFoundException;
+import eu.scape_project.watch.dao.EntityTypeDAO;
+import eu.scape_project.watch.dao.PropertyDAO;
+import eu.scape_project.watch.domain.EntityType;
+import eu.scape_project.watch.domain.Property;
+
+import org.apache.log4j.Logger;
+
+import thewebsemantic.binding.Jenabean;
 
 /**
  * 

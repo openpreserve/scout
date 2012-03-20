@@ -1,12 +1,12 @@
 package eu.scape_project.watch.components.notification;
 
-import eu.scape_project.watch.components.interfaces.NotificationAdaptorInterface;
-import eu.scape_project.watch.core.model.Notification;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import eu.scape_project.watch.components.interfaces.NotificationAdaptorInterface;
+import eu.scape_project.watch.domain.Notification;
 
 import org.junit.AfterClass;
 import org.junit.Assert;

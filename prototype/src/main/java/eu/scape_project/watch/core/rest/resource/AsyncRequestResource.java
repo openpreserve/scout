@@ -13,21 +13,15 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
-import thewebsemantic.binding.Jenabean;
-
 import com.wordnik.swagger.core.ApiError;
 import com.wordnik.swagger.core.ApiErrors;
 import com.wordnik.swagger.core.ApiOperation;
 import com.wordnik.swagger.core.ApiParam;
 import com.wordnik.swagger.core.JavaHelp;
 
-import eu.scape_project.watch.core.KBUtils;
-import eu.scape_project.watch.core.dao.AsyncRequestDAO;
-import eu.scape_project.watch.core.dao.EntityTypeDAO;
-import eu.scape_project.watch.core.model.AsyncRequest;
-import eu.scape_project.watch.core.model.Entity;
-import eu.scape_project.watch.core.model.EntityType;
 import eu.scape_project.watch.core.rest.exception.NotFoundException;
+import eu.scape_project.watch.dao.AsyncRequestDAO;
+import eu.scape_project.watch.domain.AsyncRequest;
 
 /**
  * REST API for {@link AsyncRequest} operations.

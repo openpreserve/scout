@@ -14,21 +14,20 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
-import thewebsemantic.binding.Jenabean;
-
 import com.wordnik.swagger.core.ApiError;
 import com.wordnik.swagger.core.ApiErrors;
 import com.wordnik.swagger.core.ApiOperation;
 import com.wordnik.swagger.core.ApiParam;
 import com.wordnik.swagger.core.JavaHelp;
 
-import eu.scape_project.watch.core.dao.EntityDAO;
-import eu.scape_project.watch.core.dao.PropertyDAO;
-import eu.scape_project.watch.core.dao.PropertyValueDAO;
-import eu.scape_project.watch.core.model.Entity;
-import eu.scape_project.watch.core.model.Property;
-import eu.scape_project.watch.core.model.PropertyValue;
 import eu.scape_project.watch.core.rest.exception.NotFoundException;
+import eu.scape_project.watch.dao.EntityDAO;
+import eu.scape_project.watch.dao.PropertyDAO;
+import eu.scape_project.watch.dao.PropertyValueDAO;
+import eu.scape_project.watch.domain.Entity;
+import eu.scape_project.watch.domain.Property;
+import eu.scape_project.watch.domain.PropertyValue;
+import thewebsemantic.binding.Jenabean;
 
 /**
  * REST API for {@link PropertyValue} operations.

@@ -1,12 +1,11 @@
 package eu.scape_project.watch.components.interfaces;
 
-import eu.scape_project.watch.core.model.DataType;
-import eu.scape_project.watch.core.model.Notification;
-import eu.scape_project.watch.core.plugin.PluginInterface;
-
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import eu.scape_project.watch.core.plugin.PluginInterface;
+import eu.scape_project.watch.domain.DataType;
+import eu.scape_project.watch.domain.Notification;
 
 /**
  * 

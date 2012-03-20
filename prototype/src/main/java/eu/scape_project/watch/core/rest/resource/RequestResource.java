@@ -3,17 +3,6 @@
  */
 package eu.scape_project.watch.core.rest.resource;
 
-import com.wordnik.swagger.core.ApiOperation;
-import com.wordnik.swagger.core.ApiParam;
-import com.wordnik.swagger.core.JavaHelp;
-import eu.scape_project.watch.core.KBUtils;
-import eu.scape_project.watch.core.dao.RequestDAO;
-import eu.scape_project.watch.core.model.Entity;
-import eu.scape_project.watch.core.model.EntityType;
-import eu.scape_project.watch.core.model.Property;
-import eu.scape_project.watch.core.model.PropertyValue;
-import eu.scape_project.watch.core.model.RequestTarget;
-
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -23,8 +12,20 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
+import com.wordnik.swagger.core.ApiOperation;
+import com.wordnik.swagger.core.ApiParam;
+import com.wordnik.swagger.core.JavaHelp;
+
+import eu.scape_project.watch.dao.RequestDAO;
+import eu.scape_project.watch.domain.Entity;
+import eu.scape_project.watch.domain.EntityType;
+import eu.scape_project.watch.domain.Property;
+import eu.scape_project.watch.domain.PropertyValue;
+import eu.scape_project.watch.domain.RequestTarget;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import thewebsemantic.binding.RdfBean;
 
 /**

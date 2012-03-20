@@ -3,14 +3,14 @@ package eu.scape_project.watch.components;
 import java.util.ArrayList;
 import java.util.List;
 
+import eu.scape_project.watch.components.interfaces.MonitorInterface;
+import eu.scape_project.watch.dao.AsyncRequestDAO;
+import eu.scape_project.watch.dao.DOListener;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import thewebsemantic.binding.RdfBean;
-
-import eu.scape_project.watch.components.interfaces.MonitorInterface;
-import eu.scape_project.watch.core.dao.AsyncRequestDAO;
-import eu.scape_project.watch.core.dao.DOListener;
 
 public class CentralMonitor implements DOListener {
 

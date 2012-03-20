@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import junit.framework.Assert;
+import eu.scape_project.watch.core.listener.ApplicationStartupListener;
+import eu.scape_project.watch.dao.EntityTypeDAO;
+import eu.scape_project.watch.domain.EntityType;
+import eu.scape_project.watch.utils.KBUtils;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
@@ -14,9 +18,6 @@ import org.junit.Test;
 
 import thewebsemantic.Sparql;
 import thewebsemantic.binding.Jenabean;
-import eu.scape_project.watch.core.dao.EntityTypeDAO;
-import eu.scape_project.watch.core.listener.ApplicationStartupListener;
-import eu.scape_project.watch.core.model.EntityType;
 
 /**
  * 

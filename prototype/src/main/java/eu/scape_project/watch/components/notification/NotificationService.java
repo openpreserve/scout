@@ -1,13 +1,13 @@
 package eu.scape_project.watch.components.notification;
 
-import eu.scape_project.watch.components.interfaces.NotificationAdaptorInterface;
-import eu.scape_project.watch.core.model.DataType;
-import eu.scape_project.watch.core.model.Notification;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import eu.scape_project.watch.components.interfaces.NotificationAdaptorInterface;
+import eu.scape_project.watch.domain.DataType;
+import eu.scape_project.watch.domain.Notification;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

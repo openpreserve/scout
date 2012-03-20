@@ -3,13 +3,13 @@ package eu.scape_project.watch.components.interfaces;
 import java.util.List;
 import java.util.Map;
 
-import eu.scape_project.watch.core.model.Entity;
-import eu.scape_project.watch.core.model.Property;
 import eu.scape_project.watch.core.plugin.ConfigParameter;
 import eu.scape_project.watch.core.plugin.InvalidParameterException;
 import eu.scape_project.watch.core.plugin.PluginException;
 import eu.scape_project.watch.core.plugin.PluginInterface;
 import eu.scape_project.watch.core.plugin.Result;
+import eu.scape_project.watch.domain.Entity;
+import eu.scape_project.watch.domain.Property;
 
 /**
  * An adaptor plugin interface that each adaptor has to implement.

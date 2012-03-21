@@ -1,10 +1,11 @@
-package eu.scape_project.watch.adaptor.c3po;
+package eu.scape_project.watch.adaptor.c3po.client;
 
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+
 
 /**
  * A dummy client that always returns the same job uuid and returns a random
@@ -13,7 +14,7 @@ import java.util.Random;
  * @author Petar Petrov <me@petarpetrov.org>
  * 
  */
-public class C3PODummyClient implements IC3POClient {
+public class C3PODummyClient implements C3POClientInterface {
 
   /**
    * A simple string format for the dummy profile files.

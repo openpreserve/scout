@@ -145,7 +145,7 @@
       <property id="scanner.softwarename" name="Scanner Software Name" type="STRING" count="52" mode="Adobe Photoshop 7.0" expanded="false"/>
       <property id="sensingmethod" name="Sensing Method" type="STRING" count="12" mode="One-chip color area sensor" expanded="false"/>
       <property id="shutterspeedvalue" name="Shutter Speed Value" type="DEFAULT" count="13" mode="1/60" expanded="false"/>
-      <property id="size" name="Size" type="NUMERIC" count="2947" mode="501907" avg="570806.2419409569" min="26" max="108560208" expanded="false"/>
+      <property id="size" name="Size" type="NUMERIC" count="2947" mode="501907" avg="570806.2419409569" min="26" max="108560208" sum="62312" expanded="false"/>
       <property id="title" name="Title" type="STRING" count="812" mode="Document" expanded="false"/>
       <property id="valid" name="Valid" type="BOOL" count="2104" mode="true" expanded="false"/>
       <property id="wellformed" name="Well-Formed" type="BOOL" count="2104" mode="true" expanded="false"/>

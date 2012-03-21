@@ -1,9 +1,11 @@
 package eu.scape_project.watch.adaptor.c3po;
 
-import static eu.scape_project.watch.adaptor.c3po.C3PODummyClient.COLLECTION_NAME;
+import static eu.scape_project.watch.adaptor.c3po.client.C3PODummyClient.COLLECTION_NAME;
 
 import java.io.InputStream;
 import java.util.List;
+
+import eu.scape_project.watch.adaptor.c3po.client.C3PODummyClient;
 
 import junit.framework.Assert;
 

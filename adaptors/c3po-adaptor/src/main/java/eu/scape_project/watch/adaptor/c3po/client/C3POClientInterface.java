@@ -1,4 +1,4 @@
-package eu.scape_project.watch.adaptor.c3po;
+package eu.scape_project.watch.adaptor.c3po.client;
 
 import java.io.InputStream;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  * @author Petar Petrov <me@petarpetrov.org>
  * 
  */
-public interface IC3POClient {
+public interface C3POClientInterface {
 
   /**
    * Fetches the current content profile identifiers stored in the c3po

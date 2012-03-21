@@ -91,9 +91,8 @@ public class C3POProfileReader {
    * @return a string representation of the size.
    */
   public String getCollectionSize() {
-    this.getSizePropertyElement();
-    // TODO fix.
-    return "42";
+    Element size = this.getSizePropertyElement();
+    return this.getAttributeValue(size, "sum");
   }
 
   /**

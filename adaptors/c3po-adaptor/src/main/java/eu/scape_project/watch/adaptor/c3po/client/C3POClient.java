@@ -1,10 +1,11 @@
-package eu.scape_project.watch.adaptor.c3po;
+package eu.scape_project.watch.adaptor.c3po.client;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class C3POClient implements IC3POClient {
+
+public class C3POClient implements C3POClientInterface {
 
   private String apiEndpoint;
 

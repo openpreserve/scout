@@ -49,10 +49,10 @@ public class C3POProfileReaderTest {
     Assert.assertEquals("502", count);
   }
 
-  @Ignore("Overall size feature not yet implemented") @Test
+  @Test
   public void shouldObtainCollectionSize() throws Exception {
     final String size = this.reader.getCollectionSize();
-    Assert.assertEquals("fail", size);
+    Assert.assertEquals("42", size);
   }
 
   @Test

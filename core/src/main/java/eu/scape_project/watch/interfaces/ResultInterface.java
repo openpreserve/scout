@@ -13,7 +13,7 @@ import eu.scape_project.watch.domain.PropertyValue;
  * @author Petar Petrov <me@petarpetrov.org>
  * 
  */
-public interface ResultInteface {
+public interface ResultInterface {
 
   /**
    * Retrieves the property values.

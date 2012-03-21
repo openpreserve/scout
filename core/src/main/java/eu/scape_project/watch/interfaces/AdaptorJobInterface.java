@@ -28,6 +28,12 @@ public interface AdaptorJobInterface extends Job {
   void setAdaptorVersion(String version);
   
   /**
+   * Setting adaptor properties 
+   * @param properties
+   */
+  void setAdaptorProperties(String properties);
+  
+  /**
    * Returns the JobDetail of the AdaptorJob 
    * @return JobDetail
    */

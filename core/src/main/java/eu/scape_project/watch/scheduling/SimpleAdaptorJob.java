@@ -1,6 +1,8 @@
 package eu.scape_project.watch.scheduling;
 
+import java.util.Iterator;
 import java.util.Properties;
+import java.util.Set;
 
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -30,10 +32,12 @@ public class SimpleAdaptorJob extends AdaptorJob {
   @Override
   protected void initialize() {
     Properties properties = this.getProperties();
+    
     jobDetail = JobBuilder.newJob(SimpleAdaptorJob.class)
       .withIdentity(properties.getProperty("adaptor.name"), properties.getProperty("adaptor.group"))
       .usingJobData("adaptorClassName", properties.getProperty("adaptor.class"))
-      .usingJobData("adaptorVersion", properties.getProperty("adaptor.version")).build();
+      .usingJobData("adaptorVersion", properties.getProperty("adaptor.version"))
+      .usingJobData("adaptorProperties", this.adaptorPropertiesToString(properties)).build();
 
     trigger = TriggerBuilder
       .newTrigger()
@@ -44,4 +48,20 @@ public class SimpleAdaptorJob extends AdaptorJob {
           .withIntervalInSeconds(Integer.parseInt(properties.getProperty("adaptor.trigger.interval"))).repeatForever()).build();
   }
 
+  private String adaptorPropertiesToString(Properties properties) {
+    String tProperties = "";
+    
+    String prefix = properties.getProperty("adaptor.config.prefix");
+    Set<String> keys = properties.stringPropertyNames();
+    Iterator<String> it = keys.iterator();
+    while (it.hasNext()){
+      String key = it.next();
+      if (key.startsWith(prefix)){
+        String value = properties.getProperty(key);
+        tProperties.concat(key+"="+value+"\n");
+      }
+    }
+    
+    return tProperties;
+  }
 }

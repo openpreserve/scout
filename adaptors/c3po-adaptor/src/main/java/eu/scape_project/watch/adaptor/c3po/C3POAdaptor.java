@@ -14,7 +14,7 @@ import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
-import eu.scape_project.watch.interfaces.ResultInteface;
+import eu.scape_project.watch.interfaces.ResultInterface;
 import eu.scape_project.watch.plugin.PluginType;
 import eu.scape_project.watch.utils.exceptions.InvalidParameterException;
 import eu.scape_project.watch.utils.exceptions.PluginException;
@@ -138,7 +138,7 @@ public class C3POAdaptor implements AdaptorPluginInterface {
   }
 
   @Override
-  public ResultInteface execute() throws PluginException {
+  public ResultInterface execute() throws PluginException {
     LOG.info("Hello from c3po");
     this.createSource();
     final List<String> identifiers = this.source.getCollectionIdentifiers();
@@ -151,7 +151,7 @@ public class C3POAdaptor implements AdaptorPluginInterface {
   }
 
   @Override
-  public ResultInteface execute(final Map<Entity, List<Property>> context) throws PluginException {
+  public ResultInterface execute(final Map<Entity, List<Property>> context) throws PluginException {
     LOG.info("Hello from c3po, reading config...");
     this.createSource();
 

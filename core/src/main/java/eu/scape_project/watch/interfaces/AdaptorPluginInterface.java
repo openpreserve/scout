@@ -47,7 +47,7 @@ public interface AdaptorPluginInterface extends PluginInterface {
   void setParameterValues(Map<String, String> values) throws InvalidParameterException;
 
   /**
-   * Executes this plugin and returns a specific {@link ResultInteface} implementation.
+   * Executes this plugin and returns a specific {@link ResultInterface} implementation.
    * The execution has to be done according to the current parameter setting.
    * 
    * @param config
@@ -57,7 +57,7 @@ public interface AdaptorPluginInterface extends PluginInterface {
    * @throws PluginException
    *           if an error occurs.
    */
-  ResultInteface execute(Map<Entity, List<Property>> config) throws PluginException;
+  ResultInterface execute(Map<Entity, List<Property>> config) throws PluginException;
 
   /**
    * Fetches all information that this adaptor can obtain from the source. To be
@@ -68,5 +68,5 @@ public interface AdaptorPluginInterface extends PluginInterface {
    * @throws PluginException
    *           if an error occurrs.
    */
-  ResultInteface execute() throws PluginException;
+  ResultInterface execute() throws PluginException;
 }

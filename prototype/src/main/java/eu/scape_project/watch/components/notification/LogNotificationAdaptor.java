@@ -22,6 +22,16 @@ import org.slf4j.LoggerFactory;
 public class LogNotificationAdaptor implements NotificationAdaptorInterface {
 
   /**
+   * The notification plugin name.
+   */
+  private static final String NAME = LogNotificationAdaptor.class.getSimpleName();
+
+  /**
+   * The notification plugin version.
+   */
+  private static final String VERSION = "0.0.1";
+
+  /**
    * Supported types.
    */
   private static final Set<String> TYPES = new HashSet<String>(Arrays.asList("log"));
@@ -61,38 +71,32 @@ public class LogNotificationAdaptor implements NotificationAdaptorInterface {
 
   @Override
   public void init() throws PluginException {
-    // TODO Auto-generated method stub
-    
+    // nothing to do
   }
 
   @Override
   public void shutdown() throws PluginException {
-    // TODO Auto-generated method stub
-    
+    // nothing to do
   }
 
   @Override
   public String getName() {
-    // TODO Auto-generated method stub
-    return null;
+    return NAME;
   }
 
   @Override
   public String getVersion() {
-    // TODO Auto-generated method stub
-    return null;
+    return VERSION;
   }
 
   @Override
   public String getDescription() {
-    // TODO Auto-generated method stub
-    return null;
+    return "Write notifications to the log file";
   }
 
   @Override
   public PluginType getPluginType() {
-    // TODO Auto-generated method stub
-    return null;
+    return PluginType.NOTIFICATION;
   }
 
 }

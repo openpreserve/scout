@@ -21,6 +21,16 @@ import eu.scape_project.watch.core.plugin.PluginType;
 public class TestNotificationAdaptor implements NotificationAdaptorInterface {
 
   /**
+   * The notification plugin name.
+   */
+  private static final String NAME = LogNotificationAdaptor.class.getSimpleName();
+
+  /**
+   * The notification plugin version.
+   */
+  private static final String VERSION = "0.0.1";
+
+  /**
    * Test notification type.
    */
   public static final String TEST_TYPE = "test";
@@ -65,38 +75,32 @@ public class TestNotificationAdaptor implements NotificationAdaptorInterface {
 
   @Override
   public void init() throws PluginException {
-    // TODO Auto-generated method stub
-    
+    // nothing to do
   }
 
   @Override
   public void shutdown() throws PluginException {
-    // TODO Auto-generated method stub
-    
+    this.notifications.clear();
   }
 
   @Override
   public String getName() {
-    // TODO Auto-generated method stub
-    return null;
+    return NAME;
   }
 
   @Override
   public String getVersion() {
-    // TODO Auto-generated method stub
-    return null;
+    return VERSION;
   }
 
   @Override
   public String getDescription() {
-    // TODO Auto-generated method stub
-    return null;
+    return "Test notification plugin that keeps notifications in a list to later check if it was sent";
   }
 
   @Override
   public PluginType getPluginType() {
-    // TODO Auto-generated method stub
-    return null;
+    return PluginType.NOTIFICATION;
   }
 
 }

@@ -43,11 +43,9 @@ public class KBTest {
    */
   @BeforeClass
   public static void beforeClass() {
-    LOG.info("before class");
     final ConfigUtils conf = new ConfigUtils();
     final String datafolder = conf.getStringProperty(ConfigUtils.KB_DATA_FOLDER_KEY);
     final boolean initdata = conf.getBooleanProperty(ConfigUtils.KB_INSERT_TEST_DATA);
-    LOG.info("data {}, init {}", datafolder, initdata);
     KBUtils.dbConnect(datafolder, initdata);
   }
 
@@ -57,7 +55,7 @@ public class KBTest {
   @AfterClass
   public static void afterClass() {
     LOG.info("Deleting data folder at " + DATA_TEMP_DIR);
-//    KBUtils.dbDisconnect();
+    KBUtils.dbDisconnect();
     FileUtils.deleteQuietly(new File(DATA_TEMP_DIR));
   }
 

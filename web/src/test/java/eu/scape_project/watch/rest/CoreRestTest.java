@@ -28,6 +28,8 @@ import eu.scape_project.watch.domain.Trigger;
 import eu.scape_project.watch.listener.ApplicationStartupListener;
 import eu.scape_project.watch.rest.WatchApplication;
 import eu.scape_project.watch.rest.WatchClient;
+import eu.scape_project.watch.utils.ConfigUtils;
+import eu.scape_project.watch.utils.KBUtils;
 
 import org.apache.commons.io.FileUtils;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
@@ -84,8 +86,10 @@ public class CoreRestTest extends JerseyTest {
    */
   @BeforeClass
   public static void beforeClass() {
-    ApplicationStartupListener startup = new ApplicationStartupListener();
-    startup.contextInitialized(null);
+    final ConfigUtils conf = new ConfigUtils();
+    final String datafolder = conf.getStringProperty(ConfigUtils.KB_DATA_FOLDER_KEY);
+    final boolean initdata = conf.getBooleanProperty(ConfigUtils.KB_INSERT_TEST_DATA);
+    KBUtils.dbConnect(datafolder, initdata);
   }
 
   /**
@@ -94,6 +98,7 @@ public class CoreRestTest extends JerseyTest {
   @AfterClass
   public static void afterClass() {
     LOG.info("Deleting data folder at " + DATA_TEMP_DIR);
+    KBUtils.dbDisconnect();
     FileUtils.deleteQuietly(new File(DATA_TEMP_DIR));
   }
 

@@ -1,4 +1,4 @@
-package eu.scape_project.watch.plugin;
+package eu.scape_project.watch.utils.exceptions;
 
 /**
  * This exception is thrown when invalid parameters are supplied to the plugin.

@@ -11,6 +11,8 @@ import java.util.List;
 
 import junit.framework.Assert;
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
+import eu.scape_project.watch.interfaces.PluginInterface;
+import eu.scape_project.watch.utils.exceptions.PluginException;
 
 import org.junit.After;
 import org.junit.Before;

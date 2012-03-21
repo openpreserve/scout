@@ -1,4 +1,7 @@
-package eu.scape_project.watch.plugin;
+package eu.scape_project.watch.interfaces;
+
+import eu.scape_project.watch.plugin.PluginType;
+import eu.scape_project.watch.utils.exceptions.PluginException;
 
 
 /*

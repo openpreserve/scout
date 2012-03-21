@@ -1,8 +1,10 @@
 package eu.scape_project.watch.core;
 
-import eu.scape_project.watch.components.CentralMonitor;
 import eu.scape_project.watch.interfaces.MonitorInterface;
-import eu.scape_project.watch.loader.AdaptorLoader;
+import eu.scape_project.watch.monitor.CentralMonitor;
+import eu.scape_project.watch.scheduling.CoreScheduler;
+import eu.scape_project.watch.utils.AdaptorLoader;
+import eu.scape_project.watch.utils.ComponentContainer;
 
 import org.junit.Test;
 import org.mockito.Mockito;

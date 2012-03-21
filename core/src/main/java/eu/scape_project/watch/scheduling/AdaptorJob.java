@@ -1,10 +1,10 @@
-package eu.scape_project.watch.components;
+package eu.scape_project.watch.scheduling;
 
 import java.util.Properties;
 
 import eu.scape_project.watch.interfaces.AdaptorJobInterface;
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
-import eu.scape_project.watch.plugin.PluginException;
+import eu.scape_project.watch.utils.exceptions.PluginException;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;

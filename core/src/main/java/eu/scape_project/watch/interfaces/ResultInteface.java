@@ -1,4 +1,8 @@
-package eu.scape_project.watch.plugin;
+package eu.scape_project.watch.interfaces;
+
+import java.util.List;
+
+import eu.scape_project.watch.domain.PropertyValue;
 
 /**
  * This is the result of a plugin. Some Plugins, such as the adaptor Plugins
@@ -9,6 +13,11 @@ package eu.scape_project.watch.plugin;
  * @author Petar Petrov <me@petarpetrov.org>
  * 
  */
-public interface Result {
+public interface ResultInteface {
 
+  /**
+   * Retrieves the property values.
+   * @return
+   */
+  List<PropertyValue> getPropertyValues();
 }

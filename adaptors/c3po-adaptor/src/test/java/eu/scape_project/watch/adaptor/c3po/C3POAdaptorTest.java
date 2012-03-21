@@ -37,10 +37,10 @@ public class C3POAdaptorTest {
 //    adaptor.addTask(t);
 //    adaptor.fetchData();
 //
-//    final List<Result> results = adaptor.getResults();
+//    final List<ResultInteface> results = adaptor.getResults();
 //    Assert.assertEquals(1, results.size());
 //
-//    final Result result = results.get(0);
+//    final ResultInteface result = results.get(0);
 //    Assert.assertNotNull(result.getPropertyValue());
 //    Assert.assertNotSame("", result.getPropertyValue().getValue());
 //    Assert.assertNotSame(C3POProfileReader.MISSING_VALUE, result.getPropertyValue().getValue());
@@ -58,10 +58,10 @@ public class C3POAdaptorTest {
 //    this.adaptor.addTask(task);
 //    this.adaptor.fetchData();
 //    
-//    final List<Result> results = this.adaptor.getResults();
+//    final List<ResultInteface> results = this.adaptor.getResults();
 //    Assert.assertEquals(1, results.size());
 //    
-//    final Result result = results.get(0);
+//    final ResultInteface result = results.get(0);
 //    Assert.assertNotNull(result.getPropertyValue());
 //    Assert.assertFalse(result.getPropertyValue().getValues().isEmpty());
 //  }

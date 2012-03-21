@@ -1,4 +1,4 @@
-package eu.scape_project.watch.core;
+package eu.scape_project.watch.scheduling;
 
 import eu.scape_project.watch.interfaces.AdaptorJobInterface;
 

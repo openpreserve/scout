@@ -18,7 +18,9 @@ import java.util.TimerTask;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import eu.scape_project.watch.interfaces.PluginInterface;
 import eu.scape_project.watch.utils.ConfigUtils;
+import eu.scape_project.watch.utils.exceptions.PluginException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

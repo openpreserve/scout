@@ -1,4 +1,4 @@
-package eu.scape_project.watch.loader;
+package eu.scape_project.watch.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,9 +11,8 @@ import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import eu.scape_project.watch.core.CoreScheduler;
 import eu.scape_project.watch.interfaces.AdaptorJobInterface;
-import eu.scape_project.watch.utils.ConfigUtils;
+import eu.scape_project.watch.scheduling.CoreScheduler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,7 +70,6 @@ public class AdaptorLoader {
   }
 
   public boolean configFileExist(File f) {
-    // WARNING THIS WON'T WORK IN WINDOWS
     return adaptorConfigs.contains(f);
   }
 

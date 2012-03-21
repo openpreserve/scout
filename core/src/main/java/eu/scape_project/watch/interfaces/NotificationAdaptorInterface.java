@@ -5,7 +5,6 @@ import java.util.Set;
 
 import eu.scape_project.watch.domain.DataType;
 import eu.scape_project.watch.domain.Notification;
-import eu.scape_project.watch.plugin.PluginInterface;
 
 /**
  * 

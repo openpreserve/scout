@@ -1,4 +1,4 @@
-package eu.scape_project.watch.components;
+package eu.scape_project.watch.scheduling;
 
 import java.util.Properties;
 

@@ -3,6 +3,12 @@ package eu.scape_project.watch.listener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import eu.scape_project.watch.interfaces.MonitorInterface;
+import eu.scape_project.watch.monitor.CentralMonitor;
+import eu.scape_project.watch.monitor.CollectionProfilerMonitor;
+import eu.scape_project.watch.scheduling.CoreScheduler;
+import eu.scape_project.watch.utils.AdaptorLoader;
+import eu.scape_project.watch.utils.ComponentContainer;
 import eu.scape_project.watch.utils.ConfigUtils;
 import eu.scape_project.watch.utils.KBUtils;
 
@@ -20,17 +26,36 @@ import org.slf4j.LoggerFactory;
 public class ApplicationStartupListener implements ServletContextListener {
 
   private static final Logger LOG = LoggerFactory.getLogger(ApplicationStartupListener.class);
+  private static final String COMPONENT_CONTAINER = "componentContainer";
 
   @Override
-  public void contextDestroyed(ServletContextEvent sce) {
+  public void contextDestroyed(final ServletContextEvent sce) {
     LOG.info("Destroying Watch Application context");
-    destroy();
+
+    final ComponentContainer componentContainer = (ComponentContainer) sce.getServletContext().getAttribute(
+      COMPONENT_CONTAINER);
+    componentContainer.destroy();
+
+    KBUtils.dbDisconnect();
   }
 
   @Override
-  public void contextInitialized(ServletContextEvent sce) {
-    LOG.info("Starting Watch Application");
-    init();
+  public void contextInitialized(final ServletContextEvent sce) {
+    LOG.info("Starting Scout Application");
+    initDB();
+
+    LOG.debug("Starting up core components");
+    final ComponentContainer componentContainer = new ComponentContainer();
+    final MonitorInterface monitor = new CollectionProfilerMonitor();
+
+    componentContainer.setCoreScheduler(new CoreScheduler());
+    componentContainer.setCentralMonitor(new CentralMonitor());
+    componentContainer.setAdaptorLoader(new AdaptorLoader());
+    componentContainer.addMonitor(monitor);
+
+    componentContainer.init();
+
+    sce.getServletContext().setAttribute(COMPONENT_CONTAINER, componentContainer);
   }
 
   /**
@@ -39,19 +64,12 @@ public class ApplicationStartupListener implements ServletContextListener {
    * test data is added.
    * 
    */
-  private void init() {
+  private void initDB() {
     final ConfigUtils conf = new ConfigUtils();
     final String datafolder = conf.getStringProperty(ConfigUtils.KB_DATA_FOLDER_KEY);
     final boolean initdata = conf.getBooleanProperty(ConfigUtils.KB_INSERT_TEST_DATA);
 
     KBUtils.dbConnect(datafolder, initdata);
-  }
-
-  /**
-   * Syncs the jena model and closes it.
-   */
-  private void destroy() {
-    KBUtils.dbDisconnect();
   }
 
 }

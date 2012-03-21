@@ -1,4 +1,4 @@
-package eu.scape_project.watch.components;
+package eu.scape_project.watch.monitor;
 
 import java.util.ArrayList;
 import java.util.List;

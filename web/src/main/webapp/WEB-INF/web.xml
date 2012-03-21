@@ -39,14 +39,9 @@
 		<servlet-name>jersey</servlet-name>
 		<url-pattern>/api/*</url-pattern>
 	</servlet-mapping>
-  
-    <listener>
-        <listener-class>eu.scape_project.watch.listener.ApplicationStartupListener</listener-class>
-    </listener>
-    <listener>
-        <listener-class>eu.scape_project.watch.listener.StartupListener</listener-class>
-    </listener>
-    
+	<listener>
+		<listener-class>eu.scape_project.watch.listener.ApplicationStartupListener</listener-class>
+	</listener>
 	<filter>
 		<filter-name>ApiOriginFilter</filter-name>
 		<filter-class>eu.scape_project.watch.utils.ApiOriginFilter</filter-class>

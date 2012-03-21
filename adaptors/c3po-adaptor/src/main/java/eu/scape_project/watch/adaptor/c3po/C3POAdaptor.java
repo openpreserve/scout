@@ -9,15 +9,15 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import eu.scape_project.watch.common.ConfigParameter;
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
-import eu.scape_project.watch.plugin.ConfigParameter;
-import eu.scape_project.watch.plugin.InvalidParameterException;
-import eu.scape_project.watch.plugin.PluginException;
+import eu.scape_project.watch.interfaces.ResultInteface;
 import eu.scape_project.watch.plugin.PluginType;
-import eu.scape_project.watch.plugin.Result;
+import eu.scape_project.watch.utils.exceptions.InvalidParameterException;
+import eu.scape_project.watch.utils.exceptions.PluginException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -138,7 +138,7 @@ public class C3POAdaptor implements AdaptorPluginInterface {
   }
 
   @Override
-  public Result execute() throws PluginException {
+  public ResultInteface execute() throws PluginException {
     LOG.info("Hello from c3po");
     this.createSource();
     final List<String> identifiers = this.source.getCollectionIdentifiers();
@@ -151,7 +151,7 @@ public class C3POAdaptor implements AdaptorPluginInterface {
   }
 
   @Override
-  public Result execute(final Map<Entity, List<Property>> context) throws PluginException {
+  public ResultInteface execute(final Map<Entity, List<Property>> context) throws PluginException {
     LOG.info("Hello from c3po, reading config...");
     this.createSource();
 

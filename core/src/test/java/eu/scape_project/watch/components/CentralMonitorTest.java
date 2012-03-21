@@ -1,6 +1,7 @@
 package eu.scape_project.watch.components;
 
 import eu.scape_project.watch.interfaces.MonitorInterface;
+import eu.scape_project.watch.monitor.CentralMonitor;
 
 import org.junit.Test;
 import org.mockito.Mockito;

@@ -3,13 +3,11 @@ package eu.scape_project.watch.interfaces;
 import java.util.List;
 import java.util.Map;
 
+import eu.scape_project.watch.common.ConfigParameter;
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.Property;
-import eu.scape_project.watch.plugin.ConfigParameter;
-import eu.scape_project.watch.plugin.InvalidParameterException;
-import eu.scape_project.watch.plugin.PluginException;
-import eu.scape_project.watch.plugin.PluginInterface;
-import eu.scape_project.watch.plugin.Result;
+import eu.scape_project.watch.utils.exceptions.InvalidParameterException;
+import eu.scape_project.watch.utils.exceptions.PluginException;
 
 /**
  * An adaptor plugin interface that each adaptor has to implement.
@@ -49,7 +47,7 @@ public interface AdaptorPluginInterface extends PluginInterface {
   void setParameterValues(Map<String, String> values) throws InvalidParameterException;
 
   /**
-   * Executes this plugin and returns a specific {@link Result} implementation.
+   * Executes this plugin and returns a specific {@link ResultInteface} implementation.
    * The execution has to be done according to the current parameter setting.
    * 
    * @param config
@@ -59,7 +57,7 @@ public interface AdaptorPluginInterface extends PluginInterface {
    * @throws PluginException
    *           if an error occurs.
    */
-  Result execute(Map<Entity, List<Property>> config) throws PluginException;
+  ResultInteface execute(Map<Entity, List<Property>> config) throws PluginException;
 
   /**
    * Fetches all information that this adaptor can obtain from the source. To be
@@ -70,5 +68,5 @@ public interface AdaptorPluginInterface extends PluginInterface {
    * @throws PluginException
    *           if an error occurrs.
    */
-  Result execute() throws PluginException;
+  ResultInteface execute() throws PluginException;
 }

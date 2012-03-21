@@ -11,8 +11,8 @@ import java.util.Set;
 import eu.scape_project.watch.domain.DataType;
 import eu.scape_project.watch.domain.Notification;
 import eu.scape_project.watch.interfaces.NotificationAdaptorInterface;
-import eu.scape_project.watch.plugin.PluginException;
 import eu.scape_project.watch.plugin.PluginType;
+import eu.scape_project.watch.utils.exceptions.PluginException;
 
 /**
  * 

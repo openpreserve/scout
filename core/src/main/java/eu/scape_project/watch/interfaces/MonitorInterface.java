@@ -2,8 +2,8 @@ package eu.scape_project.watch.interfaces;
 
 import org.quartz.JobListener;
 
-import eu.scape_project.watch.components.CentralMonitor;
-import eu.scape_project.watch.core.CoreScheduler;
+import eu.scape_project.watch.monitor.CentralMonitor;
+import eu.scape_project.watch.scheduling.CoreScheduler;
 
 /**
  * Interface that will be implemented by all Monitor components in the system.

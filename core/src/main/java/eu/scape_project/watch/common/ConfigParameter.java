@@ -1,4 +1,4 @@
-package eu.scape_project.watch.plugin;
+package eu.scape_project.watch.common;
 
 /**
  * Represents a config parameter of a plugin.

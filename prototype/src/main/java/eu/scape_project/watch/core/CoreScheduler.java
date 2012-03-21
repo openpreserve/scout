@@ -8,7 +8,7 @@ import org.quartz.Trigger;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.matchers.GroupMatcher;
 
-import eu.scape_project.watch.components.interfaces.IAdaptorJob;
+import eu.scape_project.watch.components.interfaces.AdaptorJobInterface;
 import eu.scape_project.watch.components.listeners.CollectionProfilerListener;
 
 /**
@@ -72,7 +72,7 @@ public class CoreScheduler {
 
   }
 
-  public void scheduleAdaptorJob(IAdaptorJob job) {
+  public void scheduleAdaptorJob(AdaptorJobInterface job) {
     scheduleJob(job.getJobDetail(), job.getTrigger());
   }
   

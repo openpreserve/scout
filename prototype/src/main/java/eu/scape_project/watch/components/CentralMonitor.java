@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import thewebsemantic.binding.RdfBean;
 
-import eu.scape_project.watch.components.interfaces.IMonitor;
+import eu.scape_project.watch.components.interfaces.MonitorInterface;
 import eu.scape_project.watch.core.dao.AsyncRequestDAO;
 import eu.scape_project.watch.core.dao.DOListener;
 
@@ -16,16 +16,16 @@ public class CentralMonitor implements DOListener {
 
   private static final Logger LOG = LoggerFactory.getLogger(CentralMonitor.class);
 
-  private List<IMonitor> monitors;
+  private List<MonitorInterface> monitors;
 
   private AsyncRequestDAO asyncRequest; 
   
   public CentralMonitor() {
-    monitors = new ArrayList<IMonitor>();
+    monitors = new ArrayList<MonitorInterface>();
     LOG.info("CentralMonitor initialized");
   }
 
-  public void addMonitor(IMonitor monitor) {
+  public void addMonitor(MonitorInterface monitor) {
     monitors.add(monitor);
     monitor.registerCentralMonitor(this);
   }

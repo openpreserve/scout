@@ -3,13 +3,13 @@ package eu.scape_project.watch.components;
 import java.util.Properties;
 
 import eu.scape_project.watch.components.interfaces.AdaptorPluginInterface;
-import eu.scape_project.watch.components.interfaces.IAdaptorJob;
+import eu.scape_project.watch.components.interfaces.AdaptorJobInterface;
 import eu.scape_project.watch.core.plugin.PluginException;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-public abstract class AdaptorJob implements IAdaptorJob {
+public abstract class AdaptorJob implements AdaptorJobInterface {
 
   private String adaptorClassName;
 

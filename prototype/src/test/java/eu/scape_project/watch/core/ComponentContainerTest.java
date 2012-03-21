@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import eu.scape_project.watch.components.CentralMonitor;
-import eu.scape_project.watch.components.interfaces.IMonitor;
+import eu.scape_project.watch.components.interfaces.MonitorInterface;
 import eu.scape_project.watch.core.loader.AdaptorLoader;
 
 public class ComponentContainerTest {
@@ -49,7 +49,7 @@ public class ComponentContainerTest {
     cc.setCentralMonitor(mockCM);
     cc.setCoreScheduler(mockCS);
     
-    IMonitor mockMonitor = Mockito.mock(IMonitor.class);
+    MonitorInterface mockMonitor = Mockito.mock(MonitorInterface.class);
     Mockito.when(mockMonitor.getGroup()).thenReturn("test group");
     
     cc.addMonitor(mockMonitor);

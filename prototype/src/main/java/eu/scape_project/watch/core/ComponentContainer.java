@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.scape_project.watch.components.CentralMonitor;
-import eu.scape_project.watch.components.interfaces.IMonitor;
+import eu.scape_project.watch.components.interfaces.MonitorInterface;
 import eu.scape_project.watch.core.loader.AdaptorLoader;
 
 /**
@@ -58,7 +58,7 @@ public class ComponentContainer {
       adaptorLoader.cancelLoader();
   }
 
-  public void addMonitor(IMonitor monitor) {
+  public void addMonitor(MonitorInterface monitor) {
     // TODO add throw exception
     if (centralMonitor != null)
       centralMonitor.addMonitor(monitor);

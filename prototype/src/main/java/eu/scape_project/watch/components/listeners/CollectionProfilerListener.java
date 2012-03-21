@@ -7,10 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.scape_project.watch.components.CentralMonitor;
-import eu.scape_project.watch.components.interfaces.IMonitor;
+import eu.scape_project.watch.components.interfaces.MonitorInterface;
 import eu.scape_project.watch.core.CoreScheduler;
 
-public class CollectionProfilerListener implements IMonitor {
+public class CollectionProfilerListener implements MonitorInterface {
 
 	
 	private static final Logger LOG = LoggerFactory

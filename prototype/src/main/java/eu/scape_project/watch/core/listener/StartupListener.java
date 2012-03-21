@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.scape_project.watch.components.CentralMonitor;
-import eu.scape_project.watch.components.interfaces.IMonitor;
+import eu.scape_project.watch.components.interfaces.MonitorInterface;
 import eu.scape_project.watch.components.listeners.CollectionProfilerListener;
 import eu.scape_project.watch.core.ComponentContainer;
 import eu.scape_project.watch.core.CoreScheduler;
@@ -41,7 +41,7 @@ public class StartupListener implements ServletContextListener {
     componentContainer.setAdaptorLoader(new AdaptorLoader());
     
     
-    IMonitor monitor = new CollectionProfilerListener();
+    MonitorInterface monitor = new CollectionProfilerListener();
     componentContainer.addMonitor(monitor); 
     
     componentContainer.init();

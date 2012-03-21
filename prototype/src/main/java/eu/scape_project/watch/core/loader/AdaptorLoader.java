@@ -11,7 +11,7 @@ import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import eu.scape_project.watch.components.interfaces.IAdaptorJob;
+import eu.scape_project.watch.components.interfaces.AdaptorJobInterface;
 import eu.scape_project.watch.core.CoreScheduler;
 import eu.scape_project.watch.core.common.ConfigUtils;
 
@@ -94,7 +94,7 @@ public class AdaptorLoader {
 
       String ajName = this.ADAPTOR_JOB_PACKAGE + "." + properties.getProperty("adaptor.adaptorjob.type");
 
-      IAdaptorJob adaptorJob = createAdaptorJob(ajName);
+      AdaptorJobInterface adaptorJob = createAdaptorJob(ajName);
       adaptorJob.initialize(properties);
 
       coreScheduler.scheduleAdaptorJob(adaptorJob);
@@ -119,10 +119,10 @@ public class AdaptorLoader {
     return tmp;
   }
 
-  private IAdaptorJob createAdaptorJob(String name) {
-    IAdaptorJob adaptorJob;
+  private AdaptorJobInterface createAdaptorJob(String name) {
+    AdaptorJobInterface adaptorJob;
     try {
-      adaptorJob = (IAdaptorJob) Class.forName(name).newInstance();
+      adaptorJob = (AdaptorJobInterface) Class.forName(name).newInstance();
       return adaptorJob;
     } catch (InstantiationException e) {
       // TODO Auto-generated catch block

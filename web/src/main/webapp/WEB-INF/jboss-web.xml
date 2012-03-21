@@ -1,0 +1,3 @@
+<jboss-web>
+    <context-root>scout</context-root>
+</jboss-web>

@@ -59,6 +59,7 @@ public class CollectionProfilerMonitor implements MonitorInterface {
       PropertyValueDAO.getInstance().save(pv);
     }
     
+    LOG.info("Monitor found {} values", rValues.size());
     //TODO add notification 
 
   }

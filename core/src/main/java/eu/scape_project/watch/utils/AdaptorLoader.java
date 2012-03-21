@@ -11,6 +11,8 @@ import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.ibm.icu.util.Calendar;
+
 import eu.scape_project.watch.interfaces.AdaptorJobInterface;
 import eu.scape_project.watch.scheduling.CoreScheduler;
 
@@ -31,7 +33,7 @@ public class AdaptorLoader {
 
   private static String EXTENSION = ".properties";
 
-  private static final String ADAPTOR_JOB_PACKAGE = "eu.scape_project.watch.components";
+  private static final String ADAPTOR_JOB_PACKAGE = "eu.scape_project.watch.scheduling";
 
   private File adaptorFolder;
   private List<File> adaptorConfigs;
@@ -61,7 +63,7 @@ public class AdaptorLoader {
   public void startLoader() {
     cancelLoader();
     loaderTimer = new Timer();
-    loaderTimer.schedule(new LoaderTask(), new Date(), LOADER_PERIOD);
+    loaderTimer.schedule(new LoaderTask(), new Date() , LOADER_PERIOD);
   }
 
   public void cancelLoader() {

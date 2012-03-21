@@ -53,15 +53,16 @@ public class SimpleAdaptorJob extends AdaptorJob {
     
     String prefix = properties.getProperty("adaptor.config.prefix");
     Set<String> keys = properties.stringPropertyNames();
+    LOG.trace("loaded properties size {}", keys.size());
     Iterator<String> it = keys.iterator();
     while (it.hasNext()){
       String key = it.next();
       if (key.startsWith(prefix)){
         String value = properties.getProperty(key);
-        tProperties.concat(key+"="+value+"\n");
+        tProperties += key+"="+value+"\n";
       }
     }
-    
+    LOG.trace("properties for adaptor "+ tProperties);
     return tProperties;
   }
 }

@@ -323,7 +323,7 @@ public final class PluginManager {
     }
 
     final Enumeration<JarEntry> entries = jar.entries();
-    final URLClassLoader loader = URLClassLoader.newInstance(jarURLs);
+    final URLClassLoader loader = URLClassLoader.newInstance(jarURLs, PluginManager.class.getClassLoader());
 
     LOGGER.debug("Looking inside jar file: {}", jarFile);
     while (entries.hasMoreElements()) {

@@ -95,7 +95,7 @@
 							<configuration>
 								<configLocation>checkstyle.xml</configLocation>
 								<failsOnError>false</failsOnError>
-								<enableRulesSummary>true</enableRulesSummary>
+													<enableRulesSummary>true</enableRulesSummary>
 								<includeTestSourceDirectory>false</includeTestSourceDirectory>
 							</configuration>
 						</plugin>
@@ -152,10 +152,10 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-all</artifactId>
-      <scope>test</scope>
-    </dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -239,16 +239,16 @@
 			<version>2.1.2</version>
 		</dependency>
 		<dependency>
-        <groupId>eu.scape-project</groupId>
-        <artifactId>scout-model</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-        <groupId>eu.scape-project</groupId>
-        <artifactId>scout-core</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-    </dependency>
-		
+			<groupId>eu.scape-project</groupId>
+			<artifactId>scout-model</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.scape-project</groupId>
+			<artifactId>scout-core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
 	</dependencies>
 	<scm>
 		<connection>scm:git:git://github.com/openplanets/scape-pw.git</connection>

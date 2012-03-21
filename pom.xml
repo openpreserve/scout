@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>eu.scape-project</groupId>
@@ -33,20 +34,6 @@
 			<organizationUrl>http://ifs.tuwien.ac.at/imp</organizationUrl>
 		</developer>
 		<developer>
-			<id>CB</id>
-			<name>Christoph Becker</name>
-			<email>becker@ifs.tuwien.ac.at</email>
-			<organization>IMP, IFS, UT Vienna</organization>
-			<organizationUrl>http://ifs.tuwien.ac.at/imp</organizationUrl>
-		</developer>
-		<developer>
-			<id>MH</id>
-			<name>Markus Hamm</name>
-			<email>hamm@ifs.tuwien.ac.at</email>
-			<organization>IMP, IFS, UT Vienna</organization>
-			<organizationUrl>http://ifs.tuwien.ac.at/imp</organizationUrl>
-		</developer>
-		<developer>
 			<id>LF</id>
 			<name>Luis Faria</name>
 			<email>lfaria@keep.pt</email>
@@ -55,45 +42,47 @@
 		</developer>
 	</developers>
 
-	<!-- <scm> <connection>scm:git:git@github.com:openplanets/scape-pw.git</connection> 
-		<developerConnection>scm:git:git@github.com:openplanets/scape-pw.git</developerConnection> 
-		<url>git@github.com:openplanets/scape-pw.git</url> </scm> -->
+	<scm>
+		<connection>scm:git:git@github.com:openplanets/scape-pw.git</connection>
+		<developerConnection>scm:git:git@github.com:openplanets/scape-pw.git</developerConnection>
+		<url>git@github.com:openplanets/scape-pw.git</url>
+	</scm>
 
 	<modules>
-		<module>prototype</module>
 		<module>build-tools-config</module>
+		<module>web</module>
 		<module>adaptors</module>
-    <module>core</module>
-    <module>model</module>
-  </modules>
+		<module>core</module>
+		<module>model</module>
+	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jdk.version>1.6</jdk.version>
 	</properties>
-	
+
 	<repositories>
-    <repository>
-      <id>jboss</id>
-      <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
-    </repository>
-    <repository>
-      <id>KEEP Artifacts</id>
-      <name>KEEP Artifacts-releases</name>
-      <url>http://artifactory.keep.pt/keep</url>
-    </repository>
-    <repository>
-      <id>apache-repo-releases</id>
-      <url>https://repository.apache.org/content/repositories/releases/</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </repository>
-    <repository>
-      <id>apache-repo-snapshots</id>
-      <url>https://repository.apache.org/content/repositories/snapshots/</url>
-    </repository>
-  </repositories>
+		<repository>
+			<id>jboss</id>
+			<url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+		</repository>
+		<repository>
+			<id>KEEP Artifacts</id>
+			<name>KEEP Artifacts-releases</name>
+			<url>http://artifactory.keep.pt/keep</url>
+		</repository>
+		<repository>
+			<id>apache-repo-releases</id>
+			<url>https://repository.apache.org/content/repositories/releases/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>apache-repo-snapshots</id>
+			<url>https://repository.apache.org/content/repositories/snapshots/</url>
+		</repository>
+	</repositories>
 
 	<build>
 		<plugins>

@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>eu.scape-project</groupId>
-	<artifactId>watch</artifactId>
+	<artifactId>scout</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<description>The Watch component is a monitor component as defined in the SCAPE project</description>
-	<name>Watch Component</name>
+	<description>Scout is a monitor component as defined in the SCAPE project</description>
+	<name>Scout</name>
 	<url>http://www.scape-project.eu</url>
 
 	<licenses>

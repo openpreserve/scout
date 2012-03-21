@@ -4,13 +4,12 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<artifactId>watch</artifactId>
+		<artifactId>scout</artifactId>
 		<groupId>eu.scape-project</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>web</artifactId>
+	<artifactId>scout-web</artifactId>
 	<packaging>war</packaging>
-
 	<name>Scout Prototype</name>
 	<url>http://www.scape-project.eu</url>
 	<properties>
@@ -241,12 +240,12 @@
 		</dependency>
 		<dependency>
         <groupId>eu.scape-project</groupId>
-        <artifactId>model</artifactId>
+        <artifactId>scout-model</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
         <groupId>eu.scape-project</groupId>
-        <artifactId>core</artifactId>
+        <artifactId>scout-core</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </dependency>
 		

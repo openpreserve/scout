@@ -4,12 +4,12 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<artifactId>watch</artifactId>
+		<artifactId>scout</artifactId>
 		<groupId>eu.scape-project</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>core</artifactId>
-	<name>core</name>
+	<artifactId>scout-core</artifactId>
+	<name>Scout Core Module</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -50,7 +50,7 @@
 
 		<dependency>
 			<groupId>eu.scape-project</groupId>
-			<artifactId>model</artifactId>
+			<artifactId>scout-model</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

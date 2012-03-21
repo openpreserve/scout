@@ -9,15 +9,15 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import eu.scape_project.watch.components.interfaces.AdaptorPluginInterface;
-import eu.scape_project.watch.core.plugin.ConfigParameter;
-import eu.scape_project.watch.core.plugin.InvalidParameterException;
-import eu.scape_project.watch.core.plugin.PluginException;
-import eu.scape_project.watch.core.plugin.PluginType;
-import eu.scape_project.watch.core.plugin.Result;
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
+import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
+import eu.scape_project.watch.plugin.ConfigParameter;
+import eu.scape_project.watch.plugin.InvalidParameterException;
+import eu.scape_project.watch.plugin.PluginException;
+import eu.scape_project.watch.plugin.PluginType;
+import eu.scape_project.watch.plugin.Result;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

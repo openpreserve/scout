@@ -31,7 +31,7 @@
 		</init-param>
 		<init-param>
 			<param-name>swagger.security.filter</param-name>
-			<param-value>eu.scape_project.watch.core.rest.util.ApiAuthorizationFilterImpl</param-value>
+			<param-value>eu.scape_project.watch.utils.ApiAuthorizationFilterImpl</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
@@ -41,15 +41,15 @@
 	</servlet-mapping>
   
     <listener>
-        <listener-class>eu.scape_project.watch.core.listener.ApplicationStartupListener</listener-class>
+        <listener-class>eu.scape_project.watch.listener.ApplicationStartupListener</listener-class>
     </listener>
     <listener>
-        <listener-class>eu.scape_project.watch.core.listener.StartupListener</listener-class>
+        <listener-class>eu.scape_project.watch.listener.StartupListener</listener-class>
     </listener>
     
 	<filter>
 		<filter-name>ApiOriginFilter</filter-name>
-		<filter-class>eu.scape_project.watch.core.rest.util.ApiOriginFilter</filter-class>
+		<filter-class>eu.scape_project.watch.utils.ApiOriginFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>ApiOriginFilter</filter-name>

@@ -1,16 +1,20 @@
 package eu.scape_project.watch.utils;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.tdb.TDB;
+import com.hp.hpl.jena.tdb.TDBFactory;
 
 import eu.scape_project.watch.dao.AsyncRequestDAO;
 import eu.scape_project.watch.dao.EntityDAO;
@@ -29,11 +33,13 @@ import eu.scape_project.watch.domain.Question;
 import eu.scape_project.watch.domain.RequestTarget;
 import eu.scape_project.watch.domain.Trigger;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import thewebsemantic.binding.Jenabean;
 import thewebsemantic.binding.RdfBean;
+
 
 /**
  * A utility class that holds some constants for the RDF schema and provides
@@ -279,7 +285,38 @@ public final class KBUtils {
       statements.close();
     }
   }
+  
+  public static void dbConnect(String datafolder, boolean testdata) {
+    LOG.info("DB Connect");
+    final File dataFolderFile = new File(datafolder);
+    try {
 
+      if (!dataFolderFile.exists()) {
+        FileUtils.forceMkdir(dataFolderFile);
+        testdata = true; // init first time.. later we should remove this line
+      }
+
+      Model model = TDBFactory.createModel(datafolder);
+      Jenabean.instance().bind(model);
+
+      LOG.info("Model was created at {} and is bound to Jenabean", datafolder);
+
+      if (testdata) {
+        KBUtils.createInitialData();
+      }
+
+      KBUtils.printStatements();
+
+    } catch (final IOException e) {
+      LOG.error("Data folder {} could not be created", e.getMessage());
+    }
+  }
+
+  public static void dbDisconnect() {
+    TDB.sync(Jenabean.instance().model());
+    Jenabean.instance().model().close();
+  }
+  
   /**
    * Creates some initial data.
    */

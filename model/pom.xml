@@ -18,6 +18,12 @@
 			<groupId>com.thewebsemantic</groupId>
 			<artifactId>jenabean</artifactId>
 			<version>1.0.6</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>arq</artifactId> <!-- included in the tdb jar -->
+					<groupId>com.hp.hpl.jena</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.hp.hpl.jena</groupId>

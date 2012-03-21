@@ -9,7 +9,7 @@
 		</layout>
 	</appender>
 
-	<logger name="eu.scape_project.watch" additivity="false">
+	<logger name="eu.scape_project">
 		<level value="DEBUG" />
 		<appender-ref ref="CONSOLE" />
 	</logger>
@@ -20,7 +20,7 @@
 	</logger>-->
 	
 	<root>
-		<priority value="DEBUG" />
+		<priority value="INFO" />
 		<appender-ref ref="CONSOLE" />
 	</root>
 </log4j:configuration>

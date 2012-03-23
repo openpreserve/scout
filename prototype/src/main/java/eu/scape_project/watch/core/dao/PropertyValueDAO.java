@@ -151,7 +151,7 @@ public class PropertyValueDAO extends AbstractDO<PropertyValue> {
    */
   public Collection<PropertyValue> listWithProperty(final String entityType, final String propertyName,
     final int start, final int max) {
-    final String bindings = String.format("?s %3$s %4$s", PROPERTY_REL,
+    final String bindings = String.format("?s %1$s %2$s", PROPERTY_REL,
       PropertyDAO.getPropertyRDFId(entityType, propertyName));
     return this.query(bindings, start, max);
   }

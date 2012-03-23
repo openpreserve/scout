@@ -2,11 +2,14 @@ package eu.scape_project.watch.components.notification;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import eu.scape_project.watch.components.interfaces.NotificationAdaptorInterface;
+import eu.scape_project.watch.core.model.DataType;
 import eu.scape_project.watch.core.model.Notification;
 import eu.scape_project.watch.core.plugin.PluginException;
 import eu.scape_project.watch.core.plugin.PluginType;
@@ -101,6 +104,11 @@ public class TestNotificationAdaptor implements NotificationAdaptorInterface {
   @Override
   public PluginType getPluginType() {
     return PluginType.NOTIFICATION;
+  }
+
+  @Override
+  public Map<String, DataType> getParametersInfo() {
+    return new HashMap<String, DataType>();
   }
 
 }

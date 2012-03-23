@@ -7,7 +7,8 @@ import org.quartz.JobDetail;
 import org.quartz.Trigger;
 
 /**
- * AdaptorJob interface is implemented by different Adaptors  
+ * AdaptorJob interface is implemented by different Adaptors.
+ * 
  * @author kresimir
  *
  */

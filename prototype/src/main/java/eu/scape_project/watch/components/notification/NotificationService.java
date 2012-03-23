@@ -58,6 +58,9 @@ public final class NotificationService {
   private NotificationService() {
     this.adaptors = new HashSet<NotificationAdaptorInterface>();
     this.adaptorsIndex = new HashMap<String, Set<NotificationAdaptorInterface>>();
+
+    // TODO load only notification via plugins
+    addAdaptor(new LogNotificationAdaptor());
   }
 
   /**
@@ -96,23 +99,28 @@ public final class NotificationService {
    * @return <code>true</code> if contained the specified adaptor
    */
   public boolean removeAdaptor(final NotificationAdaptorInterface adaptor) {
-    final boolean ret = this.adaptors.remove(adaptor);
+    boolean ret;
+    if (adaptor != null) {
+      ret = this.adaptors.remove(adaptor);
 
-    // update index
-    for (final String type : adaptor.getSupportedTypes()) {
-      final Set<NotificationAdaptorInterface> typeAdaptors = this.adaptorsIndex.get(type);
+      // update index
+      for (final String type : adaptor.getSupportedTypes()) {
+        final Set<NotificationAdaptorInterface> typeAdaptors = this.adaptorsIndex.get(type);
 
-      if (typeAdaptors != null) {
-        typeAdaptors.remove(adaptor);
+        if (typeAdaptors != null) {
+          typeAdaptors.remove(adaptor);
+
+          // Remove type if no adaptor supports it
+          if (typeAdaptors.isEmpty()) {
+            this.adaptorsIndex.remove(type);
+          }
+        }
       }
 
-      // Remove type if no adaptor supports it
-      if (typeAdaptors.isEmpty()) {
-        this.adaptorsIndex.remove(type);
-      }
+      LOG.debug("Unregistered " + adaptor);
+    } else {
+      ret = false;
     }
-
-    LOG.debug("Unregistered " + adaptor);
 
     return ret;
   }

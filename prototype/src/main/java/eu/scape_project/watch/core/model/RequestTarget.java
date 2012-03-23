@@ -37,9 +37,6 @@ public enum RequestTarget {
   /**
    * Get request target based on the target class it refers to.
    * 
-   * @param <T>
-   *          A class that must extends RdfBean and should be related to
-   *          possible targets of a request.
    * @param targetClass
    *          The target class.
    * @return The request target value or null if not found.

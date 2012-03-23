@@ -1,9 +1,12 @@
 package eu.scape_project.watch.components.interfaces;
 
-import java.util.Set;
-
+import eu.scape_project.watch.core.model.DataType;
 import eu.scape_project.watch.core.model.Notification;
 import eu.scape_project.watch.core.plugin.PluginInterface;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 
@@ -20,6 +23,17 @@ public interface NotificationAdaptorInterface extends PluginInterface {
    * @return A set of types.
    */
   Set<String> getSupportedTypes();
+
+  /**
+   * Get list of parameters and their type.
+   * 
+   * TODO add parameter description, mandatory/optional flag, readable/password
+   * flag, etc.
+   * 
+   * @return A map with possible parameter names as key and the data type as
+   *         value.
+   */
+  Map<String, DataType> getParametersInfo();
 
   /**
    * Send a notification.

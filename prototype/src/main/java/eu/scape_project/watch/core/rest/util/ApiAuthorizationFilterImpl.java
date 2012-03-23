@@ -39,63 +39,61 @@ import com.wordnik.swagger.core.ApiAuthorizationFilter;
  */
 
 public class ApiAuthorizationFilterImpl implements ApiAuthorizationFilter {
-	boolean isFilterInitialized = false;
-	Map<String, Boolean> methodSecurityAnotations = new HashMap<String, Boolean>();
-	Map<String, Boolean> classSecurityAnotations = new HashMap<String, Boolean>();
-	String securekeyId = "special-key";
-	String unsecurekeyId = "default-key";
+  boolean isFilterInitialized = false;
+  Map<String, Boolean> methodSecurityAnotations = new HashMap<String, Boolean>();
+  Map<String, Boolean> classSecurityAnotations = new HashMap<String, Boolean>();
+  String securekeyId = "special-key";
+//  String unsecurekeyId = "default-key";
 
-	public boolean authorize(String apiPath, String method,
-			HttpHeaders headers, UriInfo uriInfo) {
-		String apiKey = uriInfo.getQueryParameters().getFirst("api_key");
-		String mName = method.toUpperCase();
-		if (isPathSecure(mName + ":" + apiPath, false)) {
-			if (securekeyId.equals(apiKey)) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-		return true;
-	}
+  public boolean authorize(String apiPath, String method, HttpHeaders headers, UriInfo uriInfo) {
+    String apiKey = uriInfo.getQueryParameters().getFirst("api_key");
+    String mName = method.toUpperCase();
+    if (isPathSecure(mName + ":" + apiPath, false)) {
+      if (securekeyId.equals(apiKey)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return true;
+  }
 
-	public boolean authorizeResource(String apiPath, HttpHeaders headers,
-			UriInfo uriInfo) {
-		String apiKey = uriInfo.getQueryParameters().getFirst("api_key");
-		if (isPathSecure(apiPath, true)) {
-			if (securekeyId.equals(apiKey)) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return true;
-		}
-	}
+  public boolean authorizeResource(String apiPath, HttpHeaders headers, UriInfo uriInfo) {
+    String apiKey = uriInfo.getQueryParameters().getFirst("api_key");
+    if (isPathSecure(apiPath, true)) {
+      if (securekeyId.equals(apiKey)) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return true;
+    }
+  }
 
-	private boolean isPathSecure(String apiPath, boolean isResource) {
-		if (!isFilterInitialized)
-			initialize();
-		if (isResource) {
-			if (classSecurityAnotations.keySet().contains(apiPath)) {
-				return classSecurityAnotations.get(apiPath);
-			} else {
-				return false;
-			}
-		} else {
-			if (methodSecurityAnotations.keySet().contains(apiPath)) {
-				return methodSecurityAnotations.get(apiPath);
-			} else {
-				return false;
-			}
-		}
-	}
+  private boolean isPathSecure(String apiPath, boolean isResource) {
+    if (!isFilterInitialized)
+      initialize();
+    if (isResource) {
+      if (classSecurityAnotations.keySet().contains(apiPath)) {
+        return classSecurityAnotations.get(apiPath);
+      } else {
+        return false;
+      }
+    } else {
+      if (methodSecurityAnotations.keySet().contains(apiPath)) {
+        return methodSecurityAnotations.get(apiPath);
+      } else {
+        return false;
+      }
+    }
+  }
 
-	private void initialize() {
-		// initialize classes
-		classSecurityAnotations.put("/request.{format}", false);
+  private void initialize() {
+    // initialize classes
+    classSecurityAnotations.put("/request.{format}", false);
 
-		// initialize method security
-		methodSecurityAnotations.put("GET:/request.{format}/{requestId}", false);
-	}
+    // initialize method security
+    methodSecurityAnotations.put("GET:/request.{format}/{requestId}", false);
+  }
 }

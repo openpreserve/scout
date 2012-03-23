@@ -10,16 +10,25 @@ import eu.scape_project.watch.core.rest.exception.BadRequestException;
 import eu.scape_project.watch.core.rest.exception.NotFoundException;
 import eu.scape_project.watch.core.rest.model.ApiResponse;
 
+/**
+ * Sample class to example an exception mapper.
+ * 
+ * @author Wordnik
+ * 
+ */
 @Provider
 public class SampleExceptionMapper implements ExceptionMapper<ApiException> {
-  public Response toResponse(ApiException exception) {
+
+  /**
+   * @param exception
+   *          The thrown exception
+   * @return The response with error code.
+   */
+  public Response toResponse(final ApiException exception) {
     if (exception instanceof NotFoundException) {
       return Response.status(Status.NOT_FOUND).entity(new ApiResponse(ApiResponse.ERROR, exception.getMessage()))
         .build();
     } else if (exception instanceof BadRequestException) {
-      return Response.status(Status.BAD_REQUEST).entity(new ApiResponse(ApiResponse.ERROR, exception.getMessage()))
-        .build();
-    } else if (exception instanceof ApiException) {
       return Response.status(Status.BAD_REQUEST).entity(new ApiResponse(ApiResponse.ERROR, exception.getMessage()))
         .build();
     } else {

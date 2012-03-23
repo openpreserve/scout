@@ -1,6 +1,7 @@
 package eu.scape_project.watch.components.notification;
 
 import eu.scape_project.watch.components.interfaces.NotificationAdaptorInterface;
+import eu.scape_project.watch.core.model.DataType;
 import eu.scape_project.watch.core.model.Notification;
 
 import java.util.HashMap;
@@ -131,6 +132,25 @@ public final class NotificationService {
 
   public Set<String> getTypes() {
     return this.adaptorsIndex.keySet();
+  }
+
+  /**
+   * Get all possible parameters for a notification type.
+   * 
+   * @param type
+   *          The notification type.
+   * @return A map will all the parameters.
+   */
+  public Map<String, DataType> getTypeParameters(final String type) {
+    final Map<String, DataType> ret = new HashMap<String, DataType>();
+
+    final Set<NotificationAdaptorInterface> typeAdaptors = this.adaptorsIndex.get(type);
+    for (final NotificationAdaptorInterface adaptor : typeAdaptors) {
+      final Map<String, DataType> adaptorParam = adaptor.getParametersInfo();
+      ret.putAll(adaptorParam);
+    }
+
+    return ret;
   }
 
   /**

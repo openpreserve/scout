@@ -82,16 +82,10 @@
 					</webResources>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<artifactId>maven-site-plugin</artifactId>
 				<version>3.0</version>
-				<dependencies>
-					<dependency><!-- add support for ssh/scp -->
-						<groupId>org.apache.maven.wagon</groupId>
-						<artifactId>wagon-ssh</artifactId>
-						<version>2.2</version>
-					</dependency>
-				</dependencies>
 				<configuration>
 					<attach>true</attach>
 					<reportPlugins>
@@ -119,7 +113,6 @@
 								<report>scm</report>
 								<report>cim</report>
 								<report>modules</report>
-								<report>plugins</report>
 							</reports>
 						</plugin>
 						<plugin>

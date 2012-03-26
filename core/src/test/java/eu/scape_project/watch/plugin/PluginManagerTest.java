@@ -29,6 +29,16 @@ import org.slf4j.LoggerFactory;
 public class PluginManagerTest {
 
   /**
+   * A constant of an adaptor jar.
+   */
+  private static final String ADAPTOR_1 = "testadaptor.jar";
+
+  /**
+   * Another constant of an adaptor jar.
+   */
+  private static final String ADAPTOR_2 = "testadaptor-0.2.jar";
+
+  /**
    * A default logger.
    */
   private static final Logger LOG = LoggerFactory.getLogger(PluginManagerTest.class);
@@ -80,6 +90,32 @@ public class PluginManagerTest {
   }
 
   /**
+   * Tests the obtaining of plugin info by name.
+   */
+  @Test
+  public void shouldGetPluginInfoForName() {
+    LOG.debug("------ Should Get Plugin Info For Name ------");
+    final String name = "TestAdaptor";
+    List<PluginInfo> info = this.manager.getPluginInfo(name);
+    Assert.assertEquals(0, info.size());
+    copyTestJar(ADAPTOR_1);
+
+    this.manager.reScan();
+    this.sleep();
+
+    info = this.manager.getPluginInfo(name);
+    Assert.assertEquals(1, info.size());
+
+    copyTestJar(ADAPTOR_2);
+
+    this.manager.reScan();
+    this.sleep();
+
+    info = this.manager.getPluginInfo(name);
+    Assert.assertEquals(2, info.size());
+  }
+
+  /**
    * Tests the loading of a plugin.
    * 
    * @throws Exception
@@ -90,7 +126,7 @@ public class PluginManagerTest {
     LOG.debug("------ Should Load PluginInterface Test ------");
     List<PluginInfo> info = this.manager.getPluginInfo();
     Assert.assertEquals(0, info.size());
-    copyTestJar("testadaptor.jar");
+    copyTestJar(ADAPTOR_1);
 
     this.manager.reScan();
     this.sleep();
@@ -115,7 +151,7 @@ public class PluginManagerTest {
   @Test(expected = PluginException.class)
   public void shouldNotCallInitTwoTimes() throws Exception {
     LOG.debug("------ Should Not Allow Two Init Calls Test ------");
-    copyTestJar("testadaptor.jar");
+    copyTestJar(ADAPTOR_1);
 
     this.manager.reScan();
     this.sleep();
@@ -137,8 +173,8 @@ public class PluginManagerTest {
   @Test
   public void shouldLoadTwoVersionsOfAdaptor() throws Exception {
     LOG.debug("------ Should Load Two Versions Of Adaptor Test ------");
-    copyTestJar("testadaptor.jar");
-    copyTestJar("testadaptor-0.2.jar");
+    copyTestJar(ADAPTOR_1);
+    copyTestJar(ADAPTOR_2);
     this.manager.reScan();
     this.sleep();
 
@@ -161,7 +197,7 @@ public class PluginManagerTest {
   @Test
   public void shouldShutdownCorrectly() {
     LOG.debug("------ Should Shutdown Manager Test ------");
-    copyTestJar("testadaptor.jar");
+    copyTestJar(ADAPTOR_1);
     this.manager.reScan();
     this.sleep();
 

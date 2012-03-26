@@ -23,8 +23,8 @@ public class DistributionCommand extends Command {
     final Map<String, String> distribution = this.getReader().getDistribution(this.name);
     final List<Object> values = new ArrayList<Object>();
 
-    for (String key : distribution.keySet()) {
-      values.add(new DictionaryItem(key, distribution.get(key)));
+    for (Map.Entry<String, String> e : distribution.entrySet()) {
+      values.add(new DictionaryItem(e.getKey(), e.getValue()));
     }
 
     pv.setValues(values);

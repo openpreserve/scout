@@ -49,7 +49,6 @@
 	</scm>
 
 	<modules>
-		<module>build-tools-config</module>
 		<module>web</module>
 		<module>adaptors</module>
 		<module>core</module>
@@ -132,7 +131,7 @@
 							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-checkstyle-plugin</artifactId>
 							<configuration>
-								<configLocation>checkstyle.xml</configLocation>
+								<configLocation>code-style/checkstyle.xml</configLocation>
 								<failsOnError>false</failsOnError>
 								<enableRulesSummary>true</enableRulesSummary>
 								<includeTestSourceDirectory>false</includeTestSourceDirectory>

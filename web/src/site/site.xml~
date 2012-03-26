@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Scout">
+
+	<skin>
+		<groupId>org.apache.maven.skins</groupId>
+		<artifactId>maven-fluido-skin</artifactId>
+		<version>1.2</version>
+	</skin>
+
+	<custom>
+		<fluidoSkin>
+			<topBarEnabled>false</topBarEnabled>
+			<sideBarEnabled>true</sideBarEnabled>
+			<googleSearch>
+				<sitesearch />
+			</googleSearch>
+			<!-- <topBarIcon> <name>Scout</name> <alt>Scape watch service</alt> <src>/images/scout-logo.png</src> 
+				<href>/index.html</href> </topBarIcon> -->
+			<sourceLineNumbersEnabled>true</sourceLineNumbersEnabled>
+			<profile>pre-release</profile>
+			<facebookLike />
+			<googlePlusOne />
+		</fluidoSkin>
+	</custom>
+
+	<bannerLeft>
+		<name>Scout</name>
+		<src>/images/scout-logo-banner.png</src>
+		<href>http://www.opf-labs.org/maven/bamboo/scape-pw/</href>
+	</bannerLeft>
+	<bannerRight>
+		<name>Scout</name>
+		<src>/images/scape_logo.png</src>
+		<href>http://www.scape-project.eu/</href>
+	</bannerRight>
+	<body>
+		<links>
+			<item name="Scout development" href="https://github.com/openplanets/scape-pw" />
+			<item name="SCAPE" href="http://www.scape-project.eu" />
+		</links>
+
+		<menu name="Scout">
+			<item name="Introduction" href="index.html" />
+			<item name="Download" href="download.html" />
+			<item name="Release Notes" href="release-notes.html" />
+			<item name="General Information" href="about.html" />
+			<item name="Road Map" href="roadmap.html" />
+		</menu>
+
+		<menu ref="modules" />
+
+		<menu ref="reports" />
+		
+	</body>
+</project>

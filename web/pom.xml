@@ -56,7 +56,7 @@
 					</webResources>
 				</configuration>
 			</plugin>
-
+			<!-- 
 			<plugin>
 				<artifactId>maven-site-plugin</artifactId>
 				<version>3.0</version>
@@ -71,11 +71,6 @@
 								<dependencyDetailsEnabled>false</dependencyDetailsEnabled>
 								<dependencyLocationsEnabled>false</dependencyLocationsEnabled>
 							</configuration>
-							<!-- simpler configuration without reportSets available for usual 
-								cases -->
-							<!-- distribution-management, index, dependencies, help, issue-tracking, 
-								plugins, cim, license, dependency-management, mailing-list, project-team, 
-								dependency-convergence, scm, plugin-management, modules, summary -->
 							<reports>
 								<report>index</report>
 								<report>summary</report>
@@ -134,7 +129,7 @@
 					</reportPlugins>
 					<attach>true</attach>
 				</configuration>
-			</plugin>
+			</plugin> -->
 		</plugins>
 	</build>
 

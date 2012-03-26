@@ -130,6 +130,7 @@
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-checkstyle-plugin</artifactId>
+							<version>2.9.1</version>
 							<configuration>
 								<configLocation>code-style/checkstyle.xml</configLocation>
 								<failsOnError>false</failsOnError>
@@ -152,16 +153,8 @@
 						</plugin>
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-surefire-report-plugin</artifactId>
-							<reportSets>
-								<reportSet>
-									<id>integration-tests</id>
-									<reports>
-										<report>report-only</report>
-										<report>failsafe-report-only</report>
-									</reports>
-								</reportSet>
-							</reportSets>
+							<artifactId>maven-pmd-plugin</artifactId>
+							<version>2.7.1</version>
 						</plugin>
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
@@ -170,17 +163,30 @@
 								<failOnError>false</failOnError>
 							</configuration>
 						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-jxr-plugin</artifactId>
+							<version>2.3</version>
+							<executions>
+								<execution>
+									<id>index</id>
+									<phase>process-resources</phase>
+								</execution>
+							</executions>
+						</plugin>
 					</reportPlugins>
 					<attach>true</attach>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.5.1</version>
-			</plugin>
 		</plugins>
 	</build>
+
+	<reporting>
+		<plugins>
+
+		</plugins>
+	</reporting>
+
 	<profiles>
 		<profile>
 			<id>profile-bamboo-ci</id>

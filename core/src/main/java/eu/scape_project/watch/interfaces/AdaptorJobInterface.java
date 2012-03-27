@@ -22,10 +22,22 @@ public interface AdaptorJobInterface extends Job {
   void setAdaptorClassName(String className);
   
   /**
+   * Getting the adaptor class name 
+   * @return
+   */
+  String getAdaptorClassName();
+  
+  /**
    * Setting the version of the adaptor. 
    * @param version - version of the adaptor
    */
   void setAdaptorVersion(String version);
+  
+  /**
+   * Getting the Adaptor version of installed adaptor plugin
+   * @return
+   */
+  String getAdaptorVersion();
   
   /**
    * Setting adaptor properties 

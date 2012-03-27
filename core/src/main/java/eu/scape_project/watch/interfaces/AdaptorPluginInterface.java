@@ -69,4 +69,5 @@ public interface AdaptorPluginInterface extends PluginInterface {
    *           if an error occurrs.
    */
   ResultInterface execute() throws PluginException;
+  
 }

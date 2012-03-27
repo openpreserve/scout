@@ -72,10 +72,20 @@ public abstract class AdaptorJob implements AdaptorJobInterface {
   }
 
   @Override
+  public String getAdaptorClassName() {
+    return this.adaptorClassName;
+  }
+  
+  @Override
   public void setAdaptorVersion(String version) {
     this.adaptorVersion = version;
   }
 
+  @Override 
+  public String getAdaptorVersion() {
+    return this.adaptorVersion;
+  }
+  
   @Override
   public void setAdaptorProperties(String properties) {
     this.adaptorProperties = properties;
@@ -92,4 +102,16 @@ public abstract class AdaptorJob implements AdaptorJobInterface {
   }
 
   protected abstract void initialize();
+  
+  
+  //TODO later improve this part 
+  @Override 
+  public boolean equals(Object object) {
+    if (this==object)
+      return true;
+    if (this.getClass()!=object.getClass())
+      return false;
+    AdaptorJob aJob = (AdaptorJob) object;
+    return this.getAdaptorClassName().equals(aJob.getAdaptorClassName()) && this.getAdaptorVersion().equals(aJob.getAdaptorVersion());
+  }
 }

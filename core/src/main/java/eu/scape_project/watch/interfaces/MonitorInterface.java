@@ -2,6 +2,7 @@ package eu.scape_project.watch.interfaces;
 
 import org.quartz.JobListener;
 
+import eu.scape_project.watch.domain.AsyncRequest;
 import eu.scape_project.watch.monitor.CentralMonitor;
 import eu.scape_project.watch.scheduling.CoreScheduler;
 
@@ -31,4 +32,16 @@ public interface MonitorInterface extends JobListener {
   String getGroup();
 
 
+  /**
+   * Adds AsyncRequest to the Monitor. Monitor can optionally configure its adaptors to meet the needs of a request. 
+   * @param aRequest - AsyncRequest
+   */
+  void addWatchRequest(AsyncRequest aRequest);
+  
+  /**
+   * Removing AsyncRequest from the Monitor.  
+   * @param aRequest - AsyncRequest
+   */
+  void removeWatchRequest(AsyncRequest aRequest);
+  
 }

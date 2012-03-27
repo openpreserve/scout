@@ -1,5 +1,6 @@
 package eu.scape_project.watch.monitor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.quartz.JobExecutionContext;
@@ -10,9 +11,11 @@ import org.slf4j.LoggerFactory;
 import eu.scape_project.watch.dao.EntityDAO;
 import eu.scape_project.watch.dao.PropertyDAO;
 import eu.scape_project.watch.dao.PropertyValueDAO;
+import eu.scape_project.watch.domain.AsyncRequest;
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
+import eu.scape_project.watch.interfaces.AdaptorJobInterface;
 import eu.scape_project.watch.interfaces.MonitorInterface;
 import eu.scape_project.watch.interfaces.ResultInterface;
 import eu.scape_project.watch.scheduling.CoreScheduler;
@@ -26,7 +29,17 @@ public class CollectionProfilerMonitor implements MonitorInterface {
   private CentralMonitor centralMonitor;
 
   private CoreScheduler coreScheduler;
+  
+  private List<String> aRequestUUIDS;
+  
+  private List<AdaptorJobInterface> adaptorJobs;
 
+  
+  public CollectionProfilerMonitor() {
+    aRequestUUIDS = new ArrayList<String>();
+    adaptorJobs = new ArrayList<AdaptorJobInterface>();
+  }
+  
   @Override
   public String getName() {
     // TODO Auto-generated method stub
@@ -41,8 +54,11 @@ public class CollectionProfilerMonitor implements MonitorInterface {
 
   @Override
   public void jobToBeExecuted(JobExecutionContext arg0) {
-    // TODO Auto-generated method stub
-
+    AdaptorJobInterface aJob = (AdaptorJobInterface) arg0.getJobInstance();
+    if (!adaptorJobs.contains(aJob)) {
+      adaptorJobs.add(aJob);
+      LOG.info("Monitor found and stored new AdaptorJob");
+    }
   }
 
   @Override
@@ -62,6 +78,8 @@ public class CollectionProfilerMonitor implements MonitorInterface {
     LOG.info("Monitor found {} values", rValues.size());
     //TODO add notification 
 
+    centralMonitor.notifyAsyncRequests(aRequestUUIDS);
+    
   }
 
   @Override
@@ -78,6 +96,17 @@ public class CollectionProfilerMonitor implements MonitorInterface {
   public void registerScheduler(CoreScheduler cs) {
     coreScheduler = cs;
 
+  }
+
+  @Override
+  public void addWatchRequest(AsyncRequest aRequest) {
+    aRequestUUIDS.add(aRequest.getId());
+  }
+
+  @Override
+  public void removeWatchRequest(AsyncRequest aRequest) {
+    // TODO Auto-generated method stub
+    
   }
 
 }

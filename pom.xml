@@ -9,7 +9,7 @@
 	<packaging>pom</packaging>
 	<description>Scout is a monitor component as defined in the SCAPE project</description>
 	<name>Scout</name>
-	<url>http://www.scape-project.eu</url>
+	<url>http://www.opf-labs.org/maven/bamboo/scape-pw/</url>
 
 	<licenses>
 		<license>

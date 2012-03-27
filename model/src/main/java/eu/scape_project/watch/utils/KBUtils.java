@@ -293,7 +293,6 @@ public final class KBUtils {
 
       if (!dataFolderFile.exists()) {
         FileUtils.forceMkdir(dataFolderFile);
-        testdata = true; // init first time.. later we should remove this line
       }
 
       Model model = TDBFactory.createModel(datafolder);

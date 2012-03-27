@@ -111,7 +111,7 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
     final String classType = KBUtils.WATCH_PREFIX + typeClass.getSimpleName();
 
     final String sparql = String.format(KBUtils.XSD_PREFIX_DECL + KBUtils.RDF_PREFIX_DECL + KBUtils.WATCH_PREFIX_DECL
-      + "SELECT count(?s) WHERE { ?s %1$s %2$s . %3$s}", KBUtils.RDF_TYPE_REL, classType, bindings);
+      + "SELECT (count(?s) as ?count) WHERE { ?s %1$s %2$s . %3$s}", KBUtils.RDF_TYPE_REL, classType, bindings);
 
     final Query query = QueryFactory.create(sparql);
     final QueryExecution qexec = QueryExecutionFactory.create(query, Jenabean.instance().model());
@@ -119,7 +119,7 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
       final ResultSet results = qexec.execSelect();
       if (results.hasNext()) {
         final QuerySolution soln = results.nextSolution();
-        final Literal literal = soln.getLiteral("s");
+        final Literal literal = soln.getLiteral("count");
         count = literal.getInt();
       } else {
         count = 0;

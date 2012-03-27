@@ -1,15 +1,13 @@
 package eu.scape_project.watch.dao;
 
-import java.util.Collection;
-import java.util.List;
-
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.utils.KBUtils;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * {@link Entity} data access object.
@@ -23,7 +21,7 @@ public final class EntityDAO extends AbstractDO<Entity> {
   /**
    * Logger.
    */
-  private static final Logger LOG = LoggerFactory.getLogger(EntityDAO.class);
+  // private static final Logger LOG = LoggerFactory.getLogger(EntityDAO.class);
 
   /**
    * The name of the relationship to {@link EntityType} in {@link Entity}.

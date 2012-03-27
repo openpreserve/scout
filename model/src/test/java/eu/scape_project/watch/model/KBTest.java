@@ -1,28 +1,17 @@
 package eu.scape_project.watch.model;
 
-import eu.scape_project.watch.dao.AsyncRequestDAO;
-import eu.scape_project.watch.dao.DOListener;
 import eu.scape_project.watch.dao.EntityDAO;
 import eu.scape_project.watch.dao.EntityTypeDAO;
 import eu.scape_project.watch.dao.PropertyDAO;
 import eu.scape_project.watch.dao.PropertyValueDAO;
-import eu.scape_project.watch.dao.RequestDAO;
-import eu.scape_project.watch.domain.AsyncRequest;
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.EntityType;
-import eu.scape_project.watch.domain.Notification;
-import eu.scape_project.watch.domain.Plan;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
-import eu.scape_project.watch.domain.Question;
-import eu.scape_project.watch.domain.RequestTarget;
-import eu.scape_project.watch.domain.Trigger;
 import eu.scape_project.watch.utils.KBUtils;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -30,7 +19,6 @@ import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thewebsemantic.binding.Jenabean;
@@ -73,9 +61,6 @@ public class KBTest {
     FileUtils.deleteQuietly(new File(DATA_TEMP_DIR));
   }
 
-  /**
-   * Test equals and hashcode of EntityType.
-   */
   @Test
   public void testEntityTypeEquals() {
     final String name = "name";
@@ -117,7 +102,7 @@ public class KBTest {
     Assert.assertEquals(type, type2);
 
     // COUNT
-    final int count = EntityTypeDAO.getInstance().count("");
+    int count = EntityTypeDAO.getInstance().count("");
     Assert.assertEquals(1, count);
 
     // DELETE
@@ -138,40 +123,11 @@ public class KBTest {
     Assert.assertNull(type3);
 
     // COUNT AGAIN
-    final int count2 = EntityTypeDAO.getInstance().count("");
+    int count2 = EntityTypeDAO.getInstance().count("");
     Assert.assertEquals(0, count2);
 
   }
 
-  /**
-   * Test Entity Type CRUD listeners.
-   */
-  @Test
-  public void testEntityTypeListeners() {
-
-    @SuppressWarnings("unchecked")
-    final DOListener<EntityType> mockDOListener = Mockito.mock(DOListener.class);
-
-    EntityTypeDAO.getInstance().addDOListener(mockDOListener);
-
-    final EntityType type1 = new EntityType("test1", "this is a test");
-    final EntityType type2 = new EntityType("test2", "this is another test");
-
-    EntityTypeDAO.getInstance().save(type1, type2);
-    Mockito.verify(mockDOListener).onUpdated(type1);
-    Mockito.verify(mockDOListener).onUpdated(type2);
-
-    EntityTypeDAO.getInstance().delete(type1, type2);
-    Mockito.verify(mockDOListener).onRemoved(type1);
-    Mockito.verify(mockDOListener).onRemoved(type2);
-
-    EntityTypeDAO.getInstance().removeDOListener(mockDOListener);
-
-  }
-
-  /**
-   * Test equals and hashcode of Property.
-   */
   @Test
   public void testPropertyEquals() {
 
@@ -244,38 +200,11 @@ public class KBTest {
     Assert.assertNull(property3);
 
     // COUNT AGAIN
-    final int count2 = PropertyDAO.getInstance().count("");
+    int count2 = PropertyDAO.getInstance().count("");
     Assert.assertEquals(0, count2);
 
   }
 
-  /**
-   * Test listings of Property.
-   */
-  @Test
-  public void testPropertyListings() {
-
-    // CREATE
-    final EntityType type = new EntityType();
-    type.setName("tests");
-    type.setDescription("Test entities");
-
-    final Property property = new Property(type, "property1", "property description");
-
-    type.save();
-    property.save();
-
-    final Collection<Property> properties1 = PropertyDAO.getInstance().listWithType(type.getName(), 0, 100);
-    Assert.assertTrue(properties1.contains(property));
-
-    // DELETE
-    type.delete();
-    property.delete();
-  }
-
-  /**
-   * Test equals and hashcode of Entity.
-   */
   @Test
   public void testEntityEquals() {
 
@@ -325,7 +254,7 @@ public class KBTest {
     Assert.assertEquals(entity, entity2);
 
     // COUNT
-    final int count = EntityDAO.getInstance().count("");
+    int count = EntityDAO.getInstance().count("");
     Assert.assertEquals(1, count);
 
     // DELETE
@@ -345,40 +274,10 @@ public class KBTest {
     Assert.assertNull(entity3);
 
     // COUNT AGAIN
-    final int count2 = EntityDAO.getInstance().count("");
+    int count2 = EntityDAO.getInstance().count("");
     Assert.assertEquals(0, count2);
   }
 
-  /**
-   * Test listings of Entity.
-   */
-  @Test
-  public void testEntityListings() {
-
-    // CREATE
-    final EntityType type = new EntityType();
-    type.setName("tests");
-    type.setDescription("Test entities");
-
-    final Entity entity = new Entity(type, "entity1");
-
-    type.save();
-    entity.save();
-
-    final Collection<Entity> entities1 = EntityDAO.getInstance().listWithType(type.getName(), 0, 100);
-    Assert.assertTrue(entities1.contains(entity));
-
-    final Collection<Entity> entities2 = EntityDAO.getInstance().listWithType("", 0, 100);
-    Assert.assertTrue(entities2.contains(entity));
-
-    // DELETE
-    type.delete();
-    entity.delete();
-  }
-
-  /**
-   * Test equals and hashcode of PropertyValue.
-   */
   @Test
   public void testPropertyValueEquals() {
 
@@ -408,7 +307,7 @@ public class KBTest {
   }
 
   /**
-   * Test PropertyValue CRUD operations.
+   * Test Entity CRUD operations.
    */
   @Test
   public void testPropertyValueCRUD() {
@@ -419,343 +318,55 @@ public class KBTest {
     type.setDescription("Test entities");
 
     final Entity entity = new Entity(type, "entity1");
-    final Property propertyString = new Property(type, "propertyString", "property description");
-    final PropertyValue pvString = new PropertyValue(entity, propertyString, "123");
+    final Property property = new Property(type, "property1", "property description");
+
+    final PropertyValue pv = new PropertyValue(entity, property, "123");
 
     type.save();
     entity.save();
-    propertyString.save();
-    pvString.save();
+    property.save();
+    pv.save();
 
     // List
     final Collection<PropertyValue> pvs = Jenabean.instance().reader().load(PropertyValue.class);
-    Assert.assertTrue(pvs.contains(pvString));
+    Assert.assertTrue(pvs.contains(pv));
 
     // QUERY
     final List<PropertyValue> pvs2 = PropertyValueDAO.getInstance().query("", 0, 100);
-    Assert.assertTrue(pvs2.contains(pvString));
 
+    Assert.assertTrue(pvs2.contains(pv));
 
     // FIND
-    final PropertyValue pvString2 = PropertyValueDAO.getInstance().findByEntityAndName(entity.getName(),
-      propertyString.getName());
+    final PropertyValue pv2 = PropertyValueDAO.getInstance().findByEntityAndName(entity.getName(), property.getName());
 
-    Assert.assertNotNull(pvString2);
-    Assert.assertEquals(pvString, pvString2);
-
-    // TODO find other types
+    Assert.assertNotNull(pv2);
+    Assert.assertEquals(pv, pv2);
 
     // COUNT
-    final int count = PropertyValueDAO.getInstance().count("");
+    int count = PropertyValueDAO.getInstance().count("");
     Assert.assertEquals(1, count);
 
     // DELETE
-    pvString.delete();
+    pv.delete();
     entity.delete();
-    propertyString.delete();
+    property.delete();
     type.delete();
 
     // LIST AGAIN
     final Collection<PropertyValue> pvs3 = Jenabean.instance().reader().load(PropertyValue.class);
-    Assert.assertFalse(pvs3.contains(pvString));
+    Assert.assertFalse(pvs3.contains(pv));
 
     // QUERY AGAIN
     final List<PropertyValue> pvs4 = PropertyValueDAO.getInstance().query("", 0, 100);
-    Assert.assertFalse(pvs4.contains(pvString));
+    Assert.assertFalse(pvs4.contains(pv));
 
     // FIND AGAIN
-    final PropertyValue pvInteger3 = PropertyValueDAO.getInstance().findByEntityAndName(entity.getName(),
-      propertyString.getName());
-    Assert.assertNull(pvInteger3);
-
-    // TODO test other types
+    final PropertyValue pv3 = PropertyValueDAO.getInstance().findByEntityAndName(entity.getName(), property.getName());
+    Assert.assertNull(pv3);
 
     // COUNT AGAIN
-    final int count2 = PropertyValueDAO.getInstance().count("");
+    int count2 = PropertyValueDAO.getInstance().count("");
     Assert.assertEquals(0, count2);
-  }
-
-  /**
-   * Tests listings of PropertyValue.
-   */
-  @Test
-  public void testPropertyValueListings() {
-    // CREATE
-    final EntityType type = new EntityType();
-    type.setName("tests");
-    type.setDescription("Test entities");
-
-    final Entity entity = new Entity(type, "entity1");
-    final Property property = new Property(type, "property1", "property description");
-
-    final PropertyValue pv = new PropertyValue(entity, property, "123");
-
-    type.save();
-    entity.save();
-    property.save();
-    pv.save();
-
-    final Collection<PropertyValue> pvs1 = PropertyValueDAO.getInstance().listWithEntity(entity.getName(), 0, 100);
-    Assert.assertTrue(pvs1.contains(pv));
-
-    final Collection<PropertyValue> pvs2 = PropertyValueDAO.getInstance().listWithProperty(type.getName(),
-      property.getName(), 0, 100);
-    Assert.assertTrue(pvs2.contains(pv));
-
-    final Collection<PropertyValue> pvs3 = PropertyValueDAO.getInstance().listWithEntityAndProperty(entity.getName(),
-      type.getName(), property.getName(), 0, 100);
-    Assert.assertTrue(pvs3.contains(pv));
-
-    // DELETE
-    type.delete();
-    entity.delete();
-    property.delete();
-    pv.delete();
-
-  }
-
-  /**
-   * Test equals and hashcode of AsyncRequest.
-   */
-  @Test
-  public void testAsyncRequestEquals() {
-
-    // CREATE DATA
-    final EntityType type = new EntityType();
-    type.setName("tests");
-    type.setDescription("Test entities");
-
-    final Entity entity = new Entity(type, "entity1");
-    final Property property = new Property(type, "property1", "property description");
-
-    type.save();
-    entity.save();
-    property.save();
-
-    // CREATE ASYNC REQUEST
-    final String sparql = "?s watch:entity watch-Entity:" + entity.getName() + ". ?s watch:property watch-Property:"
-      + Property.createId(type.getName(), property.getName() + ". FILTER(?s < 200)");
-    final RequestTarget target = RequestTarget.PROPERTY_VALUE;
-    final List<EntityType> types = Arrays.asList(type);
-    final List<Property> properties = Arrays.asList(property);
-    final List<Entity> entities = Arrays.asList(entity);
-    final long period = 30000;
-
-    final Question question = new Question(sparql, target, types, properties, entities, period);
-    final Notification notification = new Notification("test", new HashMap<String, String>());
-    final List<Notification> notifications = Arrays.asList(notification);
-    final Plan plan = null;
-
-    final Trigger trigger1 = new Trigger(question, notifications, plan);
-    final List<Trigger> triggers = Arrays.asList(trigger1);
-
-    final AsyncRequest arequest1 = new AsyncRequest(triggers);
-
-    // CASCADE SAVE
-    final AsyncRequest arequest2 = AsyncRequestDAO.getInstance().save(arequest1);
-
-    // Test saved
-    Assert.assertTrue(arequest1.equals(arequest2));
-
-    // Test found
-    final AsyncRequest arequest3 = AsyncRequestDAO.getInstance().findById(arequest1.getId());
-
-    Assert.assertTrue(question.equals(arequest3.getTriggers().get(0).getQuestion()));
-    Assert.assertTrue(notification.equals(arequest3.getTriggers().get(0).getNotifications().get(0)));
-    Assert.assertNull(arequest3.getTriggers().get(0).getPlan());
-    Assert.assertTrue(trigger1.equals(arequest3.getTriggers().get(0)));
-    Assert.assertTrue(arequest1.equals(arequest3));
-
-    // DELETE
-    type.save();
-    entity.save();
-    property.save();
-
-    // CASCADE DELETE
-    AsyncRequestDAO.getInstance().delete(arequest1);
-
-  }
-
-  /**
-   * Test Entity CRUD operations.
-   */
-  @Test
-  public void testAsyncRequestCRUD() {
-
-    // CREATE DATA
-    final EntityType type = new EntityType();
-    type.setName("tests");
-    type.setDescription("Test entities");
-
-    final Entity entity = new Entity(type, "entity1");
-    final Property property = new Property(type, "property1", "property description");
-
-    final PropertyValue pv = new PropertyValue(entity, property, "123");
-
-    type.save();
-    entity.save();
-    property.save();
-    pv.save();
-
-    // CREATE ASYNC REQUEST
-    final String sparql = "?s watch:entity watch-Entity:" + entity.getName() + ". ?s watch:property watch-Property:"
-      + Property.createId(type.getName(), property.getName() + ". FILTER(?s < 200)");
-    final RequestTarget target = RequestTarget.PROPERTY_VALUE;
-    final List<EntityType> types = Arrays.asList(type);
-    final List<Property> properties = Arrays.asList(property);
-    final List<Entity> entities = Arrays.asList(entity);
-    final long period = 30000;
-
-    final Question question = new Question(sparql, target, types, properties, entities, period);
-    final Notification notification = new Notification("test", new HashMap<String, String>());
-    final List<Notification> notifications = Arrays.asList(notification);
-    final Plan plan = new Plan("plan_id");
-
-    final Trigger trigger = new Trigger(question, notifications, plan);
-    final List<Trigger> triggers = Arrays.asList(trigger);
-
-    final AsyncRequest arequest = new AsyncRequest(triggers);
-
-    // CASCADE SAVE
-    AsyncRequestDAO.getInstance().save(arequest);
-
-    // List
-    final Collection<AsyncRequest> arequests = AsyncRequestDAO.getInstance().list(0, 100);
-    Assert.assertTrue(arequests.contains(arequest));
-
-    // QUERY
-    final List<AsyncRequest> arequests2 = AsyncRequestDAO.getInstance().query("", 0, 100);
-    Assert.assertTrue(arequests2.contains(arequest));
-
-    // FIND
-    final AsyncRequest arequest2 = AsyncRequestDAO.getInstance().findById(arequest.getId());
-
-    Assert.assertNotNull(arequest2);
-    Assert.assertEquals(arequest, arequest2);
-
-    // COUNT
-    final int count = AsyncRequestDAO.getInstance().count("");
-    Assert.assertEquals(1, count);
-
-    // DELETE
-    type.save();
-    entity.save();
-    property.save();
-    pv.save();
-
-    // CASCADE DELETE
-    AsyncRequestDAO.getInstance().delete(arequest);
-
-    // LIST AGAIN
-    final Collection<AsyncRequest> arequests3 = AsyncRequestDAO.getInstance().list(0, 100);
-    Assert.assertFalse(arequests3.contains(arequest));
-
-    // QUERY AGAIN
-    final List<AsyncRequest> arequests4 = AsyncRequestDAO.getInstance().query("", 0, 100);
-    Assert.assertFalse(arequests4.contains(arequest));
-
-    // FIND AGAIN
-    final AsyncRequest arequest3 = AsyncRequestDAO.getInstance().findById(arequest.getId());
-    Assert.assertNull(arequest3);
-
-    // COUNT AGAIN
-    final int count2 = AsyncRequestDAO.getInstance().count("");
-    Assert.assertEquals(0, count2);
-  }
-
-  /**
-   * Test listeners of AsyncRequest (as it overrides save and delete).
-   */
-  @Test
-  public void testAsyncRequestListeners() {
-
-    @SuppressWarnings("unchecked")
-    final DOListener<AsyncRequest> mockListener = Mockito.mock(DOListener.class);
-    AsyncRequestDAO.getInstance().addDOListener(mockListener);
-    final AsyncRequest request = new AsyncRequest();
-    AsyncRequestDAO.getInstance().save(request);
-    Mockito.verify(mockListener).onUpdated(request);
-
-  }
-
-  /**
-   * Test making requests.
-   */
-  @Test
-  public void testRequest() {
-
-    // CREATE DATA
-    final EntityType type = new EntityType();
-    type.setName("tests");
-    type.setDescription("Test entities");
-
-    final Entity entity = new Entity(type, "entity1");
-    final Property property = new Property(type, "property1", "property description");
-    final Property property2 = new Property(type, "property2", "property description");
-
-    final PropertyValue pv = new PropertyValue(entity, property, "image/tiff");
-    final PropertyValue pv2 = new PropertyValue(entity, property2, "123");
-
-    type.save();
-    entity.save();
-    property.save();
-    property2.save();
-    pv.save();
-    pv2.save();
-
-    // MAKE ENTITY TYPE REQUEST
-    final String query1 = EntityDAO.getEntityRDFId(entity.getName()) + " watch:type ?s";
-    final RequestTarget target1 = RequestTarget.ENTITY_TYPE;
-    @SuppressWarnings("unchecked")
-    final List<PropertyValue> results1 = (List<PropertyValue>) RequestDAO.getInstance().query(target1, query1, 0, 100);
-    Assert.assertTrue(results1.contains(type));
-
-    // MAKE PROPERTY REQUEST
-    final String query2 = "?s watch:type watch-EntityType:" + type.getName();
-    final RequestTarget target2 = RequestTarget.PROPERTY;
-    @SuppressWarnings("unchecked")
-    final List<PropertyValue> results2 = (List<PropertyValue>) RequestDAO.getInstance().query(target2, query2, 0, 100);
-    Assert.assertTrue(results2.contains(property));
-
-    // MAKE ENTITY REQUEST
-    final String query3 = "?s watch:type watch-EntityType:" + type.getName();
-    final RequestTarget target3 = RequestTarget.ENTITY;
-    @SuppressWarnings("unchecked")
-    final List<PropertyValue> results3 = (List<PropertyValue>) RequestDAO.getInstance().query(target3, query3, 0, 100);
-    Assert.assertTrue(results3.contains(entity));
-
-    // MAKE REGEX VALUE REQUEST
-    final String query4 = "?s watch:entity " + EntityDAO.getEntityRDFId(entity.getName()) + " . ?s watch:property "
-      + PropertyDAO.getPropertyRDFId(type.getName(), property.getName())
-      + " . ?s watch:value ?value . FILTER regex(?value, 'image.*', 'i')";
-    final RequestTarget target4 = RequestTarget.PROPERTY_VALUE;
-
-    @SuppressWarnings("unchecked")
-    final List<PropertyValue> results4 = (List<PropertyValue>) RequestDAO.getInstance().query(target4, query4, 0, 100);
-    Assert.assertTrue(results4.contains(pv));
-
-    // MAKE LESSER THAN VALUE REQUEST
-    // TODO test filter in other types e.g. FILTER (?s < 200)
-    // String query5 = "?s watch:entity " +
-    // EntityDAO.getEntityRDFId(entity.getName()) + " . ?s watch:property "
-    // + PropertyDAO.getPropertyRDFId(type.getName(), property2.getName())
-    // + " . ?s watch:value ?value . FILTER (?value < 200)";
-    //
-    // RequestTarget target5 = RequestTarget.PROPERTY_VALUE;
-    //
-    // @SuppressWarnings("unchecked")
-    // List<PropertyValue> results5 = (List<PropertyValue>)
-    // RequestDAO.getInstance().query(target5, query5, 0, 100);
-    // Assert.assertTrue(results5.contains(pv2));
-
-    // DELETE
-    type.delete();
-    entity.delete();
-    property.delete();
-    property2.delete();
-    pv.delete();
-    pv2.delete();
-
   }
 
 }

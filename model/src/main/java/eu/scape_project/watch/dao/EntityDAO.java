@@ -1,11 +1,11 @@
 package eu.scape_project.watch.dao;
 
-import java.util.Collection;
-import java.util.List;
-
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.utils.KBUtils;
+
+import java.util.Collection;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 

@@ -17,7 +17,8 @@ public interface ResultInterface {
 
   /**
    * Retrieves the property values.
-   * @return
+   * 
+   * @return the list of properties.
    */
   List<PropertyValue> getPropertyValues();
 }

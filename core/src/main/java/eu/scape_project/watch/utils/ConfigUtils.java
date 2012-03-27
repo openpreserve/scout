@@ -71,12 +71,9 @@ public class ConfigUtils {
    * found the method falls back to the default config.
    */
   private void loadConfig() {
-    if (!loadUserConfig()) {
-      if (!loadSystemWideConfig()) {
-        loadDefaultConfig();
-      }
+    if (!loadUserConfig() && !loadSystemWideConfig()) {
+      loadDefaultConfig();
     }
-
   }
 
   /**

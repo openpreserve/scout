@@ -2,6 +2,7 @@ package eu.scape_project.watch.adaptor.c3po;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Map;
 
 import junit.framework.Assert;
 
@@ -9,6 +10,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests the profile parser.
@@ -71,5 +74,13 @@ public class C3POProfileReaderTest {
   public void shouldObtainObjectsAvgSize() throws Exception {
     final String size = this.reader.getObjectsAvgSize();
     Assert.assertEquals("35000.42", size);
+  }
+  
+  @Test
+  public void shouldObtainFormatDistribution() throws Exception {
+    final Map<String, String> distribution = this.reader.getDistribution("format");
+    Assert.assertNotNull(distribution);
+    Assert.assertFalse(distribution.keySet().isEmpty());
+    
   }
 }

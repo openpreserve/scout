@@ -26,4 +26,8 @@ public class C3POConstants {
   public static final String CP_MIMETYPE_MODE = "cp.mimetype.mode";
   public static final String CP_MIMETYPE_DISTRIBUTION = "cp.mimetype.distribution";
 
+  // ############ misc #################
+
+  public static final String CP_NAME = "collection_profile";
+  public static final String CP_DESCRIPTION = "A simple collection profile";
 }

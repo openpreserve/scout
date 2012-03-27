@@ -1,7 +1,9 @@
 package eu.scape_project.watch.adaptor.c3po;
 
 import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_COLLECTION_SIZE;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_DESCRIPTION;
 import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_FORMAT_DISTRIBUTION;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_NAME;
 import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_AVG_SIZE;
 import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_COUNT;
 import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_MAX_SIZE;
@@ -56,8 +58,11 @@ public class C3POAdaptor implements AdaptorPluginInterface {
    * Default logger for this adaptor.
    */
   private static final Logger LOG = LoggerFactory.getLogger(C3POAdaptor.class);
-  
-  private static final String VERSION = "0.1";
+
+  /**
+   * The current version of the adaptor.
+   */
+  private static final String VERSION = "0.0.1";
 
   /**
    * The current config of c3po.
@@ -65,10 +70,10 @@ public class C3POAdaptor implements AdaptorPluginInterface {
   private Map<String, String> config;
 
   /**
-   * The commands for property extraction. 
+   * The commands for property extraction.
    */
   private Map<String, Command> commands;
-  
+
   /**
    * The default configs.
    */
@@ -84,7 +89,6 @@ public class C3POAdaptor implements AdaptorPluginInterface {
    */
   private C3POClientInterface source;
 
-
   /**
    * Retrieves the configuration value for the passed key of the loaded
    * properties. If the key is missing or the properties were not loaded
@@ -96,33 +100,33 @@ public class C3POAdaptor implements AdaptorPluginInterface {
    *         not present.
    */
   public String getConfig(final String key) {
-    String config = "";
+    String cnf = "";
     if (this.properties != null) {
-      config = this.properties.getProperty(key, "");
+      cnf = this.properties.getProperty(key, "");
     }
 
-    return config;
+    return cnf;
   }
 
   @Override
   public void init() throws PluginException {
     this.initConfigs();
 
-    final EntityType cp = new EntityType("collection_profile", "A simple collection profile");
+    final EntityType cp = new EntityType(CP_NAME, CP_DESCRIPTION);
     final Property size = new Property(cp, CP_COLLECTION_SIZE, "Collection size");
     final Property count = new Property(cp, CP_OBJECTS_COUNT, "Objects count");
-    final Property avg_size = new Property(cp, CP_OBJECTS_AVG_SIZE, "Objects avg size");
-    final Property min_size = new Property(cp, CP_OBJECTS_MIN_SIZE, "Objects min size");
-    final Property max_size = new Property(cp, CP_OBJECTS_MAX_SIZE, "Objects max size");
-    final Property format_distr = new Property(cp, CP_FORMAT_DISTRIBUTION, "Collection format distribution");
+    final Property avgSize = new Property(cp, CP_OBJECTS_AVG_SIZE, "Objects avg size");
+    final Property minSize = new Property(cp, CP_OBJECTS_MIN_SIZE, "Objects min size");
+    final Property maxSize = new Property(cp, CP_OBJECTS_MAX_SIZE, "Objects max size");
+    final Property formatDistr = new Property(cp, CP_FORMAT_DISTRIBUTION, "Collection format distribution");
 
     this.commands = new HashMap<String, Command>();
     this.commands.put(CP_COLLECTION_SIZE, new CollectionSizeCommand(size));
     this.commands.put(CP_OBJECTS_COUNT, new ObjectsCountCommand(count));
-    this.commands.put(CP_OBJECTS_MAX_SIZE, new ObjectsMaxSizeCommand(max_size));
-    this.commands.put(CP_OBJECTS_MIN_SIZE, new ObjectsMinSizeCommand(min_size));
-    this.commands.put(CP_OBJECTS_AVG_SIZE, new ObjectsAvgSizeCommand(avg_size));
-    this.commands.put(CP_FORMAT_DISTRIBUTION, new DistributionCommand(format_distr, "format"));
+    this.commands.put(CP_OBJECTS_MAX_SIZE, new ObjectsMaxSizeCommand(maxSize));
+    this.commands.put(CP_OBJECTS_MIN_SIZE, new ObjectsMinSizeCommand(minSize));
+    this.commands.put(CP_OBJECTS_AVG_SIZE, new ObjectsAvgSizeCommand(avgSize));
+    this.commands.put(CP_FORMAT_DISTRIBUTION, new DistributionCommand(formatDistr, "format"));
   }
 
   @Override
@@ -146,7 +150,7 @@ public class C3POAdaptor implements AdaptorPluginInterface {
 
   @Override
   public String getDescription() {
-    return "A watch adaptor for the c3po content profiler source";
+    return "A scout adaptor for the c3po content profiler source";
   }
 
   @Override
@@ -189,7 +193,7 @@ public class C3POAdaptor implements AdaptorPluginInterface {
     LOG.debug("c3po adaptor has found {} collections, ... fetching", identifiers.size());
 
     final ProfileResult result = new ProfileResult();
-    final EntityType et = new EntityType("collection_profile", "A simple collection profile");
+    final EntityType et = new EntityType(CP_NAME, CP_DESCRIPTION);
 
     for (String id : identifiers) {
       final Entity e = new Entity(et, id);
@@ -207,21 +211,7 @@ public class C3POAdaptor implements AdaptorPluginInterface {
 
   @Override
   public ResultInterface execute(final Map<Entity, List<Property>> context) throws PluginException {
-
     throw new PluginException("This method is not yet implemented!");
-
-    // LOG.info("Hello from c3po, reading config...");
-    // this.createSource();
-    //
-    // final List<String> identifiers = this.source.getCollectionIdentifiers();
-    // for (Entity e : context.keySet()) {
-    // if (identifiers.contains(e.getName())) {
-    // this.getPropertyValues(e.getName(), context.get(e));
-    // // TODO capture result and generate real result object.
-    // }
-    // }
-    //
-    // return null;
   }
 
   private void initConfigs() {
@@ -230,7 +220,7 @@ public class C3POAdaptor implements AdaptorPluginInterface {
     this.defaultConfig = new ArrayList<ConfigParameter>();
     this.defaultConfig.add(new ConfigParameter(ENDPOINT_CNF, ENDPOINT_DEFAULT, ENDPOINT_DESC, true));
 
-    for (ConfigParameter cp : this.defaultConfig) {
+    for (final ConfigParameter cp : this.defaultConfig) {
       this.config.put(cp.getKey(), cp.getValue());
     }
   }

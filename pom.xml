@@ -65,12 +65,10 @@
 			<id>jboss</id>
 			<url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
 		</repository>
-		<!-- KEEPS repository has Jenabean in case its repository ceases to work 
-			<repository> <id>KEEP Artifacts</id> <name>KEEP Artifacts-releases</name> 
-			<url>http://artifactory.keep.pt/keep</url> </repository> -->
 		<repository>
-			<id>Jenabean</id>
-			<url>http://jenabean.googlecode.com/svn/repo</url>
+			<id>KEEP Artifacts</id>
+			<name>KEEP Artifacts-releases</name>
+			<url>http://artifactory.keep.pt/keep</url>
 		</repository>
 		<repository>
 			<id>apache-repo-releases</id>
@@ -175,8 +173,12 @@
 							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-jxr-plugin</artifactId>
 							<version>2.3</version>
-							<!-- <executions> <execution> <id>index</id> <phase>process-resources</phase> 
-								</execution> </executions> -->
+							<!-- <executions>
+								<execution>
+									<id>index</id>
+									<phase>process-resources</phase>
+								</execution>
+							</executions> -->
 						</plugin>
 					</reportPlugins>
 					<attach>true</attach>

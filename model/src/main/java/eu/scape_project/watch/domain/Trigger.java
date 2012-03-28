@@ -1,5 +1,6 @@
 package eu.scape_project.watch.domain;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -10,6 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import eu.scape_project.watch.utils.KBUtils;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import thewebsemantic.Id;
@@ -151,7 +153,7 @@ public class Trigger extends RdfBean<Trigger> {
       if (other.notifications != null) {
         return false;
       }
-    } else if (!this.notifications.equals(other.notifications)) {
+    } else if (!CollectionUtils.isEqualCollection(notifications, other.notifications)) {
       return false;
     }
     if (this.plan == null) {
@@ -174,7 +176,7 @@ public class Trigger extends RdfBean<Trigger> {
   @Override
   public String toString() {
     return String.format("Trigger(id=%1$s, plan=%2$s, question=%3$s, notifications=%4$s)", id, plan, question,
-      notifications);
+      Arrays.toString(notifications.toArray()));
   }
 
 }

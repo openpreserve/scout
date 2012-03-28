@@ -184,7 +184,6 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
    */
   public T save(final T object) {
     object.save();
-    this.fireOnUpdated(object);
     return object;
   }
 
@@ -210,7 +209,6 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
    */
   public T delete(final T object) {
     object.delete();
-    this.fireOnRemoved(object);
     return object;
   }
 

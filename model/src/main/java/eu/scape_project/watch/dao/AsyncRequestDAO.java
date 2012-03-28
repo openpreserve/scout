@@ -90,6 +90,17 @@ public final class AsyncRequestDAO extends AbstractDO<AsyncRequest> {
   }
 
   /**
+   * Count the results of a query for {@link AsyncRequest}.
+   * 
+   * @param bindings
+   *          The query bindings, see {@link AbstractDO#count(Class, String)}
+   * @return The number of results expected for the query
+   */
+  public int count(final String bindings) {
+    return super.count(AsyncRequest.class, bindings);
+  }
+
+  /**
    * Deeply save request, including all triggers, and fire update event.
    * 
    * @param request
@@ -134,7 +145,9 @@ public final class AsyncRequestDAO extends AbstractDO<AsyncRequest> {
     // delete triggers
     for (Trigger t : request.getTriggers()) {
       // delete plan
-      t.getPlan().delete();
+      if (t.getPlan() != null) {
+        t.getPlan().delete();
+      }
 
       // delete question
       t.getQuestion().delete();

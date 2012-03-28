@@ -1,6 +1,7 @@
 package eu.scape_project.watch.domain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,6 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import eu.scape_project.watch.dao.AsyncRequestDAO;
 import eu.scape_project.watch.utils.KBUtils;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import thewebsemantic.Id;
@@ -119,43 +121,36 @@ public class AsyncRequest extends RdfBean<AsyncRequest> {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
-    result = prime * result + ((this.triggers == null) ? 0 : this.triggers.hashCode());
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
+    result = prime * result + ((triggers == null) ? 0 : triggers.hashCode());
     return result;
   }
 
   @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
+  public boolean equals(Object obj) {
+    if (this == obj)
       return true;
-    }
-    if (obj == null) {
+    if (obj == null)
       return false;
-    }
-    if (getClass() != obj.getClass()) {
+    if (getClass() != obj.getClass())
       return false;
-    }
-    final AsyncRequest other = (AsyncRequest) obj;
-    if (this.id == null) {
-      if (other.id != null) {
+    AsyncRequest other = (AsyncRequest) obj;
+    if (id == null) {
+      if (other.id != null)
         return false;
-      }
-    } else if (!this.id.equals(other.id)) {
+    } else if (!id.equals(other.id))
       return false;
-    }
-    if (this.triggers == null) {
-      if (other.triggers != null) {
+    if (triggers == null) {
+      if (other.triggers != null)
         return false;
-      }
-    } else if (!this.triggers.equals(other.triggers)) {
+    } else if (!CollectionUtils.isEqualCollection(triggers, other.triggers))
       return false;
-    }
     return true;
   }
 
   @Override
   public String toString() {
-    return "AsyncRequest(id=" + this.id + ", triggers=" + this.triggers + ")";
+    return "AsyncRequest(id=" + this.id + ", triggers=" + Arrays.toString(this.triggers.toArray()) + ")";
   }
 
   @Override

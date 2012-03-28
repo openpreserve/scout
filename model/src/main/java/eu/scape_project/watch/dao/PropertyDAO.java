@@ -35,7 +35,8 @@ public final class PropertyDAO extends AbstractDO<Property> {
    * @return The complete Property RDF Id using namescape prefix
    */
   public static String getPropertyRDFId(final String entityType, final String propertyName) {
-    return KBUtils.WATCH_NS + Property.class.getSimpleName() + "/" + Property.createId(entityType, propertyName);
+    return "<" + KBUtils.WATCH_NS + Property.class.getSimpleName() + "/" + Property.createId(entityType, propertyName)
+      + ">";
   }
 
   /**

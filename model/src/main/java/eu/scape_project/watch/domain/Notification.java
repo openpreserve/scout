@@ -1,5 +1,6 @@
 package eu.scape_project.watch.domain;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
@@ -13,6 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import eu.scape_project.watch.utils.KBUtils;
 import eu.scape_project.watch.utils.ModelUtils;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import thewebsemantic.Id;
@@ -135,7 +137,10 @@ public class Notification extends RdfBean<Notification> {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((id == null) ? 0 : id.hashCode());
-    result = prime * result + ((parameters == null) ? 0 : parameters.hashCode());
+    for (Entry entry : parameters) {
+      result = prime * result + ((entry == null) ? 0 : entry.hashCode());
+    }
+
     result = prime * result + ((type == null) ? 0 : type.hashCode());
     return result;
   }
@@ -157,7 +162,7 @@ public class Notification extends RdfBean<Notification> {
     if (parameters == null) {
       if (other.parameters != null)
         return false;
-    } else if (!parameters.equals(other.parameters))
+    } else if (!CollectionUtils.isEqualCollection(parameters, other.parameters))
       return false;
     if (type == null) {
       if (other.type != null)
@@ -169,7 +174,7 @@ public class Notification extends RdfBean<Notification> {
 
   @Override
   public String toString() {
-    return "Notification [id=" + id + ", type=" + type + ", parameters=" + parameters + "]";
+    return "Notification [id=" + id + ", type=" + type + ", parameters=" + Arrays.toString(parameters.toArray()) + "]";
   }
 
 }

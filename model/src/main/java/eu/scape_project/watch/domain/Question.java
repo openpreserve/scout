@@ -1,6 +1,7 @@
 package eu.scape_project.watch.domain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -11,6 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import eu.scape_project.watch.utils.KBUtils;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import thewebsemantic.Id;
@@ -197,7 +199,7 @@ public class Question extends RdfBean<Question> {
     if (entities == null) {
       if (other.entities != null)
         return false;
-    } else if (!entities.equals(other.entities))
+    } else if (!CollectionUtils.isEqualCollection(entities, other.entities))
       return false;
     if (id == null) {
       if (other.id != null)
@@ -209,7 +211,7 @@ public class Question extends RdfBean<Question> {
     if (properties == null) {
       if (other.properties != null)
         return false;
-    } else if (!properties.equals(other.properties))
+    } else if (!CollectionUtils.isEqualCollection(properties, other.properties))
       return false;
     if (sparql == null) {
       if (other.sparql != null)
@@ -221,15 +223,16 @@ public class Question extends RdfBean<Question> {
     if (types == null) {
       if (other.types != null)
         return false;
-    } else if (!types.equals(other.types))
+    } else if (!CollectionUtils.isEqualCollection(types, other.types))
       return false;
     return true;
   }
 
   @Override
   public String toString() {
-    return "Question [id=" + id + ", sparql=" + sparql + ", target=" + target + ", types=" + types + ", properties="
-      + properties + ", entities=" + entities + ", period=" + period + "]";
+    return "Question [id=" + id + ", sparql=" + sparql + ", target=" + target + ", types="
+      + Arrays.toString(types.toArray()) + ", properties=" + Arrays.toString(properties.toArray()) + ", entities="
+      + Arrays.toString(entities.toArray()) + ", period=" + period + "]";
   }
 
   /*

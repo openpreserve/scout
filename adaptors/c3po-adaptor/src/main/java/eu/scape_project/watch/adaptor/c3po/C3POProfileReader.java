@@ -139,9 +139,9 @@ public class C3POProfileReader {
         final String value = this.getAttributeValue(e, "count");
         distribution.put(key, value);
       }
-      
+
       return distribution;
-        
+
     }
 
     return null;
@@ -175,7 +175,14 @@ public class C3POProfileReader {
   private Element getPropertyElement(String name) {
     final Element collection = this.getCollectionElement();
     final List nodes = collection.selectNodes("//properties/property[@id='" + name + "']");
-    return (Element) nodes.get(0);
+
+    Element e = null;
+
+    if (nodes.size() == 1) {
+      e = (Element) nodes.get(0);
+    }
+
+    return e;
   }
 
   /**

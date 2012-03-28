@@ -5,12 +5,12 @@ import static eu.scape_project.watch.adaptor.c3po.client.C3PODummyClient.COLLECT
 import java.io.InputStream;
 import java.util.List;
 
-import eu.scape_project.watch.adaptor.c3po.client.C3PODummyClient;
-
 import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import eu.scape_project.watch.adaptor.c3po.client.C3PODummyClient;
 
 /**
  * Tests the c3po dummy client.

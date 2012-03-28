@@ -1,5 +1,7 @@
 package eu.scape_project.watch.adaptor.c3po;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Map;
@@ -8,10 +10,7 @@ import junit.framework.Assert;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * Tests the profile parser.
@@ -82,5 +81,26 @@ public class C3POProfileReaderTest {
     Assert.assertNotNull(distribution);
     Assert.assertFalse(distribution.keySet().isEmpty());
     
+  }
+  
+  @Test
+  public void shouldObtainMissingDistribution() throws Exception {
+    final Map<String, String> distribution = this.reader.getDistribution("blah");
+    Assert.assertNull(distribution);
+  }
+  
+  @Test(expected = FileNotFoundException.class)
+  public void shouldTestMissingDocument() throws Exception {
+    this.reader = new C3POProfileReader(new File("src/test/resources/missing.xml"));
+    
+    Assert.fail("This code should not have been reached");
+  }
+  
+  @Test
+  public void shouldTestFalseDocument() throws Exception {
+    this.reader = new C3POProfileReader(new File("src/test/resources/profiles/wrong.xml"));
+    
+    final String name = this.reader.getCollectionName();
+    Assert.assertEquals(C3POProfileReader.MISSING_VALUE, name);
   }
 }

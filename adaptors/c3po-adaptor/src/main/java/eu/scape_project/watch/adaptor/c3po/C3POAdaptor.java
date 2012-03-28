@@ -18,8 +18,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import eu.scape_project.watch.adaptor.c3po.client.C3POClient;
 import eu.scape_project.watch.adaptor.c3po.client.C3POClientInterface;
@@ -43,14 +45,11 @@ import eu.scape_project.watch.plugin.PluginType;
 import eu.scape_project.watch.utils.exceptions.InvalidParameterException;
 import eu.scape_project.watch.utils.exceptions.PluginException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * A watch conforming adaptor for a collection profile source called c3po.
  * 
  * @author Petar Petrov <me@petarpetrov.org>
- * @version 0.1
+ * @version 0.0.1
  */
 public class C3POAdaptor implements AdaptorPluginInterface {
 
@@ -80,33 +79,9 @@ public class C3POAdaptor implements AdaptorPluginInterface {
   private List<ConfigParameter> defaultConfig;
 
   /**
-   * The configuration of this adaptor instance.
-   */
-  private Properties properties;
-
-  /**
    * The source client.
    */
   private C3POClientInterface source;
-
-  /**
-   * Retrieves the configuration value for the passed key of the loaded
-   * properties. If the key is missing or the properties were not loaded
-   * successfully the empty string is returned.
-   * 
-   * @param key
-   *          the key of the config.
-   * @return retrieves the value of the configuration key or the empty string if
-   *         not present.
-   */
-  public String getConfig(final String key) {
-    String cnf = "";
-    if (this.properties != null) {
-      cnf = this.properties.getProperty(key, "");
-    }
-
-    return cnf;
-  }
 
   @Override
   public void init() throws PluginException {

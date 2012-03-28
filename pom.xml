@@ -1,246 +1,239 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-	<groupId>eu.scape-project</groupId>
-	<artifactId>scout</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
-	<description>Scout is a monitor component as defined in the SCAPE project</description>
-	<name>Scout</name>
-	<url>http://www.opf-labs.org/maven/bamboo/scape-pw/</url>
+  <groupId>eu.scape-project</groupId>
+  <artifactId>scout</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <description>Scout is a monitor component as defined in the SCAPE project</description>
+  <name>Scout</name>
+  <url>http://www.opf-labs.org/maven/bamboo/scape-pw/</url>
 
-	<licenses>
-		<license>
-			<name>The Apache Software License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-	<developers>
-		<developer>
-			<id>PP</id>
-			<name>Petar Petrov</name>
-			<email>petrov@ifs.tuwien.ac.at</email>
-			<organization>IMP, IFS, UT Vienna</organization>
-			<organizationUrl>http://ifs.tuwien.ac.at/imp</organizationUrl>
-		</developer>
-		<developer>
-			<id>KD</id>
-			<name>Kresimir Duretec</name>
-			<email>duretec@ifs.tuwien.ac.at</email>
-			<organization>IMP, IFS, UT Vienna</organization>
-			<organizationUrl>http://ifs.tuwien.ac.at/imp</organizationUrl>
-		</developer>
-		<developer>
-			<id>LF</id>
-			<name>Luis Faria</name>
-			<email>lfaria@keep.pt</email>
-			<organization>KEEP Solutions</organization>
-			<organizationUrl>http://www.keep.pt/</organizationUrl>
-		</developer>
-	</developers>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>PP</id>
+      <name>Petar Petrov</name>
+      <email>petrov@ifs.tuwien.ac.at</email>
+      <organization>IMP, IFS, UT Vienna</organization>
+      <organizationUrl>http://ifs.tuwien.ac.at/imp</organizationUrl>
+    </developer>
+    <developer>
+      <id>KD</id>
+      <name>Kresimir Duretec</name>
+      <email>duretec@ifs.tuwien.ac.at</email>
+      <organization>IMP, IFS, UT Vienna</organization>
+      <organizationUrl>http://ifs.tuwien.ac.at/imp</organizationUrl>
+    </developer>
+    <developer>
+      <id>LF</id>
+      <name>Luis Faria</name>
+      <email>lfaria@keep.pt</email>
+      <organization>KEEP Solutions</organization>
+      <organizationUrl>http://www.keep.pt/</organizationUrl>
+    </developer>
+  </developers>
 
-	<scm>
-		<connection>scm:git:git@github.com:openplanets/scape-pw.git</connection>
-		<developerConnection>scm:git:git@github.com:openplanets/scape-pw.git</developerConnection>
-		<url>git@github.com:openplanets/scape-pw.git</url>
-	</scm>
+  <scm>
+    <connection>scm:git:git@github.com:openplanets/scape-pw.git</connection>
+    <developerConnection>scm:git:git@github.com:openplanets/scape-pw.git</developerConnection>
+    <url>git@github.com:openplanets/scape-pw.git</url>
+  </scm>
 
-	<modules>
-		<module>web</module>
-		<module>adaptors</module>
-		<module>core</module>
-		<module>model</module>
-	</modules>
+  <modules>
+    <module>web</module>
+    <module>adaptors</module>
+    <module>core</module>
+    <module>model</module>
+  </modules>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jdk.version>1.6</jdk.version>
-	</properties>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jdk.version>1.6</jdk.version>
+  </properties>
 
-	<repositories>
-		<repository>
-			<id>jboss</id>
-			<url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
-		</repository>
-		<repository>
-			<id>KEEP Artifacts</id>
-			<name>KEEP Artifacts-releases</name>
-			<url>http://artifactory.keep.pt/keep</url>
-		</repository>
-		<repository>
-			<id>apache-repo-releases</id>
-			<url>https://repository.apache.org/content/repositories/releases/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-		<repository>
-			<id>apache-repo-snapshots</id>
-			<url>https://repository.apache.org/content/repositories/snapshots/</url>
-		</repository>
-	</repositories>
+  <repositories>
+    <repository>
+      <id>jboss</id>
+      <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+    </repository>
+    <repository>
+      <id>KEEP Artifacts</id>
+      <name>KEEP Artifacts-releases</name>
+      <url>http://artifactory.keep.pt/keep</url>
+    </repository>
+    <repository>
+      <id>apache-repo-releases</id>
+      <url>https://repository.apache.org/content/repositories/releases/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </repository>
+    <repository>
+      <id>apache-repo-snapshots</id>
+      <url>https://repository.apache.org/content/repositories/snapshots/</url>
+    </repository>
+  </repositories>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<source>${jdk.version}</source>
-					<target>${jdk.version}</target>
-				</configuration>
-			</plugin>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+          <source>${jdk.version}</source>
+          <target>${jdk.version}</target>
+        </configuration>
+      </plugin>
 
-			<plugin>
-				<artifactId>maven-site-plugin</artifactId>
-				<version>3.0</version>
-				<configuration>
-					<attach>true</attach>
-					<reportPlugins>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-project-info-reports-plugin</artifactId>
-							<version>2.4</version>
-							<configuration>
-								<dependencyDetailsEnabled>false</dependencyDetailsEnabled>
-								<dependencyLocationsEnabled>false</dependencyLocationsEnabled>
-							</configuration>
-							<!-- simpler configuration without reportSets available for usual 
-								cases -->
-							<!-- distribution-management, index, dependencies, help, issue-tracking, 
-								plugins, cim, license, dependency-management, mailing-list, project-team, 
-								dependency-convergence, scm, plugin-management, modules, summary -->
-							<reports>
-								<report>index</report>
-								<report>summary</report>
-								<report>license</report>
-								<report>dependencies</report>
-								<report>plugins</report>
-								<report>project-team</report>
-								<report>issue-tracking</report>
-								<report>scm</report>
-								<report>cim</report>
-								<report>modules</report>
-							</reports>
-						</plugin>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-checkstyle-plugin</artifactId>
-							<version>2.9.1</version>
-							<configuration>
-								<configLocation>code-style/checkstyle.xml</configLocation>
-								<failsOnError>false</failsOnError>
-								<enableRulesSummary>true</enableRulesSummary>
-								<includeTestSourceDirectory>false</includeTestSourceDirectory>
-							</configuration>
-						</plugin>
-						<plugin>
-							<groupId>org.codehaus.mojo</groupId>
-							<artifactId>findbugs-maven-plugin</artifactId>
-							<configuration>
-								<xmlOutput>true</xmlOutput>
-								<failsOnError>false</failsOnError>
-							</configuration>
-						</plugin>
-						<plugin>
-							<groupId>org.codehaus.mojo</groupId>
-							<artifactId>cobertura-maven-plugin</artifactId>
-							<version>2.5.1</version>
-						</plugin>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-pmd-plugin</artifactId>
-							<version>2.7.1</version>
-							<configuration>
-								<linkXref>true</linkXref>
-								<sourceEncoding>utf-8</sourceEncoding>
-								<minimumTokens>100</minimumTokens>
-								<targetJdk>1.6</targetJdk>
-							</configuration>
-						</plugin>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-javadoc-plugin</artifactId>
-							<configuration>
-								<failOnError>false</failOnError>
-							</configuration>
-						</plugin>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-jxr-plugin</artifactId>
-							<version>2.3</version>
-							<!-- <executions>
-								<execution>
-									<id>index</id>
-									<phase>process-resources</phase>
-								</execution>
-							</executions> -->
-						</plugin>
-					</reportPlugins>
-					<attach>true</attach>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+      <plugin>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.0</version>
+        <configuration>
+          <attach>true</attach>
+          <reportPlugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-project-info-reports-plugin</artifactId>
+              <version>2.4</version>
+              <configuration>
+                <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
+                <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+              </configuration>
+              <!-- simpler configuration without reportSets available for usual cases -->
+              <!-- distribution-management, index, dependencies, help, issue-tracking, plugins, cim, license, dependency-management, 
+                mailing-list, project-team, dependency-convergence, scm, plugin-management, modules, summary -->
+              <reports>
+                <report>index</report>
+                <report>summary</report>
+                <report>license</report>
+                <report>dependencies</report>
+                <report>plugins</report>
+                <report>project-team</report>
+                <report>issue-tracking</report>
+                <report>scm</report>
+                <report>cim</report>
+                <report>modules</report>
+              </reports>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-checkstyle-plugin</artifactId>
+              <version>2.9.1</version>
+              <configuration>
+                <configLocation>code-style/checkstyle.xml</configLocation>
+                <failsOnError>false</failsOnError>
+                <enableRulesSummary>true</enableRulesSummary>
+                <includeTestSourceDirectory>false</includeTestSourceDirectory>
+              </configuration>
+            </plugin>
+            <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>findbugs-maven-plugin</artifactId>
+              <configuration>
+                <xmlOutput>true</xmlOutput>
+                <failsOnError>false</failsOnError>
+              </configuration>
+            </plugin>
+            <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>cobertura-maven-plugin</artifactId>
+              <version>2.5.1</version>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-pmd-plugin</artifactId>
+              <version>2.7.1</version>
+              <configuration>
+                <linkXref>true</linkXref>
+                <sourceEncoding>utf-8</sourceEncoding>
+                <minimumTokens>100</minimumTokens>
+                <targetJdk>1.6</targetJdk>
+              </configuration>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-javadoc-plugin</artifactId>
+              <configuration>
+                <failOnError>false</failOnError>
+              </configuration>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-jxr-plugin</artifactId>
+              <version>2.3</version>
+              <!-- <executions> <execution> <id>index</id> <phase>process-resources</phase> </execution> </executions> -->
+            </plugin>
+          </reportPlugins>
+          <attach>true</attach>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
-	<reporting>
-		<plugins>
+  <reporting>
+    <plugins>
 
-		</plugins>
-	</reporting>
+    </plugins>
+  </reporting>
 
-	<profiles>
-		<profile>
-			<id>profile-bamboo-ci</id>
-			<distributionManagement>
-				<site>
-					<id>opf.labs.local.site</id>
-					<name>OPF Labs Maven Local Website</name>
-					<url>file:///var/www/maven/bamboo/scape-pw</url>
-				</site>
-			</distributionManagement>
-		</profile>
-	</profiles>
+  <profiles>
+    <profile>
+      <id>profile-bamboo-ci</id>
+      <distributionManagement>
+        <site>
+          <id>opf.labs.local.site</id>
+          <name>OPF Labs Maven Local Website</name>
+          <url>file:///var/www/maven/bamboo/scape-pw</url>
+        </site>
+      </distributionManagement>
+    </profile>
+  </profiles>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>4.8.2</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.mockito</groupId>
-				<artifactId>mockito-all</artifactId>
-				<version>1.9.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>1.6.1</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-log4j12</artifactId>
-				<version>1.6.1</version>
-			</dependency>
-			<dependency>
-				<groupId>com.clarkparsia</groupId>
-				<artifactId>Empire-fourstore</artifactId>
-				<version>0.7</version>
-				<exclusions>
-					<exclusion>
-						<groupId>org.slf4j</groupId>
-						<artifactId>slf4j-jdk14</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.8.2</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-all</artifactId>
+        <version>1.9.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>1.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>1.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>com.clarkparsia</groupId>
+        <artifactId>Empire-fourstore</artifactId>
+        <version>0.7</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
 </project>

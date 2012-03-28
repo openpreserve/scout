@@ -1,12 +1,24 @@
 package eu.scape_project.watch.listener;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import eu.scape_project.watch.dao.AsyncRequestDAO;
 import eu.scape_project.watch.domain.AsyncRequest;
+import eu.scape_project.watch.domain.Entity;
+import eu.scape_project.watch.domain.EntityType;
+import eu.scape_project.watch.domain.Notification;
+import eu.scape_project.watch.domain.Property;
+import eu.scape_project.watch.domain.Question;
+import eu.scape_project.watch.domain.RequestTarget;
+import eu.scape_project.watch.domain.Trigger;
 import eu.scape_project.watch.interfaces.MonitorInterface;
 import eu.scape_project.watch.monitor.CentralMonitor;
 import eu.scape_project.watch.monitor.CollectionProfilerMonitor;
@@ -50,14 +62,29 @@ public class ApplicationStartupListener implements ServletContextListener {
     final MonitorInterface monitor = new CollectionProfilerMonitor();
 
     CentralMonitor cm = new CentralMonitor();
+    cm.registerToAsyncRequest(AsyncRequestDAO.getInstance());
     
     componentContainer.setCoreScheduler(new CoreScheduler());
     componentContainer.setCentralMonitor(cm);
     componentContainer.setAdaptorLoader(new AdaptorLoader());
     componentContainer.addMonitor(monitor);
 
+    
+    EntityType et = new EntityType("CollectionProfile","");
+    Property prop = new Property(et, "size", "");
+    Entity ent = new Entity(et, "collection-a");
+    Question question1 = new Question("?s watch:type watch-EntityType:tools", RequestTarget.PROPERTY_VALUE,
+      Arrays.asList(et), Arrays.asList(prop), Arrays.asList(ent), 60);
+    Map<String, String> not1config = new HashMap<String, String>();
+    not1config.put("to", "lfaria@keep.pt");
+    not1config.put("subject", "New tools");
+    Notification notification1 = new Notification("log", not1config);
+
+    final Trigger trigger1 = new Trigger(question1, Arrays.asList(notification1), null);
+    
     AsyncRequest asRe = new AsyncRequest();
-    cm.onUpdated(asRe);
+    asRe.addTrigger(trigger1);
+    AsyncRequestDAO.getInstance().save(asRe);
     
     componentContainer.init();
 

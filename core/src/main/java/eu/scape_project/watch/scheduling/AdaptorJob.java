@@ -6,16 +6,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import eu.scape_project.watch.interfaces.AdaptorJobInterface;
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
 import eu.scape_project.watch.plugin.PluginManager;
 import eu.scape_project.watch.utils.exceptions.InvalidParameterException;
 import eu.scape_project.watch.utils.exceptions.PluginException;
-
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public abstract class AdaptorJob implements AdaptorJobInterface {
 

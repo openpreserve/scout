@@ -19,9 +19,9 @@ public class CentralMonitor implements DOListener {
   private List<MonitorInterface> monitors;
 
   private List<AsyncRequest> aRequests;
-  
-  private AsyncRequestDAO asyncRequestDAO; 
-  
+
+  private AsyncRequestDAO asyncRequestDAO;
+
   public CentralMonitor() {
     monitors = new ArrayList<MonitorInterface>();
     aRequests = new ArrayList<AsyncRequest>();
@@ -38,23 +38,48 @@ public class CentralMonitor implements DOListener {
     asyncRequestDAO.addDOListener(this);
     LOG.info("CentralMonitor listening AsyncRequestDAO");
   }
-  
-  
+
   public void notifyAsyncRequests(List<String> ids) {
-    LOG.info("Notifying watch requests " + ids);
+    
+    for (String uuid : ids){
+      AsyncRequest tmp = findAsyncRequest(uuid);
+      assessRequest(tmp);
+    }
   }
-  
+
   @Override
   public void onUpdated(RdfBean object) {
+    LOG.info("adding Request to monitors");
     AsyncRequest req = (AsyncRequest) object;
-    aRequests.add(req);
-    for (MonitorInterface monitor : monitors) {
-      monitor.addWatchRequest(req);
+    if (!aRequests.contains(req)){
+      aRequests.add(req);
+      for (MonitorInterface monitor : monitors) {
+        monitor.addWatchRequest(req);
+      }
     }
   }
 
   @Override
   public void onRemoved(RdfBean object) {
     aRequests.remove(object);
+  }
+
+  private AsyncRequest findAsyncRequest(String uuid) {
+
+    for (AsyncRequest i : aRequests) {
+      if (i.getId().equals(uuid))
+        return i;
+    }
+    
+    return null;
+    
+  }
+  
+  private void assessRequest(AsyncRequest aRequest) {
+   LOG.info("Assessing AsyncRequest "+aRequest.getId());
+  }
+  
+  private void notify(AsyncRequest aRequest) {
+    
   }
 }

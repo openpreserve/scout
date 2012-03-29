@@ -22,6 +22,8 @@ import eu.scape_project.watch.domain.Trigger;
 import eu.scape_project.watch.interfaces.MonitorInterface;
 import eu.scape_project.watch.monitor.CentralMonitor;
 import eu.scape_project.watch.monitor.CollectionProfilerMonitor;
+import eu.scape_project.watch.notification.LogNotificationAdaptor;
+import eu.scape_project.watch.notification.NotificationService;
 import eu.scape_project.watch.scheduling.CoreScheduler;
 import eu.scape_project.watch.utils.AdaptorLoader;
 import eu.scape_project.watch.utils.ComponentContainer;
@@ -69,6 +71,7 @@ public class ApplicationStartupListener implements ServletContextListener {
     componentContainer.setAdaptorLoader(new AdaptorLoader());
     componentContainer.addMonitor(monitor);
 
+    NotificationService.getInstance().addAdaptor(new LogNotificationAdaptor());
     saveTestRequest();
 
     componentContainer.init();
@@ -95,12 +98,12 @@ public class ApplicationStartupListener implements ServletContextListener {
   private void saveTestRequest() {
     EntityType et = new EntityType("CollectionProfile","");
     Property prop = new Property(et, "size", "");
-    Entity ent = new Entity(et, "collection-a");
-    Question question1 = new Question("?s watch:type watch-EntityType:tools", RequestTarget.PROPERTY_VALUE,
+    Entity ent = new Entity(et, "coll-0-test");
+    Question question1 = new Question("?s watch:property ?x . ?x watch:name \"cp.collection.size\"^^xsd:string . ?s watch:value ?y  FILTER(xsd:integer(?y) > 10000000) ", RequestTarget.PROPERTY_VALUE,
       Arrays.asList(et), Arrays.asList(prop), Arrays.asList(ent), 60);
     Map<String, String> not1config = new HashMap<String, String>();
     not1config.put("to", "lfaria@keep.pt");
-    not1config.put("subject", "New tools");
+    not1config.put("subject", "SCOUT - WARNING : Collection is over 10 000 000 ");
     Notification notification1 = new Notification("log", not1config);
 
     final Trigger trigger1 = new Trigger(question1, Arrays.asList(notification1), null);

@@ -772,6 +772,15 @@ public class KBTest {
     // List<PropertyValue> results5 = (List<PropertyValue>)
     // RequestDAO.getInstance().query(target5, query5, 0, 100);
     // Assert.assertTrue(results5.contains(pv2));
+
+    // DELETE
+    type.delete();
+    entity.delete();
+    property.delete();
+    property2.delete();
+    pv.delete();
+    pv2.delete();
+
   }
 
 }

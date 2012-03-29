@@ -49,8 +49,8 @@ public class CentralMonitor implements DOListener {
 
   @Override
   public void onUpdated(RdfBean object) {
-    LOG.info("adding Request to monitors");
     AsyncRequest req = (AsyncRequest) object;
+    LOG.info("adding Request to monitors " + req.getId());
     if (!aRequests.contains(req)){
       aRequests.add(req);
       for (MonitorInterface monitor : monitors) {

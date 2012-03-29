@@ -1,27 +1,40 @@
 package eu.scape_project.watch.model;
 
-import eu.scape_project.watch.dao.EntityDAO;
-import eu.scape_project.watch.dao.EntityTypeDAO;
-import eu.scape_project.watch.dao.PropertyDAO;
-import eu.scape_project.watch.dao.PropertyValueDAO;
-import eu.scape_project.watch.domain.Entity;
-import eu.scape_project.watch.domain.EntityType;
-import eu.scape_project.watch.domain.Property;
-import eu.scape_project.watch.domain.PropertyValue;
-import eu.scape_project.watch.utils.KBUtils;
-
 import java.io.File;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import junit.framework.Assert;
+
 import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import thewebsemantic.binding.Jenabean;
+import eu.scape_project.watch.dao.AsyncRequestDAO;
+import eu.scape_project.watch.dao.DOListener;
+import eu.scape_project.watch.dao.EntityDAO;
+import eu.scape_project.watch.dao.EntityTypeDAO;
+import eu.scape_project.watch.dao.PropertyDAO;
+import eu.scape_project.watch.dao.PropertyValueDAO;
+import eu.scape_project.watch.dao.RequestDAO;
+import eu.scape_project.watch.domain.AsyncRequest;
+import eu.scape_project.watch.domain.Entity;
+import eu.scape_project.watch.domain.EntityType;
+import eu.scape_project.watch.domain.Notification;
+import eu.scape_project.watch.domain.Plan;
+import eu.scape_project.watch.domain.Property;
+import eu.scape_project.watch.domain.PropertyValue;
+import eu.scape_project.watch.domain.Question;
+import eu.scape_project.watch.domain.RequestTarget;
+import eu.scape_project.watch.domain.Trigger;
+import eu.scape_project.watch.utils.KBUtils;
 
 /**
  * 
@@ -128,6 +141,32 @@ public class KBTest {
 
   }
 
+  /**
+   * Test Entity Type CRUD listeners.
+   */
+  @Test
+  public void testEntityTypeListeners() {
+
+    @SuppressWarnings("unchecked")
+    DOListener<EntityType> mockDOListener = Mockito.mock(DOListener.class);
+
+    EntityTypeDAO.getInstance().addDOListener(mockDOListener);
+
+    EntityType type1 = new EntityType("test1", "this is a test");
+    EntityType type2 = new EntityType("test2", "this is another test");
+
+    EntityTypeDAO.getInstance().save(type1, type2);
+    Mockito.verify(mockDOListener).onUpdated(type1);
+    Mockito.verify(mockDOListener).onUpdated(type2);
+
+    EntityTypeDAO.getInstance().delete(type1, type2);
+    Mockito.verify(mockDOListener).onRemoved(type1);
+    Mockito.verify(mockDOListener).onRemoved(type2);
+
+    EntityTypeDAO.getInstance().removeDOListener(mockDOListener);
+
+  }
+
   @Test
   public void testPropertyEquals() {
 
@@ -206,6 +245,27 @@ public class KBTest {
   }
 
   @Test
+  public void testPropertyListings() {
+
+    // CREATE
+    final EntityType type = new EntityType();
+    type.setName("tests");
+    type.setDescription("Test entities");
+
+    final Property property = new Property(type, "property1", "property description");
+
+    type.save();
+    property.save();
+
+    Collection<Property> properties1 = PropertyDAO.getInstance().listWithType(type.getName(), 0, 100);
+    Assert.assertTrue(properties1.contains(property));
+
+    // DELETE
+    type.delete();
+    property.delete();
+  }
+
+  @Test
   public void testEntityEquals() {
 
     final String typename = "typename";
@@ -279,6 +339,30 @@ public class KBTest {
   }
 
   @Test
+  public void testEntityListings() {
+
+    // CREATE
+    final EntityType type = new EntityType();
+    type.setName("tests");
+    type.setDescription("Test entities");
+
+    final Entity entity = new Entity(type, "entity1");
+
+    type.save();
+    entity.save();
+
+    Collection<Entity> entities1 = EntityDAO.getInstance().listWithType(type.getName(), 0, 100);
+    Assert.assertTrue(entities1.contains(entity));
+
+    Collection<Entity> entities2 = EntityDAO.getInstance().listWithType("", 0, 100);
+    Assert.assertTrue(entities2.contains(entity));
+
+    // DELETE
+    type.delete();
+    entity.delete();
+  }
+
+  @Test
   public void testPropertyValueEquals() {
 
     final String typeName = "typename";
@@ -307,7 +391,7 @@ public class KBTest {
   }
 
   /**
-   * Test Entity CRUD operations.
+   * Test PropertyValue CRUD operations.
    */
   @Test
   public void testPropertyValueCRUD() {
@@ -369,4 +453,246 @@ public class KBTest {
     Assert.assertEquals(0, count2);
   }
 
+  @Test
+  public void testPropertyValueListings() {
+    // CREATE
+    final EntityType type = new EntityType();
+    type.setName("tests");
+    type.setDescription("Test entities");
+
+    final Entity entity = new Entity(type, "entity1");
+    final Property property = new Property(type, "property1", "property description");
+
+    final PropertyValue pv = new PropertyValue(entity, property, "123");
+
+    type.save();
+    entity.save();
+    property.save();
+    pv.save();
+
+    Collection<PropertyValue> pvs1 = PropertyValueDAO.getInstance().listWithEntity(entity.getName(), 0, 100);
+    Assert.assertTrue(pvs1.contains(pv));
+
+    Collection<PropertyValue> pvs2 = PropertyValueDAO.getInstance().listWithProperty(type.getName(),
+      property.getName(), 0, 100);
+    Assert.assertTrue(pvs2.contains(pv));
+
+    Collection<PropertyValue> pvs3 = PropertyValueDAO.getInstance().listWithEntityAndProperty(entity.getName(),
+      type.getName(), property.getName(), 0, 100);
+    Assert.assertTrue(pvs3.contains(pv));
+
+    // DELETE
+    type.delete();
+    entity.delete();
+    property.delete();
+    pv.delete();
+
+  }
+
+  @Test
+  public void testAsyncRequestEquals() {
+
+    // CREATE DATA
+    final EntityType type = new EntityType();
+    type.setName("tests");
+    type.setDescription("Test entities");
+
+    final Entity entity = new Entity(type, "entity1");
+    final Property property = new Property(type, "property1", "property description");
+
+    type.save();
+    entity.save();
+    property.save();
+
+    // CREATE ASYNC REQUEST
+    String sparql = "?s watch:entity watch-Entity:" + entity.getName() + ". ?s watch:property watch-Property:"
+      + Property.createId(type.getName(), property.getName() + ". FILTER(?s < 200)");
+    RequestTarget target = RequestTarget.PROPERTY_VALUE;
+    List<EntityType> types = Arrays.asList(type);
+    List<Property> properties = Arrays.asList(property);
+    List<Entity> entities = Arrays.asList(entity);
+    long period = 30000;
+
+    Question question = new Question(sparql, target, types, properties, entities, period);
+    Notification notification = new Notification("test", new HashMap<String, String>());
+    List<Notification> notifications = Arrays.asList(notification);
+    Plan plan = null;
+
+    Trigger trigger1 = new Trigger(question, notifications, plan);
+    List<Trigger> triggers = Arrays.asList(trigger1);
+
+    AsyncRequest arequest1 = new AsyncRequest(triggers);
+
+    // CASCADE SAVE
+    AsyncRequest arequest2 = AsyncRequestDAO.getInstance().save(arequest1);
+
+    // Test saved
+    Assert.assertTrue(arequest1.equals(arequest2));
+
+    // Test found
+    final AsyncRequest arequest3 = AsyncRequestDAO.getInstance().findById(arequest1.getId());
+
+    Assert.assertTrue(question.equals(arequest3.getTriggers().get(0).getQuestion()));
+    Assert.assertTrue(notification.equals(arequest3.getTriggers().get(0).getNotifications().get(0)));
+    Assert.assertNull(arequest3.getTriggers().get(0).getPlan());
+    Assert.assertTrue(trigger1.equals(arequest3.getTriggers().get(0)));
+    Assert.assertTrue(arequest1.equals(arequest3));
+
+    // DELETE
+    type.save();
+    entity.save();
+    property.save();
+
+    // CASCADE DELETE
+    AsyncRequestDAO.getInstance().delete(arequest1);
+
+  }
+
+  /**
+   * Test Entity CRUD operations.
+   */
+  @Test
+  public void testAsyncRequestCRUD() {
+
+    // CREATE DATA
+    final EntityType type = new EntityType();
+    type.setName("tests");
+    type.setDescription("Test entities");
+
+    final Entity entity = new Entity(type, "entity1");
+    final Property property = new Property(type, "property1", "property description");
+
+    final PropertyValue pv = new PropertyValue(entity, property, "123");
+
+    type.save();
+    entity.save();
+    property.save();
+    pv.save();
+
+    // CREATE ASYNC REQUEST
+    String sparql = "?s watch:entity watch-Entity:" + entity.getName() + ". ?s watch:property watch-Property:"
+      + Property.createId(type.getName(), property.getName() + ". FILTER(?s < 200)");
+    RequestTarget target = RequestTarget.PROPERTY_VALUE;
+    List<EntityType> types = Arrays.asList(type);
+    List<Property> properties = Arrays.asList(property);
+    List<Entity> entities = Arrays.asList(entity);
+    long period = 30000;
+
+    Question question = new Question(sparql, target, types, properties, entities, period);
+    Notification notification = new Notification("test", new HashMap<String, String>());
+    List<Notification> notifications = Arrays.asList(notification);
+    Plan plan = null;
+
+    Trigger trigger = new Trigger(question, notifications, plan);
+    List<Trigger> triggers = Arrays.asList(trigger);
+
+    AsyncRequest arequest = new AsyncRequest(triggers);
+
+    // CASCADE SAVE
+    AsyncRequestDAO.getInstance().save(arequest);
+
+    // List
+    final Collection<AsyncRequest> arequests = AsyncRequestDAO.getInstance().list(0, 100);
+    Assert.assertTrue(arequests.contains(arequest));
+
+    // QUERY
+    final List<AsyncRequest> arequests2 = AsyncRequestDAO.getInstance().query("", 0, 100);
+    Assert.assertTrue(arequests2.contains(arequest));
+
+    // FIND
+    final AsyncRequest arequest2 = AsyncRequestDAO.getInstance().findById(arequest.getId());
+
+    Assert.assertNotNull(arequest2);
+    Assert.assertEquals(arequest, arequest2);
+
+    // COUNT
+    int count = AsyncRequestDAO.getInstance().count("");
+    Assert.assertEquals(1, count);
+
+    // DELETE
+    type.save();
+    entity.save();
+    property.save();
+    pv.save();
+
+    // CASCADE DELETE
+    AsyncRequestDAO.getInstance().delete(arequest);
+
+    // LIST AGAIN
+    final Collection<AsyncRequest> arequests3 = AsyncRequestDAO.getInstance().list(0, 100);
+    Assert.assertFalse(arequests3.contains(arequest));
+
+    // QUERY AGAIN
+    final List<AsyncRequest> arequests4 = AsyncRequestDAO.getInstance().query("", 0, 100);
+    Assert.assertFalse(arequests4.contains(arequest));
+
+    // FIND AGAIN
+    final AsyncRequest arequest3 = AsyncRequestDAO.getInstance().findById(arequest.getId());
+    Assert.assertNull(arequest3);
+
+    // COUNT AGAIN
+    int count2 = AsyncRequestDAO.getInstance().count("");
+    Assert.assertEquals(0, count2);
+  }
+
+  @Test
+  public void testRequest() {
+
+    // CREATE DATA
+    final EntityType type = new EntityType();
+    type.setName("tests");
+    type.setDescription("Test entities");
+
+    final Entity entity = new Entity(type, "entity1");
+    final Property property = new Property(type, "property1", "property description");
+
+    final PropertyValue pv = new PropertyValue(entity, property, "123");
+
+    type.save();
+    entity.save();
+    property.save();
+    pv.save();
+
+    // MAKE ENTITY TYPE REQUEST
+    String query1 = EntityDAO.getEntityRDFId(entity.getName()) + " watch:type ?s";
+    RequestTarget target1 = RequestTarget.ENTITY_TYPE;
+    @SuppressWarnings("unchecked")
+    List<PropertyValue> results1 = (List<PropertyValue>) RequestDAO.getInstance().query(target1, query1, 0, 100);
+    Assert.assertTrue(results1.contains(type));
+
+    // MAKE PROPERTY REQUEST
+    String query2 = "?s watch:type watch-EntityType:" + type.getName();
+    RequestTarget target2 = RequestTarget.PROPERTY;
+    @SuppressWarnings("unchecked")
+    List<PropertyValue> results2 = (List<PropertyValue>) RequestDAO.getInstance().query(target2, query2, 0, 100);
+    Assert.assertTrue(results2.contains(property));
+
+    // MAKE ENTITY REQUEST
+    String query3 = "?s watch:type watch-EntityType:" + type.getName();
+    RequestTarget target3 = RequestTarget.ENTITY;
+    @SuppressWarnings("unchecked")
+    List<PropertyValue> results3 = (List<PropertyValue>) RequestDAO.getInstance().query(target3, query3, 0, 100);
+    Assert.assertTrue(results3.contains(entity));
+
+    // MAKE PROPERTY VALUE REQUEST
+    String query4 = "?s watch:entity " + EntityDAO.getEntityRDFId(entity.getName()) + " . ?s watch:property "
+      + PropertyDAO.getPropertyRDFId(type.getName(), property.getName());
+    // TODO test " . FILTER(?s < 200)";
+    RequestTarget target4 = RequestTarget.PROPERTY_VALUE;
+
+    @SuppressWarnings("unchecked")
+    List<PropertyValue> results4 = (List<PropertyValue>) RequestDAO.getInstance().query(target4, query4, 0, 100);
+    Assert.assertTrue(results4.contains(pv));
+  }
+
+  @Test 
+  public void testOnUpdateCalledOnce() {
+    
+    DOListener mockListener = Mockito.mock(DOListener.class);
+    AsyncRequestDAO.getInstance().addDOListener(mockListener);
+    AsyncRequest request = new AsyncRequest();
+    AsyncRequestDAO.getInstance().save(request);
+    Mockito.verify(mockListener, Mockito.times(1)).onUpdated(request);
+    
+  }
 }

@@ -69,26 +69,12 @@ public class ApplicationStartupListener implements ServletContextListener {
     componentContainer.setAdaptorLoader(new AdaptorLoader());
     componentContainer.addMonitor(monitor);
 
-    
-    EntityType et = new EntityType("CollectionProfile","");
-    Property prop = new Property(et, "size", "");
-    Entity ent = new Entity(et, "collection-a");
-    Question question1 = new Question("?s watch:type watch-EntityType:tools", RequestTarget.PROPERTY_VALUE,
-      Arrays.asList(et), Arrays.asList(prop), Arrays.asList(ent), 60);
-    Map<String, String> not1config = new HashMap<String, String>();
-    not1config.put("to", "lfaria@keep.pt");
-    not1config.put("subject", "New tools");
-    Notification notification1 = new Notification("log", not1config);
+    saveTestRequest();
 
-    final Trigger trigger1 = new Trigger(question1, Arrays.asList(notification1), null);
-    
-    AsyncRequest asRe = new AsyncRequest();
-    asRe.addTrigger(trigger1);
-    AsyncRequestDAO.getInstance().save(asRe);
-    
     componentContainer.init();
 
     sce.getServletContext().setAttribute(COMPONENT_CONTAINER, componentContainer);
+    
   }
 
   /**
@@ -105,4 +91,22 @@ public class ApplicationStartupListener implements ServletContextListener {
     KBUtils.dbConnect(datafolder, initdata);
   }
 
+  
+  private void saveTestRequest() {
+    EntityType et = new EntityType("CollectionProfile","");
+    Property prop = new Property(et, "size", "");
+    Entity ent = new Entity(et, "collection-a");
+    Question question1 = new Question("?s watch:type watch-EntityType:tools", RequestTarget.PROPERTY_VALUE,
+      Arrays.asList(et), Arrays.asList(prop), Arrays.asList(ent), 60);
+    Map<String, String> not1config = new HashMap<String, String>();
+    not1config.put("to", "lfaria@keep.pt");
+    not1config.put("subject", "New tools");
+    Notification notification1 = new Notification("log", not1config);
+
+    final Trigger trigger1 = new Trigger(question1, Arrays.asList(notification1), null);
+    
+    AsyncRequest asRe = new AsyncRequest();
+    asRe.addTrigger(trigger1);
+    AsyncRequestDAO.getInstance().save(asRe);
+  }
 }

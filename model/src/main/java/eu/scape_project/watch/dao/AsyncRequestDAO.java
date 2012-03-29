@@ -129,7 +129,6 @@ public final class AsyncRequestDAO extends AbstractDO<AsyncRequest> {
     }
 
     request.save();
-    fireOnUpdated(request);
     return request;
   }
 

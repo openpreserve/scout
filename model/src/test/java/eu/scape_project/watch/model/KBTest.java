@@ -695,6 +695,18 @@ public class KBTest {
   }
 
   @Test
+  public void testAsyncRequestListeners() {
+
+    @SuppressWarnings("unchecked")
+    DOListener<AsyncRequest> mockListener = Mockito.mock(DOListener.class);
+    AsyncRequestDAO.getInstance().addDOListener(mockListener);
+    AsyncRequest request = new AsyncRequest();
+    AsyncRequestDAO.getInstance().save(request);
+    Mockito.verify(mockListener).onUpdated(request);
+
+  }
+
+  @Test
   public void testRequest() {
 
     // CREATE DATA

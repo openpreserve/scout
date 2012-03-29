@@ -40,7 +40,6 @@ import org.slf4j.LoggerFactory;
 import thewebsemantic.binding.Jenabean;
 import thewebsemantic.binding.RdfBean;
 
-
 /**
  * A utility class that holds some constants for the RDF schema and provides
  * some static utility methods.
@@ -174,7 +173,7 @@ public final class KBUtils {
    * A key-value pair entry constant.
    */
   public static final String ENTRY = "entry";
-  
+
   /**
    * A key-value pair item constant.
    */
@@ -278,6 +277,7 @@ public final class KBUtils {
           oinfo = "'" + o.asLiteral() + "'";
         }
         LOG.debug("({}, {}, {})", new Object[] {sinfo, pinfo, oinfo});
+        System.out.println(String.format("(%1$s,%2$s,%3$s)", sinfo, pinfo, oinfo));
       }
     } catch (final Throwable e) {
       LOG.info(e.getMessage());
@@ -285,7 +285,7 @@ public final class KBUtils {
       statements.close();
     }
   }
-  
+
   public static void dbConnect(String datafolder, boolean testdata) {
     LOG.info("DB Connect");
     final File dataFolderFile = new File(datafolder);
@@ -315,7 +315,7 @@ public final class KBUtils {
     TDB.sync(Jenabean.instance().model());
     Jenabean.instance().model().close();
   }
-  
+
   /**
    * Creates some initial data.
    */

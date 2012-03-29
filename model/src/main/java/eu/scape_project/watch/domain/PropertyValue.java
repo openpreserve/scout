@@ -1,6 +1,7 @@
 package eu.scape_project.watch.domain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -39,6 +40,10 @@ public class PropertyValue extends RdfBean<PropertyValue> {
 
   /**
    * The value of the related {@link Property} for the related {@link Entity}.
+   * 
+   * Should support the following data types: java.lang.String,
+   * java.lang.Integer, java.lang.Long, java.lang.Double, java.lang.Float and
+   * java.net.URI
    */
   @XmlElement
   private String value;
@@ -220,6 +225,12 @@ public class PropertyValue extends RdfBean<PropertyValue> {
    */
   public static String createId(final String entityName, final String propertyName) {
     return entityName + "/" + propertyName;
+  }
+
+  @Override
+  public String toString() {
+    return "PropertyValue [id=" + id + ", value=" + value + ", values=" + Arrays.toString(values.toArray()) + ", entity=" + entity + ", property="
+      + property + "]";
   }
 
 }

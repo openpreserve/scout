@@ -22,11 +22,11 @@ import eu.scape_project.watch.utils.KBUtils;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import junit.framework.Assert;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -35,7 +35,6 @@ import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thewebsemantic.binding.Jenabean;
-import thewebsemantic.binding.RdfBean;
 
 /**
  * 
@@ -403,51 +402,110 @@ public class KBTest {
     type.setDescription("Test entities");
 
     final Entity entity = new Entity(type, "entity1");
-    final Property property = new Property(type, "property1", "property description");
+    // final Property propertyInteger = new Property(type, "propertyInteger",
+    // "property description");
+    // final Property propertyLong = new Property(type, "propertyLong",
+    // "property description");
+    // final Property propertyDouble = new Property(type, "propertyDouble",
+    // "property description");
+    // final Property propertyFloat = new Property(type, "propertyFloat",
+    // "property description");
+    final Property propertyString = new Property(type, "propertyString", "property description");
+    // final Property propertyDate = new Property(type, "propertyDate",
+    // "property description");
 
-    final PropertyValue pv = new PropertyValue(entity, property, "123");
+    // final PropertyValue pvInteger = new PropertyValue(entity,
+    // propertyInteger, 123);
+    // final PropertyValue pvLong = new PropertyValue(entity, propertyLong,
+    // 123L);
+    // final PropertyValue pvDouble = new PropertyValue(entity, propertyDouble,
+    // 123D);
+    // final PropertyValue pvFloat = new PropertyValue(entity, propertyFloat,
+    // 123F);
+    final PropertyValue pvString = new PropertyValue(entity, propertyString, "123");
+    // Date now = new Date();
+    // final PropertyValue pvDate = new PropertyValue(entity, propertyDate,
+    // now);
 
     type.save();
     entity.save();
-    property.save();
-    pv.save();
+    // propertyInteger.save();
+    // propertyLong.save();
+    // propertyDouble.save();
+    // propertyFloat.save();
+    propertyString.save();
+    // propertyDate.save();
+    // pvInteger.save();
+    // pvLong.save();
+    // pvDouble.save();
+    // pvFloat.save();
+    pvString.save();
+    // pvDate.save();
 
     // List
     final Collection<PropertyValue> pvs = Jenabean.instance().reader().load(PropertyValue.class);
-    Assert.assertTrue(pvs.contains(pv));
+    System.out.println(pvString);
+    System.out.println(pvs);
+    // Assert.assertTrue(pvs.contains(pvInteger));
+    // Assert.assertTrue(pvs.contains(pvLong));
+    // Assert.assertTrue(pvs.contains(pvDouble));
+    // Assert.assertTrue(pvs.contains(pvFloat));
+    Assert.assertTrue(pvs.contains(pvString));
+    // Assert.assertTrue(pvs.contains(pvDate));
 
     // QUERY
     final List<PropertyValue> pvs2 = PropertyValueDAO.getInstance().query("", 0, 100);
 
-    Assert.assertTrue(pvs2.contains(pv));
+    // Assert.assertTrue(pvs2.contains(pvInteger));
+    // Assert.assertTrue(pvs.contains(pvLong));
+    // Assert.assertTrue(pvs.contains(pvDouble));
+    // Assert.assertTrue(pvs.contains(pvFloat));
+    Assert.assertTrue(pvs.contains(pvString));
+    // Assert.assertTrue(pvs.contains(pvDate));
 
     // FIND
-    final PropertyValue pv2 = PropertyValueDAO.getInstance().findByEntityAndName(entity.getName(), property.getName());
+    final PropertyValue pvString2 = PropertyValueDAO.getInstance().findByEntityAndName(entity.getName(),
+      propertyString.getName());
 
-    Assert.assertNotNull(pv2);
-    Assert.assertEquals(pv, pv2);
+    Assert.assertNotNull(pvString2);
+    Assert.assertEquals(pvString, pvString2);
+
+    // TODO find other types
 
     // COUNT
     int count = PropertyValueDAO.getInstance().count("");
     Assert.assertEquals(1, count);
 
     // DELETE
-    pv.delete();
+    // pvInteger.delete();
+    // pvLong.delete();
+    // pvDouble.delete();
+    // pvFloat.delete();
+    pvString.delete();
+    // pvDate.delete();
     entity.delete();
-    property.delete();
+    // propertyInteger.delete();
+    // propertyLong.delete();
+    // propertyDouble.delete();
+    // propertyFloat.delete();
+    propertyString.delete();
+    // propertyDate.delete();
     type.delete();
 
     // LIST AGAIN
     final Collection<PropertyValue> pvs3 = Jenabean.instance().reader().load(PropertyValue.class);
-    Assert.assertFalse(pvs3.contains(pv));
+    Assert.assertFalse(pvs3.contains(pvString));
 
     // QUERY AGAIN
     final List<PropertyValue> pvs4 = PropertyValueDAO.getInstance().query("", 0, 100);
-    Assert.assertFalse(pvs4.contains(pv));
+    Assert.assertFalse(pvs4.contains(pvString));
 
     // FIND AGAIN
-    final PropertyValue pv3 = PropertyValueDAO.getInstance().findByEntityAndName(entity.getName(), property.getName());
-    Assert.assertNull(pv3);
+    final PropertyValue pvInteger3 = PropertyValueDAO.getInstance().findByEntityAndName(entity.getName(),
+      propertyString.getName());
+    Assert.assertNull(pvInteger3);
+
+    // TODO test other types
 
     // COUNT AGAIN
     int count2 = PropertyValueDAO.getInstance().count("");
@@ -646,13 +704,17 @@ public class KBTest {
 
     final Entity entity = new Entity(type, "entity1");
     final Property property = new Property(type, "property1", "property description");
+    final Property property2 = new Property(type, "property2", "property description");
 
-    final PropertyValue pv = new PropertyValue(entity, property, "123");
+    final PropertyValue pv = new PropertyValue(entity, property, "image/tiff");
+    final PropertyValue pv2 = new PropertyValue(entity, property2, "123");
 
     type.save();
     entity.save();
     property.save();
+    property2.save();
     pv.save();
+    pv2.save();
 
     // MAKE ENTITY TYPE REQUEST
     String query1 = EntityDAO.getEntityRDFId(entity.getName()) + " watch:type ?s";
@@ -675,15 +737,29 @@ public class KBTest {
     List<PropertyValue> results3 = (List<PropertyValue>) RequestDAO.getInstance().query(target3, query3, 0, 100);
     Assert.assertTrue(results3.contains(entity));
 
-    // MAKE PROPERTY VALUE REQUEST
+    // MAKE REGEX VALUE REQUEST
     String query4 = "?s watch:entity " + EntityDAO.getEntityRDFId(entity.getName()) + " . ?s watch:property "
-      + PropertyDAO.getPropertyRDFId(type.getName(), property.getName());
-    // TODO test " . FILTER(?s < 200)";
+      + PropertyDAO.getPropertyRDFId(type.getName(), property.getName())
+      + " . ?s watch:value ?value . FILTER regex(?value, 'image.*', 'i')";
     RequestTarget target4 = RequestTarget.PROPERTY_VALUE;
 
     @SuppressWarnings("unchecked")
     List<PropertyValue> results4 = (List<PropertyValue>) RequestDAO.getInstance().query(target4, query4, 0, 100);
     Assert.assertTrue(results4.contains(pv));
+
+    // MAKE LESSER THAN VALUE REQUEST
+    // TODO test filter in other types e.g. FILTER (?s < 200)
+    // String query5 = "?s watch:entity " +
+    // EntityDAO.getEntityRDFId(entity.getName()) + " . ?s watch:property "
+    // + PropertyDAO.getPropertyRDFId(type.getName(), property2.getName())
+    // + " . ?s watch:value ?value . FILTER (?value < 200)";
+    //
+    // RequestTarget target5 = RequestTarget.PROPERTY_VALUE;
+    //
+    // @SuppressWarnings("unchecked")
+    // List<PropertyValue> results5 = (List<PropertyValue>)
+    // RequestDAO.getInstance().query(target5, query5, 0, 100);
+    // Assert.assertTrue(results5.contains(pv2));
   }
 
 }

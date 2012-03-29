@@ -15,7 +15,7 @@
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>com.thewebsemantic</groupId>
+			<groupId>thewebsemantic</groupId>
 			<artifactId>jenabean</artifactId>
 			<version>1.0.6</version>
 			<exclusions>

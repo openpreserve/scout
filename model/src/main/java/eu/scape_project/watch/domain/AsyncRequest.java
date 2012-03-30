@@ -1,6 +1,7 @@
 package eu.scape_project.watch.domain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,6 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import eu.scape_project.watch.dao.AsyncRequestDAO;
 import eu.scape_project.watch.utils.KBUtils;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import thewebsemantic.Id;
@@ -48,9 +50,7 @@ public class AsyncRequest extends RdfBean<AsyncRequest> {
    * Create a new empty request with a generated Id.
    */
   public AsyncRequest() {
-    super();
-    this.setId(UUID.randomUUID().toString());
-    triggers = new ArrayList<Trigger>();
+    this(new ArrayList<Trigger>());
   }
 
   /**
@@ -61,8 +61,8 @@ public class AsyncRequest extends RdfBean<AsyncRequest> {
    * 
    */
   public AsyncRequest(final List<Trigger> triggers) {
-    this.setId(UUID.randomUUID().toString());
-    this.setTriggers(triggers);
+    this.id = UUID.randomUUID().toString();
+    this.triggers = triggers;
   }
 
   /**
@@ -103,10 +103,28 @@ public class AsyncRequest extends RdfBean<AsyncRequest> {
     this.triggers = triggers;
   }
 
-  public void addTrigger(Trigger t) {
-    triggers.add(t);
+  /**
+   * Add a new trigger to the existing list.
+   * 
+   * @param t
+   *          the new trigger
+   */
+  public void addTrigger(final Trigger t) {
+    this.triggers.add(t);
   }
 
+  /**
+   * Get the list of all questions from all triggers.
+   * 
+   * @return The complete list of questions
+   */
+  public List<Question> getQuestion() {
+    final List<Question> ret = new ArrayList<Question>();
+    for (final Trigger t : this.triggers) {
+      ret.add(t.getQuestion());
+    }
+    return ret;
+  }
 
   @Override
   public int hashCode() {
@@ -140,7 +158,7 @@ public class AsyncRequest extends RdfBean<AsyncRequest> {
       if (other.triggers != null) {
         return false;
       }
-    } else if (!this.triggers.equals(other.triggers)) {
+    } else if (!CollectionUtils.isEqualCollection(this.triggers, other.triggers)) {
       return false;
     }
     return true;
@@ -148,7 +166,7 @@ public class AsyncRequest extends RdfBean<AsyncRequest> {
 
   @Override
   public String toString() {
-    return "AsyncRequest(id=" + this.id + ", triggers=" + this.triggers + ")";
+    return "AsyncRequest(id=" + this.id + ", triggers=" + Arrays.toString(this.triggers.toArray()) + ")";
   }
 
   @Override

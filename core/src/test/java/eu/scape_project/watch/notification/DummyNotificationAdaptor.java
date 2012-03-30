@@ -21,7 +21,7 @@ import eu.scape_project.watch.utils.exceptions.PluginException;
  * @author Luis Faria <lfaria@keep.pt>
  * 
  */
-public class TestNotificationAdaptor implements NotificationAdaptorInterface {
+public class DummyNotificationAdaptor implements NotificationAdaptorInterface {
 
   /**
    * The notification plugin name.

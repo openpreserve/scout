@@ -25,7 +25,7 @@ public class NotificationTest {
   /**
    * The test notification adaptor used in all tests.
    */
-  private static TestNotificationAdaptor adaptor;
+  private static DummyNotificationAdaptor adaptor;
 
   /**
    * The notification service instance.
@@ -38,7 +38,7 @@ public class NotificationTest {
    */
   @BeforeClass
   public static void setUpBeforeClass() {
-    adaptor = new TestNotificationAdaptor();
+    adaptor = new DummyNotificationAdaptor();
     service.addAdaptor(adaptor);
   }
 
@@ -75,7 +75,7 @@ public class NotificationTest {
   @Test
   public void testSend() {
     final Map<String, String> parameters = new HashMap<String, String>();
-    final Notification notification = new Notification(TestNotificationAdaptor.TEST_TYPE, parameters);
+    final Notification notification = new Notification(DummyNotificationAdaptor.TEST_TYPE, parameters);
     service.send(notification);
 
     final List<Notification> sentNotifications = adaptor.getNotifications();
@@ -91,15 +91,15 @@ public class NotificationTest {
     // set up
     service.removeAdaptor(adaptor);
 
-    final TestNotificationAdaptor adaptor1 = new TestNotificationAdaptor();
-    final TestNotificationAdaptor adaptor2 = new TestNotificationAdaptor();
+    final DummyNotificationAdaptor adaptor1 = new DummyNotificationAdaptor();
+    final DummyNotificationAdaptor adaptor2 = new DummyNotificationAdaptor();
 
     service.addAdaptor(adaptor1);
     service.addAdaptor(adaptor2);
 
     final Map<String, String> parameters = new HashMap<String, String>();
     parameters.put("test", "test01");
-    final Notification notification = new Notification(TestNotificationAdaptor.TEST_TYPE, parameters);
+    final Notification notification = new Notification(DummyNotificationAdaptor.TEST_TYPE, parameters);
 
     // test not consume
     adaptor1.setConsumeEvent(false);

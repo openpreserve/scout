@@ -276,8 +276,10 @@ public final class KBUtils {
         } else if (o.isLiteral()) {
           oinfo = "'" + o.asLiteral() + "'";
         }
-        LOG.debug("({}, {}, {})", new Object[] {sinfo, pinfo, oinfo});
-        System.out.println(String.format("(%1$s,%2$s,%3$s)", sinfo, pinfo, oinfo));
+        if (sinfo != null && pinfo != null && oinfo != null) {
+          LOG.debug("({}, {}, {})", new Object[] {sinfo, pinfo, oinfo});
+          System.out.println(String.format("(%1$s,%2$s,%3$s)", sinfo, pinfo, oinfo));
+        }
       }
     } finally {
       statements.close();
@@ -359,26 +361,31 @@ public final class KBUtils {
     // property value construction also binds to entity
     final PropertyValue pdfPUID = new PropertyValue(pdf17Format, formatPUID, "fmt/276");
     final PropertyValue pdfMime = new PropertyValue(pdf17Format, formatMimetype, "application/pdf");
-    final PropertyValue tiffPUID = new PropertyValue(tiffFormat, formatPUID, "fmt/353");
+    final String tiffPUIDValue = "fmt/353";
+    final PropertyValue tiffPUID = new PropertyValue(tiffFormat, formatPUID, tiffPUIDValue);
     final PropertyValue tiffMime = new PropertyValue(tiffFormat, formatMimetype, "image/tiff");
     final PropertyValue jpeg2000PUID = new PropertyValue(jpeg2000Format, formatPUID, "x-fmt/392");
     final PropertyValue jpeg2000Mime = new PropertyValue(jpeg2000Format, formatMimetype, "image/jp2");
     final PropertyValue imageMagickVersion = new PropertyValue(imageMagickTool, toolVersion, "6.6.0");
 
     final PropertyValue jpegMime = new PropertyValue(jpeg, formatMimetype, "image/jpeg");
-    final PropertyValue jpegPUID = new PropertyValue(jpeg, formatPUID, "fmt/44");
+    final String jpegPUIDValue = "fmt/44";
+    final PropertyValue jpegPUID = new PropertyValue(jpeg, formatPUID, jpegPUIDValue);
     final PropertyValue pngPUID = new PropertyValue(png, formatPUID, "fmt/11");
     final PropertyValue pngMime = new PropertyValue(png, formatMimetype, "image/png");
     final PropertyValue docPUID = new PropertyValue(doc, formatPUID, "fmt/40");
     final PropertyValue docMime = new PropertyValue(doc, formatMimetype, "application/msword");
     final PropertyValue docxMime = new PropertyValue(docx, formatMimetype,
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-    final PropertyValue bmpPUID = new PropertyValue(bmp, formatPUID, "fmt/119");
+    final String bmpPUIDValue = "fmt/119";
+    final PropertyValue bmpPUID = new PropertyValue(bmp, formatPUID, bmpPUIDValue);
     final PropertyValue bmpMime = new PropertyValue(bmp, formatMimetype, "image/bmp");
-    final PropertyValue gifPUID = new PropertyValue(gif, formatPUID, "fmt/4");
+    final String gifPUIDValue = "fmt/4";
+    final PropertyValue gifPUID = new PropertyValue(gif, formatPUID, gifPUIDValue);
     final PropertyValue gifMime = new PropertyValue(gif, formatMimetype, "image/gif");
 
-    final List<Object> values = new ArrayList<Object>(Arrays.asList("fmt/353", "fmt/44", "fmt/119", "fmt/4"));
+    final List<Object> values = new ArrayList<Object>(Arrays.asList(tiffPUIDValue, jpegPUIDValue, bmpPUIDValue,
+      gifPUIDValue));
     final PropertyValue ifr = new PropertyValue(imageMagickTool, inputFormat, values);
     final PropertyValue ofr = new PropertyValue(imageMagickTool, outputFormat, values);
 
@@ -389,15 +396,15 @@ public final class KBUtils {
 
     final PropertyValue distribution = new PropertyValue(cp0, formatDistribution, distr);
 
-    final PropertyValue ifr1 = new PropertyValue(imageMagickTool, inputFormat, "fmt/353");
-    final PropertyValue ifr2 = new PropertyValue(imageMagickTool, inputFormat, "fmt/44");
-    final PropertyValue ifr3 = new PropertyValue(imageMagickTool, inputFormat, "fmt/119");
-    final PropertyValue ifr4 = new PropertyValue(imageMagickTool, inputFormat, "fmt/4");
+    final PropertyValue ifr1 = new PropertyValue(imageMagickTool, inputFormat, tiffPUIDValue);
+    final PropertyValue ifr2 = new PropertyValue(imageMagickTool, inputFormat, jpegPUIDValue);
+    final PropertyValue ifr3 = new PropertyValue(imageMagickTool, inputFormat, bmpPUIDValue);
+    final PropertyValue ifr4 = new PropertyValue(imageMagickTool, inputFormat, gifPUIDValue);
 
-    final PropertyValue ofr1 = new PropertyValue(imageMagickTool, outputFormat, "fmt/353");
-    final PropertyValue ofr2 = new PropertyValue(imageMagickTool, outputFormat, "fmt/44");
-    final PropertyValue ofr3 = new PropertyValue(imageMagickTool, outputFormat, "fmt/119");
-    final PropertyValue ofr4 = new PropertyValue(imageMagickTool, outputFormat, "fmt/4");
+    final PropertyValue ofr1 = new PropertyValue(imageMagickTool, outputFormat, tiffPUIDValue);
+    final PropertyValue ofr2 = new PropertyValue(imageMagickTool, outputFormat, jpegPUIDValue);
+    final PropertyValue ofr3 = new PropertyValue(imageMagickTool, outputFormat, bmpPUIDValue);
+    final PropertyValue ofr4 = new PropertyValue(imageMagickTool, outputFormat, gifPUIDValue);
 
     // save property values
     PropertyValueDAO.getInstance().save(imageMagickVersion, pdfPUID, pdfMime, tiffPUID, tiffMime, jpeg2000PUID,

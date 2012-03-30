@@ -1,6 +1,8 @@
 package eu.scape_project.watch.monitor;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -27,6 +29,8 @@ public class CentralMonitor implements DOListener {
   private List<AsyncRequest> aRequests;
 
   private AsyncRequestDAO asyncRequestDAO;
+  
+  private NotificationService nService; 
 
   public CentralMonitor() {
     monitors = new ArrayList<MonitorInterface>();
@@ -42,21 +46,39 @@ public class CentralMonitor implements DOListener {
   public void registerToAsyncRequest(AsyncRequestDAO ar) {
     asyncRequestDAO = ar;
     asyncRequestDAO.addDOListener(this);
-    LOG.info("CentralMonitor listening AsyncRequestDAO");
+    LOG.debug("CentralMonitor listening AsyncRequestDAO");
   }
 
+  public void setNotificationService(NotificationService ns){
+    nService = ns;
+  }
+  
+  public NotificationService getNotificationService() {
+    return nService;
+  }
+  
   public void notifyAsyncRequests(List<String> ids) {
 
     for (String uuid : ids) {
       AsyncRequest tmp = findAsyncRequest(uuid);
       assessRequest(tmp);
     }
+    
   }
 
+  public Collection<AsyncRequest> getAllRequests() {
+    return Collections.unmodifiableCollection(aRequests);
+  }
+  
+  public Collection<MonitorInterface> getAllMonitors() {
+    return Collections.unmodifiableCollection(monitors);
+  }
+  
+  
   @Override
   public void onUpdated(RdfBean object) {
     AsyncRequest req = (AsyncRequest) object;
-    LOG.info("adding Request to monitors " + req.getId());
+    LOG.debug("adding Request to monitors " + req.getId());
     if (!aRequests.contains(req)) {
       aRequests.add(req);
       for (MonitorInterface monitor : monitors) {
@@ -68,8 +90,13 @@ public class CentralMonitor implements DOListener {
   @Override
   public void onRemoved(RdfBean object) {
     aRequests.remove(object);
+    //TODO notify monitors about removal
   }
 
+  
+  
+  
+  
   private AsyncRequest findAsyncRequest(String uuid) {
 
     for (AsyncRequest i : aRequests) {
@@ -96,10 +123,12 @@ public class CentralMonitor implements DOListener {
   }
 
   private void notify(Trigger trigger) {
-    NotificationService nService = NotificationService.getInstance();
-    
-    for (Notification notification: trigger.getNotifications()) {
-      nService.send(notification);
+    if (nService!=null) {
+      for (Notification notification: trigger.getNotifications()) {
+        nService.send(notification);
+      }
+    }else {
+      LOG.warn("No NotificationService specified");
     }
   }
 }

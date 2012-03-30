@@ -17,12 +17,10 @@ import org.quartz.impl.matchers.GroupMatcher;
  */
 public class CoreScheduler {
 
-
   private Scheduler scheduler;
 
-  
   public CoreScheduler() {
-	  init();
+    init();
   }
 
   public void init() {
@@ -43,7 +41,7 @@ public class CoreScheduler {
       scheduler = sc;
   }
 
-  public void start()  {
+  public void start() {
     try {
       scheduler.start();
     } catch (SchedulerException e) {
@@ -52,7 +50,7 @@ public class CoreScheduler {
     }
   }
 
-  public void shutdown()  {
+  public void shutdown() {
     try {
       scheduler.shutdown();
     } catch (SchedulerException e) {
@@ -74,7 +72,7 @@ public class CoreScheduler {
   public void scheduleAdaptorJob(AdaptorJobInterface job) {
     scheduleJob(job.getJobDetail(), job.getTrigger());
   }
-  
+
   public void adddGroupJobListener(JobListener jobListener, String group) {
     try {
       scheduler.getListenerManager().addJobListener(jobListener, GroupMatcher.jobGroupEquals(group));

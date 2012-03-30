@@ -1,6 +1,8 @@
 package eu.scape_project.watch.monitor;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.quartz.JobExecutionContext;
@@ -46,6 +48,12 @@ public class CollectionProfilerMonitor implements MonitorInterface {
 
   }
 
+  public Collection<String> getAsyncRequestUUIDS() {
+    return Collections.unmodifiableCollection(aRequestUUIDS);
+  }
+  
+  
+  
   @Override
   public String getName() {
     // TODO Auto-generated method stub
@@ -63,7 +71,7 @@ public class CollectionProfilerMonitor implements MonitorInterface {
     AdaptorJobInterface aJob = (AdaptorJobInterface) arg0.getJobInstance();
     if (!adaptorJobs.contains(aJob)) {
       adaptorJobs.add(aJob);
-      LOG.info("Monitor found and stored new AdaptorJob");
+      LOG.debug("Monitor found and stored new AdaptorJob");
     }
   }
 
@@ -83,7 +91,7 @@ public class CollectionProfilerMonitor implements MonitorInterface {
       // pv.getProperty().getName(),pv.getValue());
     }
 
-    LOG.info("Monitor found {} values", rValues.size());
+    LOG.debug("Monitor found {} values", rValues.size());
     // TODO add notification
 
     centralMonitor.notifyAsyncRequests(aRequestUUIDS);
@@ -109,31 +117,27 @@ public class CollectionProfilerMonitor implements MonitorInterface {
   @Override
   public void addWatchRequest(AsyncRequest aRequest) {
 
-    if (isRequestSupported(aRequest))
-      aRequestUUIDS.add(aRequest.getId());
+    if (!aRequestUUIDS.contains(aRequest.getId())){
+      if (isRequestSupported(aRequest))
+        aRequestUUIDS.add(aRequest.getId());
+    }
 
   }
 
   @Override
   public void removeWatchRequest(AsyncRequest aRequest) {
-    // TODO Auto-generated method stub
+    
+    aRequestUUIDS.remove(aRequest.getId());
 
   }
 
   private boolean isRequestSupported(AsyncRequest aRequest) {
 
-    LOG.info("checking");
     for (Trigger trigger : aRequest.getTriggers()) {
       List<EntityType> eType = trigger.getQuestion().getTypes();
-      LOG.info("hello");
-      LOG.info(eType.toString());
-      LOG.info("size "+eType.size());
-      if (eType.contains(monitorType)) {
-        LOG.info("request is supported");
+      if (eType.contains(monitorType)) 
         return true;
-      }
     }
-    LOG.info("request is not supported");
     return false;
 
   }

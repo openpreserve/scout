@@ -29,7 +29,7 @@ public class AdaptorLoader {
 
   private static final Logger LOG = LoggerFactory.getLogger(AdaptorLoader.class);
 
-  private static final long LOADER_PERIOD = 2 * 10 * 1000L;
+  private static final long LOADER_PERIOD = 6 * 10 * 1000L;
 
   private static String EXTENSION = ".properties";
 

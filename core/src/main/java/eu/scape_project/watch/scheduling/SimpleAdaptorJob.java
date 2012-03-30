@@ -39,6 +39,7 @@ public class SimpleAdaptorJob extends AdaptorJob {
       .usingJobData("adaptorVersion", properties.getProperty("adaptor.version"))
       .usingJobData("adaptorProperties", this.adaptorPropertiesToString(properties)).build();
 
+    
     trigger = TriggerBuilder
       .newTrigger()
       .withIdentity("trigger_" + properties.getProperty("adaptor.name"), properties.getProperty("adaptor.group"))

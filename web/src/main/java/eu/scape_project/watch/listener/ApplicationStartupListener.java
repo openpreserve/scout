@@ -71,7 +71,7 @@ public class ApplicationStartupListener implements ServletContextListener {
     componentContainer.setAdaptorLoader(new AdaptorLoader());
     componentContainer.addMonitor(monitor);
 
-    NotificationService.getInstance().addAdaptor(new LogNotificationAdaptor());
+    //NotificationService.getInstance().addAdaptor(new LogNotificationAdaptor());
     saveTestRequest();
 
     componentContainer.init();
@@ -87,11 +87,13 @@ public class ApplicationStartupListener implements ServletContextListener {
    * 
    */
   private void initDB() {
+    
     final ConfigUtils conf = new ConfigUtils();
     final String datafolder = conf.getStringProperty(ConfigUtils.KB_DATA_FOLDER_KEY);
     final boolean initdata = conf.getBooleanProperty(ConfigUtils.KB_INSERT_TEST_DATA);
 
     KBUtils.dbConnect(datafolder, initdata);
+    
   }
 
   

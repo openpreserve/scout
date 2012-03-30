@@ -685,14 +685,4 @@ public class KBTest {
     Assert.assertTrue(results4.contains(pv));
   }
 
-  @Test 
-  public void testOnUpdateCalledOnce() {
-    
-    DOListener mockListener = Mockito.mock(DOListener.class);
-    AsyncRequestDAO.getInstance().addDOListener(mockListener);
-    AsyncRequest request = new AsyncRequest();
-    AsyncRequestDAO.getInstance().save(request);
-    Mockito.verify(mockListener, Mockito.times(1)).onUpdated(request);
-    
-  }
 }

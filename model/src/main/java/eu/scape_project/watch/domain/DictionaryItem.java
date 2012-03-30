@@ -12,23 +12,49 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
 
+/**
+ * 
+ * Key-Value pair holder for PropertyValue lists of key-value pairs (i.e.
+ * dictionary).
+ * 
+ * @author Luis Faria <lfaria@keep.pt>
+ * @author Petar Petrov
+ * 
+ */
 @Namespace(KBUtils.WATCH_NS)
 @XmlRootElement(name = KBUtils.DICTIONARY_ITEM)
 @XmlAccessorType(XmlAccessType.FIELD)
-public class DictionaryItem extends RdfBean<DictionaryItem>{
+public class DictionaryItem extends RdfBean<DictionaryItem> {
 
+  /**
+   * The key of the key-value pair.
+   */
   @XmlElement
   @JsonProperty
   private String key;
 
+  /**
+   * The value of the key-value pair.
+   */
   @XmlElement
   @JsonProperty
   private String value;
 
+  /**
+   * Create a new empty dictionary item.
+   */
   public DictionaryItem() {
     super();
   }
 
+  /**
+   * Create a new dictionary item.
+   * 
+   * @param key
+   *          The dictionary item key
+   * @param value
+   *          The dictionary item value
+   */
   public DictionaryItem(final String key, final String value) {
     this.key = key;
     this.value = value;
@@ -61,23 +87,30 @@ public class DictionaryItem extends RdfBean<DictionaryItem>{
 
   @Override
   public boolean equals(final Object obj) {
-    if (this == obj)
+    if (this == obj) {
       return true;
-    if (obj == null)
+    }
+    if (obj == null) {
       return false;
-    if (getClass() != obj.getClass())
+    }
+    if (getClass() != obj.getClass()) {
       return false;
-    DictionaryItem other = (DictionaryItem) obj;
+    }
+    final DictionaryItem other = (DictionaryItem) obj;
     if (this.key == null) {
-      if (other.key != null)
+      if (other.key != null) {
         return false;
-    } else if (!this.key.equals(other.key))
+      }
+    } else if (!this.key.equals(other.key)) {
       return false;
+    }
     if (this.value == null) {
-      if (other.value != null)
+      if (other.value != null) {
         return false;
-    } else if (!this.value.equals(other.value))
+      }
+    } else if (!this.value.equals(other.value)) {
       return false;
+    }
     return true;
   }
 
@@ -85,5 +118,5 @@ public class DictionaryItem extends RdfBean<DictionaryItem>{
   public String toString() {
     return this.key + " : " + this.value;
   }
-  
+
 }

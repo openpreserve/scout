@@ -73,8 +73,8 @@ public class Notification extends RdfBean<Notification> {
    */
   public Notification(final String type, final Collection<Entry> parameters) {
     this();
-    this.setType(type);
-    this.setParameters(parameters);
+    this.type = type;
+    this.parameters = parameters;
   }
 
   /**
@@ -136,45 +136,55 @@ public class Notification extends RdfBean<Notification> {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((id == null) ? 0 : id.hashCode());
-    for (Entry entry : parameters) {
+    result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
+    for (Entry entry : this.parameters) {
       result = prime * result + ((entry == null) ? 0 : entry.hashCode());
     }
 
-    result = prime * result + ((type == null) ? 0 : type.hashCode());
+    result = prime * result + ((this.type == null) ? 0 : this.type.hashCode());
     return result;
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
+  public boolean equals(final Object obj) {
+    if (this == obj) {
       return true;
-    if (obj == null)
+    }
+    if (obj == null) {
       return false;
-    if (getClass() != obj.getClass())
+    }
+    if (getClass() != obj.getClass()) {
       return false;
-    Notification other = (Notification) obj;
-    if (id == null) {
-      if (other.id != null)
+    }
+    final Notification other = (Notification) obj;
+    if (this.id == null) {
+      if (other.id != null) {
         return false;
-    } else if (!id.equals(other.id))
+      }
+    } else if (!this.id.equals(other.id)) {
       return false;
-    if (parameters == null) {
-      if (other.parameters != null)
+    }
+    if (this.parameters == null) {
+      if (other.parameters != null) {
         return false;
-    } else if (!CollectionUtils.isEqualCollection(parameters, other.parameters))
+      }
+    } else if (!CollectionUtils.isEqualCollection(this.parameters, other.parameters)) {
       return false;
-    if (type == null) {
-      if (other.type != null)
+    }
+    if (this.type == null) {
+      if (other.type != null) {
         return false;
-    } else if (!type.equals(other.type))
+      }
+    } else if (!this.type.equals(other.type)) {
       return false;
+    }
     return true;
   }
 
   @Override
   public String toString() {
-    return "Notification [id=" + id + ", type=" + type + ", parameters=" + Arrays.toString(parameters.toArray()) + "]";
+    return "Notification [id=" + this.id + ", type=" + this.type + ", parameters="
+      + Arrays.toString(this.parameters.toArray()) + "]";
   }
 
 }

@@ -247,32 +247,43 @@ public class Property extends RdfBean<Property> {
 
   @Override
   public boolean equals(final Object obj) {
-    if (this == obj)
+    if (this == obj) {
       return true;
-    if (obj == null)
+    }
+    if (obj == null) {
       return false;
-    if (getClass() != obj.getClass())
+    }
+    if (getClass() != obj.getClass()) {
       return false;
-    Property other = (Property) obj;
-    if (this.datatype != other.datatype)
+    }
+    final Property other = (Property) obj;
+    if (this.datatype != other.datatype) {
       return false;
+    }
     if (this.description == null) {
-      if (other.description != null)
+      if (other.description != null) {
         return false;
-    } else if (!this.description.equals(other.description))
+      }
+    } else if (!this.description.equals(other.description)) {
       return false;
+    }
     if (this.name == null) {
-      if (other.name != null)
+      if (other.name != null) {
         return false;
-    } else if (!this.name.equals(other.name))
+      }
+    } else if (!this.name.equals(other.name)) {
       return false;
-    if (this.structure != other.structure)
+    }
+    if (this.structure != other.structure) {
       return false;
+    }
     if (this.type == null) {
-      if (other.type != null)
+      if (other.type != null) {
         return false;
-    } else if (!this.type.equals(other.type))
+      }
+    } else if (!this.type.equals(other.type)) {
       return false;
+    }
     return true;
   }
 
@@ -291,8 +302,8 @@ public class Property extends RdfBean<Property> {
 
   @Override
   public String toString() {
-    return this.getName() + " " + this.getDescription() + " " + this.getType() + " " + this.getDatatype() + " "
-      + this.getStructure();
+    return "Property [id=" + this.id + ", type=" + this.type + ", name=" + this.name + ", description="
+      + this.description + ", datatype=" + this.datatype + ", structure=" + this.structure + "]";
   }
 
 }

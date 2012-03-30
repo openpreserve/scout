@@ -21,24 +21,47 @@ import org.codehaus.jackson.xc.JaxbAnnotationIntrospector;
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
 public class JSONContextResolver extends org.codehaus.jackson.jaxrs.JacksonJsonProvider {
-  private static ObjectMapper commonMapper = null;
+  
+  /**
+   * Instance holder.
+   */
+  @SuppressWarnings("deprecation")
+  private static final class ObjectMapperHolder {
+    /**
+     * Cannot be instantiated.
+     */
+    private ObjectMapperHolder() {
+    }
 
-  public JSONContextResolver() {
-    if (commonMapper == null) {
+    /**
+     * The instance.
+     */
+    public static final ObjectMapper COMMON_MAPPER = new ObjectMapper();
+    
+    static {
       AnnotationIntrospector jackson = new JacksonAnnotationIntrospector();
       AnnotationIntrospector jaxb = new JaxbAnnotationIntrospector();
       AnnotationIntrospector pair = new AnnotationIntrospector.Pair(jaxb, jackson);
-      ObjectMapper mapper = new ObjectMapper();
-      mapper.getSerializationConfig().setAnnotationIntrospector(jaxb);
-      mapper.getDeserializationConfig().setAnnotationIntrospector(pair);
-      mapper.getDeserializationConfig().set(Feature.AUTO_DETECT_SETTERS, true);
-      mapper.configure(Feature.AUTO_DETECT_SETTERS, true);
-      mapper.configure(SerializationConfig.Feature.WRITE_NULL_PROPERTIES, false);
-      mapper.configure(Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-      mapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
-
-      commonMapper = mapper;
+      COMMON_MAPPER.getSerializationConfig().setAnnotationIntrospector(jaxb);
+      COMMON_MAPPER.getDeserializationConfig().setAnnotationIntrospector(pair);
+      COMMON_MAPPER.getDeserializationConfig().set(Feature.AUTO_DETECT_SETTERS, true);
+      COMMON_MAPPER.configure(Feature.AUTO_DETECT_SETTERS, true);
+      COMMON_MAPPER.configure(SerializationConfig.Feature.WRITE_NULL_PROPERTIES, false);
+      COMMON_MAPPER.configure(Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+      COMMON_MAPPER.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
     }
-    super.setMapper(commonMapper);
+  }
+
+  /**
+   * Get singleton instance.
+   * 
+   * @return The singleton instance
+   */
+  public static ObjectMapper getCommonMapper() {
+    return ObjectMapperHolder.COMMON_MAPPER;
+  }
+
+  public JSONContextResolver() {
+    super.setMapper(getCommonMapper());
   }
 }

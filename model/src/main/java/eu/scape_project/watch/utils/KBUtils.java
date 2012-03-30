@@ -279,8 +279,6 @@ public final class KBUtils {
         LOG.debug("({}, {}, {})", new Object[] {sinfo, pinfo, oinfo});
         System.out.println(String.format("(%1$s,%2$s,%3$s)", sinfo, pinfo, oinfo));
       }
-    } catch (final Throwable e) {
-      LOG.info(e.getMessage());
     } finally {
       statements.close();
     }

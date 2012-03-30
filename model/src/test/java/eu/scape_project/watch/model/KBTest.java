@@ -22,7 +22,6 @@ import eu.scape_project.watch.utils.KBUtils;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -629,23 +628,23 @@ public class KBTest {
     pv.save();
 
     // CREATE ASYNC REQUEST
-    String sparql = "?s watch:entity watch-Entity:" + entity.getName() + ". ?s watch:property watch-Property:"
+    final String sparql = "?s watch:entity watch-Entity:" + entity.getName() + ". ?s watch:property watch-Property:"
       + Property.createId(type.getName(), property.getName() + ". FILTER(?s < 200)");
-    RequestTarget target = RequestTarget.PROPERTY_VALUE;
-    List<EntityType> types = Arrays.asList(type);
-    List<Property> properties = Arrays.asList(property);
-    List<Entity> entities = Arrays.asList(entity);
-    long period = 30000;
+    final RequestTarget target = RequestTarget.PROPERTY_VALUE;
+    final List<EntityType> types = Arrays.asList(type);
+    final List<Property> properties = Arrays.asList(property);
+    final List<Entity> entities = Arrays.asList(entity);
+    final long period = 30000;
 
-    Question question = new Question(sparql, target, types, properties, entities, period);
-    Notification notification = new Notification("test", new HashMap<String, String>());
-    List<Notification> notifications = Arrays.asList(notification);
-    Plan plan = null;
+    final Question question = new Question(sparql, target, types, properties, entities, period);
+    final Notification notification = new Notification("test", new HashMap<String, String>());
+    final List<Notification> notifications = Arrays.asList(notification);
+    final Plan plan = null;
 
-    Trigger trigger = new Trigger(question, notifications, plan);
-    List<Trigger> triggers = Arrays.asList(trigger);
+    final Trigger trigger = new Trigger(question, notifications, plan);
+    final List<Trigger> triggers = Arrays.asList(trigger);
 
-    AsyncRequest arequest = new AsyncRequest(triggers);
+    final AsyncRequest arequest = new AsyncRequest(triggers);
 
     // CASCADE SAVE
     AsyncRequestDAO.getInstance().save(arequest);

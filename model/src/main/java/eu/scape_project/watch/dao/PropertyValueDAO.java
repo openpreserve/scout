@@ -1,13 +1,13 @@
 package eu.scape_project.watch.dao;
 
-import java.util.Collection;
-import java.util.List;
-
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.utils.KBUtils;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * {@link PropertyValue} Data Access Object.
@@ -15,7 +15,7 @@ import eu.scape_project.watch.utils.KBUtils;
  * @author Luis Faria <lfaria@keep.pt>
  * 
  */
-public class PropertyValueDAO extends AbstractDO<PropertyValue> {
+public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
 
   /**
    * The name of the relationship to {@link Entity} in {@link PropertyValue}.
@@ -28,9 +28,20 @@ public class PropertyValueDAO extends AbstractDO<PropertyValue> {
   private static final String PROPERTY_REL = KBUtils.WATCH_PREFIX + "property";
 
   /**
-   * Singleton instance.
+   * Instance holder.
    */
-  private static PropertyValueDAO instance = null;
+  private static final class PropertyValueDAOHolder {
+    /**
+     * Cannot be instantiated.
+     */
+    private PropertyValueDAOHolder() {
+    }
+
+    /**
+     * The instance.
+     */
+    public static final PropertyValueDAO INSTANCE = new PropertyValueDAO();
+  }
 
   /**
    * Get singleton instance.
@@ -38,10 +49,7 @@ public class PropertyValueDAO extends AbstractDO<PropertyValue> {
    * @return The singleton instance
    */
   public static PropertyValueDAO getInstance() {
-    if (instance == null) {
-      instance = new PropertyValueDAO();
-    }
-    return instance;
+    return PropertyValueDAOHolder.INSTANCE;
   }
 
   /**

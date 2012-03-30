@@ -1,6 +1,7 @@
 package eu.scape_project.watch.domain;
 
-import java.util.ArrayList;
+import eu.scape_project.watch.utils.KBUtils;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -10,11 +11,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import eu.scape_project.watch.utils.KBUtils;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
-
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
@@ -177,88 +175,77 @@ public class Question extends RdfBean<Question> {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((entities == null) ? 0 : entities.hashCode());
-    result = prime * result + ((id == null) ? 0 : id.hashCode());
-    result = prime * result + (int) (period ^ (period >>> 32));
-    result = prime * result + ((properties == null) ? 0 : properties.hashCode());
-    result = prime * result + ((sparql == null) ? 0 : sparql.hashCode());
-    result = prime * result + ((target == null) ? 0 : target.hashCode());
-    result = prime * result + ((types == null) ? 0 : types.hashCode());
+    result = prime * result + ((this.entities == null) ? 0 : this.entities.hashCode());
+    result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
+    result = prime * result + (int) (this.period ^ (this.period >>> 32));
+    result = prime * result + ((this.properties == null) ? 0 : this.properties.hashCode());
+    result = prime * result + ((this.sparql == null) ? 0 : this.sparql.hashCode());
+    result = prime * result + ((this.target == null) ? 0 : this.target.hashCode());
+    result = prime * result + ((this.types == null) ? 0 : this.types.hashCode());
     return result;
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
+  public boolean equals(final Object obj) {
+    if (this == obj) {
       return true;
-    if (obj == null)
+    }
+    if (obj == null) {
       return false;
-    if (getClass() != obj.getClass())
+    }
+    if (getClass() != obj.getClass()) {
       return false;
-    Question other = (Question) obj;
-    if (entities == null) {
-      if (other.entities != null)
+    }
+    final Question other = (Question) obj;
+    if (this.entities == null) {
+      if (other.entities != null) {
         return false;
-    } else if (!CollectionUtils.isEqualCollection(entities, other.entities))
+      }
+    } else if (!CollectionUtils.isEqualCollection(this.entities, other.entities)) {
       return false;
-    if (id == null) {
-      if (other.id != null)
+    }
+    if (this.id == null) {
+      if (other.id != null) {
         return false;
-    } else if (!id.equals(other.id))
+      }
+    } else if (!this.id.equals(other.id)) {
       return false;
-    if (period != other.period)
+    }
+    if (this.period != other.period) {
       return false;
-    if (properties == null) {
-      if (other.properties != null)
+    }
+    if (this.properties == null) {
+      if (other.properties != null) {
         return false;
-    } else if (!CollectionUtils.isEqualCollection(properties, other.properties))
+      }
+    } else if (!CollectionUtils.isEqualCollection(this.properties, other.properties)) {
       return false;
-    if (sparql == null) {
-      if (other.sparql != null)
+    }
+    if (this.sparql == null) {
+      if (other.sparql != null) {
         return false;
-    } else if (!sparql.equals(other.sparql))
+      }
+    } else if (!this.sparql.equals(other.sparql)) {
       return false;
-    if (target != other.target)
+    }
+    if (this.target != other.target) {
       return false;
-    if (types == null) {
-      if (other.types != null)
+    }
+    if (this.types == null) {
+      if (other.types != null) {
         return false;
-    } else if (!CollectionUtils.isEqualCollection(types, other.types))
+      }
+    } else if (!CollectionUtils.isEqualCollection(this.types, other.types)) {
       return false;
+    }
     return true;
   }
 
   @Override
   public String toString() {
-    return "Question [id=" + id + ", sparql=" + sparql + ", target=" + target + ", types="
-      + Arrays.toString(types.toArray()) + ", properties=" + Arrays.toString(properties.toArray()) + ", entities="
-      + Arrays.toString(entities.toArray()) + ", period=" + period + "]";
+    return "Question [id=" + this.id + ", sparql=" + this.sparql + ", target=" + this.target + ", types="
+      + Arrays.toString(this.types.toArray()) + ", properties=" + Arrays.toString(this.properties.toArray())
+      + ", entities=" + Arrays.toString(this.entities.toArray()) + ", period=" + this.period + "]";
   }
 
-  /*
-   * THESE METHODS ARE GOING TO BE REIMPLEMENTED OR COMPLETELY REMOVED AT THE
-   * MOMENT SYSTEM SUPPORTS ONLY ONE ENTITYTYPE - ENTITY PER QUESTION
-   */
-  public EntityType getEntityType() {
-    return this.types.get(0);
-  }
-
-  public Entity getEntity() {
-    return this.entities.get(0);
-  }
-
-  public Property getProperty() {
-    return this.properties.get(0);
-  }
-
-  public Question(String sparql, EntityType et, Entity e, Property p, long per) {
-    this.sparql = sparql;
-    this.types = new ArrayList<EntityType>();
-    this.types.add(et);
-    this.entities = new ArrayList<Entity>();
-    this.entities.add(e);
-    this.properties = new ArrayList<Property>();
-    this.properties.add(p);
-    this.period = per;
-  }
 }

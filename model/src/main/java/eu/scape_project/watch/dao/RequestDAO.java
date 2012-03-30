@@ -17,12 +17,23 @@ import thewebsemantic.binding.RdfBean;
  * @author Luis Faria <lfaria@keep.pt>
  * 
  */
-public class RequestDAO extends AbstractDO {
+public final class RequestDAO extends AbstractDO {
 
   /**
-   * Singleton instance.
+   * Instance holder.
    */
-  private static RequestDAO instance = null;
+  private static final class RequestDAOHolder {
+    /**
+     * Cannot be instantiated.
+     */
+    private RequestDAOHolder() {
+    }
+
+    /**
+     * The instance.
+     */
+    public static final RequestDAO INSTANCE = new RequestDAO();
+  }
 
   /**
    * Get singleton instance.
@@ -30,10 +41,7 @@ public class RequestDAO extends AbstractDO {
    * @return The singleton instance
    */
   public static RequestDAO getInstance() {
-    if (instance == null) {
-      instance = new RequestDAO();
-    }
-    return instance;
+    return RequestDAOHolder.INSTANCE;
   }
 
   /**

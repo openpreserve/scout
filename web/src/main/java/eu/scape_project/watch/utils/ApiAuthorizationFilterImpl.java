@@ -39,27 +39,51 @@ import com.wordnik.swagger.core.ApiAuthorizationFilter;
  */
 
 public class ApiAuthorizationFilterImpl implements ApiAuthorizationFilter {
-  boolean isFilterInitialized = false;
-  Map<String, Boolean> methodSecurityAnotations = new HashMap<String, Boolean>();
-  Map<String, Boolean> classSecurityAnotations = new HashMap<String, Boolean>();
-  String securekeyId = "special-key";
-//  String unsecurekeyId = "default-key";
 
-  public boolean authorize(String apiPath, String method, HttpHeaders headers, UriInfo uriInfo) {
-    String apiKey = uriInfo.getQueryParameters().getFirst("api_key");
-    String mName = method.toUpperCase();
+  private static final String API_KEY = "api_key";
+
+  /**
+   * Filter initialization status.
+   */
+  private boolean isFilterInitialized = false;
+
+  /**
+   * Method level security annotations.
+   */
+  private final Map<String, Boolean> methodSecurityAnotations = new HashMap<String, Boolean>();
+
+  /**
+   * Class level security annotations.
+   */
+  private final Map<String, Boolean> classSecurityAnotations = new HashMap<String, Boolean>();
+
+  /**
+   * Secure key Id.
+   */
+  private final String securekeyId = "special-key";
+
+  // String unsecurekeyId = "default-key";
+
+  /**
+   * Check method authorization.
+   * 
+   * @param apiPath
+   * @param method
+   * @param headers
+   * @param uriInfo
+   * @return <code>true</code> if path is secured.
+   */
+  public boolean authorize(final String apiPath, final String method, final HttpHeaders headers, final UriInfo uriInfo) {
+    final String apiKey = uriInfo.getQueryParameters().getFirst(API_KEY);
+    final String mName = method.toUpperCase();
     if (isPathSecure(mName + ":" + apiPath, false)) {
-      if (securekeyId.equals(apiKey)) {
-        return true;
-      } else {
-        return false;
-      }
+      return this.securekeyId.equals(apiKey);
     }
     return true;
   }
 
   public boolean authorizeResource(String apiPath, HttpHeaders headers, UriInfo uriInfo) {
-    String apiKey = uriInfo.getQueryParameters().getFirst("api_key");
+    String apiKey = uriInfo.getQueryParameters().getFirst(API_KEY);
     if (isPathSecure(apiPath, true)) {
       if (securekeyId.equals(apiKey)) {
         return true;

@@ -1,9 +1,9 @@
 package eu.scape_project.watch.dao;
 
-import java.util.List;
-
 import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.utils.KBUtils;
+
+import java.util.List;
 
 /**
  * {@link EntityType} Data Access Object.
@@ -25,9 +25,20 @@ public final class EntityTypeDAO extends AbstractDO<EntityType> {
   }
 
   /**
-   * Singleton instance.
+   * Instance holder.
    */
-  private static EntityTypeDAO instance = null;
+  private static final class EntityTypeDAOHolder {
+    /**
+     * Cannot be instantiated.
+     */
+    private EntityTypeDAOHolder() {
+    }
+
+    /**
+     * The instance.
+     */
+    public static final EntityTypeDAO INSTANCE = new EntityTypeDAO();
+  }
 
   /**
    * Get singleton instance.
@@ -35,10 +46,7 @@ public final class EntityTypeDAO extends AbstractDO<EntityType> {
    * @return The singleton instance
    */
   public static EntityTypeDAO getInstance() {
-    if (instance == null) {
-      instance = new EntityTypeDAO();
-    }
-    return instance;
+    return EntityTypeDAOHolder.INSTANCE;
   }
 
   /**

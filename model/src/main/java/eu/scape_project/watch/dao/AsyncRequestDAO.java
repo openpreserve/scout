@@ -1,12 +1,12 @@
 package eu.scape_project.watch.dao;
 
+import java.util.Collection;
+import java.util.List;
+
 import eu.scape_project.watch.domain.AsyncRequest;
 import eu.scape_project.watch.domain.Notification;
 import eu.scape_project.watch.domain.Plan;
 import eu.scape_project.watch.domain.Trigger;
-
-import java.util.Collection;
-import java.util.List;
 
 /**
  * {@link AsyncRequest} data access object.
@@ -18,9 +18,20 @@ import java.util.List;
 public final class AsyncRequestDAO extends AbstractDO<AsyncRequest> {
 
   /**
-   * Singleton instance.
+   * Instance holder.
    */
-  private static AsyncRequestDAO instance = null;
+  private static final class AsyncRequestDAOHolder {
+    /**
+     * Cannot be instantiated.
+     */
+    private AsyncRequestDAOHolder() {
+    }
+
+    /**
+     * The instance.
+     */
+    public static final AsyncRequestDAO INSTANCE = new AsyncRequestDAO();
+  }
 
   /**
    * Get singleton instance.
@@ -28,10 +39,7 @@ public final class AsyncRequestDAO extends AbstractDO<AsyncRequest> {
    * @return The singleton instance
    */
   public static AsyncRequestDAO getInstance() {
-    if (instance == null) {
-      instance = new AsyncRequestDAO();
-    }
-    return instance;
+    return AsyncRequestDAOHolder.INSTANCE;
   }
 
   /**

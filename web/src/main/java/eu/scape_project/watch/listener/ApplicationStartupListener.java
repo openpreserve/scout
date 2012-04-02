@@ -65,6 +65,7 @@ public class ApplicationStartupListener implements ServletContextListener {
 
     CentralMonitor cm = new CentralMonitor();
     cm.registerToAsyncRequest(AsyncRequestDAO.getInstance());
+    cm.setNotificationService(NotificationService.getInstance());
     
     componentContainer.setCoreScheduler(new CoreScheduler());
     componentContainer.setCentralMonitor(cm);

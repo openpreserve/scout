@@ -79,22 +79,24 @@ public class CollectionProfilerMonitor implements MonitorInterface {
   public void jobWasExecuted(JobExecutionContext arg0, JobExecutionException arg1) {
     LOG.info("Collection Profiler Monitor is executed");
     ResultInterface result = (ResultInterface) arg0.getResult();
-    List<PropertyValue> rValues = result.getPropertyValues();
-    for (PropertyValue pv : rValues) {
-      Entity e = pv.getEntity();
-      Property p = pv.getProperty();
-      EntityDAO.getInstance().save(e);
-      PropertyDAO.getInstance().save(p);
-
-      PropertyValueDAO.getInstance().save(pv);
-      // LOG.info("property value {} - {}",
-      // pv.getProperty().getName(),pv.getValue());
+    //TODO this part needs to be improved with exceptions 
+    if (result!=null){
+      List<PropertyValue> rValues = result.getPropertyValues();
+      for (PropertyValue pv : rValues) {
+        Entity e = pv.getEntity();
+        Property p = pv.getProperty();
+        EntityDAO.getInstance().save(e);
+        PropertyDAO.getInstance().save(p);
+        
+        PropertyValueDAO.getInstance().save(pv);
+        // LOG.info("property value {} - {}",
+        // pv.getProperty().getName(),pv.getValue());
+      }
+      LOG.debug("Monitor found {} values", rValues.size());
+      centralMonitor.notifyAsyncRequests(aRequestUUIDS);
+    }else {
+      LOG.warn("SKIPPING - CollectionProfilerMonitor recived null as a result from an AdabtorJob");
     }
-
-    LOG.debug("Monitor found {} values", rValues.size());
-    // TODO add notification
-
-    centralMonitor.notifyAsyncRequests(aRequestUUIDS);
 
   }
 

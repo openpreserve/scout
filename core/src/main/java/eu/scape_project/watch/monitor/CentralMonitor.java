@@ -117,6 +117,8 @@ public class CentralMonitor implements DOListener {
       List<PropertyValue> result = PropertyValueDAO.getInstance().query(question.getSparql(), 0, 10);
       if (result.size()>0){
         notify(trigger);
+      }else {
+        LOG.info("Condition is not satisfied");
       }
     }
       

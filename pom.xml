@@ -65,10 +65,10 @@
       <id>jboss</id>
       <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
     </repository>
-    <repository>
-      <id>KEEP Artifacts</id>
-      <name>KEEP Artifacts-releases</name>
-      <url>http://artifactory.keep.pt/keep</url>
+    <repository> <!-- IF this repo ceases to exist we have to use the KEEP repo again. -->
+      <id>jenabean-releases</id>
+      <name>Jena Bean Repo</name>
+      <url>http://jenabean.googlecode.com/svn/repo/</url>
     </repository>
     <repository>
       <id>apache-repo-releases</id>

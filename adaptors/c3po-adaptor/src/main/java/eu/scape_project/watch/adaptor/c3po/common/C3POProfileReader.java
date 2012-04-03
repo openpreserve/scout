@@ -1,4 +1,4 @@
-package eu.scape_project.watch.adaptor.c3po;
+package eu.scape_project.watch.adaptor.c3po.common;
 
 import java.io.File;
 import java.io.FileInputStream;

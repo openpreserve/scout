@@ -15,7 +15,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import eu.scape_project.watch.adaptor.c3po.C3POProfileReader;
+import eu.scape_project.watch.adaptor.c3po.common.C3POProfileReader;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 

@@ -1,17 +1,5 @@
 package eu.scape_project.watch.adaptor.c3po;
 
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_COLLECTION_SIZE;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_DESCRIPTION;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_FORMAT_DISTRIBUTION;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_NAME;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_AVG_SIZE;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_COUNT;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_MAX_SIZE;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_MIN_SIZE;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_CNF;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_DEFAULT;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_DESC;
-
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,9 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import eu.scape_project.watch.adaptor.c3po.client.C3POClient;
 import eu.scape_project.watch.adaptor.c3po.client.C3POClientInterface;
@@ -33,6 +18,7 @@ import eu.scape_project.watch.adaptor.c3po.command.ObjectsAvgSizeCommand;
 import eu.scape_project.watch.adaptor.c3po.command.ObjectsCountCommand;
 import eu.scape_project.watch.adaptor.c3po.command.ObjectsMaxSizeCommand;
 import eu.scape_project.watch.adaptor.c3po.command.ObjectsMinSizeCommand;
+import eu.scape_project.watch.adaptor.c3po.common.C3POProfileReader;
 import eu.scape_project.watch.adaptor.c3po.common.ProfileResult;
 import eu.scape_project.watch.common.ConfigParameter;
 import eu.scape_project.watch.domain.Entity;
@@ -44,6 +30,21 @@ import eu.scape_project.watch.interfaces.ResultInterface;
 import eu.scape_project.watch.plugin.PluginType;
 import eu.scape_project.watch.utils.exceptions.InvalidParameterException;
 import eu.scape_project.watch.utils.exceptions.PluginException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_COLLECTION_SIZE;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_DESCRIPTION;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_FORMAT_DISTRIBUTION;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_NAME;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_AVG_SIZE;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_COUNT;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_MAX_SIZE;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_MIN_SIZE;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_CNF;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_DEFAULT;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_DESC;
 
 /**
  * A watch conforming adaptor for a collection profile source called c3po.
@@ -83,8 +84,12 @@ public class C3POAdaptor implements AdaptorPluginInterface {
    */
   private C3POClientInterface source;
 
+  /**
+   * Initializes this plugin.
+   * 
+   */
   @Override
-  public void init() throws PluginException {
+  public void init() {
     this.initConfigs();
 
     final EntityType cp = new EntityType(CP_NAME, CP_DESCRIPTION);
@@ -104,8 +109,13 @@ public class C3POAdaptor implements AdaptorPluginInterface {
     this.commands.put(CP_FORMAT_DISTRIBUTION, new DistributionCommand(formatDistr, "format"));
   }
 
+  /**
+   * Shuts down the plugin and clears all resources. Warning, reusing the plugin
+   * after a shutdown call (without calling {@link C3POAdaptor#init()} again)
+   * may lead to unexpected behaviour.
+   */
   @Override
-  public void shutdown() throws PluginException {
+  public void shutdown() {
     this.defaultConfig.clear();
     this.config.clear();
     this.commands.clear();
@@ -113,36 +123,61 @@ public class C3POAdaptor implements AdaptorPluginInterface {
     // close connections, cancel jobs, etc.
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public String getName() {
     return "c3po";
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public String getVersion() {
     return VERSION;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public String getDescription() {
     return "A scout adaptor for the c3po content profiler source";
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public PluginType getPluginType() {
     return PluginType.ADAPTOR;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public List<ConfigParameter> getParameters() {
     return this.defaultConfig;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public Map<String, String> getParameterValues() {
     return this.config;
   }
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @throws InvalidParameterException
+   *           if some of the required values is not provided or has a null
+   *           value.
+   */
   @Override
   public void setParameterValues(final Map<String, String> values) throws InvalidParameterException {
     final Set<String> keys = values.keySet();
@@ -158,6 +193,17 @@ public class C3POAdaptor implements AdaptorPluginInterface {
 
   }
 
+  /**
+   * Fetches all values of all collections in the pre-configured c3po instance.
+   * This method should be used with caution as it might lead to a huge network
+   * overhead, if the c3po instance has a great deal of collections.
+   * 
+   * @return a {@link ProfileResult} result.
+   * 
+   * @throws PluginException
+   *           if the c3po client cannot be instantiated or another error (e.g.
+   *           network problems) occur.
+   */
   @Override
   public ResultInterface execute() throws PluginException {
     LOG.info("Executing c3po adaptor, fetching all properties for all known collections.");
@@ -184,11 +230,27 @@ public class C3POAdaptor implements AdaptorPluginInterface {
     return result;
   }
 
+  /**
+   * Not yet implemented.
+   * 
+   * @param context
+   *          a map containing the entities and the properties to fetch.
+   * @return nothing.
+   * 
+   * @throws PluginException
+   *           always.
+   */
   @Override
   public ResultInterface execute(final Map<Entity, List<Property>> context) throws PluginException {
     throw new PluginException("This method is not yet implemented!");
   }
 
+  // ### private methods.
+
+  /**
+   * Initializes the default configuration of the adaptor. Currently it starts a
+   * dummy adaptor.
+   */
   private void initConfigs() {
     this.config = new HashMap<String, String>();
 
@@ -200,12 +262,21 @@ public class C3POAdaptor implements AdaptorPluginInterface {
     }
   }
 
-  private InputStream getCollectionProfile(String id) {
+  /**
+   * Queries the c3po source for a content profile of the collection with the
+   * given id.
+   * 
+   * @param id
+   *          the id of the collection.
+   * @return an {@link InputStream} containing the file.
+   */
+  private InputStream getCollectionProfile(final String id) {
     final List<String> expanded = this.generatePropertyExpansionList(null);
     final String uuid = this.source.submitCollectionProfileJob(id, expanded);
     int counter = 1;
 
     InputStream is = this.source.pollJobResult(uuid);
+    // this has to be done in another fashion.
     while (is == null && counter < 10) {
       is = this.source.pollJobResult(uuid);
       counter++;
@@ -219,6 +290,13 @@ public class C3POAdaptor implements AdaptorPluginInterface {
     return is;
   }
 
+  /**
+   * Creates the source client based on the current configuration.
+   * 
+   * @throws PluginException
+   *           if the current configuration is not correct or does not provide
+   *           correct values.
+   */
   private void createSource() throws PluginException {
     final String endpoint = this.getParameterValues().get(ENDPOINT_CNF);
     if (endpoint == null || endpoint.equals("")) {
@@ -236,6 +314,18 @@ public class C3POAdaptor implements AdaptorPluginInterface {
     }
   }
 
+  /**
+   * Gets the values of the given properties for a collection with the given id.
+   * If the list is null or empty, then all known properties will be fetched. If
+   * there is no collection with the given id with the source the method returns
+   * an empty list.
+   * 
+   * @param id
+   *          the id of the collection in the source.
+   * @param props
+   *          the properties to fetch from the collection.
+   * @return a list of {@link PropertyValue} objects containing the results.
+   */
   private List<PropertyValue> getPropertyValues(final String id, final List<Property> props) {
     final InputStream stream = this.getCollectionProfile(id);
     final List<PropertyValue> values = new ArrayList<PropertyValue>();
@@ -260,13 +350,26 @@ public class C3POAdaptor implements AdaptorPluginInterface {
     return values;
   }
 
+  /**
+   * Initializes the commands that will be used.
+   * 
+   * @param reader
+   *          the profile reader.
+   */
   private void setupCommands(final C3POProfileReader reader) {
     for (Command cmd : this.commands.values()) {
       cmd.setReader(reader);
     }
   }
 
-  private List<String> generatePropertyExpansionList(Property property) {
+  /**
+   * A convenience method that generates a list with the property name.
+   * 
+   * @param property
+   *          the property.
+   * @return the list with the name of the property.
+   */
+  private List<String> generatePropertyExpansionList(final Property property) {
     List<String> props = new ArrayList<String>();
     if (property != null) {
       LOG.debug("generating parameter for property {}", property.getName());

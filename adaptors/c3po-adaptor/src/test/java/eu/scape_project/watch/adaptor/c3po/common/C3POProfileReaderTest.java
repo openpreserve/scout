@@ -1,12 +1,11 @@
-package eu.scape_project.watch.adaptor.c3po;
-
-import static org.junit.Assert.*;
+package eu.scape_project.watch.adaptor.c3po.common;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Map;
 
 import junit.framework.Assert;
+import eu.scape_project.watch.adaptor.c3po.common.C3POProfileReader;
 
 import org.junit.After;
 import org.junit.Before;

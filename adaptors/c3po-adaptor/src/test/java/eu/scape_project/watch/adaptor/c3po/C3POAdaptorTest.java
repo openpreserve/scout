@@ -1,17 +1,8 @@
 package eu.scape_project.watch.adaptor.c3po;
 
-import static org.junit.Assert.*;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import junit.framework.Assert;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import eu.scape_project.watch.common.ConfigParameter;
 import eu.scape_project.watch.domain.Entity;
@@ -20,21 +11,19 @@ import eu.scape_project.watch.interfaces.ResultInterface;
 import eu.scape_project.watch.utils.exceptions.InvalidParameterException;
 import eu.scape_project.watch.utils.exceptions.PluginException;
 
-public class C3POAdaptorTest {
+import org.junit.Before;
+import org.junit.Test;
 
-  private static final Logger LOG = LoggerFactory.getLogger(C3POAdaptorTest.class);
+import junit.framework.Assert;
+
+public class C3POAdaptorTest {
 
   private C3POAdaptor adaptor;
 
   @Before
   public void setup() {
     this.adaptor = new C3POAdaptor();
-    try {
-      this.adaptor.init();
-    } catch (final PluginException e) {
-      LOG.error("This should not occur: {}", e.getMessage());
-    }
-
+    this.adaptor.init();
   }
 
   @Test
@@ -78,7 +67,7 @@ public class C3POAdaptorTest {
   @Test
   public void onExecute() throws Exception {
     final List<ConfigParameter> parameters = this.adaptor.getParameters();
-    Map<String, String> values = new HashMap<String, String>();
+    final Map<String, String> values = new HashMap<String, String>();
 
     for (final ConfigParameter cp : parameters) {
       values.put(cp.getKey(), cp.getValue());
@@ -95,7 +84,7 @@ public class C3POAdaptorTest {
   @Test(expected = PluginException.class)
   public void onExecuteWithContext() throws Exception {
     final List<ConfigParameter> parameters = this.adaptor.getParameters();
-    Map<String, String> values = new HashMap<String, String>();
+    final Map<String, String> values = new HashMap<String, String>();
 
     for (final ConfigParameter cp : parameters) {
       values.put(cp.getKey(), cp.getValue());

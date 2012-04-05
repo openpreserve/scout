@@ -292,8 +292,16 @@ public final class PluginManager {
   }
 
   /**
+   * Sets the plugin directory.
+   * 
    * @param pluginDirectory
    *          the pluginDirectory to set
+<<<<<<< HEAD
+=======
+   * 
+   *          This method will throw an {@link IllegalArgumentException} if
+   *          pluginDirectory is null or not a directory.
+>>>>>>> improving some sonar issues
    */
   private void setPluginDirectory(final File pluginDirectory) {
     
@@ -320,11 +328,7 @@ public final class PluginManager {
    */
   private void loadPlugins() {
 
-    final File[] jarFiles = this.getPluginDirectory().listFiles(new FileFilter() {
-      public boolean accept(final File pathname) {
-        return pathname.getName().endsWith(".jar");
-      }
-    });
+    final File[] jarFiles = this.getPluginDirectory().listFiles(new JarFileFilter());
 
     for (File jarFile : jarFiles) {
       if (this.pluginRegistry.containsKey(jarFile)
@@ -349,7 +353,7 @@ public final class PluginManager {
             this.pluginRegistry.put(jarFile, new JarPlugin(plugin, jarFile.lastModified()));
           }
         } catch (final MalformedURLException e) {
-          e.printStackTrace();
+          LOGGER.error("An error caught: {}", e.getMessage());
         }
       }
 
@@ -506,6 +510,25 @@ public final class PluginManager {
     JarPlugin(final PluginInterface plugin, final long lastModified) {
       this.plugin = plugin;
       this.lastModified = lastModified;
+    }
+  }
+
+  /**
+   * A helper jar file filter class.
+   * 
+   * @author Petar Petrov <me@petarpetrov.org>
+   * 
+   */
+  static class JarFileFilter implements FileFilter {
+    /**
+     * Accepts only files ending with '.jar'.
+     * 
+     * @param pathname
+     *          the file that is to be filtered.
+     * @return true if the file ends with .jar, false otherwise.
+     */
+    public boolean accept(final File pathname) {
+      return pathname.getName().endsWith(".jar");
     }
   }
 

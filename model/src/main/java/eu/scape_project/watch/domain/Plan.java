@@ -53,7 +53,7 @@ public class Plan extends RdfBean<Plan> {
   private String id;
 
   public String getId() {
-    return this.id;
+    return id;
   }
 
   public void setId(final String id) {

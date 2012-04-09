@@ -127,9 +127,14 @@ public final class NotificationService {
   }
 
   public Set<NotificationAdaptorInterface> getAdaptors() {
-    return this.adaptors;
+    return adaptors;
   }
 
+  /**
+   * Get the set of available notification types from all installed adapters.
+   * 
+   * @return A set of notification types.
+   */
   public Set<String> getTypes() {
     return this.adaptorsIndex.keySet();
   }

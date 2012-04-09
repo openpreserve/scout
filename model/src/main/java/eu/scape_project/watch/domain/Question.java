@@ -1,7 +1,5 @@
 package eu.scape_project.watch.domain;
 
-import eu.scape_project.watch.utils.KBUtils;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -11,8 +9,11 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import eu.scape_project.watch.utils.KBUtils;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
+
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
@@ -132,7 +133,7 @@ public class Question extends RdfBean<Question> {
   }
 
   public String getId() {
-    return this.id;
+    return id;
   }
 
   public void setId(final String id) {
@@ -140,7 +141,7 @@ public class Question extends RdfBean<Question> {
   }
 
   public String getSparql() {
-    return this.sparql;
+    return sparql;
   }
 
   public void setSparql(final String sparql) {
@@ -148,7 +149,7 @@ public class Question extends RdfBean<Question> {
   }
 
   public RequestTarget getTarget() {
-    return this.target;
+    return target;
   }
 
   public void setTarget(final RequestTarget target) {
@@ -156,7 +157,7 @@ public class Question extends RdfBean<Question> {
   }
 
   public List<Entity> getEntities() {
-    return this.entities;
+    return entities;
   }
 
   public void setEntities(final List<Entity> entities) {
@@ -164,7 +165,7 @@ public class Question extends RdfBean<Question> {
   }
 
   public long getPeriod() {
-    return this.period;
+    return period;
   }
 
   public void setPeriod(final long period) {

@@ -88,7 +88,7 @@ public class Trigger extends RdfBean<Trigger> {
   }
 
   public String getId() {
-    return this.id;
+    return id;
   }
 
   public void setId(final String id) {
@@ -96,7 +96,7 @@ public class Trigger extends RdfBean<Trigger> {
   }
 
   public Question getQuestion() {
-    return this.question;
+    return question;
   }
 
   public void setQuestion(final Question question) {
@@ -104,7 +104,7 @@ public class Trigger extends RdfBean<Trigger> {
   }
 
   public List<Notification> getNotifications() {
-    return this.notifications;
+    return notifications;
   }
 
   public void setNotifications(final List<Notification> notifications) {
@@ -112,7 +112,7 @@ public class Trigger extends RdfBean<Trigger> {
   }
 
   public Plan getPlan() {
-    return this.plan;
+    return plan;
   }
 
   public void setPlan(final Plan plan) {

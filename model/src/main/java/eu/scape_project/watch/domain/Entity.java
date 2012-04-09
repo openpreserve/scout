@@ -61,7 +61,7 @@ public class Entity extends RdfBean<Entity> {
   private EntityType type;
 
   public String getName() {
-    return this.name;
+    return name;
   }
 
   public void setName(final String name) {
@@ -69,7 +69,7 @@ public class Entity extends RdfBean<Entity> {
   }
 
   public EntityType getEntityType() {
-    return this.type;
+    return type;
   }
 
   public void setEntityType(final EntityType entityType) {

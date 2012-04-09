@@ -119,7 +119,7 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
   }
 
   public String getName() {
-    return this.name;
+    return name;
   }
 
   public void setName(final String name) {
@@ -127,18 +127,29 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
   }
 
   public String getId() {
-    return this.id;
+    return id;
   }
 
   public String getVersion() {
-    return this.version;
+    return version;
   }
 
+  /**
+   * Get the configuration as a map of strings.
+   * 
+   * @return A map of strings with each entry as a key-value pair.
+   */
   public Map<String, String> getConfiguration() {
     return ModelUtils.entryListToMap(this.configuration);
   }
 
-  public void setConfiguration(Map<String, String> configuration) {
+  /**
+   * Set the configuration as a map of strings.
+   * 
+   * @param configuration
+   *          A map of strings with each entry as a key-value pair.
+   */
+  public void setConfiguration(final Map<String, String> configuration) {
     this.configuration = ModelUtils.mapToEntryList(configuration);
   }
 
@@ -155,7 +166,7 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
   }
 
   public Source getSource() {
-    return this.source;
+    return source;
   }
 
   public void setSource(final Source source) {

@@ -286,7 +286,16 @@ public final class KBUtils {
     }
   }
 
-  public static void dbConnect(String datafolder, boolean testdata) {
+  /**
+   * Create a connection with the database.
+   * 
+   * @param datafolder
+   *          The folder where the database will be kept.
+   * @param testdata
+   *          <code>true</code> if test data should be inserted into the
+   *          database.
+   */
+  public static void dbConnect(final String datafolder, final boolean testdata) {
     LOG.info("DB Connect");
     final File dataFolderFile = new File(datafolder);
     try {
@@ -295,7 +304,7 @@ public final class KBUtils {
         FileUtils.forceMkdir(dataFolderFile);
       }
 
-      Model model = TDBFactory.createModel(datafolder);
+      final Model model = TDBFactory.createModel(datafolder);
       Jenabean.instance().bind(model);
 
       LOG.info("Model was created at {} and is bound to Jenabean", datafolder);
@@ -311,6 +320,10 @@ public final class KBUtils {
     }
   }
 
+  /**
+   * Cleanly shutdown from the database, flushing the cache and closing the
+   * model.
+   */
   public static void dbDisconnect() {
     TDB.sync(Jenabean.instance().model());
     Jenabean.instance().model().close();
@@ -437,7 +450,7 @@ public final class KBUtils {
    *          The namespace to be prefixed
    * @return the prefix declarion with a new line on the end
    */
-  static String createPrefixDecl(final String prefix, final String namescape) {
+  private static String createPrefixDecl(final String prefix, final String namescape) {
     return "PREFIX " + prefix + " <" + namescape + ">\n";
   }
 
@@ -452,7 +465,7 @@ public final class KBUtils {
    * @return The prefix, starting with "watch-", the resource class simple name,
    *         and finishing with ":"
    */
-  static <T extends RdfBean<T>> String getResourcePrefix(final Class<T> resourceClass) {
+  private static <T extends RdfBean<T>> String getResourcePrefix(final Class<T> resourceClass) {
     return "watch-" + resourceClass.getSimpleName() + ":";
   }
 
@@ -466,7 +479,7 @@ public final class KBUtils {
    * @return The resource namespace, that start with the watch namespace
    *         {@link #WATCH_NS}.
    */
-  static <T extends RdfBean<T>> String getResourceNamespace(final Class<T> resourceClass) {
+  private static <T extends RdfBean<T>> String getResourceNamespace(final Class<T> resourceClass) {
     return WATCH_NS + resourceClass.getSimpleName() + "/";
   }
 
@@ -479,7 +492,7 @@ public final class KBUtils {
    *          The resource class.
    * @return The prefix declaration.
    */
-  static <T extends RdfBean<T>> String getResourcePrefixDecl(final Class<T> resourceClass) {
+  private static <T extends RdfBean<T>> String getResourcePrefixDecl(final Class<T> resourceClass) {
     return createPrefixDecl(getResourcePrefix(resourceClass), getResourceNamespace(resourceClass));
   }
 

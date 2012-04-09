@@ -112,6 +112,30 @@ public class WatchClient {
   }
 
   /**
+   * Generic type for a List of {@link EntityType}.
+   */
+  private static final GenericType<List<EntityType>> ENTITYTYPE_LIST_TYPE = new GenericType<List<EntityType>>() {
+  };
+
+  /**
+   * Generic type for a List of {@link Property}.
+   */
+  private static final GenericType<List<Property>> PROPERTY_LIST_TYPE = new GenericType<List<Property>>() {
+  };
+
+  /**
+   * Generic type for a List of {@link Entity}.
+   */
+  private static final GenericType<List<Entity>> ENTITY_LIST_TYPE = new GenericType<List<Entity>>() {
+  };
+
+  /**
+   * Generic type for a List of {@link PropertyValue}.
+   */
+  private static final GenericType<List<PropertyValue>> PROPERTYVALUE_LIST_TYPE = new GenericType<List<PropertyValue>>() {
+  };
+
+  /**
    * Create a new Watch client.
    * 
    * @param resource
@@ -186,8 +210,7 @@ public class WatchClient {
   public List<Entity> listEntity(String type, int start, int max) {
     return (List<Entity>) this.resource.path(KBUtils.ENTITY + FS + this.format + AS + LIST)
       .queryParam(TYPE, type != null ? type : "").queryParam(START, Integer.toString(start))
-      .queryParam(MAX, Integer.toString(max)).accept(this.format.getMediaType()).get(new GenericType<List<Entity>>() {
-      });
+      .queryParam(MAX, Integer.toString(max)).accept(this.format.getMediaType()).get(ENTITY_LIST_TYPE);
   }
 
   /**
@@ -258,8 +281,7 @@ public class WatchClient {
    */
   public List<EntityType> listEntityType() {
     return (List<EntityType>) this.resource.path(KBUtils.ENTITY_TYPE + FS + this.format + AS + LIST)
-      .accept(this.format.getMediaType()).get(new GenericType<List<EntityType>>() {
-      });
+      .accept(this.format.getMediaType()).get(ENTITYTYPE_LIST_TYPE);
   }
 
   /**
@@ -336,8 +358,7 @@ public class WatchClient {
    */
   public List<Property> listProperty() {
     return (List<Property>) this.resource.path(KBUtils.PROPERTY + FS + this.format + AS + LIST)
-      .accept(this.format.getMediaType()).get(new GenericType<List<Property>>() {
-      });
+      .accept(this.format.getMediaType()).get(PROPERTY_LIST_TYPE);
   }
 
   /**
@@ -418,8 +439,7 @@ public class WatchClient {
    */
   public List<PropertyValue> listPropertyValue() {
     return (List<PropertyValue>) this.resource.path(KBUtils.PROPERTY_VALUE + FS + this.format + AS + LIST)
-      .accept(this.format.getMediaType()).get(new GenericType<List<PropertyValue>>() {
-      });
+      .accept(this.format.getMediaType()).get(PROPERTYVALUE_LIST_TYPE);
   }
 
   /**
@@ -467,20 +487,16 @@ public class WatchClient {
     List<? extends RdfBean<?>> ret;
     switch (target) {
       case ENTITY_TYPE:
-        ret = builder.get(new GenericType<List<EntityType>>() {
-        });
+        ret = builder.get(ENTITYTYPE_LIST_TYPE);
         break;
       case PROPERTY:
-        ret = builder.get(new GenericType<List<Property>>() {
-        });
+        ret = builder.get(PROPERTY_LIST_TYPE);
         break;
       case ENTITY:
-        ret = builder.get(new GenericType<List<Entity>>() {
-        });
+        ret = builder.get(ENTITY_LIST_TYPE);
         break;
       case PROPERTY_VALUE:
-        ret = builder.get(new GenericType<List<PropertyValue>>() {
-        });
+        ret = builder.get(PROPERTYVALUE_LIST_TYPE);
         break;
       default:
         ret = null;

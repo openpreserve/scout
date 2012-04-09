@@ -58,7 +58,7 @@ public class Source extends RdfBean<Source> {
   private String description;
 
   public String getName() {
-    return this.name;
+    return name;
   }
 
   public void setName(final String name) {
@@ -66,7 +66,7 @@ public class Source extends RdfBean<Source> {
   }
 
   public String getDescription() {
-    return this.description;
+    return description;
   }
 
   public void setDescription(final String description) {

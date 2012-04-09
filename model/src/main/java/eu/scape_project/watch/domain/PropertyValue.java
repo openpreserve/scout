@@ -97,17 +97,29 @@ public class PropertyValue extends RdfBean<PropertyValue> {
     this.updateId();
   }
 
+  /**
+   * Create a new PropertyValue that holds a list of values or a dictionary.
+   * 
+   * @param e
+   *          The related {@link Entity}
+   * @param p
+   *          Thre related {@link Property}
+   * @param v
+   *          The list of values that should of the types
+   *          {@link PropertyDataStructure#LIST} or
+   *          {@link PropertyDataStructure#DICTIONARY}
+   */
   public PropertyValue(final Entity e, final Property p, final List<Object> v) {
     this(e, p, (String) null);
     this.setValues(v);
   }
 
   public String getId() {
-    return this.id;
+    return id;
   }
 
   public String getValue() {
-    return this.value;
+    return value;
   }
 
   public void setValue(final String value) {
@@ -115,7 +127,7 @@ public class PropertyValue extends RdfBean<PropertyValue> {
   }
 
   public List<Object> getValues() {
-    return this.values;
+    return values;
   }
 
   public void setValues(final List<Object> values) {
@@ -123,7 +135,7 @@ public class PropertyValue extends RdfBean<PropertyValue> {
   }
 
   public Entity getEntity() {
-    return this.entity;
+    return entity;
   }
 
   /**
@@ -139,7 +151,7 @@ public class PropertyValue extends RdfBean<PropertyValue> {
   }
 
   public Property getProperty() {
-    return this.property;
+    return property;
   }
 
   public void setProperty(final Property property) {
@@ -229,8 +241,8 @@ public class PropertyValue extends RdfBean<PropertyValue> {
 
   @Override
   public String toString() {
-    return "PropertyValue [id=" + id + ", value=" + value + ", values=" + Arrays.toString(values.toArray()) + ", entity=" + entity + ", property="
-      + property + "]";
+    return "PropertyValue [id=" + id + ", value=" + value + ", values=" + Arrays.toString(values.toArray())
+      + ", entity=" + entity + ", property=" + property + "]";
   }
 
 }

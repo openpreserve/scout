@@ -61,7 +61,7 @@ public class DictionaryItem extends RdfBean<DictionaryItem> {
   }
 
   public String getKey() {
-    return this.key;
+    return key;
   }
 
   public void setKey(final String key) {
@@ -69,7 +69,7 @@ public class DictionaryItem extends RdfBean<DictionaryItem> {
   }
 
   public String getValue() {
-    return this.value;
+    return value;
   }
 
   public void setValue(final String value) {

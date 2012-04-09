@@ -77,7 +77,7 @@ public class Measurement extends RdfBean<Measurement> {
   }
 
   public PropertyValue getPropertyValue() {
-    return this.propertyValue;
+    return propertyValue;
   }
 
   public void setPropertyValue(final PropertyValue propertyValue) {
@@ -85,7 +85,7 @@ public class Measurement extends RdfBean<Measurement> {
   }
 
   public long getTimestamp() {
-    return this.timestamp;
+    return timestamp;
   }
 
   public void setTimestamp(final long timestamp) {

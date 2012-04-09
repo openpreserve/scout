@@ -71,7 +71,7 @@ public class AsyncRequest extends RdfBean<AsyncRequest> {
    * @return the Identifier
    */
   public String getId() {
-    return this.id;
+    return id;
   }
 
   /**
@@ -90,7 +90,7 @@ public class AsyncRequest extends RdfBean<AsyncRequest> {
    * @return A list of {@link Trigger}
    */
   public List<Trigger> getTriggers() {
-    return this.triggers;
+    return triggers;
   }
 
   /**

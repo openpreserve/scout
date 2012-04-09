@@ -95,7 +95,7 @@ public class Notification extends RdfBean<Notification> {
    * @return the Id
    */
   public String getId() {
-    return this.id;
+    return id;
   }
 
   public void setId(final String id) {
@@ -103,7 +103,7 @@ public class Notification extends RdfBean<Notification> {
   }
 
   public String getType() {
-    return this.type;
+    return type;
   }
 
   public void setType(final String type) {
@@ -111,7 +111,7 @@ public class Notification extends RdfBean<Notification> {
   }
 
   public Collection<Entry> getParameters() {
-    return this.parameters;
+    return parameters;
   }
 
   public Map<String, String> getParameterMap() {

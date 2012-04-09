@@ -179,11 +179,11 @@ public class Property extends RdfBean<Property> {
   }
 
   public String getId() {
-    return this.id;
+    return id;
   }
 
   public EntityType getType() {
-    return this.type;
+    return type;
   }
 
   /**
@@ -198,7 +198,7 @@ public class Property extends RdfBean<Property> {
   }
 
   public String getName() {
-    return this.name;
+    return name;
   }
 
   /**
@@ -213,7 +213,7 @@ public class Property extends RdfBean<Property> {
   }
 
   public String getDescription() {
-    return this.description;
+    return description;
   }
 
   public void setDescription(final String description) {
@@ -229,7 +229,7 @@ public class Property extends RdfBean<Property> {
   }
 
   public PropertyDataStructure getStructure() {
-    return this.structure;
+    return structure;
   }
 
   public void setStructure(final PropertyDataStructure structure) {

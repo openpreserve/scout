@@ -85,6 +85,9 @@ public class Property extends RdfBean<Property> {
    */
   public Property() {
     super();
+    
+    this.datatype = DataType.TEXT;
+    this.structure = PropertyDataStructure.SINGLE;
   }
 
   /**

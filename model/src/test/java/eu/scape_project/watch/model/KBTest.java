@@ -522,6 +522,47 @@ public class KBTest {
   }
 
   /**
+   * Test {@link Question} equals and hashcode.
+   */
+  @Test
+  public void testQuestionEquals() {
+    final EntityType type = new EntityType();
+    type.setName("tests");
+    type.setDescription("Test entities");
+
+    final Entity entity = new Entity(type, "entity1");
+    final Property property = new Property(type, "property1", "property description");
+
+    final String sparql = "?s watch:entity watch-Entity:" + entity.getName() + ". ?s watch:property watch-Property:"
+      + Property.createId(type.getName(), property.getName() + ". FILTER(?s < 200)");
+    final RequestTarget target = RequestTarget.PROPERTY_VALUE;
+    final List<EntityType> types = Arrays.asList(type);
+    final List<Property> properties = Arrays.asList(property);
+    final List<Entity> entities = Arrays.asList(entity);
+    final long period = 30000;
+
+    final Question question1 = new Question(sparql, target, types, properties, entities, period);
+    final Question question2 = new Question();
+    question2.setId(question1.getId());
+    question2.setSparql(sparql);
+    question2.setTarget(target);
+    question2.setTypes(types);
+    question2.setProperties(properties);
+    question2.setEntities(entities);
+    question2.setPeriod(period);
+
+    Assert.assertEquals(question1, question2);
+    Assert.assertEquals(question1.getId(), question2.getId());
+    Assert.assertEquals(question1.getSparql(), question2.getSparql());
+    Assert.assertEquals(question1.getTarget(), question2.getTarget());
+    Assert.assertEquals(question1.getTypes(), question2.getTypes());
+    Assert.assertEquals(question1.getProperties(), question2.getProperties());
+    Assert.assertEquals(question1.getEntities(), question2.getEntities());
+    Assert.assertEquals(question1.getPeriod(), question2.getPeriod());
+        
+  }
+
+  /**
    * Test AsyncRequest equals and hashcode.
    */
   @Test
@@ -563,7 +604,7 @@ public class KBTest {
 
     // Test saved
     Assert.assertTrue(arequest1.equals(arequest2));
-    
+
     // Test empty constructor
     final AsyncRequest arequest3 = new AsyncRequest();
     arequest3.setTriggers(triggers);

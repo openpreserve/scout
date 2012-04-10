@@ -313,7 +313,7 @@ public final class KBUtils {
         KBUtils.createInitialData();
       }
 
-      KBUtils.printStatements();
+      // KBUtils.printStatements();
 
     } catch (final IOException e) {
       LOG.error("Data folder {} could not be created", e.getMessage());

@@ -25,34 +25,9 @@ public final class EntityTypeDAO extends AbstractDO<EntityType> {
   }
 
   /**
-   * Instance holder.
+   * No other instances other then in {@link DAO}.
    */
-  private static final class EntityTypeDAOHolder {
-    /**
-     * Cannot be instantiated.
-     */
-    private EntityTypeDAOHolder() {
-    }
-
-    /**
-     * The instance.
-     */
-    public static final EntityTypeDAO INSTANCE = new EntityTypeDAO();
-  }
-
-  /**
-   * Get singleton instance.
-   * 
-   * @return The singleton instance
-   */
-  public static EntityTypeDAO getInstance() {
-    return EntityTypeDAOHolder.INSTANCE;
-  }
-
-  /**
-   * No other instances can exist as this is a singleton.
-   */
-  private EntityTypeDAO() {
+  protected EntityTypeDAO() {
 
   }
 

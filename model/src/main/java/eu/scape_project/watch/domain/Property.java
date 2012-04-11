@@ -1,16 +1,15 @@
 package eu.scape_project.watch.domain;
 
+import eu.scape_project.watch.dao.DAO;
+import eu.scape_project.watch.utils.KBUtils;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import eu.scape_project.watch.dao.PropertyDAO;
-import eu.scape_project.watch.utils.KBUtils;
-
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
-
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
@@ -293,14 +292,14 @@ public class Property extends RdfBean<Property> {
   @Override
   public Property save() {
     final Property property = super.save();
-    PropertyDAO.getInstance().fireOnUpdated(this);
+    DAO.fireOnUpdated(this);
     return property;
   }
 
   @Override
   public void delete() {
     super.delete();
-    PropertyDAO.getInstance().fireOnRemoved(this);
+    DAO.fireOnRemoved(this);
   }
 
   @Override

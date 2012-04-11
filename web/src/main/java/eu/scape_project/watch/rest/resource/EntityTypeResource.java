@@ -3,6 +3,15 @@
  */
 package eu.scape_project.watch.rest.resource;
 
+import com.wordnik.swagger.core.ApiError;
+import com.wordnik.swagger.core.ApiErrors;
+import com.wordnik.swagger.core.ApiOperation;
+import com.wordnik.swagger.core.ApiParam;
+import com.wordnik.swagger.core.JavaHelp;
+import eu.scape_project.watch.dao.DAO;
+import eu.scape_project.watch.domain.EntityType;
+import eu.scape_project.watch.utils.exception.NotFoundException;
+
 import java.util.Collection;
 
 import javax.ws.rs.DELETE;
@@ -14,18 +23,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
-import com.wordnik.swagger.core.ApiError;
-import com.wordnik.swagger.core.ApiErrors;
-import com.wordnik.swagger.core.ApiOperation;
-import com.wordnik.swagger.core.ApiParam;
-import com.wordnik.swagger.core.JavaHelp;
-
-import eu.scape_project.watch.dao.EntityTypeDAO;
-import eu.scape_project.watch.domain.EntityType;
-import eu.scape_project.watch.utils.exception.NotFoundException;
-
 import org.apache.log4j.Logger;
-
 import thewebsemantic.binding.Jenabean;
 
 /**
@@ -55,7 +53,7 @@ public class EntityTypeResource extends JavaHelp {
   @ApiErrors(value = {@ApiError(code = NotFoundException.CODE, reason = "Entity Type not found")})
   public Response getEntityTypeByName(
     @ApiParam(value = "Name of the Entity Type", required = true) @PathParam("name") final String name) {
-    final EntityType entitytype = EntityTypeDAO.getInstance().findById(name);
+    final EntityType entitytype = DAO.ENTITY_TYPE.findById(name);
 
     if (entitytype != null) {
       return Response.ok().entity(entitytype).build();
@@ -116,7 +114,7 @@ public class EntityTypeResource extends JavaHelp {
   public Response updateEntityType(
     @ApiParam(value = "Name that need to be deleted", required = true) @PathParam("name") final String name,
     @ApiParam(value = "Updated Entity Type object", required = true) final EntityType entitytype) {
-    final EntityType original = EntityTypeDAO.getInstance().findById(name);
+    final EntityType original = DAO.ENTITY_TYPE.findById(name);
     if (original != null) {
       original.delete();
       entitytype.save();
@@ -142,7 +140,7 @@ public class EntityTypeResource extends JavaHelp {
     @ApiParam(value = "The name of the Entity Type to be deleted", required = true) @PathParam("name") final String name) {
     LOG.info("deleting entity type name: " + name);
 
-    final EntityType entitytype = EntityTypeDAO.getInstance().findById(name);
+    final EntityType entitytype = DAO.ENTITY_TYPE.findById(name);
     if (entitytype != null) {
       entitytype.delete();
       return Response.ok().entity(entitytype).build();

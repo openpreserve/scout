@@ -1,12 +1,13 @@
 package eu.scape_project.watch.domain;
 
+import eu.scape_project.watch.dao.DAO;
+import eu.scape_project.watch.utils.KBUtils;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import eu.scape_project.watch.dao.EntityTypeDAO;
-import eu.scape_project.watch.utils.KBUtils;
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
@@ -114,14 +115,14 @@ public class EntityType extends RdfBean<EntityType> {
   @Override
   public EntityType save() {
     final EntityType type = super.save();
-    EntityTypeDAO.getInstance().fireOnUpdated(this);
+    DAO.fireOnUpdated(this);
     return type;
   }
 
   @Override
   public void delete() {
     super.delete();
-    EntityTypeDAO.getInstance().fireOnRemoved(this);
+    DAO.fireOnRemoved(this);
   }
 
   @Override

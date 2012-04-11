@@ -40,11 +40,7 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
    */
   private static final Logger LOG = LoggerFactory.getLogger(AbstractDO.class);
 
-  /**
-   * List of listeners.
-   */
-  private final Collection<DOListener<T>> listeners = new ArrayList<DOListener<T>>();
-
+  
   /**
    * Find a resource by its Id.
    * 
@@ -131,49 +127,6 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
     return count;
   }
 
-  /**
-   * Add a listeners to data object events.
-   * 
-   * @param listener
-   *          The listener handler.
-   */
-  public void addDOListener(final DOListener<T> listener) {
-    this.listeners.add(listener);
-  }
-
-  /**
-   * Remove existing listener of data object events.
-   * 
-   * @param listener
-   *          The listener to remove
-   */
-  public void removeDOListener(final DOListener<T> listener) {
-    this.listeners.remove(listener);
-  }
-
-  /**
-   * Fire an on create or update event.
-   * 
-   * @param object
-   *          The created or updated object.
-   */
-  public void fireOnUpdated(final T object) {
-    for (DOListener<T> listener : this.listeners) {
-      listener.onUpdated(object);
-    }
-  }
-
-  /**
-   * Fire an on remove event.
-   * 
-   * @param object
-   *          The removed object.
-   */
-  public void fireOnRemoved(final T object) {
-    for (DOListener<T> listener : this.listeners) {
-      listener.onRemoved(object);
-    }
-  }
 
   /**
    * Save object (not deeply) and fire on update event.

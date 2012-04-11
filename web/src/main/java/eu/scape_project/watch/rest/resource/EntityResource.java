@@ -3,6 +3,17 @@
  */
 package eu.scape_project.watch.rest.resource;
 
+import com.wordnik.swagger.core.ApiError;
+import com.wordnik.swagger.core.ApiErrors;
+import com.wordnik.swagger.core.ApiOperation;
+import com.wordnik.swagger.core.ApiParam;
+import com.wordnik.swagger.core.JavaHelp;
+import eu.scape_project.watch.dao.DAO;
+import eu.scape_project.watch.dao.EntityDAO;
+import eu.scape_project.watch.domain.Entity;
+import eu.scape_project.watch.domain.EntityType;
+import eu.scape_project.watch.utils.exception.NotFoundException;
+
 import java.util.Collection;
 
 import javax.ws.rs.DELETE;
@@ -14,18 +25,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
-
-import com.wordnik.swagger.core.ApiError;
-import com.wordnik.swagger.core.ApiErrors;
-import com.wordnik.swagger.core.ApiOperation;
-import com.wordnik.swagger.core.ApiParam;
-import com.wordnik.swagger.core.JavaHelp;
-
-import eu.scape_project.watch.dao.EntityDAO;
-import eu.scape_project.watch.dao.EntityTypeDAO;
-import eu.scape_project.watch.domain.Entity;
-import eu.scape_project.watch.domain.EntityType;
-import eu.scape_project.watch.utils.exception.NotFoundException;
 
 import org.apache.log4j.Logger;
 
@@ -59,7 +58,7 @@ public class EntityResource extends JavaHelp {
   public Response getEntityByName(
     @ApiParam(value = "Name of the Entity", required = true) @PathParam("name") final String name) {
 
-    final Entity entity = EntityDAO.getInstance().findById(name);
+    final Entity entity = DAO.ENTITY.findById(name);
 
     if (entity != null) {
       return Response.ok().entity(entity).build();
@@ -86,7 +85,7 @@ public class EntityResource extends JavaHelp {
     @ApiParam(value = "Entity type", required = true) @QueryParam("type") final String type,
     @ApiParam(value = "Index of first item to retrieve", required = true) @QueryParam("start") final int start,
     @ApiParam(value = "Maximum number of items to retrieve", required = true) @QueryParam("max") final int max) {
-    final Collection<Entity> list = EntityDAO.getInstance().listWithType(type, start, max);
+    final Collection<Entity> list = DAO.ENTITY.listWithType(type, start, max);
     return Response.ok().entity(new GenericEntity<Collection<Entity>>(list) {
     }).build();
   }
@@ -109,7 +108,7 @@ public class EntityResource extends JavaHelp {
     @ApiParam(value = "Entity name (must be unique)", required = true) @PathParam("name") final String name,
     @ApiParam(value = "Entity Type (must exist)", required = true) final String type) {
 
-    final EntityType entitytype = EntityTypeDAO.getInstance().findById(type);
+    final EntityType entitytype = DAO.ENTITY_TYPE.findById(type);
 
     if (entitytype != null) {
       final Entity entity = new Entity(entitytype, name);
@@ -137,7 +136,7 @@ public class EntityResource extends JavaHelp {
   public Response updateEntity(
     @ApiParam(value = "Name that need to be deleted", required = true) @PathParam("name") final String name,
     @ApiParam(value = "Updated Entity object", required = true) final Entity entity) {
-    final Entity original = EntityDAO.getInstance().findById(name);
+    final Entity original = DAO.ENTITY.findById(name);
     if (original != null) {
       original.delete();
       entity.save();
@@ -163,7 +162,7 @@ public class EntityResource extends JavaHelp {
   public Response deleteEntity(
     @ApiParam(value = "The name of the Entity to be deleted", required = true) @PathParam("name") final String name) {
     LOG.info("deleting entity name: " + name);
-    final Entity entity = EntityDAO.getInstance().findById(name);
+    final Entity entity = DAO.ENTITY.findById(name);
     if (entity != null) {
       entity.delete();
       return Response.ok().entity(entity).build();

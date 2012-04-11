@@ -3,6 +3,15 @@
  */
 package eu.scape_project.watch.rest.resource;
 
+import com.wordnik.swagger.core.ApiError;
+import com.wordnik.swagger.core.ApiErrors;
+import com.wordnik.swagger.core.ApiOperation;
+import com.wordnik.swagger.core.ApiParam;
+import com.wordnik.swagger.core.JavaHelp;
+import eu.scape_project.watch.dao.DAO;
+import eu.scape_project.watch.domain.AsyncRequest;
+import eu.scape_project.watch.utils.exception.NotFoundException;
+
 import java.util.Collection;
 
 import javax.ws.rs.GET;
@@ -12,16 +21,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
-
-import com.wordnik.swagger.core.ApiError;
-import com.wordnik.swagger.core.ApiErrors;
-import com.wordnik.swagger.core.ApiOperation;
-import com.wordnik.swagger.core.ApiParam;
-import com.wordnik.swagger.core.JavaHelp;
-
-import eu.scape_project.watch.dao.AsyncRequestDAO;
-import eu.scape_project.watch.domain.AsyncRequest;
-import eu.scape_project.watch.utils.exception.NotFoundException;
 
 /**
  * REST API for {@link AsyncRequest} operations.
@@ -47,7 +46,7 @@ public class AsyncRequestResource extends JavaHelp {
   public Response getAsyncRequestById(
     @ApiParam(value = "Request Id", required = true) @PathParam("id") final String requestId) {
 
-    final AsyncRequest request = AsyncRequestDAO.getInstance().findById(requestId);
+    final AsyncRequest request = DAO.ASYNC_REQUEST.findById(requestId);
 
     if (request != null) {
       return Response.ok().entity(request).build();
@@ -67,7 +66,7 @@ public class AsyncRequestResource extends JavaHelp {
   @Path("/")
   @ApiOperation(value = "Create Async Request", notes = "This can only be done by a logged user (TODO)")
   public Response createAsyncRequest(@ApiParam(value = "Async Request", required = true) final AsyncRequest request) {
-    AsyncRequestDAO.getInstance().save(request);
+    DAO.save(request);
     return Response.ok().entity(request).build();
   }
 
@@ -88,7 +87,7 @@ public class AsyncRequestResource extends JavaHelp {
   public Response listAsyncRequest(
     @ApiParam(value = "Index of first item to retrieve", required = true) @QueryParam("start") final int start,
     @ApiParam(value = "Maximum number of items to retrieve", required = true) @QueryParam("max") final int max) {
-    final Collection<AsyncRequest> list = AsyncRequestDAO.getInstance().list(start, max);
+    final Collection<AsyncRequest> list = DAO.ASYNC_REQUEST.list(start, max);
     return Response.ok().entity(new GenericEntity<Collection<AsyncRequest>>(list) {
     }).build();
   }

@@ -18,34 +18,9 @@ import eu.scape_project.watch.domain.Trigger;
 public final class AsyncRequestDAO extends AbstractDO<AsyncRequest> {
 
   /**
-   * Instance holder.
-   */
-  private static final class AsyncRequestDAOHolder {
-    /**
-     * Cannot be instantiated.
-     */
-    private AsyncRequestDAOHolder() {
-    }
-
-    /**
-     * The instance.
-     */
-    public static final AsyncRequestDAO INSTANCE = new AsyncRequestDAO();
-  }
-
-  /**
-   * Get singleton instance.
-   * 
-   * @return The singleton instance
-   */
-  public static AsyncRequestDAO getInstance() {
-    return AsyncRequestDAOHolder.INSTANCE;
-  }
-
-  /**
    * No other instances can exist as this is a singleton.
    */
-  private AsyncRequestDAO() {
+  protected AsyncRequestDAO() {
 
   }
 
@@ -168,7 +143,7 @@ public final class AsyncRequestDAO extends AbstractDO<AsyncRequest> {
     }
 
     request.delete();
-    fireOnUpdated(request);
+    DAO.fireOnUpdated(request);
     return request;
   }
 

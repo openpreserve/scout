@@ -1,17 +1,7 @@
 package eu.scape_project.watch.monitor;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import thewebsemantic.binding.RdfBean;
-import eu.scape_project.watch.dao.AsyncRequestDAO;
+import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.dao.DOListener;
-import eu.scape_project.watch.dao.PropertyValueDAO;
 import eu.scape_project.watch.domain.AsyncRequest;
 import eu.scape_project.watch.domain.Notification;
 import eu.scape_project.watch.domain.PropertyValue;
@@ -20,7 +10,15 @@ import eu.scape_project.watch.domain.Trigger;
 import eu.scape_project.watch.interfaces.MonitorInterface;
 import eu.scape_project.watch.notification.NotificationService;
 
-public class CentralMonitor implements DOListener {
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class CentralMonitor implements DOListener<AsyncRequest> {
 
   private static final Logger LOG = LoggerFactory.getLogger(CentralMonitor.class);
 
@@ -28,9 +26,7 @@ public class CentralMonitor implements DOListener {
 
   private List<AsyncRequest> aRequests;
 
-  private AsyncRequestDAO asyncRequestDAO;
-  
-  private NotificationService nService; 
+  private NotificationService nService;
 
   public CentralMonitor() {
     monitors = new ArrayList<MonitorInterface>();
@@ -43,41 +39,38 @@ public class CentralMonitor implements DOListener {
     monitor.registerCentralMonitor(this);
   }
 
-  public void registerToAsyncRequest(AsyncRequestDAO ar) {
-    asyncRequestDAO = ar;
-    asyncRequestDAO.addDOListener(this);
+  public void registerToAsyncRequest() {
+    DAO.addDOListener(AsyncRequest.class, this);
     LOG.debug("CentralMonitor listening AsyncRequestDAO");
   }
 
-  public void setNotificationService(NotificationService ns){
+  public void setNotificationService(NotificationService ns) {
     nService = ns;
   }
-  
+
   public NotificationService getNotificationService() {
     return nService;
   }
-  
+
   public void notifyAsyncRequests(List<String> ids) {
 
     for (String uuid : ids) {
       AsyncRequest tmp = findAsyncRequest(uuid);
       assessRequest(tmp);
     }
-    
+
   }
 
   public Collection<AsyncRequest> getAllRequests() {
     return Collections.unmodifiableCollection(aRequests);
   }
-  
+
   public Collection<MonitorInterface> getAllMonitors() {
     return Collections.unmodifiableCollection(monitors);
   }
-  
-  
+
   @Override
-  public void onUpdated(RdfBean object) {
-    AsyncRequest req = (AsyncRequest) object;
+  public void onUpdated(AsyncRequest req) {
     LOG.debug("adding Request to monitors " + req.getId());
     if (!aRequests.contains(req)) {
       aRequests.add(req);
@@ -88,15 +81,11 @@ public class CentralMonitor implements DOListener {
   }
 
   @Override
-  public void onRemoved(RdfBean object) {
+  public void onRemoved(AsyncRequest object) {
     aRequests.remove(object);
-    //TODO notify monitors about removal
+    // TODO notify monitors about removal
   }
 
-  
-  
-  
-  
   private AsyncRequest findAsyncRequest(String uuid) {
 
     for (AsyncRequest i : aRequests) {
@@ -111,25 +100,25 @@ public class CentralMonitor implements DOListener {
   private void assessRequest(AsyncRequest aRequest) {
 
     LOG.info("Assessing AsyncRequest " + aRequest.getId());
-    
+
     for (Trigger trigger : aRequest.getTriggers()) {
       Question question = trigger.getQuestion();
-      List<PropertyValue> result = PropertyValueDAO.getInstance().query(question.getSparql(), 0, 10);
-      if (result.size()>0){
+      List<PropertyValue> result = DAO.PROPERTY_VALUE.query(question.getSparql(), 0, 10);
+      if (result.size() > 0) {
         notify(trigger);
-      }else {
+      } else {
         LOG.info("Condition is not satisfied");
       }
     }
-      
+
   }
 
   private void notify(Trigger trigger) {
-    if (nService!=null) {
-      for (Notification notification: trigger.getNotifications()) {
+    if (nService != null) {
+      for (Notification notification : trigger.getNotifications()) {
         nService.send(notification);
       }
-    }else {
+    } else {
       LOG.warn("No NotificationService specified");
     }
   }

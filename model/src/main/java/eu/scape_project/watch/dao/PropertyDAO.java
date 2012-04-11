@@ -40,34 +40,9 @@ public final class PropertyDAO extends AbstractDO<Property> {
   }
 
   /**
-   * Instance holder.
+   * No other instances other then in {@link DAO}.
    */
-  private static final class PropertyDAOHolder {
-    /**
-     * Cannot be instantiated.
-     */
-    private PropertyDAOHolder() {
-    }
-
-    /**
-     * The instance.
-     */
-    public static final PropertyDAO INSTANCE = new PropertyDAO();
-  }
-
-  /**
-   * Get singleton instance.
-   * 
-   * @return The singleton instance
-   */
-  public static PropertyDAO getInstance() {
-    return PropertyDAOHolder.INSTANCE;
-  }
-
-  /**
-   * No other instances can exist as this is a singleton.
-   */
-  private PropertyDAO() {
+  protected PropertyDAO() {
 
   }
 

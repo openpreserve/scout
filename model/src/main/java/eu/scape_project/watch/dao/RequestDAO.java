@@ -20,34 +20,9 @@ import thewebsemantic.binding.RdfBean;
 public final class RequestDAO extends AbstractDO {
 
   /**
-   * Instance holder.
+   * No other instances other then in {@link DAO}.
    */
-  private static final class RequestDAOHolder {
-    /**
-     * Cannot be instantiated.
-     */
-    private RequestDAOHolder() {
-    }
-
-    /**
-     * The instance.
-     */
-    public static final RequestDAO INSTANCE = new RequestDAO();
-  }
-
-  /**
-   * Get singleton instance.
-   * 
-   * @return The singleton instance
-   */
-  public static RequestDAO getInstance() {
-    return RequestDAOHolder.INSTANCE;
-  }
-
-  /**
-   * No other instances can exist as this is a singleton.
-   */
-  private RequestDAO() {
+  protected RequestDAO() {
 
   }
 

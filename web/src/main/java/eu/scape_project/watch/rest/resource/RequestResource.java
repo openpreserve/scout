@@ -3,6 +3,16 @@
  */
 package eu.scape_project.watch.rest.resource;
 
+import com.wordnik.swagger.core.ApiOperation;
+import com.wordnik.swagger.core.ApiParam;
+import com.wordnik.swagger.core.JavaHelp;
+import eu.scape_project.watch.dao.DAO;
+import eu.scape_project.watch.domain.Entity;
+import eu.scape_project.watch.domain.EntityType;
+import eu.scape_project.watch.domain.Property;
+import eu.scape_project.watch.domain.PropertyValue;
+import eu.scape_project.watch.domain.RequestTarget;
+
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -12,20 +22,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
-import com.wordnik.swagger.core.ApiOperation;
-import com.wordnik.swagger.core.ApiParam;
-import com.wordnik.swagger.core.JavaHelp;
-
-import eu.scape_project.watch.dao.RequestDAO;
-import eu.scape_project.watch.domain.Entity;
-import eu.scape_project.watch.domain.EntityType;
-import eu.scape_project.watch.domain.Property;
-import eu.scape_project.watch.domain.PropertyValue;
-import eu.scape_project.watch.domain.RequestTarget;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import thewebsemantic.binding.RdfBean;
 
 /**
@@ -70,7 +68,7 @@ public class RequestResource extends JavaHelp {
 
     final RequestTarget requestTarget = RequestTarget.valueOf(target.toUpperCase());
 
-    final List<? extends RdfBean<?>> list = RequestDAO.getInstance().query(requestTarget, query, start, max);
+    final List<? extends RdfBean<?>> list = DAO.REQUEST.query(requestTarget, query, start, max);
 
     Response ret;
     switch (requestTarget) {

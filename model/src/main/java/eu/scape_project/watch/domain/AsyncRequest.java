@@ -1,5 +1,8 @@
 package eu.scape_project.watch.domain;
 
+import eu.scape_project.watch.dao.DAO;
+import eu.scape_project.watch.utils.KBUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,12 +13,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import eu.scape_project.watch.dao.AsyncRequestDAO;
-import eu.scape_project.watch.utils.KBUtils;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
-
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
@@ -172,14 +171,14 @@ public class AsyncRequest extends RdfBean<AsyncRequest> {
   @Override
   public AsyncRequest save() {
     final AsyncRequest req = super.save();
-    AsyncRequestDAO.getInstance().fireOnUpdated(this);
+    DAO.fireOnUpdated(this);
     return req;
   }
 
   @Override
   public void delete() {
     super.delete();
-    AsyncRequestDAO.getInstance().fireOnRemoved(this);
+    DAO.fireOnRemoved(this);
   }
 
 }

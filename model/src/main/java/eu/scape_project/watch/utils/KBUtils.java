@@ -17,6 +17,7 @@ import com.hp.hpl.jena.tdb.TDB;
 import com.hp.hpl.jena.tdb.TDBFactory;
 
 import eu.scape_project.watch.dao.AsyncRequestDAO;
+import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.dao.EntityDAO;
 import eu.scape_project.watch.dao.EntityTypeDAO;
 import eu.scape_project.watch.dao.PropertyDAO;
@@ -350,9 +351,8 @@ public final class KBUtils {
     final Property formatDistribution = new Property(profile, "format_distribution",
       "The format distribution of the content", PropertyDataStructure.DICTIONARY);
 
-    EntityTypeDAO.getInstance().save(formats, tools, profile);
-    PropertyDAO.getInstance().save(formatPUID, formatMimetype, toolVersion, inputFormat, outputFormat,
-      formatDistribution);
+    DAO.save(formats, tools, profile);
+    DAO.save(formatPUID, formatMimetype, toolVersion, inputFormat, outputFormat, formatDistribution);
 
     final Entity pdf17Format = new Entity(formats, "application/pdf;version=1.7");
     final Entity tiffFormat = new Entity(formats, "image/tiff;version=3.0.0");
@@ -368,8 +368,7 @@ public final class KBUtils {
     final Entity cp0 = new Entity(profile, "collection0");
 
     // save entities
-    EntityDAO.getInstance().save(pdf17Format, tiffFormat, jpeg2000Format, imageMagickTool, jpeg, jpeg2000, png, doc,
-      docx, bmp, gif, cp0);
+    DAO.save(pdf17Format, tiffFormat, jpeg2000Format, imageMagickTool, jpeg, jpeg2000, png, doc, docx, bmp, gif, cp0);
 
     // property value construction also binds to entity
     final PropertyValue pdfPUID = new PropertyValue(pdf17Format, formatPUID, "fmt/276");
@@ -420,9 +419,9 @@ public final class KBUtils {
     final PropertyValue ofr4 = new PropertyValue(imageMagickTool, outputFormat, gifPUIDValue);
 
     // save property values
-    PropertyValueDAO.getInstance().save(imageMagickVersion, pdfPUID, pdfMime, tiffPUID, tiffMime, jpeg2000PUID,
-      jpeg2000Mime, jpegPUID, jpegMime, pngPUID, pngMime, docPUID, docMime, docxMime, bmpPUID, bmpMime, gifPUID,
-      gifMime, ifr, ofr, ifr1, ifr2, ifr3, ifr4, ofr1, ofr2, ofr3, ofr4, distribution);
+    DAO.save(imageMagickVersion, pdfPUID, pdfMime, tiffPUID, tiffMime, jpeg2000PUID, jpeg2000Mime, jpegPUID, jpegMime,
+      pngPUID, pngMime, docPUID, docMime, docxMime, bmpPUID, bmpMime, gifPUID, gifMime, ifr, ofr, ifr1, ifr2, ifr3,
+      ifr4, ofr1, ofr2, ofr3, ofr4, distribution);
 
     final Question question1 = new Question("?s watch:type watch-EntityType:tools", RequestTarget.ENTITY,
       Arrays.asList(tools), Arrays.asList(toolVersion), Arrays.asList(imageMagickTool), 60);
@@ -436,7 +435,7 @@ public final class KBUtils {
     final AsyncRequest request = new AsyncRequest(Arrays.asList(trigger1));
 
     // save request
-    AsyncRequestDAO.getInstance().save(request);
+    DAO.save(request);
 
     TDB.sync(Jenabean.instance().model());
   }

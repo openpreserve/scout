@@ -27,35 +27,11 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
    */
   private static final String PROPERTY_REL = KBUtils.WATCH_PREFIX + "property";
 
+  
   /**
-   * Instance holder.
+   * No other instances other then in {@link DAO}.
    */
-  private static final class PropertyValueDAOHolder {
-    /**
-     * Cannot be instantiated.
-     */
-    private PropertyValueDAOHolder() {
-    }
-
-    /**
-     * The instance.
-     */
-    public static final PropertyValueDAO INSTANCE = new PropertyValueDAO();
-  }
-
-  /**
-   * Get singleton instance.
-   * 
-   * @return The singleton instance
-   */
-  public static PropertyValueDAO getInstance() {
-    return PropertyValueDAOHolder.INSTANCE;
-  }
-
-  /**
-   * No other instances can exist as this is a singleton.
-   */
-  private PropertyValueDAO() {
+  protected PropertyValueDAO() {
 
   }
 

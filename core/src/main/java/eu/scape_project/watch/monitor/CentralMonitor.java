@@ -89,8 +89,9 @@ public class CentralMonitor implements DOListener<AsyncRequest> {
   private AsyncRequest findAsyncRequest(String uuid) {
 
     for (AsyncRequest i : aRequests) {
-      if (i.getId().equals(uuid))
+      if (i.getId().equals(uuid)){
         return i;
+      }
     }
 
     return null;

@@ -11,13 +11,11 @@ import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.ibm.icu.util.Calendar;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import eu.scape_project.watch.interfaces.AdaptorJobInterface;
 import eu.scape_project.watch.scheduling.CoreScheduler;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Class that enables loading adaptors with their config dynamically.
@@ -31,7 +29,7 @@ public class AdaptorLoader {
 
   private static final long LOADER_PERIOD = 6 * 10 * 1000L;
 
-  private static String EXTENSION = ".properties";
+  private static String EXTENSION = "properties";
 
   private static final String ADAPTOR_JOB_PACKAGE = "eu.scape_project.watch.scheduling";
 
@@ -67,8 +65,9 @@ public class AdaptorLoader {
   }
 
   public void cancelLoader() {
-    if (loaderTimer != null)
+    if (loaderTimer != null){
       loaderTimer.cancel();
+    }
   }
 
   public boolean configFileExist(File f) {
@@ -114,25 +113,27 @@ public class AdaptorLoader {
     } catch (FileNotFoundException e) {
       LOG.error(file.getAbsolutePath()+" not found");
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.error(e.getMessage());
+    }finally {
+      try {
+        fStream.close();
+      } catch (IOException e) {}
     }
     return tmp;
   }
 
   private AdaptorJobInterface createAdaptorJob(String name) {
     AdaptorJobInterface adaptorJob;
+    //TODO improve this part 
     try {
       adaptorJob = (AdaptorJobInterface) Class.forName(name).newInstance();
       return adaptorJob;
     } catch (InstantiationException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("Error while creating the AdaptorJob");
     } catch (IllegalAccessException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("Error while creating the AdaptorJob");
     } catch (ClassNotFoundException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("Error while creating the AdaptorJob");
     }
     return null;
   }
@@ -147,12 +148,14 @@ public class AdaptorLoader {
       File[] tempList;
       if (f.isDirectory()) {
         tempList = f.listFiles();
-        for (File i : tempList)
+        for (File i : tempList){
           scanForAdaptors(i);
+        }
       } else {
-        if (f.getAbsolutePath().endsWith(EXTENSION)) {
-          if (!configFileExist(f))
+        if (f.getAbsolutePath().endsWith("."+EXTENSION)) {
+          if (!configFileExist(f)){
             addToTempAdaptorConfigs(f);
+          }
         }
       }
     }

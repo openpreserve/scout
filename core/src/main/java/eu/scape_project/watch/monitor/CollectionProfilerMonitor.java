@@ -1,7 +1,16 @@
 package eu.scape_project.watch.monitor;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import eu.scape_project.watch.dao.DAO;
-import eu.scape_project.watch.dao.PropertyValueDAO;
 import eu.scape_project.watch.domain.AsyncRequest;
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.EntityType;
@@ -12,16 +21,6 @@ import eu.scape_project.watch.interfaces.AdaptorJobInterface;
 import eu.scape_project.watch.interfaces.MonitorInterface;
 import eu.scape_project.watch.interfaces.ResultInterface;
 import eu.scape_project.watch.scheduling.CoreScheduler;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class CollectionProfilerMonitor implements MonitorInterface {
 
@@ -117,8 +116,9 @@ public class CollectionProfilerMonitor implements MonitorInterface {
   public void addWatchRequest(AsyncRequest aRequest) {
 
     if (!aRequestUUIDS.contains(aRequest.getId())) {
-      if (isRequestSupported(aRequest))
+      if (isRequestSupported(aRequest)){
         aRequestUUIDS.add(aRequest.getId());
+      }
     }
 
   }
@@ -134,8 +134,9 @@ public class CollectionProfilerMonitor implements MonitorInterface {
 
     for (Trigger trigger : aRequest.getTriggers()) {
       List<EntityType> eType = trigger.getQuestion().getTypes();
-      if (eType.contains(monitorType))
+      if (eType.contains(monitorType)){
         return true;
+      }
     }
     return false;
 

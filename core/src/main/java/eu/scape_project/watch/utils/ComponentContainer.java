@@ -44,24 +44,29 @@ public class ComponentContainer {
    */
   public void init() {
     // TODO add else throw exception
-    if (coreScheduler != null)
+    if (coreScheduler != null){
       coreScheduler.start();
-    if (adaptorLoader != null)
+    }
+    if (adaptorLoader != null){
       adaptorLoader.startLoader();
+    }
   }
 
   public void destroy() {
     // TODO add else throw exception
-    if (coreScheduler != null)
+    if (coreScheduler != null){
       coreScheduler.shutdown();
-    if (adaptorLoader != null)
+    }
+    if (adaptorLoader != null){
       adaptorLoader.cancelLoader();
+    }
   }
 
   public void addMonitor(MonitorInterface monitor) {
     // TODO add throw exception
-    if (centralMonitor != null)
+    if (centralMonitor != null){
       centralMonitor.addMonitor(monitor);
+    }
     if (coreScheduler != null) {
       coreScheduler.adddGroupJobListener(monitor, monitor.getGroup());
       monitor.registerScheduler(coreScheduler);

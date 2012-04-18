@@ -41,7 +41,7 @@ public abstract class AdaptorJob implements AdaptorJobInterface {
     } else {
       try {
         LOG.trace("properties: {}", adaptorProperties);
-        Properties properties = new Properties();
+        properties = new Properties();
         properties.load(new ByteArrayInputStream(adaptorProperties.getBytes("UTF-8")));
         LOG.trace("properties size {}", properties.keySet().size());
         Map<String, String> map = new HashMap<String, String>();
@@ -50,17 +50,15 @@ public abstract class AdaptorJob implements AdaptorJobInterface {
           LOG.trace("key {}, value {}", key.toString(), properties.getProperty(key.toString()));
         }
 
+        //TODO improve this part 
         adaptor.setParameterValues(map);
         jec.setResult(adaptor.execute());
       } catch (PluginException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        
       } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        
       } catch (InvalidParameterException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        
       }
     }
 
@@ -108,10 +106,12 @@ public abstract class AdaptorJob implements AdaptorJobInterface {
   public boolean equals(Object object) {
     if (object==null) 
       return false;
-    if (this == object)
+    if (this == object){
       return true;
-    if (this.getClass() != object.getClass())
+    }
+    if (this.getClass() != object.getClass()){
       return false;
+    }
     AdaptorJob aJob = (AdaptorJob) object;
     return this.getAdaptorClassName().equals(aJob.getAdaptorClassName())
       && this.getAdaptorVersion().equals(aJob.getAdaptorVersion());

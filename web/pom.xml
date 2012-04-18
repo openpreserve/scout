@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>scout</artifactId>
 		<groupId>eu.scape-project</groupId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.2</version>
 	</parent>
 	<artifactId>scout-web</artifactId>
 	<packaging>war</packaging>
@@ -55,80 +55,6 @@
 					</webResources>
 				</configuration>
 			</plugin>
-			<!-- 
-			<plugin>
-				<artifactId>maven-site-plugin</artifactId>
-				<version>3.0</version>
-				<configuration>
-					<attach>true</attach>
-					<reportPlugins>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-project-info-reports-plugin</artifactId>
-							<version>2.4</version>
-							<configuration>
-								<dependencyDetailsEnabled>false</dependencyDetailsEnabled>
-								<dependencyLocationsEnabled>false</dependencyLocationsEnabled>
-							</configuration>
-							<reports>
-								<report>index</report>
-								<report>summary</report>
-								<report>license</report>
-								<report>dependencies</report>
-								<report>plugins</report>
-								<report>project-team</report>
-								<report>issue-tracking</report>
-								<report>scm</report>
-								<report>cim</report>
-								<report>modules</report>
-							</reports>
-						</plugin>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-checkstyle-plugin</artifactId>
-							<version>2.9.1</version>
-							<configuration>
-								<configLocation>${project.parent.basedir}/code-style/checkstyle.xml</configLocation>
-								<failsOnError>false</failsOnError>
-								<enableRulesSummary>true</enableRulesSummary>
-								<includeTestSourceDirectory>false</includeTestSourceDirectory>
-							</configuration>
-						</plugin>
-						<plugin>
-							<groupId>org.codehaus.mojo</groupId>
-							<artifactId>findbugs-maven-plugin</artifactId>
-							<configuration>
-								<xmlOutput>true</xmlOutput>
-								<failsOnError>false</failsOnError>
-							</configuration>
-						</plugin>
-						<plugin>
-							<groupId>org.codehaus.mojo</groupId>
-							<artifactId>cobertura-maven-plugin</artifactId>
-							<version>2.5.1</version>
-						</plugin>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-pmd-plugin</artifactId>
-							<version>2.7.1</version>
-							<configuration>
-								<linkXref>true</linkXref>
-								<sourceEncoding>utf-8</sourceEncoding>
-								<minimumTokens>100</minimumTokens>
-								<targetJdk>1.6</targetJdk>
-							</configuration>
-						</plugin>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-javadoc-plugin</artifactId>
-							<configuration>
-								<failOnError>false</failOnError>
-							</configuration>
-						</plugin>
-					</reportPlugins>
-					<attach>true</attach>
-				</configuration>
-			</plugin> -->
 		</plugins>
 	</build>
 
@@ -234,12 +160,12 @@
 		<dependency>
 			<groupId>eu.scape-project</groupId>
 			<artifactId>scout-model</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.scape-project</groupId>
 			<artifactId>scout-core</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.2</version>
 		</dependency>
 
 		<!-- THIS SHOULD BE ON THE CLASS PATH BECAUSE OF THE ADAPTOR. -->

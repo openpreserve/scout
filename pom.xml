@@ -5,7 +5,7 @@
 
   <groupId>eu.scape-project</groupId>
   <artifactId>scout</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.2</version>
   <packaging>pom</packaging>
   <description>Scout is a monitor component as defined in the SCAPE project</description>
   <name>Scout</name>
@@ -221,17 +221,6 @@
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-log4j12</artifactId>
         <version>1.6.1</version>
-      </dependency>
-      <dependency>
-        <groupId>com.clarkparsia</groupId>
-        <artifactId>Empire-fourstore</artifactId>
-        <version>0.7</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-jdk14</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
     </dependencies>
   </dependencyManagement>

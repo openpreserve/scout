@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>scout</artifactId>
 		<groupId>eu.scape-project</groupId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.2</version>
 	</parent>
 	<artifactId>scout-adaptors</artifactId>
 	<packaging>pom</packaging>
@@ -22,12 +22,12 @@
 			<dependency>
 				<groupId>eu.scape-project</groupId>
 				<artifactId>scout-model</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>0.0.2</version>
 			</dependency>
 			<dependency>
 				<groupId>eu.scape-project</groupId>
 				<artifactId>scout-core</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>0.0.2</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

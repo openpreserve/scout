@@ -73,26 +73,16 @@ public class Property extends RdfBean<Property> {
   private DataType datatype;
 
   /**
-   * The datastructure of the property values.
-   */
-  @XmlElement
-  @JsonProperty
-  private PropertyDataStructure structure;
-
-  /**
-   * Create a new empty property.
+   * Create a new empty property of the type {@link DataType#STRING}.
    */
   public Property() {
     super();
-    
-    this.datatype = DataType.TEXT;
-    this.structure = PropertyDataStructure.SINGLE;
+
+    this.datatype = DataType.STRING;
   }
 
   /**
-   * Create a new property of type {@link DataType#TEXT}. Sets the datatype to
-   * {@link DataType#TEXT} and the property datastructure to
-   * {@link PropertyDataStructure#SINGLE} by default.
+   * Create a new property of type {@link DataType#STRING}.
    * 
    * @param t
    *          The related entity type.
@@ -106,15 +96,13 @@ public class Property extends RdfBean<Property> {
     this.type = t;
     this.name = n;
     this.description = d;
-    this.datatype = DataType.TEXT;
-    this.structure = PropertyDataStructure.SINGLE;
+    this.datatype = DataType.STRING;
 
     this.updateId();
   }
 
   /**
-   * Create a new property. Sets the property datastructure to
-   * {@link PropertyDataStructure#SINGLE}
+   * Create a new property.
    * 
    * @param t
    *          The related entity type.
@@ -128,43 +116,6 @@ public class Property extends RdfBean<Property> {
   public Property(final EntityType t, final String n, final String d, final DataType dt) {
     this(t, n, d);
     this.datatype = dt;
-  }
-
-  /**
-   * Create a new property. Sets the data type to {@link DataType#TEXT}.
-   * 
-   * @param t
-   *          the related entity type.
-   * @param n
-   *          the name, unique within properties of the same type.
-   * @param d
-   *          the description of the Property.
-   * @param st
-   *          the data structure type of the related values.
-   */
-  public Property(final EntityType t, final String n, final String d, final PropertyDataStructure st) {
-    this(t, n, d);
-    this.structure = st;
-  }
-
-  /**
-   * Create a new property.
-   * 
-   * @param t
-   *          the related entity type.
-   * @param n
-   *          the name, unique within properties of the same type.
-   * @param d
-   *          the description of the Property.
-   * @param dt
-   *          the type of data defined by this property.
-   * @param st
-   *          the data structure type of the related values.
-   */
-  public Property(final EntityType t, final String n, final String d, final DataType dt, final PropertyDataStructure st) {
-    this(t, n, d);
-    this.datatype = dt;
-    this.structure = st;
   }
 
   /**
@@ -227,65 +178,49 @@ public class Property extends RdfBean<Property> {
     this.datatype = datatype;
   }
 
-  public PropertyDataStructure getStructure() {
-    return structure;
-  }
-
-  public void setStructure(final PropertyDataStructure structure) {
-    this.structure = structure;
-  }
-
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((this.datatype == null) ? 0 : this.datatype.hashCode());
-    result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
-    result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
-    result = prime * result + ((this.structure == null) ? 0 : this.structure.hashCode());
-    result = prime * result + ((this.type == null) ? 0 : this.type.hashCode());
+    result = prime * result + ((datatype == null) ? 0 : datatype.hashCode());
+    result = prime * result + ((description == null) ? 0 : description.hashCode());
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
+    result = prime * result + ((name == null) ? 0 : name.hashCode());
+    result = prime * result + ((type == null) ? 0 : type.hashCode());
     return result;
   }
 
   @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
+  public boolean equals(Object obj) {
+    if (this == obj)
       return true;
-    }
-    if (obj == null) {
+    if (obj == null)
       return false;
-    }
-    if (getClass() != obj.getClass()) {
+    if (getClass() != obj.getClass())
       return false;
-    }
-    final Property other = (Property) obj;
-    if (this.datatype != other.datatype) {
+    Property other = (Property) obj;
+    if (datatype != other.datatype)
       return false;
-    }
-    if (this.description == null) {
-      if (other.description != null) {
+    if (description == null) {
+      if (other.description != null)
         return false;
-      }
-    } else if (!this.description.equals(other.description)) {
+    } else if (!description.equals(other.description))
       return false;
-    }
-    if (this.name == null) {
-      if (other.name != null) {
+    if (id == null) {
+      if (other.id != null)
         return false;
-      }
-    } else if (!this.name.equals(other.name)) {
+    } else if (!id.equals(other.id))
       return false;
-    }
-    if (this.structure != other.structure) {
-      return false;
-    }
-    if (this.type == null) {
-      if (other.type != null) {
+    if (name == null) {
+      if (other.name != null)
         return false;
-      }
-    } else if (!this.type.equals(other.type)) {
+    } else if (!name.equals(other.name))
       return false;
-    }
+    if (type == null) {
+      if (other.type != null)
+        return false;
+    } else if (!type.equals(other.type))
+      return false;
     return true;
   }
 
@@ -305,7 +240,7 @@ public class Property extends RdfBean<Property> {
   @Override
   public String toString() {
     return "Property [id=" + this.id + ", type=" + this.type + ", name=" + this.name + ", description="
-      + this.description + ", datatype=" + this.datatype + ", structure=" + this.structure + "]";
+      + this.description + ", datatype=" + this.datatype + "]";
   }
 
 }

@@ -1,14 +1,12 @@
 package eu.scape_project.watch.model;
 
-import eu.scape_project.watch.dao.AsyncRequestDAO;
 import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.dao.DOListener;
 import eu.scape_project.watch.dao.EntityDAO;
-import eu.scape_project.watch.dao.EntityTypeDAO;
 import eu.scape_project.watch.dao.PropertyDAO;
-import eu.scape_project.watch.dao.PropertyValueDAO;
-import eu.scape_project.watch.dao.RequestDAO;
 import eu.scape_project.watch.domain.AsyncRequest;
+import eu.scape_project.watch.domain.DataType;
+import eu.scape_project.watch.domain.DictionaryItem;
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.domain.Notification;
@@ -19,10 +17,14 @@ import eu.scape_project.watch.domain.Question;
 import eu.scape_project.watch.domain.RequestTarget;
 import eu.scape_project.watch.domain.Trigger;
 import eu.scape_project.watch.utils.KBUtils;
+import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeException;
+import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
 
 import java.io.File;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -386,9 +388,12 @@ public class KBTest {
 
   /**
    * Testing PropertyValue equals and hashcode.
+   * 
+   * @throws InvalidJavaClassForDataTypeException
+   * @throws UnsupportedDataTypeException
    */
   @Test
-  public void testPropertyValueEquals() {
+  public void testPropertyValueEquals() throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
 
     final String typeName = "typename";
     final String typeDescription = "typedescription";
@@ -399,8 +404,8 @@ public class KBTest {
     final String propertyName = "propertyname";
     final String propertyDescription = "propertydescription";
 
-    final Property property1 = new Property(type1, propertyName, propertyDescription);
-    final Property property2 = new Property(type2, propertyName, propertyDescription);
+    final Property property1 = new Property(type1, propertyName, propertyDescription, DataType.STRING);
+    final Property property2 = new Property(type2, propertyName, propertyDescription, DataType.STRING);
 
     final String entityName = "entityname";
 
@@ -418,11 +423,78 @@ public class KBTest {
     Assert.assertTrue(propertyvalue1.equals(propertyvalue2));
   }
 
+  @Test
+  public void testPropertyValueDataTypes() throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
+
+    // CREATING DATA
+    final String typeName = "typename";
+    final String typeDescription = "typedescription";
+
+    final EntityType type = new EntityType(typeName, typeDescription);
+
+    final String entityName = "entityname";
+    final Entity entity = new Entity(type, entityName);
+
+    final Property stringProperty = new Property(type, "stringProperty", "", DataType.STRING);
+    final Property integerProperty = new Property(type, "integerProperty", "", DataType.INTEGER);
+    final Property longProperty = new Property(type, "longProperty", "", DataType.LONG);
+    final Property floatProperty = new Property(type, "floatProperty", "", DataType.FLOAT);
+    final Property doubleProperty = new Property(type, "doubleProperty", "", DataType.DOUBLE);
+    final Property dateProperty = new Property(type, "dateProperty", "", DataType.DATE);
+    final Property uriProperty = new Property(type, "uriProperty", "", DataType.URI);
+    final Property stringListProperty = new Property(type, "stringListProperty", "", DataType.STRING_LIST);
+    final Property stringDictionaryProperty = new Property(type, "stringDictionaryProperty", "",
+      DataType.STRING_DICTIONARY);
+
+    final PropertyValue stringPropertyValue1 = new PropertyValue(entity, stringProperty, "This is a string");
+    final PropertyValue integerPropertyValue1 = new PropertyValue(entity, integerProperty, 123);
+    final PropertyValue longPropertyValue1 = new PropertyValue(entity, longProperty, 123L);
+    final PropertyValue floatPropertyValue1 = new PropertyValue(entity, floatProperty, 123.1f);
+    final PropertyValue doublePropertyValue1 = new PropertyValue(entity, doubleProperty, 123.1d);
+    final PropertyValue datePropertyValue1 = new PropertyValue(entity, dateProperty, new Date());
+    final PropertyValue uriPropertyValue1 = new PropertyValue(entity, uriProperty, URI.create("http://example.com"));
+    final PropertyValue stringListPropertyValue1 = new PropertyValue(entity, stringListProperty, Arrays.asList("item1",
+      "item2"));
+    final PropertyValue stringDictionaryPropertyValue1 = new PropertyValue(entity, stringDictionaryProperty,
+      Arrays.asList(new DictionaryItem("key1", "value1"), new DictionaryItem("key2", "value2")));
+
+    type.save();
+    entity.save();
+    DAO.save(stringProperty, integerProperty, longProperty, floatProperty, doubleProperty, dateProperty, uriProperty,
+      stringListProperty, stringDictionaryProperty);
+    DAO.save(stringPropertyValue1, integerPropertyValue1, longPropertyValue1, floatPropertyValue1,
+      doublePropertyValue1, datePropertyValue1, uriPropertyValue1, stringListPropertyValue1,
+      stringDictionaryPropertyValue1);
+
+    // TESTING
+    final PropertyValue stringPropertyValue2 = DAO.PROPERTY_VALUE.findByEntityAndName(entity.getName(),
+      stringProperty.getName());
+
+    Assert.assertEquals(stringPropertyValue1, stringPropertyValue2);
+
+    final PropertyValue integerPropertyValue2 = DAO.PROPERTY_VALUE.findByEntityAndName(entity.getName(),
+      integerProperty.getName());
+
+    Assert.assertEquals(integerPropertyValue1, integerPropertyValue2);
+
+    // CLEAN UP
+    type.delete();
+    entity.delete();
+    DAO.delete(stringProperty, integerProperty, longProperty, floatProperty, doubleProperty, dateProperty, uriProperty,
+      stringListProperty, stringDictionaryProperty);
+    DAO.delete(stringPropertyValue1, integerPropertyValue1, longPropertyValue1, floatPropertyValue1,
+      doublePropertyValue1, datePropertyValue1, uriPropertyValue1, stringListPropertyValue1,
+      stringDictionaryPropertyValue1);
+  }
+
   /**
    * Test PropertyValue CRUD operations.
+   * 
+   * @throws InvalidJavaClassForDataTypeException
+   * @throws UnsupportedDataTypeException
    */
   @Test
-  public void testPropertyValueCRUD() {
+  public void testPropertyValueCRUD() throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
 
     // CREATE
     final EntityType type = new EntityType();
@@ -483,9 +555,12 @@ public class KBTest {
 
   /**
    * Test PropertyValue listing methods.
+   * 
+   * @throws InvalidJavaClassForDataTypeException
+   * @throws UnsupportedDataTypeException
    */
   @Test
-  public void testPropertyValueListings() {
+  public void testPropertyValueListings() throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
     // CREATE
     final EntityType type = new EntityType();
     type.setName("tests");
@@ -631,9 +706,12 @@ public class KBTest {
 
   /**
    * Test Entity CRUD operations.
+   * 
+   * @throws InvalidJavaClassForDataTypeException
+   * @throws UnsupportedDataTypeException
    */
   @Test
-  public void testAsyncRequestCRUD() {
+  public void testAsyncRequestCRUD() throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
 
     // CREATE DATA
     final EntityType type = new EntityType();
@@ -718,9 +796,12 @@ public class KBTest {
 
   /**
    * Test making a request.
+   * 
+   * @throws InvalidJavaClassForDataTypeException
+   * @throws UnsupportedDataTypeException
    */
   @Test
-  public void testRequest() {
+  public void testRequest() throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
 
     // CREATE DATA
     final EntityType type = new EntityType();

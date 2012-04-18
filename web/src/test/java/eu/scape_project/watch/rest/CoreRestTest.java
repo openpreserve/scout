@@ -30,6 +30,7 @@ import eu.scape_project.watch.rest.WatchApplication;
 import eu.scape_project.watch.rest.WatchClient;
 import eu.scape_project.watch.utils.ConfigUtils;
 import eu.scape_project.watch.utils.KBUtils;
+import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
 
 import org.apache.commons.io.FileUtils;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
@@ -333,21 +334,23 @@ public class CoreRestTest extends JerseyTest {
 
   /**
    * Test {@link PropertyValue} CRUD operations using JSON output format.
+   * @throws UnsupportedDataTypeException 
    * 
    * @see #propertyValueCRUD(eu.scape_project.watch.rest.WatchClient.Format)
    */
   @Test
-  public void propertyValueCrudJSON() {
+  public void propertyValueCrudJSON() throws UnsupportedDataTypeException {
     propertyValueCRUD(WatchClient.Format.JSON);
   }
 
   /**
    * Test {@link PropertyValue} CRUD operations using XML output format.
+   * @throws UnsupportedDataTypeException 
    * 
    * @see #propertyValueCRUD(eu.scape_project.watch.rest.WatchClient.Format)
    */
   @Test
-  public void propertyValueCrudXML() {
+  public void propertyValueCrudXML() throws UnsupportedDataTypeException {
     propertyValueCRUD(WatchClient.Format.XML);
   }
 
@@ -356,8 +359,9 @@ public class CoreRestTest extends JerseyTest {
    * 
    * @param format
    *          The output format
+   * @throws UnsupportedDataTypeException 
    */
-  public void propertyValueCRUD(final WatchClient.Format format) {
+  public void propertyValueCRUD(final WatchClient.Format format) throws UnsupportedDataTypeException {
     final WatchClient client = new WatchClient(this.resource, format);
 
     // CREATE

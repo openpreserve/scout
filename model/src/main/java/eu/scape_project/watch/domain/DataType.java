@@ -1,5 +1,9 @@
 package eu.scape_project.watch.domain;
 
+import java.net.URI;
+import java.util.Date;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlType;
 
@@ -15,21 +19,41 @@ import eu.scape_project.watch.utils.KBUtils;
 @XmlEnum
 public enum DataType {
   /**
-   * A numeric value.
+   * A {@link String}.
    */
-  NUMBER,
+  STRING,
   /**
-   * A textual value.
+   * A {@link Integer}.
    */
-  TEXT,
+  INTEGER,
   /**
-   * A list of possible values.
-   * TODO define the possible values
+   * A {@link Long}.
    */
-  ORDINAL,
+  LONG,
   /**
-   * A link to an external resource.
+   * A {@link Float}.
    */
-  URI;
+  FLOAT,
+  /**
+   * A {@link Double}.
+   */
+  DOUBLE,
+  /**
+   * A link to an external resource by {@link URI}.
+   */
+  URI,
+  /**
+   * A {@link Date}.
+   */
+  DATE,
+  /**
+   * A {@link List} of {@link String}.
+   */
+  STRING_LIST,
+  /**
+   * A map of {@link String}, implemented by a {@link List} of
+   * {@link DictionaryItem}.
+   */
+  STRING_DICTIONARY;
 
 }

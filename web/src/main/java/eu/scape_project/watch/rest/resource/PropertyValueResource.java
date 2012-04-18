@@ -9,12 +9,13 @@ import com.wordnik.swagger.core.ApiOperation;
 import com.wordnik.swagger.core.ApiParam;
 import com.wordnik.swagger.core.JavaHelp;
 import eu.scape_project.watch.dao.DAO;
-import eu.scape_project.watch.dao.EntityDAO;
-import eu.scape_project.watch.dao.PropertyDAO;
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
+import eu.scape_project.watch.utils.exception.BadRequestException;
 import eu.scape_project.watch.utils.exception.NotFoundException;
+import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeException;
+import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
 
 import java.util.Collection;
 
@@ -27,6 +28,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import thewebsemantic.binding.Jenabean;
 
 /**
@@ -40,8 +43,7 @@ public class PropertyValueResource extends JavaHelp {
   /**
    * The logger.
    */
-  // private static final Logger LOG =
-  // LoggerFactory.getLogger(PropertyValueResource.class);
+  private static final Logger LOG = LoggerFactory.getLogger(PropertyValueResource.class);
 
   /**
    * Get an existing {@link PropertyValue}.
@@ -113,9 +115,19 @@ public class PropertyValueResource extends JavaHelp {
       final Property property = DAO.PROPERTY.findByEntityTypeAndName(typeName, propertyName);
 
       if (property != null) {
-        final PropertyValue propertyValue = new PropertyValue(entity, property, value);
-        propertyValue.save();
-        return Response.ok().entity(propertyValue).build();
+        PropertyValue propertyValue;
+        try {
+          propertyValue = new PropertyValue(entity, property, value);
+          propertyValue.save();
+          return Response.ok().entity(propertyValue).build();
+        } catch (UnsupportedDataTypeException e) {
+          LOG.error("Data type not supported", e);
+          throw new BadRequestException(400, "Data type not supported");
+        } catch (InvalidJavaClassForDataTypeException e) {
+          LOG.error("Invalid value Java class for the defined data type", e);
+          throw new BadRequestException(400, "Invalid value Java class for the defined data type");
+        }
+
       } else {
         throw new NotFoundException("Property not found type=" + typeName + ", name=" + propertyName);
       }
@@ -148,9 +160,18 @@ public class PropertyValueResource extends JavaHelp {
     final PropertyValue propertyValue = DAO.PROPERTY_VALUE.findByEntityAndName(entityName, propertyName);
 
     if (propertyValue != null) {
-      propertyValue.setValue(value);
-      propertyValue.save();
-      return Response.ok().entity(propertyName).build();
+      try {
+        propertyValue.setValue(value);
+        propertyValue.save();
+        return Response.ok().entity(propertyName).build();
+      } catch (UnsupportedDataTypeException e) {
+        LOG.error("Data type not supported", e);
+        throw new BadRequestException(400, "Data type not supported");
+      } catch (InvalidJavaClassForDataTypeException e) {
+        LOG.error("Data type not supported", e);
+        throw new BadRequestException(400, "Data type not supported");
+      }
+      
     } else {
       throw new NotFoundException("Property value not found entity=" + entityName + ", property=" + propertyName);
     }

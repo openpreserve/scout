@@ -7,17 +7,19 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import eu.scape_project.watch.adaptor.c3po.common.C3POProfileReader;
+import eu.scape_project.watch.domain.DataType;
+import eu.scape_project.watch.domain.Property;
+import eu.scape_project.watch.domain.PropertyValue;
+import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import eu.scape_project.watch.adaptor.c3po.common.C3POProfileReader;
-import eu.scape_project.watch.domain.Property;
-import eu.scape_project.watch.domain.PropertyValue;
 
 /**
  * Tests the commands that read the profile.
@@ -67,6 +69,8 @@ public class CommandsTest {
     this.values = new HashMap<String, String>();
     this.values.put("test", VALUE);
 
+    when(this.property.getDatatype()).thenReturn(DataType.STRING);
+
     when(this.reader.getCollectionSize()).thenReturn(VALUE);
     when(this.reader.getCollectionName()).thenReturn("TestCollection");
     when(this.reader.getObjectsAvgSize()).thenReturn(VALUE);
@@ -87,9 +91,11 @@ public class CommandsTest {
 
   /**
    * Tests the {@link CollectionSizeCommand}.
+   * 
+   * @throws UnsupportedDataTypeException
    */
   @Test
-  public void shouldTestSizeCommand() {
+  public void shouldTestSizeCommand() throws UnsupportedDataTypeException {
     this.cmd = new CollectionSizeCommand(this.property);
     this.cmd.setReader(this.reader);
     final PropertyValue pv = this.cmd.execute();
@@ -98,16 +104,18 @@ public class CommandsTest {
 
     assertNotNull(pv);
     assertNotNull(pv.getProperty());
-    assertEquals(VALUE, pv.getValue());
+    assertEquals(VALUE, pv.getValue(String.class));
 
   }
 
   /**
    * Tests the {@link ObjectsAvgSizeCommand}.
    * 
+   * @throws UnsupportedDataTypeException
+   * 
    */
   @Test
-  public void shouldTestAvgSizeCommand() {
+  public void shouldTestAvgSizeCommand() throws UnsupportedDataTypeException {
     this.cmd = new ObjectsAvgSizeCommand(this.property);
     this.cmd.setReader(this.reader);
     final PropertyValue pv = this.cmd.execute();
@@ -121,9 +129,11 @@ public class CommandsTest {
 
   /**
    * Tests the {@link ObjectsMinSizeCommand}.
+   * 
+   * @throws UnsupportedDataTypeException
    */
   @Test
-  public void shouldTestMinSizeCommand() {
+  public void shouldTestMinSizeCommand() throws UnsupportedDataTypeException {
     this.cmd = new ObjectsMinSizeCommand(this.property);
     this.cmd.setReader(this.reader);
     final PropertyValue pv = this.cmd.execute();
@@ -137,9 +147,11 @@ public class CommandsTest {
 
   /**
    * Tests the {@link ObjectsMaxSizeCommand}.
+   * 
+   * @throws UnsupportedDataTypeException
    */
   @Test
-  public void shouldTestMaxSizeCommand() {
+  public void shouldTestMaxSizeCommand() throws UnsupportedDataTypeException {
     this.cmd = new ObjectsMaxSizeCommand(this.property);
     this.cmd.setReader(this.reader);
     final PropertyValue pv = this.cmd.execute();
@@ -153,9 +165,11 @@ public class CommandsTest {
 
   /**
    * Tests the {@link ObjectsCountCommand}.
+   * 
+   * @throws UnsupportedDataTypeException
    */
   @Test
-  public void shouldTestCountCommand() {
+  public void shouldTestCountCommand() throws UnsupportedDataTypeException {
     this.cmd = new ObjectsCountCommand(this.property);
     this.cmd.setReader(this.reader);
     final PropertyValue pv = this.cmd.execute();
@@ -169,12 +183,17 @@ public class CommandsTest {
 
   /**
    * Tests the {@link DistributionCommand}.
+   * 
+   * @throws UnsupportedDataTypeException
    */
   @Test
-  public void shouldTestDistributionCommand() {
+  public void shouldTestDistributionCommand() throws UnsupportedDataTypeException {
     final String name = FORMAT;
 
-    this.cmd = new DistributionCommand(this.property, name);
+    Property propertyWithDistribution = mock(Property.class);
+    when(propertyWithDistribution.getDatatype()).thenReturn(DataType.STRING_DICTIONARY);
+
+    this.cmd = new DistributionCommand(propertyWithDistribution, name);
     this.cmd.setReader(this.reader);
 
     final PropertyValue pv = this.cmd.execute();
@@ -183,9 +202,8 @@ public class CommandsTest {
 
     assertNotNull(pv);
     assertNotNull(pv.getProperty());
-    assertNull(pv.getValue());
-    assertNotNull(pv.getValues());
-    assertFalse(pv.getValues().isEmpty());
+    assertNotNull(pv.getValue());
+    assertFalse(pv.getValue(List.class).isEmpty());
 
   }
 }

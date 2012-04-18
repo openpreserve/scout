@@ -110,7 +110,7 @@ public class LogNotificationAdaptor implements NotificationAdaptorInterface {
   @Override
   public Map<String, DataType> getParametersInfo() {
     final Map<String, DataType> ret = new HashMap<String, DataType>();
-    ret.put(PARAM_MESSAGE, DataType.TEXT);
+    ret.put(PARAM_MESSAGE, DataType.STRING);
     return ret;
   }
 

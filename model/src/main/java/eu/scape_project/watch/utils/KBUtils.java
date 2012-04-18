@@ -1,5 +1,27 @@
 package eu.scape_project.watch.utils;
 
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
+import com.hp.hpl.jena.tdb.TDB;
+import com.hp.hpl.jena.tdb.TDBFactory;
+import eu.scape_project.watch.dao.DAO;
+import eu.scape_project.watch.domain.AsyncRequest;
+import eu.scape_project.watch.domain.DataType;
+import eu.scape_project.watch.domain.DictionaryItem;
+import eu.scape_project.watch.domain.Entity;
+import eu.scape_project.watch.domain.EntityType;
+import eu.scape_project.watch.domain.Notification;
+import eu.scape_project.watch.domain.Property;
+import eu.scape_project.watch.domain.PropertyValue;
+import eu.scape_project.watch.domain.Question;
+import eu.scape_project.watch.domain.RequestTarget;
+import eu.scape_project.watch.domain.Trigger;
+import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeException;
+import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,36 +30,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.Statement;
-import com.hp.hpl.jena.rdf.model.StmtIterator;
-import com.hp.hpl.jena.tdb.TDB;
-import com.hp.hpl.jena.tdb.TDBFactory;
-
-import eu.scape_project.watch.dao.AsyncRequestDAO;
-import eu.scape_project.watch.dao.DAO;
-import eu.scape_project.watch.dao.EntityDAO;
-import eu.scape_project.watch.dao.EntityTypeDAO;
-import eu.scape_project.watch.dao.PropertyDAO;
-import eu.scape_project.watch.dao.PropertyValueDAO;
-import eu.scape_project.watch.domain.AsyncRequest;
-import eu.scape_project.watch.domain.DictionaryItem;
-import eu.scape_project.watch.domain.Entity;
-import eu.scape_project.watch.domain.EntityType;
-import eu.scape_project.watch.domain.Notification;
-import eu.scape_project.watch.domain.Property;
-import eu.scape_project.watch.domain.PropertyDataStructure;
-import eu.scape_project.watch.domain.PropertyValue;
-import eu.scape_project.watch.domain.Question;
-import eu.scape_project.watch.domain.RequestTarget;
-import eu.scape_project.watch.domain.Trigger;
-
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import thewebsemantic.binding.Jenabean;
 import thewebsemantic.binding.RdfBean;
 
@@ -344,15 +339,14 @@ public final class KBUtils {
     final Property formatMimetype = new Property(formats, "MIME", "MIME type");
 
     final Property toolVersion = new Property(tools, "version", "Tool version");
-    final Property inputFormat = new Property(tools, "input_format", "Supported input format",
-      PropertyDataStructure.LIST);
-    final Property outputFormat = new Property(tools, "output_format", "Supported output formats",
-      PropertyDataStructure.LIST);
+    final Property inputFormats = new Property(tools, "input_format", "Supported input format", DataType.STRING_LIST);
+    final Property outputFormats = new Property(tools, "output_format", "Supported output formats",
+      DataType.STRING_LIST);
     final Property formatDistribution = new Property(profile, "format_distribution",
-      "The format distribution of the content", PropertyDataStructure.DICTIONARY);
+      "The format distribution of the content", DataType.STRING_DICTIONARY);
 
     DAO.save(formats, tools, profile);
-    DAO.save(formatPUID, formatMimetype, toolVersion, inputFormat, outputFormat, formatDistribution);
+    DAO.save(formatPUID, formatMimetype, toolVersion, inputFormats, outputFormats, formatDistribution);
 
     final Entity pdf17Format = new Entity(formats, "application/pdf;version=1.7");
     final Entity tiffFormat = new Entity(formats, "image/tiff;version=3.0.0");
@@ -371,57 +365,63 @@ public final class KBUtils {
     DAO.save(pdf17Format, tiffFormat, jpeg2000Format, imageMagickTool, jpeg, jpeg2000, png, doc, docx, bmp, gif, cp0);
 
     // property value construction also binds to entity
-    final PropertyValue pdfPUID = new PropertyValue(pdf17Format, formatPUID, "fmt/276");
-    final PropertyValue pdfMime = new PropertyValue(pdf17Format, formatMimetype, "application/pdf");
-    final String tiffPUIDValue = "fmt/353";
-    final PropertyValue tiffPUID = new PropertyValue(tiffFormat, formatPUID, tiffPUIDValue);
-    final PropertyValue tiffMime = new PropertyValue(tiffFormat, formatMimetype, "image/tiff");
-    final PropertyValue jpeg2000PUID = new PropertyValue(jpeg2000Format, formatPUID, "x-fmt/392");
-    final PropertyValue jpeg2000Mime = new PropertyValue(jpeg2000Format, formatMimetype, "image/jp2");
-    final PropertyValue imageMagickVersion = new PropertyValue(imageMagickTool, toolVersion, "6.6.0");
+    try {
+      final PropertyValue pdfPUID = new PropertyValue(pdf17Format, formatPUID, "fmt/276");
+      final PropertyValue pdfMime = new PropertyValue(pdf17Format, formatMimetype, "application/pdf");
+      final String tiffPUIDValue = "fmt/353";
+      final PropertyValue tiffPUID = new PropertyValue(tiffFormat, formatPUID, tiffPUIDValue);
+      final PropertyValue tiffMime = new PropertyValue(tiffFormat, formatMimetype, "image/tiff");
+      final PropertyValue jpeg2000PUID = new PropertyValue(jpeg2000Format, formatPUID, "x-fmt/392");
+      final PropertyValue jpeg2000Mime = new PropertyValue(jpeg2000Format, formatMimetype, "image/jp2");
+      final PropertyValue imageMagickVersion = new PropertyValue(imageMagickTool, toolVersion, "6.6.0");
 
-    final PropertyValue jpegMime = new PropertyValue(jpeg, formatMimetype, "image/jpeg");
-    final String jpegPUIDValue = "fmt/44";
-    final PropertyValue jpegPUID = new PropertyValue(jpeg, formatPUID, jpegPUIDValue);
-    final PropertyValue pngPUID = new PropertyValue(png, formatPUID, "fmt/11");
-    final PropertyValue pngMime = new PropertyValue(png, formatMimetype, "image/png");
-    final PropertyValue docPUID = new PropertyValue(doc, formatPUID, "fmt/40");
-    final PropertyValue docMime = new PropertyValue(doc, formatMimetype, "application/msword");
-    final PropertyValue docxMime = new PropertyValue(docx, formatMimetype,
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-    final String bmpPUIDValue = "fmt/119";
-    final PropertyValue bmpPUID = new PropertyValue(bmp, formatPUID, bmpPUIDValue);
-    final PropertyValue bmpMime = new PropertyValue(bmp, formatMimetype, "image/bmp");
-    final String gifPUIDValue = "fmt/4";
-    final PropertyValue gifPUID = new PropertyValue(gif, formatPUID, gifPUIDValue);
-    final PropertyValue gifMime = new PropertyValue(gif, formatMimetype, "image/gif");
+      final PropertyValue jpegMime = new PropertyValue(jpeg, formatMimetype, "image/jpeg");
+      final String jpegPUIDValue = "fmt/44";
+      final PropertyValue jpegPUID = new PropertyValue(jpeg, formatPUID, jpegPUIDValue);
+      final PropertyValue pngPUID = new PropertyValue(png, formatPUID, "fmt/11");
+      final PropertyValue pngMime = new PropertyValue(png, formatMimetype, "image/png");
+      final PropertyValue docPUID = new PropertyValue(doc, formatPUID, "fmt/40");
+      final PropertyValue docMime = new PropertyValue(doc, formatMimetype, "application/msword");
+      final PropertyValue docxMime = new PropertyValue(docx, formatMimetype,
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+      final String bmpPUIDValue = "fmt/119";
+      final PropertyValue bmpPUID = new PropertyValue(bmp, formatPUID, bmpPUIDValue);
+      final PropertyValue bmpMime = new PropertyValue(bmp, formatMimetype, "image/bmp");
+      final String gifPUIDValue = "fmt/4";
+      final PropertyValue gifPUID = new PropertyValue(gif, formatPUID, gifPUIDValue);
+      final PropertyValue gifMime = new PropertyValue(gif, formatMimetype, "image/gif");
 
-    final List<Object> values = new ArrayList<Object>(Arrays.asList(tiffPUIDValue, jpegPUIDValue, bmpPUIDValue,
-      gifPUIDValue));
-    final PropertyValue ifr = new PropertyValue(imageMagickTool, inputFormat, values);
-    final PropertyValue ofr = new PropertyValue(imageMagickTool, outputFormat, values);
+      final List<String> values = new ArrayList<String>(Arrays.asList(tiffPUIDValue, jpegPUIDValue, bmpPUIDValue,
+        gifPUIDValue));
+      final PropertyValue ifr = new PropertyValue(imageMagickTool, inputFormats, values);
+      final PropertyValue ofr = new PropertyValue(imageMagickTool, outputFormats, values);
 
-    final List<Object> distr = new ArrayList<Object>();
-    distr.add(new DictionaryItem(pdf17Format.getName(), "133"));
-    distr.add(new DictionaryItem(tiffFormat.getName(), "123"));
-    distr.add(new DictionaryItem(jpeg2000.getName(), "42"));
+      final List<Object> distr = new ArrayList<Object>();
+      distr.add(new DictionaryItem(pdf17Format.getName(), "133"));
+      distr.add(new DictionaryItem(tiffFormat.getName(), "123"));
+      distr.add(new DictionaryItem(jpeg2000.getName(), "42"));
 
-    final PropertyValue distribution = new PropertyValue(cp0, formatDistribution, distr);
+      final PropertyValue distribution = new PropertyValue(cp0, formatDistribution, distr);
 
-    final PropertyValue ifr1 = new PropertyValue(imageMagickTool, inputFormat, tiffPUIDValue);
-    final PropertyValue ifr2 = new PropertyValue(imageMagickTool, inputFormat, jpegPUIDValue);
-    final PropertyValue ifr3 = new PropertyValue(imageMagickTool, inputFormat, bmpPUIDValue);
-    final PropertyValue ifr4 = new PropertyValue(imageMagickTool, inputFormat, gifPUIDValue);
+      final PropertyValue ifr1 = new PropertyValue(imageMagickTool, inputFormats, Arrays.asList(tiffPUIDValue));
+      final PropertyValue ifr2 = new PropertyValue(imageMagickTool, inputFormats, Arrays.asList(jpegPUIDValue));
+      final PropertyValue ifr3 = new PropertyValue(imageMagickTool, inputFormats, Arrays.asList(bmpPUIDValue));
+      final PropertyValue ifr4 = new PropertyValue(imageMagickTool, inputFormats, Arrays.asList(gifPUIDValue));
 
-    final PropertyValue ofr1 = new PropertyValue(imageMagickTool, outputFormat, tiffPUIDValue);
-    final PropertyValue ofr2 = new PropertyValue(imageMagickTool, outputFormat, jpegPUIDValue);
-    final PropertyValue ofr3 = new PropertyValue(imageMagickTool, outputFormat, bmpPUIDValue);
-    final PropertyValue ofr4 = new PropertyValue(imageMagickTool, outputFormat, gifPUIDValue);
+      final PropertyValue ofr1 = new PropertyValue(imageMagickTool, outputFormats, Arrays.asList(tiffPUIDValue));
+      final PropertyValue ofr2 = new PropertyValue(imageMagickTool, outputFormats, Arrays.asList(jpegPUIDValue));
+      final PropertyValue ofr3 = new PropertyValue(imageMagickTool, outputFormats, Arrays.asList(bmpPUIDValue));
+      final PropertyValue ofr4 = new PropertyValue(imageMagickTool, outputFormats, Arrays.asList(gifPUIDValue));
 
-    // save property values
-    DAO.save(imageMagickVersion, pdfPUID, pdfMime, tiffPUID, tiffMime, jpeg2000PUID, jpeg2000Mime, jpegPUID, jpegMime,
-      pngPUID, pngMime, docPUID, docMime, docxMime, bmpPUID, bmpMime, gifPUID, gifMime, ifr, ofr, ifr1, ifr2, ifr3,
-      ifr4, ofr1, ofr2, ofr3, ofr4, distribution);
+      // save property values
+      DAO.save(imageMagickVersion, pdfPUID, pdfMime, tiffPUID, tiffMime, jpeg2000PUID, jpeg2000Mime, jpegPUID,
+        jpegMime, pngPUID, pngMime, docPUID, docMime, docxMime, bmpPUID, bmpMime, gifPUID, gifMime, ifr, ofr, ifr1,
+        ifr2, ifr3, ifr4, ofr1, ofr2, ofr3, ofr4, distribution);
+    } catch (final UnsupportedDataTypeException e) {
+      LOG.error("Unsupported data type: " + e.getMessage());
+    } catch (final InvalidJavaClassForDataTypeException e) {
+      LOG.error("Invalid Java class: " + e.getMessage());
+    }
 
     final Question question1 = new Question("?s watch:type watch-EntityType:tools", RequestTarget.ENTITY,
       Arrays.asList(tools), Arrays.asList(toolVersion), Arrays.asList(imageMagickTool), 60);

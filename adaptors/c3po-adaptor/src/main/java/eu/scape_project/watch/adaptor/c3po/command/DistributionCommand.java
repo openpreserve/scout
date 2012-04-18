@@ -4,17 +4,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import eu.scape_project.watch.domain.DictionaryItem;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
+import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeException;
+import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
 
 /**
  * A command that fetches a distribution for the provided property.
  * 
  * @author Petar Petrov <me@petarpetrov.org>
  * 
+ * 
+ * 
+ * @author lfaria@keep.pt
+ * 
+ *         Changed at 2012-04-18: Catching new
+ *         {@link PropertyValue#setValue(Object)} exceptions.
+ * 
  */
 public class DistributionCommand extends Command {
+
+  private final Logger LOG = LoggerFactory.getLogger(DistributionCommand.class);
 
   /**
    * The corresponding name of the property in the profile.
@@ -45,14 +59,20 @@ public class DistributionCommand extends Command {
   public PropertyValue execute() {
     final PropertyValue pv = new PropertyValue();
     final Map<String, String> distribution = this.getReader().getDistribution(this.name);
-    final List<Object> values = new ArrayList<Object>();
+    final List<DictionaryItem> values = new ArrayList<DictionaryItem>();
 
     for (Map.Entry<String, String> e : distribution.entrySet()) {
       values.add(new DictionaryItem(e.getKey(), e.getValue()));
     }
 
-    pv.setValues(values);
     pv.setProperty(this.getProperty());
+    try {
+      pv.setValue(values, List.class);
+    } catch (UnsupportedDataTypeException e) {
+      LOG.error("Could not set property value", e);
+    } catch (InvalidJavaClassForDataTypeException e) {
+      LOG.error("Could not set property value", e);
+    }
 
     return pv;
   }

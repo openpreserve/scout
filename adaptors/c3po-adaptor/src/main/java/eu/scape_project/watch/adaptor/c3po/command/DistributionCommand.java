@@ -1,5 +1,7 @@
 package eu.scape_project.watch.adaptor.c3po.command;
 
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_DISTRIBUTION;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +9,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import eu.scape_project.watch.domain.DataType;
 import eu.scape_project.watch.domain.DictionaryItem;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
@@ -38,13 +41,10 @@ public class DistributionCommand extends Command {
   /**
    * Initializes the command.
    * 
-   * @param p
-   *          the property.
    * @param name
    *          the name of the property in the profile.
    */
-  public DistributionCommand(final Property p, final String name) {
-    this.setProperty(p);
+  public DistributionCommand(final String name) {
     this.name = name;
   }
 
@@ -58,6 +58,9 @@ public class DistributionCommand extends Command {
   @Override
   public PropertyValue execute() {
     final PropertyValue pv = new PropertyValue();
+    final Property property = this.getProperty(String.format(CP_DISTRIBUTION, this.name),
+      String.format("The %s distribution of the objects in the collection", this.name));
+
     final Map<String, String> distribution = this.getReader().getDistribution(this.name);
     final List<DictionaryItem> values = new ArrayList<DictionaryItem>();
 
@@ -65,9 +68,11 @@ public class DistributionCommand extends Command {
       values.add(new DictionaryItem(e.getKey(), e.getValue()));
     }
 
-    pv.setProperty(this.getProperty());
     try {
+      property.setDatatype(DataType.STRING_DICTIONARY);
+      pv.setProperty(property);
       pv.setValue(values, List.class);
+
     } catch (UnsupportedDataTypeException e) {
       LOG.error("Could not set property value", e);
     } catch (InvalidJavaClassForDataTypeException e) {

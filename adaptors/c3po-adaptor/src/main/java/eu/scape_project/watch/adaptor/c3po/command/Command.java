@@ -1,6 +1,9 @@
 package eu.scape_project.watch.adaptor.c3po.command;
 
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_DESCRIPTION;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_NAME;
 import eu.scape_project.watch.adaptor.c3po.common.C3POProfileReader;
+import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 
@@ -19,11 +22,6 @@ public abstract class Command {
    */
   private C3POProfileReader reader;
 
-  /**
-   * The property of interest.
-   */
-  private Property property;
-
   public void setReader(final C3POProfileReader reader) {
     this.reader = reader;
   }
@@ -32,12 +30,9 @@ public abstract class Command {
     return this.reader;
   }
 
-  public Property getProperty() {
-    return this.property;
-  }
-
-  public void setProperty(final Property property) {
-    this.property = property;
+  public Property getProperty(String name, String desc) {
+    final EntityType cp = new EntityType(CP_NAME, CP_DESCRIPTION);
+    return new Property(cp, name, desc);
   }
 
   /**

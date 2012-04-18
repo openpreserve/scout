@@ -1,11 +1,13 @@
 package eu.scape_project.watch.adaptor.c3po.command;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeException;
 import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_MIN_SIZE;
 
 /**
  * Fetches the size of the smallest object within the collection.
@@ -21,25 +23,20 @@ public class ObjectsMinSizeCommand extends Command {
 
   private final Logger LOG = LoggerFactory.getLogger(ObjectsMinSizeCommand.class);
 
-  public ObjectsMinSizeCommand(Property p) {
-    this.setProperty(p);
-  }
-
   /**
    * Retrieves the size (in bytes) within the collection.
    */
   @Override
   public PropertyValue execute() {
     final PropertyValue pv = new PropertyValue();
-    pv.setProperty(this.getProperty());
     try {
+      pv.setProperty(this.getProperty(CP_OBJECTS_MIN_SIZE, "The size of the smallest object in the collection (in bytes)"));
       pv.setValue(this.getReader().getObjectsMinSize());
     } catch (UnsupportedDataTypeException e) {
       LOG.error("Could not set property value", e);
     } catch (InvalidJavaClassForDataTypeException e) {
       LOG.error("Could not set property value", e);
     }
-    
     return pv;
   }
 }

@@ -1,11 +1,13 @@
 package eu.scape_project.watch.adaptor.c3po.command;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeException;
 import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_MAX_SIZE;
 
 /**
  * Fetches the size of the largest object within the collection.
@@ -22,10 +24,6 @@ public class ObjectsMaxSizeCommand extends Command {
 
   private final Logger LOG = LoggerFactory.getLogger(ObjectsMaxSizeCommand.class);
 
-  public ObjectsMaxSizeCommand(Property p) {
-    this.setProperty(p);
-  }
-
   /**
    * Retrieves the size (in bytes) of the largest object in the collection.
    * 
@@ -34,8 +32,8 @@ public class ObjectsMaxSizeCommand extends Command {
   @Override
   public PropertyValue execute() {
     final PropertyValue pv = new PropertyValue();
-    pv.setProperty(this.getProperty());
     try {
+      pv.setProperty(this.getProperty(CP_OBJECTS_MAX_SIZE, "The size of the larges object in the collection (in bytes)"));
       pv.setValue(this.getReader().getObjectsMaxSize());
     } catch (UnsupportedDataTypeException e) {
       LOG.error("Could not set property value", e);

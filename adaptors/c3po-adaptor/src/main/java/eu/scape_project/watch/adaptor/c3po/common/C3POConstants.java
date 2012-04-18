@@ -72,7 +72,7 @@ public final class C3POConstants {
   /**
    * The format distribution property.
    */
-  public static final String CP_FORMAT_DISTRIBUTION = "cp.format.distribution";
+  public static final String CP_DISTRIBUTION = "cp.%s.distribution";
 
   /**
    * The statistical mode of the PRONOM identifiers within the collection

@@ -1,5 +1,17 @@
 package eu.scape_project.watch.adaptor.c3po;
 
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_COLLECTION_SIZE;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_DESCRIPTION;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_DISTRIBUTION;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_NAME;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_AVG_SIZE;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_COUNT;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_MAX_SIZE;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_MIN_SIZE;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_CNF;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_DEFAULT;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_DESC;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,6 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import eu.scape_project.watch.adaptor.c3po.client.C3POClient;
 import eu.scape_project.watch.adaptor.c3po.client.C3POClientInterface;
@@ -30,21 +45,6 @@ import eu.scape_project.watch.interfaces.ResultInterface;
 import eu.scape_project.watch.utils.ConfigParameter;
 import eu.scape_project.watch.utils.exceptions.InvalidParameterException;
 import eu.scape_project.watch.utils.exceptions.PluginException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_COLLECTION_SIZE;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_DESCRIPTION;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_FORMAT_DISTRIBUTION;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_NAME;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_AVG_SIZE;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_COUNT;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_MAX_SIZE;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_MIN_SIZE;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_CNF;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_DEFAULT;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_DESC;
 
 /**
  * A watch conforming adaptor for a collection profile source called c3po.
@@ -92,21 +92,15 @@ public class C3POAdaptor implements AdaptorPluginInterface {
   public void init() {
     this.initConfigs();
 
-    final EntityType cp = new EntityType(CP_NAME, CP_DESCRIPTION);
-    final Property size = new Property(cp, CP_COLLECTION_SIZE, "Collection size");
-    final Property count = new Property(cp, CP_OBJECTS_COUNT, "Objects count");
-    final Property avgSize = new Property(cp, CP_OBJECTS_AVG_SIZE, "Objects avg size");
-    final Property minSize = new Property(cp, CP_OBJECTS_MIN_SIZE, "Objects min size");
-    final Property maxSize = new Property(cp, CP_OBJECTS_MAX_SIZE, "Objects max size");
-    final Property formatDistr = new Property(cp, CP_FORMAT_DISTRIBUTION, "Collection format distribution");
+    final String formatDistr = "format";
 
     this.commands = new HashMap<String, Command>();
-    this.commands.put(CP_COLLECTION_SIZE, new CollectionSizeCommand(size));
-    this.commands.put(CP_OBJECTS_COUNT, new ObjectsCountCommand(count));
-    this.commands.put(CP_OBJECTS_MAX_SIZE, new ObjectsMaxSizeCommand(maxSize));
-    this.commands.put(CP_OBJECTS_MIN_SIZE, new ObjectsMinSizeCommand(minSize));
-    this.commands.put(CP_OBJECTS_AVG_SIZE, new ObjectsAvgSizeCommand(avgSize));
-    this.commands.put(CP_FORMAT_DISTRIBUTION, new DistributionCommand(formatDistr, "format"));
+    this.commands.put(CP_COLLECTION_SIZE, new CollectionSizeCommand());
+    this.commands.put(CP_OBJECTS_COUNT, new ObjectsCountCommand());
+    this.commands.put(CP_OBJECTS_MAX_SIZE, new ObjectsMaxSizeCommand());
+    this.commands.put(CP_OBJECTS_MIN_SIZE, new ObjectsMinSizeCommand());
+    this.commands.put(CP_OBJECTS_AVG_SIZE, new ObjectsAvgSizeCommand());
+    this.commands.put(String.format(CP_DISTRIBUTION, formatDistr), new DistributionCommand(formatDistr));
   }
 
   /**

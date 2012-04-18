@@ -45,11 +45,6 @@ public class CommandsTest {
   private Command cmd;
 
   /**
-   * A dummy property.
-   */
-  private Property property;
-
-  /**
    * A dummy reader.
    */
   private C3POProfileReader reader;
@@ -64,12 +59,9 @@ public class CommandsTest {
    */
   @Before
   public void setup() {
-    this.property = mock(Property.class);
     this.reader = mock(C3POProfileReader.class);
     this.values = new HashMap<String, String>();
     this.values.put("test", VALUE);
-
-    when(this.property.getDatatype()).thenReturn(DataType.STRING);
 
     when(this.reader.getCollectionSize()).thenReturn(VALUE);
     when(this.reader.getCollectionName()).thenReturn("TestCollection");
@@ -96,7 +88,7 @@ public class CommandsTest {
    */
   @Test
   public void shouldTestSizeCommand() throws UnsupportedDataTypeException {
-    this.cmd = new CollectionSizeCommand(this.property);
+    this.cmd = new CollectionSizeCommand();
     this.cmd.setReader(this.reader);
     final PropertyValue pv = this.cmd.execute();
 
@@ -116,7 +108,7 @@ public class CommandsTest {
    */
   @Test
   public void shouldTestAvgSizeCommand() throws UnsupportedDataTypeException {
-    this.cmd = new ObjectsAvgSizeCommand(this.property);
+    this.cmd = new ObjectsAvgSizeCommand();
     this.cmd.setReader(this.reader);
     final PropertyValue pv = this.cmd.execute();
 
@@ -134,7 +126,7 @@ public class CommandsTest {
    */
   @Test
   public void shouldTestMinSizeCommand() throws UnsupportedDataTypeException {
-    this.cmd = new ObjectsMinSizeCommand(this.property);
+    this.cmd = new ObjectsMinSizeCommand();
     this.cmd.setReader(this.reader);
     final PropertyValue pv = this.cmd.execute();
 
@@ -152,7 +144,7 @@ public class CommandsTest {
    */
   @Test
   public void shouldTestMaxSizeCommand() throws UnsupportedDataTypeException {
-    this.cmd = new ObjectsMaxSizeCommand(this.property);
+    this.cmd = new ObjectsMaxSizeCommand();
     this.cmd.setReader(this.reader);
     final PropertyValue pv = this.cmd.execute();
 
@@ -170,7 +162,7 @@ public class CommandsTest {
    */
   @Test
   public void shouldTestCountCommand() throws UnsupportedDataTypeException {
-    this.cmd = new ObjectsCountCommand(this.property);
+    this.cmd = new ObjectsCountCommand();
     this.cmd.setReader(this.reader);
     final PropertyValue pv = this.cmd.execute();
 
@@ -190,10 +182,7 @@ public class CommandsTest {
   public void shouldTestDistributionCommand() throws UnsupportedDataTypeException {
     final String name = FORMAT;
 
-    Property propertyWithDistribution = mock(Property.class);
-    when(propertyWithDistribution.getDatatype()).thenReturn(DataType.STRING_DICTIONARY);
-
-    this.cmd = new DistributionCommand(propertyWithDistribution, name);
+    this.cmd = new DistributionCommand(name);
     this.cmd.setReader(this.reader);
 
     final PropertyValue pv = this.cmd.execute();

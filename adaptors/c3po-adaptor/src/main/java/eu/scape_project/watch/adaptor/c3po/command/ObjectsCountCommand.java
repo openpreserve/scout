@@ -1,11 +1,13 @@
 package eu.scape_project.watch.adaptor.c3po.command;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeException;
 import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_COUNT;
 
 /**
  * Fetches the number of objects within the collection.
@@ -22,10 +24,6 @@ public class ObjectsCountCommand extends Command {
 
   private final Logger LOG = LoggerFactory.getLogger(ObjectsCountCommand.class);
 
-  public ObjectsCountCommand(Property p) {
-    this.setProperty(p);
-  }
-
   /**
    * Retrieves the number of objects.
    * 
@@ -34,8 +32,8 @@ public class ObjectsCountCommand extends Command {
   @Override
   public PropertyValue execute() {
     final PropertyValue pv = new PropertyValue();
-    pv.setProperty(this.getProperty());
     try {
+      pv.setProperty(this.getProperty(CP_OBJECTS_COUNT, "The overall number of objects in the collection"));
       pv.setValue(this.getReader().getObjectsCount(), String.class);
     } catch (UnsupportedDataTypeException e) {
       LOG.error("Could not set property value", e);

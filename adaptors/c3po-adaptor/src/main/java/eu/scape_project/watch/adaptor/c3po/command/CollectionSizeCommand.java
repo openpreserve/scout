@@ -1,5 +1,6 @@
 package eu.scape_project.watch.adaptor.c3po.command;
 
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_COLLECTION_SIZE;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeException;
@@ -24,16 +25,6 @@ public class CollectionSizeCommand extends Command {
   private final Logger LOG = LoggerFactory.getLogger(CollectionSizeCommand.class);
 
   /**
-   * Initializes the command by setting the property of interest.
-   * 
-   * @param p
-   *          the property of interest.
-   */
-  public CollectionSizeCommand(final Property p) {
-    this.setProperty(p);
-  }
-
-  /**
    * Fetches the overall size (in bytes) of the collection.
    * 
    * @return the value of the property.
@@ -41,8 +32,8 @@ public class CollectionSizeCommand extends Command {
   @Override
   public PropertyValue execute() {
     final PropertyValue pv = new PropertyValue();
-    pv.setProperty(this.getProperty());
     try {
+      pv.setProperty(this.getProperty(CP_COLLECTION_SIZE, "The overall size of the collection (in bytes)"));
       pv.setValue(this.getReader().getCollectionSize(), String.class);
     } catch (UnsupportedDataTypeException e) {
       LOG.error("Could not set property value", e);

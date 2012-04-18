@@ -12,6 +12,7 @@ import java.util.List;
 import junit.framework.Assert;
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
 import eu.scape_project.watch.interfaces.PluginInterface;
+import eu.scape_project.watch.utils.ConfigUtils;
 import eu.scape_project.watch.utils.exceptions.PluginException;
 
 import org.junit.After;
@@ -64,6 +65,8 @@ public class PluginManagerTest {
   @Before
   public void setUp() {
     this.manager = PluginManager.getDefaultPluginManager();
+    this.manager.getConfig().override(ConfigUtils.DEFAULT_CONFIG);
+    this.manager.setup();
   }
 
   /**

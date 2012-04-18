@@ -62,19 +62,6 @@ public final class PluginManager {
   private static PluginManager defaultPluginManager = null;
 
   /**
-   * Gets the default {@link PluginManager}.
-   * 
-   * @return the default {@link PluginManager}.
-   */
-  public static synchronized PluginManager getDefaultPluginManager() {
-    if (PluginManager.defaultPluginManager == null) {
-      LOGGER.debug("Craeting new default instance of the plugin manager");
-      PluginManager.defaultPluginManager = new PluginManager();
-    }
-    return PluginManager.defaultPluginManager;
-  }
-
-  /**
    * The directory of the plugins.
    */
   private File pluginsDirectory = null;
@@ -93,6 +80,45 @@ public final class PluginManager {
    * The loaded plugins.
    */
   private List<PluginInterface> pluginCache = new ArrayList<PluginInterface>();
+
+  private ConfigUtils config;
+
+  /**
+   * Gets the default {@link PluginManager}.
+   * 
+   * @return the default {@link PluginManager}.
+   */
+  public static synchronized PluginManager getDefaultPluginManager() {
+    if (PluginManager.defaultPluginManager == null) {
+      LOGGER.debug("Creating new default instance of the plugin manager");
+      PluginManager.defaultPluginManager = new PluginManager();
+    }
+    return PluginManager.defaultPluginManager;
+  }
+
+  /**
+   * Sets up the plugins directory and starts the continuous execution of the
+   * plugin manager.
+   * 
+   * If the configuration is overridden than it is in the responsibility of the
+   * caller to execute this method again to apply the new relevant configuration
+   * changes.
+   * 
+   * @see {@link ConfigUtils}
+   */
+  public void setup() {
+    final String dir = config.getStringProperty("watch.plugins.directory");
+    final File pluginDir = new File(dir);
+
+    LOGGER.debug("PluginInterface directory is " + pluginDir);
+
+    this.setPluginDirectory(pluginDir);
+
+    LOGGER.debug("Starting plugin scanner timer...");
+    this.startTimer();
+
+    LOGGER.info(getClass().getSimpleName() + " is started");
+  }
 
   /**
    * Returns an initialized instance of the {@link PluginInterface} with the
@@ -198,6 +224,16 @@ public final class PluginManager {
   }
 
   /**
+   * Exposes the config utils of this class, so that they can be overridden if
+   * needed.
+   * 
+   * @return the configuration used by this class.
+   */
+  public ConfigUtils getConfig() {
+    return this.config;
+  }
+
+  /**
    * This method should be called to stop {@link PluginManager} and all
    * {@link PluginInterface}s currently loaded.
    */
@@ -224,18 +260,8 @@ public final class PluginManager {
    * 
    */
   private PluginManager() {
-    final ConfigUtils config = new ConfigUtils();
-    final String dir = config.getStringProperty("watch.plugins.directory");
-    final File pluginDir = new File(dir);
-
-    LOGGER.debug("PluginInterface directory is " + pluginDir);
-
-    this.setPluginDirectory(pluginDir);
-
-    LOGGER.debug("Starting plugin scanner timer...");
-    this.startTimer();
-
-    LOGGER.info(getClass().getSimpleName() + " is started");
+    this.config = new ConfigUtils();
+    this.setup();
   }
 
   /**
@@ -267,16 +293,21 @@ public final class PluginManager {
   /**
    * @param pluginDirectory
    *          the pluginDirectory to set
-   * 
-   * @throws IllegalArgumentException
-   *           if pluginDirectory is null or not a directory.
    */
   private void setPluginDirectory(final File pluginDirectory) {
-
+    
+    File defDir = new File(System.getProperty("user.dir"));
+    
     if (pluginDirectory == null) {
-      throw new IllegalArgumentException("pluginDirectory cannot be null");
+      LOGGER.error("Plugin Directory cannot be null. Override it with correct configuration... setting to default");
+      this.pluginsDirectory = defDir;
+//      throw new IllegalArgumentException("pluginDirectory cannot be null");
+      
     } else if (!pluginDirectory.isDirectory()) {
-      throw new IllegalArgumentException("pluginDirectory " + pluginDirectory + " is not a directory.");
+      LOGGER.error("Plugin Directory is not a directory. Override it with correct configuration... setting to default");
+      this.pluginsDirectory = defDir;
+//      throw new IllegalArgumentException("pluginDirectory " + pluginDirectory + " is not a directory.");
+      
     } else {
       this.pluginsDirectory = pluginDirectory;
     }
@@ -296,7 +327,7 @@ public final class PluginManager {
 
     for (File jarFile : jarFiles) {
       if (this.pluginRegistry.containsKey(jarFile)
-        && jarFile.lastModified() == this.pluginRegistry.get(jarFile).lastModified) {
+          && jarFile.lastModified() == this.pluginRegistry.get(jarFile).lastModified) {
         // The plugin already exists
         LOGGER.debug(jarFile.getName() + " is already loaded");
       } else {
@@ -305,7 +336,7 @@ public final class PluginManager {
         LOGGER.debug(jarFile.getName() + " is not loaded or modification dates differ. Inspecting Jar...");
 
         try {
-          final URL[] urls = {jarFile.toURI().toURL()};
+          final URL[] urls = { jarFile.toURI().toURL() };
 
           final PluginInterface plugin = loadPlugin(jarFile, urls);
 
@@ -394,7 +425,7 @@ public final class PluginManager {
 
     try {
       if (PluginInterface.class.isAssignableFrom(clazz) && !clazz.isInterface()
-        && !Modifier.isAbstract(clazz.getModifiers())) {
+          && !Modifier.isAbstract(clazz.getModifiers())) {
         LOGGER.debug("class is a plugin, instantiating");
         plugin = (PluginInterface) clazz.newInstance();
       }

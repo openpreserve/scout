@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import eu.scape_project.watch.common.ConfigParameter;
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.interfaces.ResultInterface;
+import eu.scape_project.watch.utils.ConfigParameter;
 import eu.scape_project.watch.utils.exceptions.InvalidParameterException;
 import eu.scape_project.watch.utils.exceptions.PluginException;
 

@@ -20,14 +20,14 @@ import eu.scape_project.watch.adaptor.c3po.command.ObjectsMaxSizeCommand;
 import eu.scape_project.watch.adaptor.c3po.command.ObjectsMinSizeCommand;
 import eu.scape_project.watch.adaptor.c3po.common.C3POProfileReader;
 import eu.scape_project.watch.adaptor.c3po.common.ProfileResult;
-import eu.scape_project.watch.common.ConfigParameter;
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
+import eu.scape_project.watch.interfaces.PluginType;
 import eu.scape_project.watch.interfaces.ResultInterface;
-import eu.scape_project.watch.plugin.PluginType;
+import eu.scape_project.watch.utils.ConfigParameter;
 import eu.scape_project.watch.utils.exceptions.InvalidParameterException;
 import eu.scape_project.watch.utils.exceptions.PluginException;
 

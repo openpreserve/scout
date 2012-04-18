@@ -6,6 +6,19 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.MethodRule;
+import org.junit.rules.TestWatchman;
+import org.junit.runners.model.FrameworkMethod;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
@@ -25,25 +38,9 @@ import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.domain.Question;
 import eu.scape_project.watch.domain.RequestTarget;
 import eu.scape_project.watch.domain.Trigger;
-import eu.scape_project.watch.listener.ApplicationStartupListener;
-import eu.scape_project.watch.rest.WatchApplication;
-import eu.scape_project.watch.rest.WatchClient;
 import eu.scape_project.watch.utils.ConfigUtils;
 import eu.scape_project.watch.utils.KBUtils;
 import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
-
-import org.apache.commons.io.FileUtils;
-import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.MethodRule;
-import org.junit.rules.TestWatchman;
-import org.junit.runners.model.FrameworkMethod;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Unit tests of the watch core REST API.

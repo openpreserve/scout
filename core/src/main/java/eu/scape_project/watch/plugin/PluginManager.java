@@ -19,6 +19,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import eu.scape_project.watch.interfaces.PluginInterface;
+import eu.scape_project.watch.interfaces.PluginType;
 import eu.scape_project.watch.utils.ConfigUtils;
 import eu.scape_project.watch.utils.exceptions.PluginException;
 

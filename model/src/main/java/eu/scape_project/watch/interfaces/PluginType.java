@@ -1,4 +1,4 @@
-package eu.scape_project.watch.plugin;
+package eu.scape_project.watch.interfaces;
 
 /**
  * Defines the type of the plugin.

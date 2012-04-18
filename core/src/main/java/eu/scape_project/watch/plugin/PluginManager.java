@@ -399,6 +399,12 @@ public final class PluginManager {
           }
         } catch (final ClassNotFoundException e) {
           LOGGER.error("Class Not Found {}: {}", className, e.getMessage());
+        } catch (final IllegalAccessError e) {
+          LOGGER.error("IllegalAccessError caught {}: {}", className, e.getMessage());
+        } catch (final VerifyError e) {
+          LOGGER.error("VerifyError caught {}: {}", className, e.getMessage());
+        } catch (final NoClassDefFoundError e) {
+          LOGGER.error("NoClassDefFoundError caught {}: {}", className, e.getMessage());
         }
       }
     }

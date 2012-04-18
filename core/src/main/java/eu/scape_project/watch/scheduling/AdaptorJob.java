@@ -47,9 +47,9 @@ public abstract class AdaptorJob implements AdaptorJobInterface {
         Map<String, String> map = new HashMap<String, String>();
         for (Object key : properties.keySet()) {
           map.put(key.toString(), properties.getProperty(key.toString()));
-          LOG.info("key {}, value {}", key.toString(), map.get(key.toString()));
+          LOG.trace("key {}, value {}", key.toString(), properties.getProperty(key.toString()));
         }
-        
+
         adaptor.setParameterValues(map);
         jec.setResult(adaptor.execute());
       } catch (PluginException e) {
@@ -75,17 +75,17 @@ public abstract class AdaptorJob implements AdaptorJobInterface {
   public String getAdaptorClassName() {
     return this.adaptorClassName;
   }
-  
+
   @Override
   public void setAdaptorVersion(String version) {
     this.adaptorVersion = version;
   }
 
-  @Override 
+  @Override
   public String getAdaptorVersion() {
     return this.adaptorVersion;
   }
-  
+
   @Override
   public void setAdaptorProperties(String properties) {
     this.adaptorProperties = properties;
@@ -102,16 +102,30 @@ public abstract class AdaptorJob implements AdaptorJobInterface {
   }
 
   protected abstract void initialize();
+
   
-  
-  //TODO later improve this part 
-  @Override 
+  @Override
   public boolean equals(Object object) {
-    if (this==object)
+    if (object==null) 
+      return false;
+    if (this == object)
       return true;
-    if (this.getClass()!=object.getClass())
+    if (this.getClass() != object.getClass())
       return false;
     AdaptorJob aJob = (AdaptorJob) object;
-    return this.getAdaptorClassName().equals(aJob.getAdaptorClassName()) && this.getAdaptorVersion().equals(aJob.getAdaptorVersion());
+    return this.getAdaptorClassName().equals(aJob.getAdaptorClassName())
+      && this.getAdaptorVersion().equals(aJob.getAdaptorVersion());
   }
+  
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((this.adaptorClassName == null) ? 0 : this.adaptorClassName.hashCode());
+    result = prime * result + ((this.adaptorVersion == null) ? 0 : this.adaptorVersion.hashCode());
+    result = prime * result + ((this.adaptorProperties == null) ? 0 : this.adaptorProperties.hashCode());
+    result = prime * result + ((this.properties == null) ? 0 : this.properties.hashCode());
+    return result;
+  }
+  
 }

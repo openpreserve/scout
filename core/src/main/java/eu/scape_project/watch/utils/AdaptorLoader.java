@@ -107,13 +107,13 @@ public class AdaptorLoader {
 
   private Properties getProperties(File file) {
     Properties tmp = new Properties();
+    FileInputStream fStream = null;
     try {
-      tmp.load(new FileInputStream(file));
+      fStream = new FileInputStream(file);
+      tmp.load(fStream);
     } catch (FileNotFoundException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error(file.getAbsolutePath()+" not found");
     } catch (IOException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
     return tmp;

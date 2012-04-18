@@ -50,7 +50,7 @@ public class SimpleAdaptorJob extends AdaptorJob {
   }
 
   private String adaptorPropertiesToString(Properties properties) {
-    String tProperties = "";
+    StringBuffer tProperties = new StringBuffer();
     
     String prefix = properties.getProperty("adaptor.config.prefix");
     Set<String> keys = properties.stringPropertyNames();
@@ -60,10 +60,10 @@ public class SimpleAdaptorJob extends AdaptorJob {
       String key = it.next();
       if (key.startsWith(prefix)){
         String value = properties.getProperty(key);
-        tProperties += key+"="+value+"\n";
+        tProperties.append(key+"="+value+"\n");
       }
     }
     LOG.trace("properties for adaptor "+ tProperties);
-    return tProperties;
+    return tProperties.toString();
   }
 }

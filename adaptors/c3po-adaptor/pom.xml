@@ -16,11 +16,6 @@
     <plugins>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
-        <configuration>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
-        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -48,17 +43,6 @@
     <dependency>
       <groupId>eu.scape-project</groupId>
       <artifactId>scout-model</artifactId>
-      <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>icu4j</artifactId>
-          <groupId>com.ibm.icu</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>xercesImpl</artifactId>
-          <groupId>xerces</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <artifactId>dom4j</artifactId>

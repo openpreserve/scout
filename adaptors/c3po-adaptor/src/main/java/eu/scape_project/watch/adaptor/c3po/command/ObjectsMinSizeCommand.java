@@ -21,22 +21,31 @@ import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECT
  */
 public class ObjectsMinSizeCommand extends Command {
 
-  private final Logger LOG = LoggerFactory.getLogger(ObjectsMinSizeCommand.class);
+  /**
+   * Default Logger.
+   */
+  private static final Logger LOG = LoggerFactory.getLogger(ObjectsMinSizeCommand.class);
 
   /**
-   * Retrieves the size (in bytes) within the collection.
+   * Retrieves the size (in bytes) of the smallest element within the
+   * collection.
+   * 
+   * @return the value of the smallest object within the collection.
    */
   @Override
   public PropertyValue execute() {
     final PropertyValue pv = new PropertyValue();
     try {
-      pv.setProperty(this.getProperty(CP_OBJECTS_MIN_SIZE, "The size of the smallest object in the collection (in bytes)"));
+      pv.setProperty(this.getProperty(CP_OBJECTS_MIN_SIZE,
+        "The size of the smallest object in the collection (in bytes)"));
       pv.setValue(this.getReader().getObjectsMinSize());
-    } catch (UnsupportedDataTypeException e) {
-      LOG.error("Could not set property value", e);
-    } catch (InvalidJavaClassForDataTypeException e) {
-      LOG.error("Could not set property value", e);
+
+    } catch (final UnsupportedDataTypeException e) {
+      LOG.error("Data type is not supported. Could not set property value", e);
+    } catch (final InvalidJavaClassForDataTypeException e) {
+      LOG.error("Invalid Java Class. Could not set property value", e);
     }
+
     return pv;
   }
 }

@@ -31,7 +31,10 @@ import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
  */
 public class DistributionCommand extends Command {
 
-  private final Logger LOG = LoggerFactory.getLogger(DistributionCommand.class);
+  /**
+   * Default Logger.
+   */
+  private static final Logger LOG = LoggerFactory.getLogger(DistributionCommand.class);
 
   /**
    * The corresponding name of the property in the profile.
@@ -73,10 +76,10 @@ public class DistributionCommand extends Command {
       pv.setProperty(property);
       pv.setValue(values, List.class);
 
-    } catch (UnsupportedDataTypeException e) {
-      LOG.error("Could not set property value", e);
-    } catch (InvalidJavaClassForDataTypeException e) {
-      LOG.error("Could not set property value", e);
+    } catch (final UnsupportedDataTypeException e) {
+      LOG.error("Data type is not supported. Could not set property value", e);
+    } catch (final InvalidJavaClassForDataTypeException e) {
+      LOG.error("Invalid Java Class. Could not set property value", e);
     }
 
     return pv;

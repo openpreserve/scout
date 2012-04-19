@@ -1,11 +1,12 @@
 package eu.scape_project.watch.adaptor.c3po.command;
 
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_DESCRIPTION;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_NAME;
 import eu.scape_project.watch.adaptor.c3po.common.C3POProfileReader;
 import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
+
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_DESCRIPTION;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_NAME;
 
 /**
  * An abstract command class that fetches specific property values with the
@@ -30,7 +31,18 @@ public abstract class Command {
     return this.reader;
   }
 
-  public Property getProperty(String name, String desc) {
+  /**
+   * Retrieves a property object with the default datatype and the given name
+   * and description. The Entity Type is automatically set to point to a
+   * collection profile entity type.
+   * 
+   * @param name
+   *          the name of the property.
+   * @param desc
+   *          the human readable description of the property.
+   * @return the {@link Property} object.
+   */
+  public Property getProperty(final String name, final String desc) {
     final EntityType cp = new EntityType(CP_NAME, CP_DESCRIPTION);
     return new Property(cp, name, desc);
   }

@@ -22,7 +22,10 @@ import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECT
  */
 public class ObjectsCountCommand extends Command {
 
-  private final Logger LOG = LoggerFactory.getLogger(ObjectsCountCommand.class);
+  /**
+   * Default Logger.
+   */
+  private static final Logger LOG = LoggerFactory.getLogger(ObjectsCountCommand.class);
 
   /**
    * Retrieves the number of objects.
@@ -35,12 +38,13 @@ public class ObjectsCountCommand extends Command {
     try {
       pv.setProperty(this.getProperty(CP_OBJECTS_COUNT, "The overall number of objects in the collection"));
       pv.setValue(this.getReader().getObjectsCount(), String.class);
-    } catch (UnsupportedDataTypeException e) {
-      LOG.error("Could not set property value", e);
-    } catch (InvalidJavaClassForDataTypeException e) {
-      LOG.error("Could not set property value", e);
+
+    } catch (final UnsupportedDataTypeException e) {
+      LOG.error("Data type is not supported. Could not set property value", e);
+    } catch (final InvalidJavaClassForDataTypeException e) {
+      LOG.error("Invalid Java Class. Could not set property value", e);
     }
-    
+
     return pv;
   }
 

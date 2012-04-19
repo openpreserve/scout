@@ -22,7 +22,10 @@ import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECT
  */
 public class ObjectsAvgSizeCommand extends Command {
 
-  private final Logger LOG = LoggerFactory.getLogger(ObjectsAvgSizeCommand.class);
+  /**
+   * Default Logger.
+   */
+  private static final Logger LOG = LoggerFactory.getLogger(ObjectsAvgSizeCommand.class);
 
   /**
    * Fetches the average size (in bytes).
@@ -35,12 +38,13 @@ public class ObjectsAvgSizeCommand extends Command {
     try {
       pv.setProperty(this.getProperty(CP_OBJECTS_AVG_SIZE, "The average size of objects in the collection (in bytes)"));
       pv.setValue(this.getReader().getObjectsAvgSize(), String.class);
-    } catch (UnsupportedDataTypeException e) {
-      LOG.error("Could not set property value", e);
-    } catch (InvalidJavaClassForDataTypeException e) {
-      LOG.error("Could not set property value", e);
+
+    } catch (final UnsupportedDataTypeException e) {
+      LOG.error("Data type is not supported. Could not set property value", e);
+    } catch (final InvalidJavaClassForDataTypeException e) {
+      LOG.error("Invalid Java Class. Could not set property value", e);
     }
-    
+
     return pv;
   }
 

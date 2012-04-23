@@ -58,9 +58,10 @@ public class PropertyValue extends RdfBean<PropertyValue> {
   /**
    * Value holder when type is {@link Long}.
    */
-  @XmlElement(name = "value")
-  @JsonProperty("longValue")
-  private Long longValue;
+  // Jena or Jenabean do not seam to support Long
+  // @XmlElement(name = "value")
+  // @JsonProperty("longValue")
+  // private Long longValue;
 
   /**
    * Value holder when type is {@link Float}.
@@ -164,11 +165,11 @@ public class PropertyValue extends RdfBean<PropertyValue> {
    */
   @JsonProperty("value")
   public Object getValue() throws UnsupportedDataTypeException {
-    
+
     if (property == null || property.getDatatype() == null) {
       throw new UnsupportedDataTypeException(null);
     }
-    
+
     final DataType datatype = property.getDatatype();
     Object value;
 
@@ -176,8 +177,9 @@ public class PropertyValue extends RdfBean<PropertyValue> {
       value = stringValue;
     } else if (datatype.equals(DataType.INTEGER)) {
       value = integerValue;
-    } else if (datatype.equals(DataType.LONG)) {
-      value = longValue;
+      // Jena or Jenabean do not seam to support Long
+      // } else if (datatype.equals(DataType.LONG)) {
+      // value = longValue;
     } else if (datatype.equals(DataType.FLOAT)) {
       value = floatValue;
     } else if (datatype.equals(DataType.DOUBLE)) {
@@ -248,12 +250,13 @@ public class PropertyValue extends RdfBean<PropertyValue> {
       } else {
         throw new InvalidJavaClassForDataTypeException(value, datatype);
       }
-    } else if (datatype.equals(DataType.LONG)) {
-      if (value instanceof Long) {
-        longValue = (Long) value;
-      } else {
-        throw new InvalidJavaClassForDataTypeException(value, datatype);
-      }
+      // Jena or Jenabean do not seam to support Long
+      // } else if (datatype.equals(DataType.LONG)) {
+      // if (value instanceof Long) {
+      // longValue = (Long) value;
+      // } else {
+      // throw new InvalidJavaClassForDataTypeException(value, datatype);
+      // }
     } else if (datatype.equals(DataType.FLOAT)) {
       if (value instanceof Float) {
         floatValue = (Float) value;
@@ -360,7 +363,9 @@ public class PropertyValue extends RdfBean<PropertyValue> {
     result = prime * result + ((floatValue == null) ? 0 : floatValue.hashCode());
     result = prime * result + ((id == null) ? 0 : id.hashCode());
     result = prime * result + ((integerValue == null) ? 0 : integerValue.hashCode());
-    result = prime * result + ((longValue == null) ? 0 : longValue.hashCode());
+    // Jena or Jenabean do not seam to support Long
+    // result = prime * result + ((longValue == null) ? 0 :
+    // longValue.hashCode());
     result = prime * result + ((property == null) ? 0 : property.hashCode());
     result = prime * result + ((stringDictionaryValue == null) ? 0 : stringDictionaryValue.hashCode());
     result = prime * result + ((stringListValue == null) ? 0 : stringListValue.hashCode());
@@ -423,13 +428,14 @@ public class PropertyValue extends RdfBean<PropertyValue> {
     } else if (!integerValue.equals(other.integerValue)) {
       return false;
     }
-    if (longValue == null) {
-      if (other.longValue != null) {
-        return false;
-      }
-    } else if (!longValue.equals(other.longValue)) {
-      return false;
-    }
+ // Jena or Jenabean do not seam to support Long
+    // if (longValue == null) {
+    // if (other.longValue != null) {
+    // return false;
+    // }
+    // } else if (!longValue.equals(other.longValue)) {
+    // return false;
+    // }
     if (property == null) {
       if (other.property != null) {
         return false;
@@ -508,8 +514,9 @@ public class PropertyValue extends RdfBean<PropertyValue> {
   @Override
   public String toString() {
     try {
-      return "PropertyValue [id=" + id + ", value=" + getValue() + ", valueClass=" + getValue().getClass().getName()
-        + ", entity=" + entity + ", property=" + property + "]";
+      return "PropertyValue [id=" + id + ", value=" + getValue() + ", valueClass="
+        + (getValue() != null ? getValue().getClass().getName() : "NULL") + ", entity=" + entity + ", property="
+        + property + "]";
     } catch (UnsupportedDataTypeException e) {
       return "PropertyValue [id=" + id + ", value=ERROR:" + e.getMessage() + ", entity=" + entity + ", property="
         + property + "]";

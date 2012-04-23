@@ -29,7 +29,8 @@ public enum DataType {
   /**
    * A {@link Long}.
    */
-  LONG,
+  // Jena or Jenabean do not seam to support Long
+  // LONG,
   /**
    * A {@link Float}.
    */

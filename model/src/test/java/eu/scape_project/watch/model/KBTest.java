@@ -437,7 +437,9 @@ public class KBTest {
 
     final Property stringProperty = new Property(type, "stringProperty", "", DataType.STRING);
     final Property integerProperty = new Property(type, "integerProperty", "", DataType.INTEGER);
-    final Property longProperty = new Property(type, "longProperty", "", DataType.LONG);
+    // Jena or Jenabean do not seam to support Long
+    // final Property longProperty = new Property(type, "longProperty", "",
+    // DataType.LONG);
     final Property floatProperty = new Property(type, "floatProperty", "", DataType.FLOAT);
     final Property doubleProperty = new Property(type, "doubleProperty", "", DataType.DOUBLE);
     final Property dateProperty = new Property(type, "dateProperty", "", DataType.DATE);
@@ -448,7 +450,9 @@ public class KBTest {
 
     final PropertyValue stringPropertyValue1 = new PropertyValue(entity, stringProperty, "This is a string");
     final PropertyValue integerPropertyValue1 = new PropertyValue(entity, integerProperty, 123);
-    final PropertyValue longPropertyValue1 = new PropertyValue(entity, longProperty, 123L);
+    // Jena or Jenabean do not seam to support Long
+    // final PropertyValue longPropertyValue1 = new PropertyValue(entity,
+    // longProperty, 123L);
     final PropertyValue floatPropertyValue1 = new PropertyValue(entity, floatProperty, 123.1f);
     final PropertyValue doublePropertyValue1 = new PropertyValue(entity, doubleProperty, 123.1d);
     final PropertyValue datePropertyValue1 = new PropertyValue(entity, dateProperty, new Date());
@@ -460,9 +464,9 @@ public class KBTest {
 
     type.save();
     entity.save();
-    DAO.save(stringProperty, integerProperty, longProperty, floatProperty, doubleProperty, dateProperty, uriProperty,
-      stringListProperty, stringDictionaryProperty);
-    DAO.save(stringPropertyValue1, integerPropertyValue1, longPropertyValue1, floatPropertyValue1,
+    DAO.save(stringProperty, integerProperty, /* longProperty, */floatProperty, doubleProperty, dateProperty,
+      uriProperty, stringListProperty, stringDictionaryProperty);
+    DAO.save(stringPropertyValue1, integerPropertyValue1, /* longPropertyValue1, */floatPropertyValue1,
       doublePropertyValue1, datePropertyValue1, uriPropertyValue1, stringListPropertyValue1,
       stringDictionaryPropertyValue1);
 
@@ -477,14 +481,51 @@ public class KBTest {
 
     Assert.assertEquals(integerPropertyValue1, integerPropertyValue2);
 
+    // final PropertyValue longPropertyValue2 =
+    // DAO.PROPERTY_VALUE.findByEntityAndName(entity.getName(),
+    // longProperty.getName());
+    //
+    // Assert.assertEquals(longPropertyValue1, longPropertyValue2);
+
+    final PropertyValue floatPropertyValue2 = DAO.PROPERTY_VALUE.findByEntityAndName(entity.getName(),
+      floatProperty.getName());
+
+    Assert.assertEquals(floatPropertyValue1, floatPropertyValue2);
+
+    final PropertyValue doublePropertyValue2 = DAO.PROPERTY_VALUE.findByEntityAndName(entity.getName(),
+      doubleProperty.getName());
+
+    Assert.assertEquals(doublePropertyValue1, doublePropertyValue2);
+
+    final PropertyValue datePropertyValue2 = DAO.PROPERTY_VALUE.findByEntityAndName(entity.getName(),
+      dateProperty.getName());
+
+    Assert.assertEquals(datePropertyValue1, datePropertyValue2);
+
+    final PropertyValue uriPropertyValue2 = DAO.PROPERTY_VALUE.findByEntityAndName(entity.getName(),
+      uriProperty.getName());
+
+    Assert.assertEquals(uriPropertyValue1, uriPropertyValue2);
+
+    final PropertyValue stringListPropertyValue2 = DAO.PROPERTY_VALUE.findByEntityAndName(entity.getName(),
+      stringListProperty.getName());
+
+    Assert.assertEquals(stringListPropertyValue1, stringListPropertyValue2);
+
+    final PropertyValue stringDictionaryPropertyValue2 = DAO.PROPERTY_VALUE.findByEntityAndName(entity.getName(),
+      stringDictionaryProperty.getName());
+
+    Assert.assertEquals(stringDictionaryPropertyValue1, stringDictionaryPropertyValue2);
+
+    KBUtils.printStatements();
+
     // CLEAN UP
     type.delete();
     entity.delete();
-    DAO.delete(stringProperty, integerProperty, longProperty, floatProperty, doubleProperty, dateProperty, uriProperty,
+    DAO.delete(stringProperty, integerProperty, floatProperty, doubleProperty, dateProperty, uriProperty,
       stringListProperty, stringDictionaryProperty);
-    DAO.delete(stringPropertyValue1, integerPropertyValue1, longPropertyValue1, floatPropertyValue1,
-      doublePropertyValue1, datePropertyValue1, uriPropertyValue1, stringListPropertyValue1,
-      stringDictionaryPropertyValue1);
+    DAO.delete(stringPropertyValue1, integerPropertyValue1, floatPropertyValue1, doublePropertyValue1,
+      datePropertyValue1, uriPropertyValue1, stringListPropertyValue1, stringDictionaryPropertyValue1);
   }
 
   /**

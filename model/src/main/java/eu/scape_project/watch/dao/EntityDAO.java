@@ -40,6 +40,17 @@ public final class EntityDAO extends AbstractDO<Entity> {
   }
 
   /**
+   * Get Entity RDF ID.
+   * 
+   * @param entity
+   *          The entity from which to get the RDF Id.
+   * @return Get the RDF ID.
+   */
+  public static String getEntityRDFId(final Entity entity) {
+    return getEntityRDFId(entity.getName());
+  }
+
+  /**
    * No other instances other then in {@link DAO}.
    */
   protected EntityDAO() {

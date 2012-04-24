@@ -1,5 +1,7 @@
 package eu.scape_project.watch.domain;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -7,6 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import eu.scape_project.watch.utils.KBUtils;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import thewebsemantic.Id;
@@ -37,7 +40,7 @@ public class Measurement extends RdfBean<Measurement> {
    * The moment in time of the measurement.
    */
   @XmlElement
-  private long timestamp;
+  private Date timestamp;
 
   /**
    * The source adaptor that made the measurement.
@@ -58,12 +61,12 @@ public class Measurement extends RdfBean<Measurement> {
    * 
    * @param pv
    *          The measured property value
-   * @param t
+   * @param timestamp
    *          The moment in time of the measurement
    */
-  public Measurement(final PropertyValue pv, final long t) {
+  public Measurement(final PropertyValue pv, final Date timestamp) {
     this.propertyValue = pv;
-    this.timestamp = t;
+    this.timestamp = timestamp;
   }
 
   /**
@@ -73,7 +76,7 @@ public class Measurement extends RdfBean<Measurement> {
    */
   @Id
   public String getId() {
-    return this.propertyValue.getProperty().getName() + "-" + this.timestamp;
+    return this.propertyValue.getProperty().getName() + "-" + this.timestamp.getTime();
   }
 
   public PropertyValue getPropertyValue() {
@@ -84,11 +87,11 @@ public class Measurement extends RdfBean<Measurement> {
     this.propertyValue = propertyValue;
   }
 
-  public long getTimestamp() {
+  public Date getTimestamp() {
     return timestamp;
   }
 
-  public void setTimestamp(final long timestamp) {
+  public void setTimestamp(final Date timestamp) {
     this.timestamp = timestamp;
   }
 
@@ -96,9 +99,9 @@ public class Measurement extends RdfBean<Measurement> {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((this.adaptor == null) ? 0 : this.adaptor.hashCode());
-    result = prime * result + ((this.propertyValue == null) ? 0 : this.propertyValue.hashCode());
-    result = prime * result + (int) (this.timestamp ^ (this.timestamp >>> 32));
+    result = prime * result + ((adaptor == null) ? 0 : adaptor.hashCode());
+    result = prime * result + ((propertyValue == null) ? 0 : propertyValue.hashCode());
+    result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
     return result;
   }
 
@@ -114,21 +117,25 @@ public class Measurement extends RdfBean<Measurement> {
       return false;
     }
     final Measurement other = (Measurement) obj;
-    if (this.adaptor == null) {
+    if (adaptor == null) {
       if (other.adaptor != null) {
         return false;
       }
-    } else if (!this.adaptor.equals(other.adaptor)) {
+    } else if (!adaptor.equals(other.adaptor)) {
       return false;
     }
-    if (this.propertyValue == null) {
+    if (propertyValue == null) {
       if (other.propertyValue != null) {
         return false;
       }
-    } else if (!this.propertyValue.equals(other.propertyValue)) {
+    } else if (!propertyValue.equals(other.propertyValue)) {
       return false;
     }
-    if (this.timestamp != other.timestamp) {
+    if (timestamp == null) {
+      if (other.timestamp != null) {
+        return false;
+      }
+    } else if (!timestamp.equals(other.timestamp)) {
       return false;
     }
     return true;

@@ -56,14 +56,6 @@ public class PropertyValue extends RdfBean<PropertyValue> {
   private Integer integerValue;
 
   /**
-   * Value holder when type is {@link Long}.
-   */
-  // Jena or Jenabean do not seam to support Long
-  // @XmlElement(name = "value")
-  // @JsonProperty("longValue")
-  // private Long longValue;
-
-  /**
    * Value holder when type is {@link Float}.
    */
   @XmlElement(name = "value")
@@ -118,6 +110,13 @@ public class PropertyValue extends RdfBean<PropertyValue> {
   private Property property;
 
   /**
+   * The version number of this property value, to start at 0.
+   */
+  @XmlElement
+  @JsonProperty
+  private int version;
+
+  /**
    * Create a new empty property value.
    */
   public PropertyValue() {
@@ -125,13 +124,13 @@ public class PropertyValue extends RdfBean<PropertyValue> {
   }
 
   /**
-   * Create a new property value.
+   * Create a new property value, with version set to 0.
    * 
-   * @param e
+   * @param entity
    *          The related {@link Entity}.
-   * @param p
+   * @param property
    *          The related {@link Property}.
-   * @param v
+   * @param value
    *          The value of the {@link Property} for the {@link Entity}
    * @throws InvalidJavaClassForDataTypeException
    *           Thrown if the {@link #getValue()} method does not support the
@@ -140,12 +139,36 @@ public class PropertyValue extends RdfBean<PropertyValue> {
    *           Thrown if the {@link DataType} of the related {@link Property} is
    *           not supported by this method.
    */
-  public PropertyValue(final Entity e, final Property p, final Object v) throws UnsupportedDataTypeException,
-    InvalidJavaClassForDataTypeException {
+  public PropertyValue(final Entity entity, final Property property, final Object value)
+    throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
+    this(entity, property, 0, value);
+  }
+
+  /**
+   * Create a new property value.
+   * 
+   * @param entity
+   *          The related {@link Entity}.
+   * @param property
+   *          The related {@link Property}.
+   * @param version
+   *          The the version number of this property value, to start at 0.
+   * @param value
+   *          The value of the {@link Property} for the {@link Entity}
+   * @throws InvalidJavaClassForDataTypeException
+   *           Thrown if the {@link #getValue()} method does not support the
+   *           {@link DataType} of the related {@link Property}.
+   * @throws UnsupportedDataTypeException
+   *           Thrown if the {@link DataType} of the related {@link Property} is
+   *           not supported by this method.
+   */
+  public PropertyValue(final Entity entity, final Property property, final int version, final Object value)
+    throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
     super();
-    this.entity = e;
-    this.property = p;
-    setValue(v);
+    this.entity = entity;
+    this.property = property;
+    this.version = version;
+    setValue(value);
 
     this.updateId();
   }
@@ -164,36 +187,27 @@ public class PropertyValue extends RdfBean<PropertyValue> {
    *           not supported by this method.
    */
   @JsonProperty("value")
-  public Object getValue() throws UnsupportedDataTypeException {
-
-    if (property == null || property.getDatatype() == null) {
-      throw new UnsupportedDataTypeException(null);
-    }
-
-    final DataType datatype = property.getDatatype();
+  public Object getValue() {
     Object value;
 
-    if (datatype.equals(DataType.STRING)) {
+    if (stringValue != null) {
       value = stringValue;
-    } else if (datatype.equals(DataType.INTEGER)) {
+    } else if (integerValue != null) {
       value = integerValue;
-      // Jena or Jenabean do not seam to support Long
-      // } else if (datatype.equals(DataType.LONG)) {
-      // value = longValue;
-    } else if (datatype.equals(DataType.FLOAT)) {
+    } else if (floatValue != null) {
       value = floatValue;
-    } else if (datatype.equals(DataType.DOUBLE)) {
+    } else if (doubleValue != null) {
       value = doubleValue;
-    } else if (datatype.equals(DataType.URI)) {
+    } else if (uriValue != null) {
       value = uriValue;
-    } else if (datatype.equals(DataType.DATE)) {
+    } else if (dateValue != null) {
       value = dateValue;
-    } else if (datatype.equals(DataType.STRING_LIST)) {
+    } else if (stringListValue != null) {
       value = stringListValue;
-    } else if (datatype.equals(DataType.STRING_DICTIONARY)) {
+    } else if (stringDictionaryValue != null) {
       value = stringDictionaryValue;
     } else {
-      throw new UnsupportedDataTypeException(datatype);
+      value = null;
     }
 
     return value;
@@ -212,7 +226,7 @@ public class PropertyValue extends RdfBean<PropertyValue> {
    *           {@link DataType} of the related {@link Property}.
    */
   @SuppressWarnings("unchecked")
-  public <T> T getValue(final Class<T> valueClass) throws UnsupportedDataTypeException {
+  public <T> T getValue(final Class<T> valueClass) {
     final Object value = getValue();
     return (T) value;
   }
@@ -250,13 +264,6 @@ public class PropertyValue extends RdfBean<PropertyValue> {
       } else {
         throw new InvalidJavaClassForDataTypeException(value, datatype);
       }
-      // Jena or Jenabean do not seam to support Long
-      // } else if (datatype.equals(DataType.LONG)) {
-      // if (value instanceof Long) {
-      // longValue = (Long) value;
-      // } else {
-      // throw new InvalidJavaClassForDataTypeException(value, datatype);
-      // }
     } else if (datatype.equals(DataType.FLOAT)) {
       if (value instanceof Float) {
         floatValue = (Float) value;
@@ -353,6 +360,21 @@ public class PropertyValue extends RdfBean<PropertyValue> {
     this.updateId();
   }
 
+  public int getVersion() {
+    return version;
+  }
+
+  /**
+   * Set the version number of this property value.
+   * 
+   * @param version
+   *          the version number, to start at 0.
+   */
+  public void setVersion(final int version) {
+    this.version = version;
+    this.updateId();
+  }
+
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -363,14 +385,12 @@ public class PropertyValue extends RdfBean<PropertyValue> {
     result = prime * result + ((floatValue == null) ? 0 : floatValue.hashCode());
     result = prime * result + ((id == null) ? 0 : id.hashCode());
     result = prime * result + ((integerValue == null) ? 0 : integerValue.hashCode());
-    // Jena or Jenabean do not seam to support Long
-    // result = prime * result + ((longValue == null) ? 0 :
-    // longValue.hashCode());
     result = prime * result + ((property == null) ? 0 : property.hashCode());
     result = prime * result + ((stringDictionaryValue == null) ? 0 : stringDictionaryValue.hashCode());
     result = prime * result + ((stringListValue == null) ? 0 : stringListValue.hashCode());
     result = prime * result + ((stringValue == null) ? 0 : stringValue.hashCode());
     result = prime * result + ((uriValue == null) ? 0 : uriValue.hashCode());
+    result = prime * result + version;
     return result;
   }
 
@@ -428,14 +448,6 @@ public class PropertyValue extends RdfBean<PropertyValue> {
     } else if (!integerValue.equals(other.integerValue)) {
       return false;
     }
- // Jena or Jenabean do not seam to support Long
-    // if (longValue == null) {
-    // if (other.longValue != null) {
-    // return false;
-    // }
-    // } else if (!longValue.equals(other.longValue)) {
-    // return false;
-    // }
     if (property == null) {
       if (other.property != null) {
         return false;
@@ -471,7 +483,9 @@ public class PropertyValue extends RdfBean<PropertyValue> {
     } else if (!uriValue.equals(other.uriValue)) {
       return false;
     }
-
+    if (version != other.version) {
+      return false;
+    }
     return true;
   }
 
@@ -480,7 +494,9 @@ public class PropertyValue extends RdfBean<PropertyValue> {
    */
   private void updateId() {
     if (this.entity != null && this.property != null) {
-      this.id = createId(this.entity.getName(), this.property.getName());
+      this.id = createId(this.entity.getName(), this.property.getName(), this.version);
+    } else {
+      this.id = null;
     }
   }
 
@@ -505,22 +521,18 @@ public class PropertyValue extends RdfBean<PropertyValue> {
    *          The related {@link Entity} name.
    * @param propertyName
    *          The related {@link Property} name.
+   * @param version
+   *          The version number of the property value.
    * @return The {@link PropertyValue} unique Id.
    */
-  public static String createId(final String entityName, final String propertyName) {
-    return entityName + "/" + propertyName;
+  public static String createId(final String entityName, final String propertyName, final int version) {
+    return entityName + "/" + propertyName + "/" + version;
   }
 
   @Override
   public String toString() {
-    try {
-      return "PropertyValue [id=" + id + ", value=" + getValue() + ", valueClass="
-        + (getValue() != null ? getValue().getClass().getName() : "NULL") + ", entity=" + entity + ", property="
-        + property + "]";
-    } catch (UnsupportedDataTypeException e) {
-      return "PropertyValue [id=" + id + ", value=ERROR:" + e.getMessage() + ", entity=" + entity + ", property="
-        + property + "]";
-    }
+    return "PropertyValue [id=" + id + ", value=" + getValue() + ", valueClass="
+      + (getValue() != null ? getValue().getClass().getName() : "NULL") + ", entity=" + entity + ", property="
+      + property + ", version=" + version + "]";
   }
-
 }

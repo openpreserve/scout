@@ -40,6 +40,18 @@ public final class PropertyDAO extends AbstractDO<Property> {
   }
 
   /**
+   * Get the complete Property RDF Id to use in SPARQL.
+   * 
+   * @param property
+   *          The property from which go get the RDF id.
+   * 
+   * @return The complete Property RDF Id using namescape prefix
+   */
+  public static String getPropertyRDFId(final Property property) {
+    return getPropertyRDFId(property.getType().getName(), property.getName());
+  }
+
+  /**
    * No other instances other then in {@link DAO}.
    */
   protected PropertyDAO() {

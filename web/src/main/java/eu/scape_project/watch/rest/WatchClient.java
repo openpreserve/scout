@@ -395,15 +395,18 @@ public class WatchClient {
   /**
    * Get an existing {@link PropertyValue}.
    * 
+   * @param entityType
+   *          The {@link EntityType} related to this property value
    * @param entity
    *          The {@link Entity} related to this property value
    * @param property
    *          the {@link Property} related to this property value
    * @return the {@link PropertyValue} or <code>null</code> if not found.
    */
-  public PropertyValue getPropertyValue(final String entity, final String property) {
+  public PropertyValue getPropertyValue(final String entityType, final String entity, final String property) {
     try {
-      return this.resource.path(KBUtils.PROPERTY_VALUE + FS + this.format + AS + entity + AS + property)
+      return this.resource
+        .path(KBUtils.PROPERTY_VALUE + FS + this.format + AS + entityType + AS + entity + AS + property)
         .accept(this.format.getMediaType()).get(PropertyValue.class);
     } catch (final UniformInterfaceException e) {
       final ClientResponse resp = e.getResponse();
@@ -418,6 +421,8 @@ public class WatchClient {
   /**
    * Update an existing {@link PropertyValue}.
    * 
+   * @param entityType
+   *          The {@link EntityType} related to this property value
    * @param entity
    *          The {@link Entity} related to this property value
    * @param property
@@ -427,8 +432,10 @@ public class WatchClient {
    *          {@link Entity}
    * @return the updated {@link PropertyValue}
    */
-  public PropertyValue updatePropertyValue(final String entity, final String property, final String value) {
-    return this.resource.path(KBUtils.PROPERTY_VALUE + FS + this.format + AS + entity + AS + property)
+  public PropertyValue updatePropertyValue(final String entityType, final String entity, final String property,
+    final String value) {
+    return this.resource
+      .path(KBUtils.PROPERTY_VALUE + FS + this.format + AS + entityType + AS + entity + AS + property)
       .accept(this.format.getMediaType()).put(PropertyValue.class, value);
   }
 
@@ -445,14 +452,17 @@ public class WatchClient {
   /**
    * Delete an existing property value.
    * 
+   * @param entityType
+   *          The {@link EntityType} related to this property value
    * @param entity
    *          The {@link Entity} related to this property value
    * @param property
    *          the {@link Property} related to this property value
    * @return the deleted property value.
    */
-  public PropertyValue deletePropertyValue(final String entity, final String property) {
-    return this.resource.path(KBUtils.PROPERTY_VALUE + FS + this.format + AS + entity + AS + property)
+  public PropertyValue deletePropertyValue(final String entityType, final String entity, final String property) {
+    return this.resource
+      .path(KBUtils.PROPERTY_VALUE + FS + this.format + AS + entityType + AS + entity + AS + property)
       .accept(this.format.getMediaType()).delete(PropertyValue.class);
     // TODO treat the not found exception
   }

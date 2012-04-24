@@ -16,6 +16,7 @@ import com.hp.hpl.jena.rdf.model.Literal;
 
 import eu.scape_project.watch.utils.KBUtils;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +41,6 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
    */
   private static final Logger LOG = LoggerFactory.getLogger(AbstractDO.class);
 
-  
   /**
    * Find a resource by its Id.
    * 
@@ -72,21 +72,53 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
    *          The index of the first item to return
    * @param max
    *          The maximum number of item to return
+   * @param orderBy
+   *          Arguments of the ORDER BY clause, e.g. DESC(?s). If null then no
+   *          ORDER BY clause is added.
    * @return The list of the requested type filtered by the constraints above.
    */
-  protected List<T> query(final Class<T> typeClass, final String bindings, final int start, final int max) {
+  protected List<T> query(final Class<T> typeClass, final String bindings, final int start, final int max,
+    final String orderBy) {
 
     final String classType = KBUtils.WATCH_PREFIX + typeClass.getSimpleName();
 
-    final String sparql = String.format(KBUtils.PREFIXES_DECL + "SELECT ?s WHERE { ?s %1$s %2$s . %3$s}",
-      KBUtils.RDF_TYPE_REL, classType, bindings);
+    final StringBuilder sparql = new StringBuilder();
 
-    LOG.debug("SPARQL:\n {}", sparql);
+    sparql.append(KBUtils.PREFIXES_DECL);
 
-    final LinkedList<T> results = Sparql.exec(Jenabean.instance().reader(), typeClass, sparql, new QuerySolutionMap(),
-      start, max);
+    sparql.append(String.format("SELECT ?s WHERE { ?s %1$s %2$s . %3$s}", KBUtils.RDF_TYPE_REL, classType, bindings));
+
+    if (StringUtils.isNotBlank(orderBy)) {
+      sparql.append(" ORDER BY ");
+      sparql.append(orderBy);
+    }
+
+    LOG.info("SPARQL:\n {}", sparql);
+
+    final LinkedList<T> results = Sparql.exec(Jenabean.instance().reader(), typeClass, sparql.toString(),
+      new QuerySolutionMap(), start, max);
 
     return results;
+  }
+  
+  /**
+   * Generic method to query the KB, using no ORDER BY.
+   * 
+   * @param typeClass
+   *          The class of the return type we want to bind width.
+   * @param bindings
+   *          The bindings to use, to be injected into SELECT ?s WHERE {?s
+   *          type-of \<class\> . query}. Should use ?s for the binding. Can
+   *          also use OPTIONAL{}, {{...} UNION {...}} and FILTER ... >= ... &&
+   *          ... \< ...
+   * @param start
+   *          The index of the first item to return
+   * @param max
+   *          The maximum number of item to return
+   * @return The list of the requested type filtered by the constraints above.
+   */
+  protected List<T> query(final Class<T> typeClass, final String bindings, final int start, final int max) {
+    return query(typeClass, bindings, start, max, null);
   }
 
   /**
@@ -126,7 +158,6 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
 
     return count;
   }
-
 
   /**
    * Save object (not deeply) and fire on update event.

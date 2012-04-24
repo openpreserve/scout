@@ -384,7 +384,7 @@ public class CoreRestTest extends JerseyTest {
     // GET
     Property property2 = client.getProperty(typeName, propertyName);
 
-    final PropertyValue propertyValue2 = client.getPropertyValue(entityName, propertyName);
+    final PropertyValue propertyValue2 = client.getPropertyValue(typeName, entityName, propertyName);
     Assert.assertNotNull(propertyValue2);
     Assert.assertEquals(propertyValue, propertyValue2);
 
@@ -395,7 +395,7 @@ public class CoreRestTest extends JerseyTest {
     // TODO test update
 
     // DELETE
-    final PropertyValue propertyValue3 = client.deletePropertyValue(entityName, propertyName);
+    final PropertyValue propertyValue3 = client.deletePropertyValue(typeName, entityName, propertyName);
     Assert.assertEquals(propertyValue3, propertyValue);
 
     final Entity entity2 = client.deleteEntity(entityName);
@@ -408,7 +408,7 @@ public class CoreRestTest extends JerseyTest {
     Assert.assertEquals(entitytype2, entitytype);
 
     // GET
-    final PropertyValue propertyValue4 = client.getPropertyValue(entityName, propertyName);
+    final PropertyValue propertyValue4 = client.getPropertyValue(typeName, entityName, propertyName);
     Assert.assertNull(propertyValue4);
 
     // LIST

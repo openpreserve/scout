@@ -471,12 +471,12 @@ public class KBTest {
       stringDictionaryPropertyValue1);
 
     // TESTING
-    final PropertyValue stringPropertyValue2 = DAO.PROPERTY_VALUE.findByEntityAndName(entity.getName(),
+    final PropertyValue stringPropertyValue2 = DAO.PROPERTY_VALUE.find(entity.getName(), type.getName(),
       stringProperty.getName());
 
     Assert.assertEquals(stringPropertyValue1, stringPropertyValue2);
 
-    final PropertyValue integerPropertyValue2 = DAO.PROPERTY_VALUE.findByEntityAndName(entity.getName(),
+    final PropertyValue integerPropertyValue2 = DAO.PROPERTY_VALUE.find(entity.getName(), type.getName(),
       integerProperty.getName());
 
     Assert.assertEquals(integerPropertyValue1, integerPropertyValue2);
@@ -487,32 +487,32 @@ public class KBTest {
     //
     // Assert.assertEquals(longPropertyValue1, longPropertyValue2);
 
-    final PropertyValue floatPropertyValue2 = DAO.PROPERTY_VALUE.findByEntityAndName(entity.getName(),
+    final PropertyValue floatPropertyValue2 = DAO.PROPERTY_VALUE.find(entity.getName(), type.getName(),
       floatProperty.getName());
 
     Assert.assertEquals(floatPropertyValue1, floatPropertyValue2);
 
-    final PropertyValue doublePropertyValue2 = DAO.PROPERTY_VALUE.findByEntityAndName(entity.getName(),
+    final PropertyValue doublePropertyValue2 = DAO.PROPERTY_VALUE.find(entity.getName(), type.getName(),
       doubleProperty.getName());
 
     Assert.assertEquals(doublePropertyValue1, doublePropertyValue2);
 
-    final PropertyValue datePropertyValue2 = DAO.PROPERTY_VALUE.findByEntityAndName(entity.getName(),
+    final PropertyValue datePropertyValue2 = DAO.PROPERTY_VALUE.find(entity.getName(), type.getName(),
       dateProperty.getName());
 
     Assert.assertEquals(datePropertyValue1, datePropertyValue2);
 
-    final PropertyValue uriPropertyValue2 = DAO.PROPERTY_VALUE.findByEntityAndName(entity.getName(),
+    final PropertyValue uriPropertyValue2 = DAO.PROPERTY_VALUE.find(entity.getName(), type.getName(),
       uriProperty.getName());
 
     Assert.assertEquals(uriPropertyValue1, uriPropertyValue2);
 
-    final PropertyValue stringListPropertyValue2 = DAO.PROPERTY_VALUE.findByEntityAndName(entity.getName(),
+    final PropertyValue stringListPropertyValue2 = DAO.PROPERTY_VALUE.find(entity.getName(), type.getName(),
       stringListProperty.getName());
 
     Assert.assertEquals(stringListPropertyValue1, stringListPropertyValue2);
 
-    final PropertyValue stringDictionaryPropertyValue2 = DAO.PROPERTY_VALUE.findByEntityAndName(entity.getName(),
+    final PropertyValue stringDictionaryPropertyValue2 = DAO.PROPERTY_VALUE.find(entity.getName(), type.getName(),
       stringDictionaryProperty.getName());
 
     Assert.assertEquals(stringDictionaryPropertyValue1, stringDictionaryPropertyValue2);
@@ -547,10 +547,10 @@ public class KBTest {
 
     final PropertyValue pv = new PropertyValue(entity, property, "123");
 
-    type.save();
-    entity.save();
-    property.save();
-    pv.save();
+    DAO.save(type);
+    DAO.save(entity);
+    DAO.save(property);
+    DAO.save(pv);
 
     // List
     final Collection<PropertyValue> pvs = Jenabean.instance().reader().load(PropertyValue.class);
@@ -562,7 +562,7 @@ public class KBTest {
     Assert.assertTrue(pvs2.contains(pv));
 
     // FIND
-    final PropertyValue pv2 = DAO.PROPERTY_VALUE.findByEntityAndName(entity.getName(), property.getName());
+    final PropertyValue pv2 = DAO.PROPERTY_VALUE.find(entity.getName(), type.getName(), property.getName());
 
     Assert.assertNotNull(pv2);
     Assert.assertEquals(pv, pv2);
@@ -586,7 +586,7 @@ public class KBTest {
     Assert.assertFalse(pvs4.contains(pv));
 
     // FIND AGAIN
-    final PropertyValue pv3 = DAO.PROPERTY_VALUE.findByEntityAndName(entity.getName(), property.getName());
+    final PropertyValue pv3 = DAO.PROPERTY_VALUE.find(entity.getName(), type.getName(), property.getName());
     Assert.assertNull(pv3);
 
     // COUNT AGAIN

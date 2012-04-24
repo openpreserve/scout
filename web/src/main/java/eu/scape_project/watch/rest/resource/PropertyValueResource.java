@@ -10,6 +10,7 @@ import com.wordnik.swagger.core.ApiParam;
 import com.wordnik.swagger.core.JavaHelp;
 import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.domain.Entity;
+import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.utils.exception.BadRequestException;
@@ -25,6 +26,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
@@ -50,19 +52,22 @@ public class PropertyValueResource extends JavaHelp {
    * 
    * @param entityName
    *          The name of the {@link Entity} this property value refers to.
+   * @param typeName
+   *          The name of the {@link EntityType} this property value refers to.
    * @param propertyName
    *          The name of the {@link Property} this property value refers to.
    * @return The {@link PropertyValue} or throws {@link NotFoundException} if
    *         not found.
    */
   @GET
-  @Path("/{entity}/{property}")
+  @Path("/{type}/{entity}/{property}")
   @ApiOperation(value = "Find property value by entity and property", notes = "")
   @ApiErrors(value = {@ApiError(code = NotFoundException.CODE, reason = "Property value not found")})
   public Response getPropertyValueByName(
-    @ApiParam(value = "Name of the entity type", required = true) @PathParam("entity") final String entityName,
+    @ApiParam(value = "Name of the entity type", required = true) @PathParam("type") final String typeName,
+    @ApiParam(value = "Name of the entity name", required = true) @PathParam("entity") final String entityName,
     @ApiParam(value = "Name of the property", required = true) @PathParam("property") final String propertyName) {
-    final PropertyValue propertyValue = DAO.PROPERTY_VALUE.findByEntityAndName(entityName, propertyName);
+    final PropertyValue propertyValue = DAO.PROPERTY_VALUE.find(entityName, typeName, propertyName);
 
     if (propertyValue != null) {
       return Response.ok().entity(propertyValue).build();
@@ -118,7 +123,7 @@ public class PropertyValueResource extends JavaHelp {
         PropertyValue propertyValue;
         try {
           propertyValue = new PropertyValue(entity, property, value);
-          propertyValue.save();
+          DAO.save(propertyValue);
           return Response.ok().entity(propertyValue).build();
         } catch (UnsupportedDataTypeException e) {
           LOG.error("Data type not supported", e);
@@ -149,15 +154,16 @@ public class PropertyValueResource extends JavaHelp {
    * @return The updated {@link PropertyValue}.
    */
   @PUT
-  @Path("/{entity}/{property}")
+  @Path("/{type}/{entity}/{property}")
   @ApiOperation(value = "Update property value", notes = "This can only be done by a logged user (TODO)")
   @ApiErrors(value = {@ApiError(code = NotFoundException.CODE, reason = "Entity or property not found")})
   public Response updatePropertyValue(
+    @ApiParam(value = "Name of the entity type", required = true) @PathParam("type") final String typeName,
     @ApiParam(value = "Entity related to the property value", required = true) @PathParam("entity") final String entityName,
     @ApiParam(value = "Property related to the property value", required = true) @PathParam("property") final String propertyName,
     @ApiParam(value = "Updated value", required = true) final String value) {
     // TODO support several property values, by versioning
-    final PropertyValue propertyValue = DAO.PROPERTY_VALUE.findByEntityAndName(entityName, propertyName);
+    final PropertyValue propertyValue = DAO.PROPERTY_VALUE.find(entityName, typeName, propertyName);
 
     if (propertyValue != null) {
       try {
@@ -188,13 +194,14 @@ public class PropertyValueResource extends JavaHelp {
    *         {@link NotFoundException} if not found.
    */
   @DELETE
-  @Path("/{entity}/{property}")
+  @Path("/{type}/{entity}/{property}")
   @ApiOperation(value = "Delete property value", notes = "This can only be done by an admin user (TODO)")
   @ApiErrors(value = {@ApiError(code = NotFoundException.CODE, reason = "Property value not found")})
   public Response deletePropertyValue(
+    @ApiParam(value = "Name of the entity type", required = true) @PathParam("type") final String typeName,
     @ApiParam(value = "Entity related with the property value", required = true) @PathParam("entity") final String entityName,
     @ApiParam(value = "Property related with the property value", required = true) @PathParam("property") final String propertyName) {
-    final PropertyValue propertyValue = DAO.PROPERTY_VALUE.findByEntityAndName(entityName, propertyName);
+    final PropertyValue propertyValue = DAO.PROPERTY_VALUE.find(entityName, typeName, propertyName);
 
     if (propertyValue != null) {
       propertyValue.delete();

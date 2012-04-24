@@ -1,0 +1,231 @@
+{
+  "head": {
+    "vars": [
+      "name",
+      "version",
+      "puid",
+      "ext",
+      "formatType",
+      "mime",
+      "desc",
+      "byteOrder",
+      "released",
+      "withdrawn",
+      "internalSignature",
+      "byteSequence",
+      "byteSequencePosition",
+      "byteSequenceOffset",
+      "byteString",
+      "uti",
+      "developedBy",
+      "maxByteSequenceOffset",
+      "supportedBy",
+      "xpuid",
+      "lossiness",
+      "waveguid",
+      "compressionDocumentation",
+      "mediaFormat",
+      "note"
+    ]
+  },
+  "results": {
+    "bindings": [
+      {
+        "name": {
+          "type": "literal",
+          "value": "Broadcast WAVE",
+          "xml:lang": "en"
+        },
+
+        "puid": {
+          "type": "literal",
+          "value": "fmt\/1"
+        },
+
+        "ext": {
+          "type": "literal",
+          "value": "wav"
+        },
+
+        "formatType": {
+          "type": "uri",
+          "value": "http://reference.data.gov.uk/technical-registry/formatType/Audio"
+        },
+
+        "mime": {
+          "type": "literal",
+          "value": "audio\/x-wav"
+        },
+
+        "byteOrder": {
+          "type": "uri",
+          "value": "http://reference.data.gov.uk/technical-registry/Little_endian"
+        },
+
+        "released": {
+          "type": "typed-literal",
+          "value": "1997-01-01",
+          "datatype": "http://www.w3.org/2001/XMLSchemadate"
+        },
+
+        "withdrawn": {
+          "type": "typed-literal",
+          "value": "2001-07-01",
+          "datatype": "http://www.w3.org/2001/XMLSchemadate"
+        },
+
+        "internalSignature": {
+          "type": "uri",
+          "value": "http://reference.data.gov.uk/technical-registry/internalSignature/129"
+        }
+      },
+      {
+        "name": {
+          "type": "literal",
+          "value": "Broadcast WAVE",
+          "xml:lang": "en"
+        },
+
+        "puid": {
+          "type": "literal",
+          "value": "fmt\/1"
+        },
+
+        "ext": {
+          "type": "literal",
+          "value": "wav"
+        },
+
+        "formatType": {
+          "type": "uri",
+          "value": "http://reference.data.gov.uk/technical-registry/formatType/Audio"
+        },
+
+        "mime": {
+          "type": "literal",
+          "value": "audio\/x-wav"
+        },
+
+        "byteOrder": {
+          "type": "uri",
+          "value": "http://reference.data.gov.uk/technical-registry/Little_endian"
+        },
+
+        "released": {
+          "type": "typed-literal",
+          "value": "1997-01-01",
+          "datatype": "http://www.w3.org/2001/XMLSchemadate"
+        },
+
+        "withdrawn": {
+          "type": "typed-literal",
+          "value": "2001-07-01",
+          "datatype": "http://www.w3.org/2001/XMLSchemadate"
+        },
+
+        "internalSignature": {
+          "type": "uri",
+          "value": "http://reference.data.gov.uk/technical-registry/internalSignature/159"
+        }
+      },
+      {
+        "name": {
+          "type": "literal",
+          "value": "Broadcast WAVE",
+          "xml:lang": "en"
+        },
+
+        "puid": {
+          "type": "literal",
+          "value": "fmt\/2"
+        },
+
+        "ext": {
+          "type": "literal",
+          "value": "wav"
+        },
+
+        "formatType": {
+          "type": "uri",
+          "value": "http://reference.data.gov.uk/technical-registry/formatType/Audio"
+        },
+
+        "mime": {
+          "type": "literal",
+          "value": "audio\/x-wav"
+        },
+
+        "byteOrder": {
+          "type": "uri",
+          "value": "http://reference.data.gov.uk/technical-registry/Little_endian"
+        },
+
+        "released": {
+          "type": "typed-literal",
+          "value": "2001-07-01",
+          "datatype": "http://www.w3.org/2001/XMLSchemadate"
+        },
+
+        "internalSignature": {
+          "type": "uri",
+          "value": "http://reference.data.gov.uk/technical-registry/internalSignature/52"
+        }
+      },
+      {
+        "name": {
+          "type": "literal",
+          "value": "Broadcast WAVE",
+          "xml:lang": "en"
+        },
+
+        "puid": {
+          "type": "literal",
+          "value": "fmt\/2"
+        },
+
+        "ext": {
+          "type": "literal",
+          "value": "wav"
+        },
+
+        "formatType": {
+          "type": "uri",
+          "value": "http://reference.data.gov.uk/technical-registry/formatType/Audio"
+        },
+
+        "mime": {
+          "type": "literal",
+          "value": "audio\/x-wav"
+        },
+
+        "byteOrder": {
+          "type": "uri",
+          "value": "http://reference.data.gov.uk/technical-registry/Little_endian"
+        },
+
+        "released": {
+          "type": "typed-literal",
+          "value": "2001-07-01",
+          "datatype": "http://www.w3.org/2001/XMLSchemadate"
+        },
+
+        "internalSignature": {
+          "type": "uri",
+          "value": "http://reference.data.gov.uk/technical-registry/internalSignature/160"
+        }
+      },
+      {
+        "name": {
+          "type": "literal",
+          "value": "BWAVE PCM 0",
+          "xml:lang": "en"
+        },
+
+        "byteSequence": {
+          "type": "uri",
+          "value": "http://reference.data.gov.uk/technical-registry/byteSequence/68"
+        }
+      }
+    ]
+  }
+}

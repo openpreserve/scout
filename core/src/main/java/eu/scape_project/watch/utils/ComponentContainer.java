@@ -68,7 +68,7 @@ public class ComponentContainer {
       centralMonitor.addMonitor(monitor);
     }
     if (coreScheduler != null) {
-      coreScheduler.adddGroupJobListener(monitor, monitor.getGroup());
+      coreScheduler.addGroupJobListener(monitor, monitor.getGroup());
       monitor.registerScheduler(coreScheduler);
     }
   }

@@ -57,7 +57,7 @@ public class ComponentContainerTest {
     cc.addMonitor(mockMonitor);
     
     Mockito.verify(mockCM).addMonitor(mockMonitor);
-    Mockito.verify(mockCS).adddGroupJobListener(mockMonitor, "test group");
+    Mockito.verify(mockCS).addGroupJobListener(mockMonitor, "test group");
     Mockito.verify(mockMonitor).getGroup();
     
     

@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Container for components
+ * Container for components : CoreScheduler, CentralMonitor, AdaptorLoader
  * 
  * @author kresimir
  * 
@@ -17,19 +17,32 @@ public class ComponentContainer {
 
   private static final Logger LOG = LoggerFactory.getLogger(ComponentContainer.class);
 
+  /**
+   * CoreScheduler
+   */
   private CoreScheduler coreScheduler = null;
 
+  /**
+   * CentralMonitor
+   */
   private CentralMonitor centralMonitor = null;
 
+  /**
+   * AdaptorLoader
+   */
   private AdaptorLoader adaptorLoader = null;
 
   /**
-   * constructor which does nothing at the moment
+   * Default constructor
    */
   public ComponentContainer() {
     LOG.info("ComponentContainer initialized");
   }
 
+  /**
+   * Constructor 
+   * @param flag - true if it should create default components otherwise false 
+   */
   public ComponentContainer(boolean flag) {
     this();
     if (flag) {
@@ -40,10 +53,9 @@ public class ComponentContainer {
   }
 
   /**
-   * starting components
+   * Start components which are declared.
    */
   public void init() {
-    // TODO add else throw exception
     if (coreScheduler != null){
       coreScheduler.start();
     }
@@ -52,8 +64,10 @@ public class ComponentContainer {
     }
   }
 
+  /**
+   * Stop components
+   */
   public void destroy() {
-    // TODO add else throw exception
     if (coreScheduler != null){
       coreScheduler.shutdown();
     }
@@ -62,8 +76,11 @@ public class ComponentContainer {
     }
   }
 
+  /**
+   * Add new Monitor to the system  
+   * @param monitor - Monitor to be added
+   */
   public void addMonitor(MonitorInterface monitor) {
-    // TODO add throw exception
     if (centralMonitor != null){
       centralMonitor.addMonitor(monitor);
     }

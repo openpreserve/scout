@@ -26,7 +26,7 @@ public class CollectionProfilerMonitor implements MonitorInterface {
 
   private static final Logger LOG = LoggerFactory.getLogger(CollectionProfilerMonitor.class);
 
-  private static String GROUP_NAME = "CollectionProfileAdaptors";
+  private static final String GROUP_NAME = "CollectionProfileAdaptors";
 
   private CentralMonitor centralMonitor;
 
@@ -53,7 +53,7 @@ public class CollectionProfilerMonitor implements MonitorInterface {
   @Override
   public String getName() {
     // TODO Auto-generated method stub
-    return "CollecetionProfileMonitor";
+    return "CollectionProfileMonitor";
   }
 
   @Override

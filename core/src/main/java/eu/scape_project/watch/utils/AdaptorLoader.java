@@ -29,7 +29,7 @@ public class AdaptorLoader {
 
   private static final long LOADER_PERIOD = 6 * 10 * 1000L;
 
-  private static String EXTENSION = "properties";
+  private static final String EXTENSION = "properties";
 
   private static final String ADAPTOR_JOB_PACKAGE = "eu.scape_project.watch.scheduling";
 

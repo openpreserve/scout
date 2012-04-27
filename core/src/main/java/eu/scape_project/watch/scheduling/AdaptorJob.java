@@ -104,8 +104,9 @@ public abstract class AdaptorJob implements AdaptorJobInterface {
   
   @Override
   public boolean equals(Object object) {
-    if (object==null) 
+    if (object==null) {
       return false;
+    }
     if (this == object){
       return true;
     }

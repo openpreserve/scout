@@ -22,26 +22,46 @@ public class CentralMonitor implements DOListener<AsyncRequest> {
 
   private static final Logger LOG = LoggerFactory.getLogger(CentralMonitor.class);
 
+  /**
+   * List of all Monitors
+   */
   private List<MonitorInterface> monitors;
 
+  /**
+   * List of all AsyncRequests
+   */
   private List<AsyncRequest> aRequests;
 
+  /**
+   * Notification Service 
+   */
   private NotificationService nService;
 
+  /**
+   * Default Constructor 
+   */
   public CentralMonitor() {
     monitors = new ArrayList<MonitorInterface>();
     aRequests = new ArrayList<AsyncRequest>();
     LOG.info("CentralMonitor initialized");
   }
 
+  /**
+   * Adding Monitor to a CentralMonitor 
+   * @param monitor
+   */
   public void addMonitor(MonitorInterface monitor) {
     monitors.add(monitor);
     monitor.registerCentralMonitor(this);
   }
 
+  /**
+   * Register CentralMonitor to listen when an AsyncRequest is 
+   * created/updated/deleted
+   */
   public void registerToAsyncRequest() {
     DAO.addDOListener(AsyncRequest.class, this);
-    LOG.debug("CentralMonitor listening AsyncRequestDAO");
+    LOG.debug("CentralMonitor listening AsyncRequest");
   }
 
   public void setNotificationService(NotificationService ns) {
@@ -52,23 +72,26 @@ public class CentralMonitor implements DOListener<AsyncRequest> {
     return nService;
   }
 
+  /**
+   * Give a list of AsyncRequests ids to be evaluated.
+   * @param ids - list of AsyncRequest ids to be notified
+   */
   public void notifyAsyncRequests(List<String> ids) {
-
     for (String uuid : ids) {
       AsyncRequest tmp = findAsyncRequest(uuid);
       assessRequest(tmp);
     }
-
   }
 
-  public Collection<AsyncRequest> getAllRequests() {
-    return Collections.unmodifiableCollection(aRequests);
+  public List<AsyncRequest> getAllRequests() {
+    return aRequests;
   }
 
-  public Collection<MonitorInterface> getAllMonitors() {
-    return Collections.unmodifiableCollection(monitors);
+  public List<MonitorInterface> getAllMonitors() {
+    return monitors;
   }
 
+  
   @Override
   public void onUpdated(AsyncRequest req) {
     LOG.debug("adding Request to monitors " + req.getId());
@@ -87,21 +110,16 @@ public class CentralMonitor implements DOListener<AsyncRequest> {
   }
 
   private AsyncRequest findAsyncRequest(String uuid) {
-
     for (AsyncRequest i : aRequests) {
       if (i.getId().equals(uuid)){
         return i;
       }
     }
-
     return null;
-
   }
 
   private void assessRequest(AsyncRequest aRequest) {
-
     LOG.info("Assessing AsyncRequest " + aRequest.getId());
-
     for (Trigger trigger : aRequest.getTriggers()) {
       Question question = trigger.getQuestion();
       List<PropertyValue> result = DAO.PROPERTY_VALUE.query(question.getSparql(), 0, 10);
@@ -111,7 +129,6 @@ public class CentralMonitor implements DOListener<AsyncRequest> {
         LOG.info("Condition is not satisfied");
       }
     }
-
   }
 
   private void notify(Trigger trigger) {

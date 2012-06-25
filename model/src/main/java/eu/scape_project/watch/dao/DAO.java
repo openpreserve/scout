@@ -49,6 +49,11 @@ public final class DAO {
   public static final PropertyValueDAO PROPERTY_VALUE = new PropertyValueDAO();
 
   /**
+   * {@link Measurement} Data Access Object.
+   */
+  public static final MeasurementDAO MEASUREMENT = new MeasurementDAO();
+
+  /**
    * {@link AsyncRequest} Data Access Object.
    */
   public static final AsyncRequestDAO ASYNC_REQUEST = new AsyncRequestDAO();

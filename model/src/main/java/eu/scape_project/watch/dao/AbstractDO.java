@@ -93,14 +93,14 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
       sparql.append(orderBy);
     }
 
-    LOG.info("SPARQL:\n {}", sparql);
+    // LOG.info("SPARQL:\n {}", sparql);
 
     final LinkedList<T> results = Sparql.exec(Jenabean.instance().reader(), typeClass, sparql.toString(),
       new QuerySolutionMap(), start, max);
 
     return results;
   }
-  
+
   /**
    * Generic method to query the KB, using no ORDER BY.
    * 
@@ -138,10 +138,16 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
 
     final String classType = KBUtils.WATCH_PREFIX + typeClass.getSimpleName();
 
-    final String sparql = String.format(KBUtils.XSD_PREFIX_DECL + KBUtils.RDF_PREFIX_DECL + KBUtils.WATCH_PREFIX_DECL
-      + "SELECT (count(?s) as ?count) WHERE { ?s %1$s %2$s . %3$s}", KBUtils.RDF_TYPE_REL, classType, bindings);
+    final StringBuilder sparql = new StringBuilder();
 
-    final Query query = QueryFactory.create(sparql);
+    sparql.append(KBUtils.PREFIXES_DECL);
+
+    sparql.append(String.format("SELECT (count(?s) as ?count) WHERE { ?s %1$s %2$s . %3$s}", KBUtils.RDF_TYPE_REL,
+      classType, bindings));
+
+    LOG.info("SPARQL:\n {}", sparql);
+
+    final Query query = QueryFactory.create(sparql.toString());
     final QueryExecution qexec = QueryExecutionFactory.create(query, Jenabean.instance().model());
     try {
       final ResultSet results = qexec.execSelect();

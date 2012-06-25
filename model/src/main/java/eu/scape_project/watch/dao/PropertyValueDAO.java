@@ -15,6 +15,12 @@ import java.util.List;
 
 import javax.xml.bind.DatatypeConverter;
 
+import thewebsemantic.Sparql;
+import thewebsemantic.binding.Jenabean;
+
+import com.hp.hpl.jena.datatypes.xsd.XSDDateTime;
+import com.hp.hpl.jena.query.QuerySolutionMap;
+
 /**
  * {@link PropertyValue} Data Access Object.
  * 
@@ -29,7 +35,7 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
   private static final String ENTITY_REL = KBUtils.WATCH_PREFIX + "entity";
 
   /**
-   * The name of the relationship to {@link Property} in {@link PropertyValue}.
+   * The name of the relationship to {@link Property} in {@link PropertyValue} .
    */
   private static final String PROPERTY_REL = KBUtils.WATCH_PREFIX + "property";
 
@@ -57,6 +63,20 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
     return super.findById(id, PropertyValue.class);
   }
 
+  /**
+   * Find a property value, as last set on a determined date.
+   * 
+   * @param entityName
+   *          The entity related to the property.
+   * @param entityType
+   *          The entity type related to the property.
+   * @param propertyName
+   *          The property name.
+   * @param asOfDate
+   *          The date before which to search of the defined property value.
+   * @return The last set value for that property up to the given date, or null
+   *         if no value was defined previous to the given date.
+   */
   public PropertyValue find(final String entityName, final String entityType, final String propertyName,
     final Date asOfDate) {
 
@@ -76,7 +96,7 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
       query.append(" . ");
       final Calendar asOfCalendar = Calendar.getInstance();
       asOfCalendar.setTime(asOfDate);
-      query.append(String.format("FILTER(?timestamp <= %1$s)", DatatypeConverter.printDate(asOfCalendar)));
+      query.append(String.format("FILTER(?timestamp <= \"%1$s\"^^xsd:dateTime)", new XSDDateTime(asOfCalendar)));
     }
 
     final List<PropertyValue> pvs = query(query.toString(), 0, 1, "DESC(?measurement)");
@@ -90,6 +110,18 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
     return ret;
   }
 
+  /**
+   * Find a property value, as last set on current date.
+   * 
+   * @param entityName
+   *          The entity related to the property.
+   * @param entityType
+   *          The entity type related to the property.
+   * @param propertyName
+   *          The property name.
+   * @return The last set value for that property up to the current date, or
+   *         null if no value was defined up till now.
+   */
   public PropertyValue find(final String entityName, final String entityType, final String propertyName) {
     return find(entityName, entityType, propertyName, null);
   }
@@ -202,8 +234,33 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
     return this.query(bindings, start, max);
   }
 
+  /**
+   * Save the value of a property, creating a new value if it doesn't exist and
+   * linking to a measurement with current date and time. If the value already
+   * exists, than only a new measurement will be created.
+   * 
+   * @param pv
+   *          The value of the property to save
+   * 
+   * @return The final {@link PropertyValue}
+   */
   @Override
-  public synchronized PropertyValue save(final PropertyValue pv) {
+  public PropertyValue save(final PropertyValue pv) {
+    return save(pv, new Date());
+  }
+
+  /**
+   * Save the value of a property, creating a new value if it doesn't exist and
+   * linking to a measurement with given date and time. If the value already
+   * exists, than only a new measurement will be created.
+   * 
+   * @param pv
+   *          The value of the property to save
+   * @param asOfDate
+   *          The data and time to set on the measurement
+   * @return The final {@link PropertyValue}
+   */
+  public synchronized PropertyValue save(final PropertyValue pv, final Date asOfDate) {
     // check if exists a property value with that value
     final Entity entity = pv.getEntity();
     final Property property = pv.getProperty();
@@ -217,16 +274,38 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
       final int version = getNextVersionNumber(entity, property);
       pv.setVersion(version);
       pv.save();
-      final Measurement measurement = new Measurement(pv, new Date());
+      final Measurement measurement = new Measurement(pv, asOfDate);
       measurement.save();
     } else {
       // tag existing property value with a new measurement.
       final PropertyValue existingPV = existingPVs.get(0);
-      final Measurement measurement = new Measurement(existingPV, new Date());
+      final Measurement measurement = new Measurement(existingPV, asOfDate);
       measurement.save();
     }
 
     return super.save(pv);
+  }
+
+  /**
+   * Delete Property Value and related Measurement.
+   * 
+   * @param pv
+   *          The property value to delete.
+   * @return the deleted property value.
+   */
+  @Override
+  public PropertyValue delete(final PropertyValue pv) {
+
+    final int count = DAO.MEASUREMENT.count(pv);
+
+    // XXX get a complete list may not be scalable
+    final List<Measurement> measurements = DAO.MEASUREMENT.query(pv, 0, count);
+
+    for (Measurement measurement : measurements) {
+      DAO.MEASUREMENT.delete(measurement);
+    }
+
+    return super.delete(pv);
   }
 
   /**

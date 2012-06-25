@@ -7,14 +7,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import eu.scape_project.watch.utils.KBUtils;
-
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
+import eu.scape_project.watch.utils.KBUtils;
 
 /**
  * Logs the moment when a property value was measured.
@@ -28,6 +26,19 @@ public class Measurement extends RdfBean<Measurement> {
 
   // private static final Logger LOG = LoggerFactory
   // .getLogger(Measurement.class);
+
+  /**
+   * Get measurement Id.
+   * 
+   * @param propertyName
+   *          The name of the related property.
+   * @param timestamp
+   *          The time stamp of the measurement.
+   * @return The id to be used in RDF queries.
+   */
+  public static final String createId(final String propertyName, final Date timestamp) {
+    return propertyName + KBUtils.ID_SEPARATOR + timestamp.getTime();
+  }
 
   /**
    * The measured property value.
@@ -76,7 +87,15 @@ public class Measurement extends RdfBean<Measurement> {
    */
   @Id
   public String getId() {
-    return this.propertyValue.getProperty().getName() + "-" + this.timestamp.getTime();
+    String propertyName;
+
+    if (this.propertyValue != null && this.propertyValue.getProperty() != null) {
+      propertyName = this.propertyValue.getProperty().getName();
+    } else {
+      propertyName = "unknown";
+    }
+
+    return createId(propertyName, this.timestamp);
   }
 
   public PropertyValue getPropertyValue() {

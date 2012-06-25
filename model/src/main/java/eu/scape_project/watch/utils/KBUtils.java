@@ -239,6 +239,12 @@ public final class KBUtils {
     + WATCH_PROPERTY_VALUE_PREFIX_DECL;
 
   /**
+   * String separator for IDs. Not using '/' because it does not behave well
+   * with prefixes.
+   */
+  public static final String ID_SEPARATOR = "-";
+
+  /**
    * Debugging method that prints all statements in triple store.
    */
   public static void printStatements() {

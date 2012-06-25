@@ -4,6 +4,7 @@ import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.dao.DOListener;
 import eu.scape_project.watch.dao.EntityDAO;
 import eu.scape_project.watch.dao.PropertyDAO;
+import eu.scape_project.watch.dao.PropertyValueDAO;
 import eu.scape_project.watch.domain.AsyncRequest;
 import eu.scape_project.watch.domain.DataType;
 import eu.scape_project.watch.domain.DictionaryItem;
@@ -23,6 +24,7 @@ import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
 import java.io.File;
 import java.net.URI;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -598,7 +600,10 @@ public class KBTest {
    * Test PropertyValue listing methods.
    * 
    * @throws InvalidJavaClassForDataTypeException
+   *           Property value uses invalid java class for its data type
+   *           definition.
    * @throws UnsupportedDataTypeException
+   *           The defined data type is not supported.
    */
   @Test
   public void testPropertyValueListings() throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
@@ -634,6 +639,49 @@ public class KBTest {
     property.delete();
     pv.delete();
 
+  }
+
+  @Test
+  public void testMeasurements() throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
+    // CREATE
+    final EntityType type = new EntityType();
+    type.setName("tests");
+    type.setDescription("Test entities");
+
+    final Entity entity = new Entity(type, "entity1");
+    final Property property = new Property(type, "property1", "property description", DataType.INTEGER);
+
+    final PropertyValue pv1 = new PropertyValue(entity, property, 1);
+    final PropertyValue pv2 = new PropertyValue(entity, property, 2);
+
+    type.save();
+    entity.save();
+    property.save();
+
+    final Calendar c = Calendar.getInstance();
+    c.set(2004, 1, 1);
+    DAO.PROPERTY_VALUE.save(pv1, c.getTime());
+    c.set(2005, 1, 1);
+    DAO.PROPERTY_VALUE.save(pv2, c.getTime());
+
+    final PropertyValue lastValue = DAO.PROPERTY_VALUE.find(entity.getName(), type.getName(), property.getName(),
+      new Date());
+    Assert.assertEquals(pv2, lastValue);
+
+    c.set(2004, 6, 1);
+    final PropertyValue previousValue = DAO.PROPERTY_VALUE.find(entity.getName(), type.getName(), property.getName(),
+      c.getTime());
+    Assert.assertEquals(pv1, previousValue);
+
+    // DELETE
+    type.delete();
+    entity.delete();
+    property.delete();
+
+    DAO.delete(pv1, pv2);
+
+    Assert.assertEquals(0, DAO.MEASUREMENT.count(pv1));
+    Assert.assertEquals(0, DAO.MEASUREMENT.count(pv2));
   }
 
   /**

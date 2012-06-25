@@ -23,12 +23,12 @@ public class PronomClientTest {
 
     when(comm.submitQuery(Mockito.anyString(), Mockito.anyString())).thenReturn(greet);
 
-    PronomClient service = new PronomClient("http://test.linkeddatapronom.nationalarchives.gov.uk", comm);
+    PronomClient service = new PronomClient(comm);
     String result = service.query(sparql, OutputFormat.JSON);
 
     Mockito.verify(comm).submitQuery(sparql + "LIMIT 10 OFFSET 0", "json");
     Assert.assertNotNull(result);
     Assert.assertEquals(result, greet);
   }
-  
+
 }

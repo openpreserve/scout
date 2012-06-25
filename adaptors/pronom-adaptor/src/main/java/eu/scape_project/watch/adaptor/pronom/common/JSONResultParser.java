@@ -26,8 +26,8 @@ public class JSONResultParser {
 
       // relies on the fact that name is the first binding...
       // should be corrected...
-      Entity format = this.getEntity(formattype, vars.getJSONObject(0));
-
+      Entity format = this.getEntity(formattype, binding.getJSONObject(vars.getString(0)).getString("value"));
+      System.out.println("Values for Format: " + format.getName());
       for (int j = 1; j < vars.size(); j++) {
         String name = vars.getString(j);
         PropertyValue value = this.getPropertyValue(binding, name);
@@ -43,8 +43,8 @@ public class JSONResultParser {
     return new ArrayList<PropertyValue>();
   }
 
-  private Entity getEntity(EntityType et, JSONObject name) {
-    return new Entity(et, name.toString());
+  private Entity getEntity(EntityType et, String name) {
+    return new Entity(et, name);
 
   }
 

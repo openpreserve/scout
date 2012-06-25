@@ -2,9 +2,7 @@ PREFIX pronom: <http://reference.data.gov.uk/technical-registry/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 
-SELECT ?name ?version ?puid ?ext ?formatType ?mime ?desc ?byteOrder ?released ?withdrawn ?internalSignature ?byteSequence ?byteSequencePosition ?byteSequenceOffset ?byteString ?uti ?developedBy ?maxByteSequenceOffset ?supportedBy ?xpuid ?lossiness ?waveguid ?compressionDocumentation ?mediaFormat ?note
-
-WHERE {
+SELECT ?name ?version ?puid ?ext ?formatType ?mime ?desc ?byteOrder ?released ?withdrawn ?internalSignature ?byteSequence ?byteSequencePosition ?byteSequenceOffset ?byteString ?uti ?developedBy ?maxByteSequenceOffset ?supportedBy ?xpuid ?lossiness ?waveguid ?compressionDocumentation ?mediaFormat ?note WHERE {
  
  ?s rdfs:label ?name .
 
@@ -35,5 +33,3 @@ WHERE {
 
 }
 LIMIT 10
-
--- service: at http://test.linkeddatapronom.nationalarchives.gov.uk/sparql/endpoint.php

@@ -12,21 +12,22 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 
 public class PronomServiceCommunicator {
-  
+
   public URL url;
-  
+
   public PronomServiceCommunicator(final String u) throws MalformedURLException {
     this.url = new URL(u);
   }
-  
+
   public String submitQuery(final String spql, final String fmt) throws ProtocolException, IOException {
     final HttpURLConnection connection = (HttpURLConnection) this.url.openConnection();
-    final DataOutputStream ps = new DataOutputStream(connection.getOutputStream());
 
     connection.setDoOutput(true);
     connection.setDoInput(true);
     connection.setRequestMethod("GET");
     connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+    final DataOutputStream ps = new DataOutputStream(connection.getOutputStream());
 
     ps.writeBytes("&query=" + URLEncoder.encode(spql, "UTF-8") + "&output=" + fmt);
     ps.flush();

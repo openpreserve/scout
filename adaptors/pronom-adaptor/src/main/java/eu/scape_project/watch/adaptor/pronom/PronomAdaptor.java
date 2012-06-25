@@ -14,6 +14,10 @@ import eu.scape_project.watch.utils.exceptions.PluginException;
 
 public class PronomAdaptor implements AdaptorPluginInterface {
 
+  private static final String HOST = "http://test.linkeddatapronom.nationalarchives.gov.uk";
+
+  public static final String ENDPOINT = HOST + "/sparql/endpoint.php";
+
   @Override
   public void init() throws PluginException {
     // TODO Auto-generated method stub

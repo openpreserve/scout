@@ -10,12 +10,7 @@ public class PronomClient {
 
   private PronomServiceCommunicator communicator;
 
-  public PronomClient(final String u) throws MalformedURLException {
-    this.communicator = new PronomServiceCommunicator(u + "/sparql/endpoint.php");
-  }
-
-  public PronomClient(final String u, final PronomServiceCommunicator comm) throws MalformedURLException {
-    this(u);
+  public PronomClient(final PronomServiceCommunicator comm) throws MalformedURLException {
     this.communicator = comm;
   }
 
@@ -31,7 +26,7 @@ public class PronomClient {
     IOException {
     final String format = fmt.name().toLowerCase();
     final String query = this.buildQuery(s, l, o);
-    
+
     return this.communicator.submitQuery(query, format);
   }
 

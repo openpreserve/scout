@@ -202,9 +202,9 @@ public class PropertyValue extends RdfBean<PropertyValue> {
       value = uriValue;
     } else if (dateValue != null) {
       value = dateValue;
-    } else if (stringListValue != null) {
+    } else if (stringListValue != null && !stringListValue.isEmpty()) {
       value = stringListValue;
-    } else if (stringDictionaryValue != null) {
+    } else if (stringDictionaryValue != null && !stringDictionaryValue.isEmpty()) {
       value = stringDictionaryValue;
     } else {
       value = null;

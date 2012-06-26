@@ -51,11 +51,20 @@ public class ConfigUtils {
    */
   private static final String SYSTEM_PROPERTIES = "/etc/watchconfig";
 
+  /**
+   * The identifier of the default config provided with the system.
+   */
   public static final int DEFAULT_CONFIG = 0x01;
 
+  /**
+   * The identifier of the user config.
+   */
   public static final int USER_CONFIG = 0x02;
 
-  public static final int SYSTEM_CONFIG = 0x04;
+  /**
+   * The identifier of the system wide config.
+   */
+  public static final int SYSTEM_CONFIG = 0x03;
 
   /**
    * The loaded properties.
@@ -184,16 +193,16 @@ public class ConfigUtils {
    * If the passed parameter is not one of the possible options, then the
    * default configuration is loaded.
    * 
-   * @param config
+   * @param cnf
    *          the desired configuration.
    * 
    * @see ConfigUtils#DEFAULT_CONFIG
    * @see ConfigUtils#USER_CONFIG
    * @see ConfigUtils#SYSTEM_CONFIG
    */
-  public void override(int config) {
-    LOGGER.info("Overriding configs with: {}", config);
-    switch (config) {
+  public void override(final int cnf) {
+    LOGGER.info("Overriding configs with: {}", cnf);
+    switch (cnf) {
       case DEFAULT_CONFIG:
         this.loadDefaultConfig();
         break;

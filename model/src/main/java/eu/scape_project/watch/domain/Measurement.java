@@ -75,9 +75,10 @@ public class Measurement extends RdfBean<Measurement> {
    * @param timestamp
    *          The moment in time of the measurement
    */
-  public Measurement(final PropertyValue pv, final Date timestamp) {
+  public Measurement(final PropertyValue pv, final Date timestamp, final SourceAdaptor adaptor) {
     this.propertyValue = pv;
     this.timestamp = timestamp;
+    this.adaptor = adaptor;
   }
 
   /**
@@ -112,6 +113,14 @@ public class Measurement extends RdfBean<Measurement> {
 
   public void setTimestamp(final Date timestamp) {
     this.timestamp = timestamp;
+  }
+
+  public SourceAdaptor getAdaptor() {
+    return adaptor;
+  }
+
+  public void setAdaptor(final SourceAdaptor adaptor) {
+    this.adaptor = adaptor;
   }
 
   @Override

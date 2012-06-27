@@ -1,6 +1,7 @@
 package eu.scape_project.watch.domain;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -73,11 +74,25 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
   private String version;
 
   /**
-   * The source from which this adaptor fetchs information from.
+   * The source from which this adaptor fetches information from.
    */
   @XmlElement
   @JsonProperty
   private Source source;
+
+  /**
+   * The entity types that are gathered.
+   */
+  @XmlElement
+  @JsonProperty
+  private List<EntityType> types;
+
+  /**
+   * The properties that are gathered.
+   */
+  @XmlElement
+  @JsonProperty
+  private List<Property> properties;
 
   /**
    * The source adaptor configuration.
@@ -85,7 +100,7 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
   @XmlElement(name = "entry")
   @XmlElementWrapper(name = "parameters")
   @JsonProperty
-  private Collection<Entry> configuration;
+  private List<DictionaryItem> configuration = new ArrayList<DictionaryItem>();
 
   /**
    * Create a new empty source adaptor.
@@ -103,16 +118,24 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
    * @param version
    *          The version of the adaptor, preferably in the 1.0.1 format.
    * @param source
-   *          The source from which this adaptor fetchs information from.
+   *          The source from which this adaptor fetches information from.
+   * @param types
+   *          The entity types this adaptor creates with the information
+   *          fetched.
+   * @param properties
+   *          The properties this adaptor fills with values with the information
+   *          fetched.
    * @param configuration
    *          The source adaptor configuration
    */
-  public SourceAdaptor(final String name, final String version, final Source source,
-    final Map<String, String> configuration) {
+  public SourceAdaptor(final String name, final String version, final Source source, final List<EntityType> types,
+    final List<Property> properties, final Map<String, String> configuration) {
     super();
     this.name = name;
     this.version = version;
     this.source = source;
+    this.types = types;
+    this.properties = properties;
     this.configuration = ModelUtils.mapToEntryList(configuration);
 
     this.updateId();
@@ -132,6 +155,22 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
 
   public String getVersion() {
     return version;
+  }
+
+  public List<EntityType> getTypes() {
+    return types;
+  }
+
+  public void setTypes(final List<EntityType> types) {
+    this.types = types;
+  }
+
+  public List<Property> getProperties() {
+    return properties;
+  }
+
+  public void setProperties(final List<Property> properties) {
+    this.properties = properties;
   }
 
   /**
@@ -177,7 +216,12 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
+    result = prime * result + ((configuration == null) ? 0 : configuration.hashCode());
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
+    result = prime * result + ((name == null) ? 0 : name.hashCode());
+    result = prime * result + ((properties == null) ? 0 : properties.hashCode());
     result = prime * result + ((source == null) ? 0 : source.hashCode());
+    result = prime * result + ((types == null) ? 0 : types.hashCode());
     result = prime * result + ((version == null) ? 0 : version.hashCode());
     return result;
   }
@@ -194,21 +238,58 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
       return false;
     }
     final SourceAdaptor other = (SourceAdaptor) obj;
-    if (this.source == null) {
+    if (configuration == null) {
+      if (other.configuration != null) {
+        return false;
+      }
+    } else if (!configuration.equals(other.configuration)) {
+      return false;
+    }
+    if (id == null) {
+      if (other.id != null) {
+        return false;
+      }
+    } else if (!id.equals(other.id)) {
+      return false;
+    }
+    if (name == null) {
+      if (other.name != null) {
+        return false;
+      }
+    } else if (!name.equals(other.name)) {
+      return false;
+    }
+    if (properties == null) {
+      if (other.properties != null) {
+        return false;
+      }
+    } else if (!properties.equals(other.properties)) {
+      return false;
+    }
+    if (source == null) {
       if (other.source != null) {
         return false;
       }
-    } else if (!this.source.equals(other.source)) {
+    } else if (!source.equals(other.source)) {
       return false;
     }
-    if (this.version == null) {
+    if (types == null) {
+      if (other.types != null) {
+        return false;
+      }
+    } else if (!types.equals(other.types)) {
+      return false;
+    }
+    if (version == null) {
       if (other.version != null) {
         return false;
       }
-    } else if (!this.version.equals(other.version)) {
+    } else if (!version.equals(other.version)) {
       return false;
     }
     return true;
   }
+
+ 
 
 }

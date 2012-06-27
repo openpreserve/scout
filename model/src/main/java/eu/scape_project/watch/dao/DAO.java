@@ -54,6 +54,16 @@ public final class DAO {
   public static final MeasurementDAO MEASUREMENT = new MeasurementDAO();
 
   /**
+   * {@link Source} Data Access Object.
+   */
+  public static final SourceDAO SOURCE = new SourceDAO();
+
+  /**
+   * {@link SourceAdaptor} Data Access Object.
+   */
+  public static final SourceAdaptorDAO SOURCE_ADAPTOR = new SourceAdaptorDAO();
+
+  /**
    * {@link AsyncRequest} Data Access Object.
    */
   public static final AsyncRequestDAO ASYNC_REQUEST = new AsyncRequestDAO();

@@ -29,9 +29,9 @@ import com.sun.jersey.test.framework.WebAppDescriptor;
 
 import eu.scape_project.watch.dao.PropertyDAO;
 import eu.scape_project.watch.domain.AsyncRequest;
+import eu.scape_project.watch.domain.DictionaryItem;
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.EntityType;
-import eu.scape_project.watch.domain.Entry;
 import eu.scape_project.watch.domain.Notification;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
@@ -519,7 +519,7 @@ public class CoreRestTest extends JerseyTest {
       + ". ?s watch:property watch-Property:" + PropertyDAO.getPropertyRDFId(typeName, propertyName)
       + " . ?s watch:value ?v . FILTER (?v >= 100000)", RequestTarget.PROPERTY_VALUE, Arrays.asList(entitytype),
       Arrays.asList(property), Arrays.asList(entity), 60000L);
-    final Notification n = new Notification("log", Arrays.asList(new Entry("recepients",
+    final Notification n = new Notification("log", Arrays.asList(new DictionaryItem("recepients",
       "test@scape-project.eu")));
     final Trigger trigger = new Trigger(q, Arrays.asList(n), null);
     final AsyncRequest areq = new AsyncRequest(Arrays.asList(trigger));

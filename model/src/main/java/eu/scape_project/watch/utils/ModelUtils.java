@@ -3,9 +3,10 @@ package eu.scape_project.watch.utils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import eu.scape_project.watch.domain.Entry;
+import eu.scape_project.watch.domain.DictionaryItem;
 
 /**
  * Help methods for the data model.
@@ -29,12 +30,12 @@ public final class ModelUtils {
    *          The Map.
    * @return A list of entries.
    */
-  public static Collection<Entry> mapToEntryList(final Map<String, String> map) {
-    final Collection<Entry> list = new ArrayList<Entry>();
+  public static List<DictionaryItem> mapToEntryList(final Map<String, String> map) {
+    final List<DictionaryItem> list = new ArrayList<DictionaryItem>();
 
     if (map != null) {
       for (Map.Entry<String, String> mapEntry : map.entrySet()) {
-        list.add(new Entry(mapEntry.getKey(), mapEntry.getValue()));
+        list.add(new DictionaryItem(mapEntry.getKey(), mapEntry.getValue()));
       }
     }
 
@@ -48,11 +49,11 @@ public final class ModelUtils {
    *          the list of entries.
    * @return the map.
    */
-  public static Map<String, String> entryListToMap(final Collection<Entry> entryList) {
+  public static Map<String, String> entryListToMap(final Collection<DictionaryItem> entryList) {
     final Map<String, String> map = new HashMap<String, String>();
 
     if (entryList != null) {
-      for (Entry entry : entryList) {
+      for (DictionaryItem entry : entryList) {
         map.put(entry.getKey(), entry.getValue());
       }
     }

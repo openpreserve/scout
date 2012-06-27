@@ -93,7 +93,7 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
       sparql.append(orderBy);
     }
 
-    // LOG.info("SPARQL:\n {}", sparql);
+    LOG.trace("SPARQL:\n {}", sparql);
 
     final LinkedList<T> results = Sparql.exec(Jenabean.instance().reader(), typeClass, sparql.toString(),
       new QuerySolutionMap(), start, max);
@@ -145,7 +145,7 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
     sparql.append(String.format("SELECT (count(?s) as ?count) WHERE { ?s %1$s %2$s . %3$s}", KBUtils.RDF_TYPE_REL,
       classType, bindings));
 
-    LOG.info("SPARQL:\n {}", sparql);
+    LOG.trace("SPARQL:\n {}", sparql);
 
     final Query query = QueryFactory.create(sparql.toString());
     final QueryExecution qexec = QueryExecutionFactory.create(query, Jenabean.instance().model());

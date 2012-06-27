@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import eu.scape_project.watch.utils.KBUtils;
+
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
@@ -110,5 +111,12 @@ public class Source extends RdfBean<Source> {
     }
     return true;
   }
+
+  @Override
+  public String toString() {
+    return "Source [name=" + name + ", description=" + description + "]";
+  }
+  
+  
 
 }

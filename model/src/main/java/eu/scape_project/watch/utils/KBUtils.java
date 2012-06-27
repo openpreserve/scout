@@ -1,27 +1,5 @@
 package eu.scape_project.watch.utils;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.Statement;
-import com.hp.hpl.jena.rdf.model.StmtIterator;
-import com.hp.hpl.jena.tdb.TDB;
-import com.hp.hpl.jena.tdb.TDBFactory;
-import eu.scape_project.watch.dao.DAO;
-import eu.scape_project.watch.domain.AsyncRequest;
-import eu.scape_project.watch.domain.DataType;
-import eu.scape_project.watch.domain.DictionaryItem;
-import eu.scape_project.watch.domain.Entity;
-import eu.scape_project.watch.domain.EntityType;
-import eu.scape_project.watch.domain.Notification;
-import eu.scape_project.watch.domain.Property;
-import eu.scape_project.watch.domain.PropertyValue;
-import eu.scape_project.watch.domain.Question;
-import eu.scape_project.watch.domain.RequestTarget;
-import eu.scape_project.watch.domain.Trigger;
-import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeException;
-import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,8 +11,34 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import thewebsemantic.binding.Jenabean;
 import thewebsemantic.binding.RdfBean;
+
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
+import com.hp.hpl.jena.tdb.TDB;
+import com.hp.hpl.jena.tdb.TDBFactory;
+
+import eu.scape_project.watch.dao.DAO;
+import eu.scape_project.watch.domain.AsyncRequest;
+import eu.scape_project.watch.domain.DataType;
+import eu.scape_project.watch.domain.DictionaryItem;
+import eu.scape_project.watch.domain.Entity;
+import eu.scape_project.watch.domain.EntityType;
+import eu.scape_project.watch.domain.Notification;
+import eu.scape_project.watch.domain.Property;
+import eu.scape_project.watch.domain.PropertyValue;
+import eu.scape_project.watch.domain.Question;
+import eu.scape_project.watch.domain.RequestTarget;
+import eu.scape_project.watch.domain.Source;
+import eu.scape_project.watch.domain.SourceAdaptor;
+import eu.scape_project.watch.domain.Trigger;
+import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeException;
+import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
 
 /**
  * A utility class that holds some constants for the RDF schema and provides
@@ -232,11 +236,31 @@ public final class KBUtils {
   public static final String WATCH_PROPERTY_VALUE_PREFIX_DECL = getResourcePrefixDecl(PropertyValue.class);
 
   /**
+   * {@link Source} prefix to use in SPARQL queries.
+   */
+  public static final String WATCH_SOURCE_PREFIX = getResourcePrefix(Source.class);
+
+  /**
+   * {@link Source} prefix declaration to use in SPARQL queries.
+   */
+  public static final String WATCH_SOURCE_PREFIX_DECL = getResourcePrefixDecl(Source.class);
+
+  /**
+   * {@link SourceAdaptor} prefix to use in SPARQL queries.
+   */
+  public static final String WATCH_SOURCE_ADAPTOR_PREFIX = getResourcePrefix(SourceAdaptor.class);
+
+  /**
+   * {@link Source} prefix declaration to use in SPARQL queries.
+   */
+  public static final String WATCH_SOURCE_ADAPTOR_PREFIX_DECL = getResourcePrefixDecl(SourceAdaptor.class);
+
+  /**
    * List of all defined prefixes declarations to help creating SPARQL queries.
    */
   public static final String PREFIXES_DECL = XSD_PREFIX_DECL + RDF_PREFIX_DECL + WATCH_PREFIX_DECL
     + WATCH_ENTITY_TYPE_PREFIX_DECL + WATCH_PROPERTY_PREFIX_DECL + WATCH_ENTITY_PREFIX_DECL
-    + WATCH_PROPERTY_VALUE_PREFIX_DECL;
+    + WATCH_PROPERTY_VALUE_PREFIX_DECL + WATCH_SOURCE_PREFIX_DECL + WATCH_SOURCE_ADAPTOR_PREFIX_DECL;
 
   /**
    * String separator for IDs. Not using '/' because it does not behave well

@@ -1,25 +1,20 @@
 package eu.scape_project.watch.dao;
 
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+
+import com.hp.hpl.jena.datatypes.xsd.XSDDateTime;
+
 import eu.scape_project.watch.domain.DataType;
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.domain.Measurement;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
+import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.utils.KBUtils;
-
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-
-import javax.xml.bind.DatatypeConverter;
-
-import thewebsemantic.Sparql;
-import thewebsemantic.binding.Jenabean;
-
-import com.hp.hpl.jena.datatypes.xsd.XSDDateTime;
-import com.hp.hpl.jena.query.QuerySolutionMap;
 
 /**
  * {@link PropertyValue} Data Access Object.
@@ -156,9 +151,12 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
    *          The index of the first item to retrieve
    * @param max
    *          The maximum number of items to retrieve
+   * @param orderBy
+   *          Inject a order by clause, arguments of the ORDER BY clause, e.g.
+   *          DESC(?s). If null then no ORDER BY clause is added.
    * @return A list of {@link PropertyValue} filtered by the above constraints
    */
-  public List<PropertyValue> query(final String bindings, final int start, final int max, String orderBy) {
+  public List<PropertyValue> query(final String bindings, final int start, final int max, final String orderBy) {
     return super.query(PropertyValue.class, bindings, start, max, orderBy);
   }
 
@@ -237,16 +235,18 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
   /**
    * Save the value of a property, creating a new value if it doesn't exist and
    * linking to a measurement with current date and time. If the value already
-   * exists, than only a new measurement will be created.
+   * exists, than only a new measurement will be created. The measurement must
+   * define the adaptor that took it.
    * 
    * @param pv
    *          The value of the property to save
+   * @param adaptor
+   *          The adaptor that took the measurement of this property.
    * 
    * @return The final {@link PropertyValue}
    */
-  @Override
-  public PropertyValue save(final PropertyValue pv) {
-    return save(pv, new Date());
+  public PropertyValue save(final PropertyValue pv, final SourceAdaptor adaptor) {
+    return save(pv, new Date(), adaptor);
   }
 
   /**
@@ -258,9 +258,11 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
    *          The value of the property to save
    * @param asOfDate
    *          The data and time to set on the measurement
+   * @param adaptor
+   *          The adaptor that took the measurement of the property.
    * @return The final {@link PropertyValue}
    */
-  public synchronized PropertyValue save(final PropertyValue pv, final Date asOfDate) {
+  public synchronized PropertyValue save(final PropertyValue pv, final Date asOfDate, final SourceAdaptor adaptor) {
     // check if exists a property value with that value
     final Entity entity = pv.getEntity();
     final Property property = pv.getProperty();
@@ -274,12 +276,12 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
       final int version = getNextVersionNumber(entity, property);
       pv.setVersion(version);
       pv.save();
-      final Measurement measurement = new Measurement(pv, asOfDate);
+      final Measurement measurement = new Measurement(pv, asOfDate, adaptor);
       measurement.save();
     } else {
       // tag existing property value with a new measurement.
       final PropertyValue existingPV = existingPVs.get(0);
-      final Measurement measurement = new Measurement(existingPV, asOfDate);
+      final Measurement measurement = new Measurement(existingPV, asOfDate, adaptor);
       measurement.save();
     }
 

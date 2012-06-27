@@ -6,15 +6,15 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import eu.scape_project.watch.domain.DataType;
-import eu.scape_project.watch.domain.Entry;
+import eu.scape_project.watch.domain.DictionaryItem;
 import eu.scape_project.watch.domain.Notification;
 import eu.scape_project.watch.interfaces.NotificationAdaptorInterface;
 import eu.scape_project.watch.interfaces.PluginType;
 import eu.scape_project.watch.utils.exceptions.PluginException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Dummy adaptor that simply writes every notification to log.
@@ -61,7 +61,7 @@ public class LogNotificationAdaptor implements NotificationAdaptorInterface {
     message.append("NOTIFICATION LOG ");
     message.append("{");
     boolean first = true;
-    for (final Entry entry : notification.getParameters()) {
+    for (final DictionaryItem entry : notification.getParameters()) {
       if (first) {
         first = false;
       } else {

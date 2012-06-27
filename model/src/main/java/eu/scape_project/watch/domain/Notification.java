@@ -1,7 +1,7 @@
 package eu.scape_project.watch.domain;
 
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -20,6 +20,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
+
 
 /**
  * A Notification describes what should happen when a {@link Trigger} is fired.
@@ -53,7 +54,7 @@ public class Notification extends RdfBean<Notification> {
   @XmlElement(name = "entry")
   @XmlElementWrapper(name = "parameters")
   @JsonProperty
-  private Collection<Entry> parameters;
+  private List<DictionaryItem> parameters;
 
   /**
    * Create a new empty notification.
@@ -71,7 +72,7 @@ public class Notification extends RdfBean<Notification> {
    * @param parameters
    *          The notification parameters, e.g. email recipients, subject, etc.
    */
-  public Notification(final String type, final Collection<Entry> parameters) {
+  public Notification(final String type, final List<DictionaryItem> parameters) {
     this();
     this.type = type;
     this.parameters = parameters;
@@ -110,7 +111,7 @@ public class Notification extends RdfBean<Notification> {
     this.type = type;
   }
 
-  public Collection<Entry> getParameters() {
+  public List<DictionaryItem> getParameters() {
     return parameters;
   }
 
@@ -118,7 +119,7 @@ public class Notification extends RdfBean<Notification> {
     return ModelUtils.entryListToMap(this.getParameters());
   }
 
-  public void setParameters(final Collection<Entry> parameters) {
+  public void setParameters(final List<DictionaryItem> parameters) {
     this.parameters = parameters;
   }
 
@@ -137,7 +138,7 @@ public class Notification extends RdfBean<Notification> {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
-    for (Entry entry : this.parameters) {
+    for (DictionaryItem entry : this.parameters) {
       result = prime * result + ((entry == null) ? 0 : entry.hashCode());
     }
 

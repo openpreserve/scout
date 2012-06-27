@@ -60,7 +60,7 @@ public class JSONResultParser {
         final String name = vars.getString(j);
         final PropertyValue value = this.getPropertyValue(binding, name, formattype);
         if (value != null) {
-          LOG.trace("value for property '{}' parsed successfully: ", value.getProperty().getName());
+          LOG.trace("value for property '{}' parsed successfully: '{}'", value.getProperty().getName(), value.getValue());
           value.setEntity(format);
           result.add(value);
         }

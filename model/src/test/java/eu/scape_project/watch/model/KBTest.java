@@ -1,10 +1,29 @@
 package eu.scape_project.watch.model;
 
+import java.io.File;
+import java.net.URI;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
+import junit.framework.Assert;
+
+import org.apache.commons.io.FileUtils;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import thewebsemantic.binding.Jenabean;
 import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.dao.DOListener;
 import eu.scape_project.watch.dao.EntityDAO;
 import eu.scape_project.watch.dao.PropertyDAO;
-import eu.scape_project.watch.dao.PropertyValueDAO;
 import eu.scape_project.watch.domain.AsyncRequest;
 import eu.scape_project.watch.domain.DataType;
 import eu.scape_project.watch.domain.DictionaryItem;
@@ -16,29 +35,12 @@ import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.domain.Question;
 import eu.scape_project.watch.domain.RequestTarget;
+import eu.scape_project.watch.domain.Source;
+import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.domain.Trigger;
 import eu.scape_project.watch.utils.KBUtils;
 import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeException;
 import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
-
-import java.io.File;
-import java.net.URI;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-
-import junit.framework.Assert;
-import org.apache.commons.io.FileUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.mockito.Mockito;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import thewebsemantic.binding.Jenabean;
 
 /**
  * 
@@ -753,15 +755,21 @@ public class KBTest {
     final PropertyValue pv1 = new PropertyValue(entity, property, 1);
     final PropertyValue pv2 = new PropertyValue(entity, property, 2);
 
+    final Source source = new Source("testsource", "A test source");
+    final SourceAdaptor adaptor = new SourceAdaptor("testadaptor", "0.0.1", source, Arrays.asList(type),
+      Arrays.asList(property), new HashMap<String, String>());
+
     type.save();
     entity.save();
     property.save();
+    source.save();
+    adaptor.save();
 
     final Calendar c = Calendar.getInstance();
     c.set(2004, 1, 1);
-    DAO.PROPERTY_VALUE.save(pv1, c.getTime());
+    DAO.PROPERTY_VALUE.save(pv1, c.getTime(), adaptor);
     c.set(2005, 1, 1);
-    DAO.PROPERTY_VALUE.save(pv2, c.getTime());
+    DAO.PROPERTY_VALUE.save(pv2, c.getTime(), adaptor);
 
     final PropertyValue lastValue = DAO.PROPERTY_VALUE.find(entity.getName(), type.getName(), property.getName(),
       new Date());
@@ -776,9 +784,12 @@ public class KBTest {
     type.delete();
     entity.delete();
     property.delete();
+    source.delete();
+    adaptor.delete();
 
     DAO.delete(pv1, pv2);
 
+    // Test measurements cleanup
     Assert.assertEquals(0, DAO.MEASUREMENT.count(pv1));
     Assert.assertEquals(0, DAO.MEASUREMENT.count(pv2));
   }

@@ -531,6 +531,105 @@ public class KBTest {
   }
 
   /**
+   * Test if data type value setting exceptions behave properly.
+   * 
+   * @throws InvalidJavaClassForDataTypeException
+   *           Unexpected exception when setting a value which java class is not
+   *           compatible with defined property data type.
+   * @throws UnsupportedDataTypeException
+   *           Unexpected exception of unsupported data type.
+   */
+  @Test
+  public void testPropertyValueDataTypeExceptions() throws InvalidJavaClassForDataTypeException,
+    UnsupportedDataTypeException {
+
+    // Null property
+    try {
+      new PropertyValue(null, null, null);
+      Assert.fail();
+    } catch (final UnsupportedDataTypeException e) {
+      Assert.assertNull(e.getDatatype());
+    }
+
+    // data
+    final String typeName = "typename";
+    final String typeDescription = "typedescription";
+
+    final EntityType type = new EntityType(typeName, typeDescription);
+
+    final String entityName = "entityname";
+    final Entity entity = new Entity(type, entityName);
+
+    Property property;
+
+    // java class not compatible with data type
+    property = new Property(type, "property", "generic property", DataType.STRING);
+    try {
+      new PropertyValue(entity, property, 0);
+      Assert.fail();
+    } catch (final InvalidJavaClassForDataTypeException e) {
+
+    }
+
+    property = new Property(type, "property", "generic property", DataType.INTEGER);
+    try {
+      new PropertyValue(entity, property, "0");
+      Assert.fail();
+    } catch (final InvalidJavaClassForDataTypeException e) {
+
+    }
+
+    property = new Property(type, "property", "generic property", DataType.FLOAT);
+    try {
+      new PropertyValue(entity, property, "0");
+      Assert.fail();
+    } catch (final InvalidJavaClassForDataTypeException e) {
+
+    }
+
+    property = new Property(type, "property", "generic property", DataType.DOUBLE);
+    try {
+      new PropertyValue(entity, property, "0");
+      Assert.fail();
+    } catch (final InvalidJavaClassForDataTypeException e) {
+
+    }
+
+    property = new Property(type, "property", "generic property", DataType.URI);
+    try {
+      new PropertyValue(entity, property, "0");
+      Assert.fail();
+    } catch (final InvalidJavaClassForDataTypeException e) {
+
+    }
+
+    property = new Property(type, "property", "generic property", DataType.DATE);
+    try {
+      new PropertyValue(entity, property, "0");
+      Assert.fail();
+    } catch (final InvalidJavaClassForDataTypeException e) {
+
+    }
+
+    property = new Property(type, "property", "generic property", DataType.STRING_LIST);
+    try {
+      new PropertyValue(entity, property, "0");
+      Assert.fail();
+    } catch (final InvalidJavaClassForDataTypeException e) {
+
+    }
+
+    property = new Property(type, "property", "generic property", DataType.STRING_DICTIONARY);
+    try {
+      new PropertyValue(entity, property, "0");
+      Assert.fail();
+    } catch (final InvalidJavaClassForDataTypeException e) {
+
+    }
+
+  }
+
+  /**
    * Test PropertyValue CRUD operations.
    * 
    * @throws InvalidJavaClassForDataTypeException

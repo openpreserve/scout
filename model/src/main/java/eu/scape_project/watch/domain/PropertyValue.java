@@ -188,7 +188,7 @@ public class PropertyValue extends RdfBean<PropertyValue> {
    */
   @JsonProperty("value")
   public Object getValue() {
-    Object value;
+    Object value = null;
 
     if (stringValue != null) {
       value = stringValue;
@@ -206,8 +206,6 @@ public class PropertyValue extends RdfBean<PropertyValue> {
       value = stringListValue;
     } else if (stringDictionaryValue != null && !stringDictionaryValue.isEmpty()) {
       value = stringDictionaryValue;
-    } else {
-      value = null;
     }
 
     return value;
@@ -227,8 +225,7 @@ public class PropertyValue extends RdfBean<PropertyValue> {
    */
   @SuppressWarnings("unchecked")
   public <T> T getValue(final Class<T> valueClass) {
-    final Object value = getValue();
-    return (T) value;
+    return (T) getValue();
   }
 
   /**
@@ -252,56 +249,67 @@ public class PropertyValue extends RdfBean<PropertyValue> {
 
     final DataType datatype = property.getDatatype();
 
-    if (datatype.equals(DataType.STRING)) {
-      if (value instanceof String) {
-        stringValue = (String) value;
-      } else {
-        throw new InvalidJavaClassForDataTypeException(value, datatype);
-      }
-    } else if (datatype.equals(DataType.INTEGER)) {
-      if (value instanceof Integer) {
-        integerValue = (Integer) value;
-      } else {
-        throw new InvalidJavaClassForDataTypeException(value, datatype);
-      }
-    } else if (datatype.equals(DataType.FLOAT)) {
-      if (value instanceof Float) {
-        floatValue = (Float) value;
-      } else {
-        throw new InvalidJavaClassForDataTypeException(value, datatype);
-      }
-    } else if (datatype.equals(DataType.DOUBLE)) {
-      if (value instanceof Double) {
-        doubleValue = (Double) value;
-      } else {
-        throw new InvalidJavaClassForDataTypeException(value, datatype);
-      }
-    } else if (datatype.equals(DataType.URI)) {
-      if (value instanceof URI) {
-        uriValue = (URI) value;
-      } else {
-        throw new InvalidJavaClassForDataTypeException(value, datatype);
-      }
-    } else if (datatype.equals(DataType.DATE)) {
-      if (value instanceof Date) {
-        dateValue = (Date) value;
-      } else {
-        throw new InvalidJavaClassForDataTypeException(value, datatype);
-      }
-    } else if (datatype.equals(DataType.STRING_LIST)) {
-      if (value instanceof List) {
-        stringListValue = (List<String>) value;
-      } else {
-        throw new InvalidJavaClassForDataTypeException(value, datatype);
-      }
-    } else if (datatype.equals(DataType.STRING_DICTIONARY)) {
-      if (value instanceof List) {
-        stringDictionaryValue = (List<DictionaryItem>) value;
-      } else {
-        throw new InvalidJavaClassForDataTypeException(value, datatype);
-      }
-    } else {
-      throw new UnsupportedDataTypeException(datatype);
+    switch (datatype) {
+      case STRING:
+        if (value instanceof String) {
+          stringValue = (String) value;
+        } else {
+          throw new InvalidJavaClassForDataTypeException(value, datatype);
+        }
+        break;
+
+      case INTEGER:
+        if (value instanceof Integer) {
+          integerValue = (Integer) value;
+        } else {
+          throw new InvalidJavaClassForDataTypeException(value, datatype);
+        }
+        break;
+      case FLOAT:
+        if (value instanceof Float) {
+          floatValue = (Float) value;
+        } else {
+          throw new InvalidJavaClassForDataTypeException(value, datatype);
+        }
+        break;
+      case DOUBLE:
+        if (value instanceof Double) {
+          doubleValue = (Double) value;
+        } else {
+          throw new InvalidJavaClassForDataTypeException(value, datatype);
+        }
+        break;
+      case URI:
+        if (value instanceof URI) {
+          uriValue = (URI) value;
+        } else {
+          throw new InvalidJavaClassForDataTypeException(value, datatype);
+        }
+        break;
+      case DATE:
+        if (value instanceof Date) {
+          dateValue = (Date) value;
+        } else {
+          throw new InvalidJavaClassForDataTypeException(value, datatype);
+        }
+        break;
+      case STRING_LIST:
+        if (value instanceof List) {
+          stringListValue = (List<String>) value;
+        } else {
+          throw new InvalidJavaClassForDataTypeException(value, datatype);
+        }
+        break;
+      case STRING_DICTIONARY:
+        if (value instanceof List) {
+          stringDictionaryValue = (List<DictionaryItem>) value;
+        } else {
+          throw new InvalidJavaClassForDataTypeException(value, datatype);
+        }
+        break;
+
+      default:
+        throw new UnsupportedDataTypeException(datatype);
     }
   }
 

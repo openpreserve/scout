@@ -83,21 +83,18 @@ public class ApiAuthorizationFilterImpl implements ApiAuthorizationFilter {
   }
 
   public boolean authorizeResource(String apiPath, HttpHeaders headers, UriInfo uriInfo) {
-    String apiKey = uriInfo.getQueryParameters().getFirst(API_KEY);
+    final String apiKey = uriInfo.getQueryParameters().getFirst(API_KEY);
     if (isPathSecure(apiPath, true)) {
-      if (securekeyId.equals(apiKey)) {
-        return true;
-      } else {
-        return false;
-      }
+      return securekeyId.equals(apiKey); 
     } else {
       return true;
     }
   }
 
   private boolean isPathSecure(String apiPath, boolean isResource) {
-    if (!isFilterInitialized)
+    if (!isFilterInitialized) {
       initialize();
+    }
     if (isResource) {
       if (classSecurityAnotations.keySet().contains(apiPath)) {
         return classSecurityAnotations.get(apiPath);

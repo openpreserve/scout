@@ -172,22 +172,9 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
    *          The object to create or update.
    * @return The created or updated object, the same as the input.
    */
-  public T save(final T object) {
+  protected T saveImpl(final T object) {
     object.save();
     return object;
-  }
-
-  /**
-   * Save several objects at the same time, calling {@link #save(RdfBean)} on
-   * each.
-   * 
-   * @param objects
-   *          The objects to save
-   */
-  public void save(final T... objects) {
-    for (T object : objects) {
-      this.save(object);
-    }
   }
 
   /**
@@ -201,18 +188,4 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
     object.delete();
     return object;
   }
-
-  /**
-   * Delete several objects at the same time, calling {@link #delete(RdfBean)}
-   * on each.
-   * 
-   * @param objects
-   *          The objects to delete
-   */
-  public void delete(final T... objects) {
-    for (T object : objects) {
-      this.delete(object);
-    }
-  }
-
 }

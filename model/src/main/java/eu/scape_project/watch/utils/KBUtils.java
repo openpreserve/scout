@@ -303,7 +303,7 @@ public final class KBUtils {
           oinfo = "'" + o.asLiteral() + "'";
         }
         if (sinfo != null && pinfo != null && oinfo != null) {
-          LOG.debug("({}, {}, {})", new Object[] {sinfo, pinfo, oinfo});
+          // LOG.debug("({}, {}, {})", new Object[] {sinfo, pinfo, oinfo});
           System.out.println(String.format("(%1$s,%2$s,%3$s)", sinfo, pinfo, oinfo));
         }
       }
@@ -394,6 +394,15 @@ public final class KBUtils {
     // save entities
     DAO.save(pdf17Format, tiffFormat, jpeg2000Format, imageMagickTool, jpeg, jpeg2000, png, doc, docx, bmp, gif, cp0);
 
+    // sources and adaptors
+    final Source source = new Source("testsource", "A test source");
+    final SourceAdaptor adaptor = new SourceAdaptor("testadaptor", "0.0.1", source, Arrays.asList(tools, formats,
+      profile),
+      Arrays.asList(formatPUID, formatMimetype, toolVersion, inputFormats, outputFormats, formatDistribution),
+      new HashMap<String, String>());
+    DAO.save(source);
+    DAO.save(adaptor);
+
     // property value construction also binds to entity
     try {
       final PropertyValue pdfPUID = new PropertyValue(pdf17Format, formatPUID, "fmt/276");
@@ -444,9 +453,9 @@ public final class KBUtils {
       final PropertyValue ofr4 = new PropertyValue(imageMagickTool, outputFormats, Arrays.asList(gifPUIDValue));
 
       // save property values
-      DAO.save(imageMagickVersion, pdfPUID, pdfMime, tiffPUID, tiffMime, jpeg2000PUID, jpeg2000Mime, jpegPUID,
-        jpegMime, pngPUID, pngMime, docPUID, docMime, docxMime, bmpPUID, bmpMime, gifPUID, gifMime, ifr, ofr, ifr1,
-        ifr2, ifr3, ifr4, ofr1, ofr2, ofr3, ofr4, distribution);
+      DAO.PROPERTY_VALUE.save(adaptor, imageMagickVersion, pdfPUID, pdfMime, tiffPUID, tiffMime, jpeg2000PUID,
+        jpeg2000Mime, jpegPUID, jpegMime, pngPUID, pngMime, docPUID, docMime, docxMime, bmpPUID, bmpMime, gifPUID,
+        gifMime, ifr, ofr, ifr1, ifr2, ifr3, ifr4, ofr1, ofr2, ofr3, ofr4, distribution);
     } catch (final UnsupportedDataTypeException e) {
       LOG.error("Unsupported data type: " + e.getMessage());
     } catch (final InvalidJavaClassForDataTypeException e) {

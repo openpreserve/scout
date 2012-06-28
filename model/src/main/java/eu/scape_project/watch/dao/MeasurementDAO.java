@@ -4,7 +4,10 @@ import java.util.Date;
 import java.util.List;
 
 import eu.scape_project.watch.domain.Measurement;
+import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
+import eu.scape_project.watch.domain.Source;
+import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.utils.KBUtils;
 
 /**
@@ -14,19 +17,6 @@ import eu.scape_project.watch.utils.KBUtils;
  * 
  */
 public final class MeasurementDAO extends AbstractDO<Measurement> {
-
-  /**
-   * Get the query string for getting all measurements related to a property
-   * value.
-   * 
-   * @param value
-   *          The property value to which all measurements are related.
-   * @return The query string.
-   */
-  private static String getPropertyValueQueryString(final PropertyValue value) {
-    return "?s watch:propertyValue " + KBUtils.WATCH_PROPERTY_VALUE_PREFIX + value.getId();
-  }
-
   /**
    * No other instances other then in {@link DAO}.
    */
@@ -66,22 +56,6 @@ public final class MeasurementDAO extends AbstractDO<Measurement> {
   }
 
   /**
-   * Get all measurements related to a property value.
-   * 
-   * @param value
-   *          The property value from which we want all related measurements.
-   * @param start
-   *          The start index from which the return list should start.
-   * @param max
-   *          The maximum number of items to return.
-   * @return A list of the measurements of this property, filtered by above
-   *         constraints.
-   */
-  public List<Measurement> query(final PropertyValue value, final int start, final int max) {
-    return query(getPropertyValueQueryString(value), start, max);
-  }
-
-  /**
    * Count the results of a query for {@link Measurement}.
    * 
    * @param bindings
@@ -93,14 +67,156 @@ public final class MeasurementDAO extends AbstractDO<Measurement> {
   }
 
   /**
+   * Get the query string for getting all measurements related to a property
+   * value.
+   * 
+   * @param value
+   *          The property value to which all measurements are related.
+   * @return The query string.
+   */
+  private static String getListByPropertyValueQueryString(final PropertyValue value) {
+    return "?s watch:propertyValue " + KBUtils.WATCH_PROPERTY_VALUE_PREFIX + value.getId();
+  }
+
+  /**
+   * Get all measurements related to a property value.
+   * 
+   * @param value
+   *          The property value from which we want all related measurements.
+   * @param start
+   *          The start index from which the return list should start.
+   * @param max
+   *          The maximum number of items to return.
+   * @return A list of the measurements of this property, filtered by above
+   *         constraints.
+   */
+  public List<Measurement> listByPropertyValue(final PropertyValue value, final int start, final int max) {
+    return query(getListByPropertyValueQueryString(value), start, max);
+  }
+
+  /**
    * Count the number of measurements related to a property value.
    * 
    * @param value
    *          The related property value.
    * @return The number of measurements that refer to the given property value.
    */
-  public int count(final PropertyValue value) {
-    return super.count(Measurement.class, getPropertyValueQueryString(value));
+  public int countByPropertyValue(final PropertyValue value) {
+    return count(getListByPropertyValueQueryString(value));
   }
 
+  /**
+   * Get the query string for getting all measurements related to a source
+   * adaptor.
+   * 
+   * @param adaptor
+   *          The source adaptor to which all measurements are related.
+   * @return The query string.
+   */
+  private static String getListByAdaptorQueryString(final SourceAdaptor adaptor) {
+    return "?s watch:adaptor " + KBUtils.WATCH_SOURCE_ADAPTOR_PREFIX + adaptor.getId();
+  }
+
+  /**
+   * Get all measurements related to a source adaptor.
+   * 
+   * @param adaptor
+   *          The source adaptor from which we want all related measurements.
+   * @param start
+   *          The start index from which the return list should start.
+   * @param max
+   *          The maximum number of items to return.
+   * @return A list of the measurements taken by this source adaptor, filtered
+   *         by above constraints.
+   */
+  public List<Measurement> listByAdaptor(final SourceAdaptor adaptor, final int start, final int max) {
+    return query(getListByAdaptorQueryString(adaptor), start, max);
+  }
+
+  /**
+   * Count the number of measurements related to a source adaptor.
+   * 
+   * @param adaptor
+   *          The related source adaptor.
+   * @return The number of measurements taken by a source adaptor.
+   */
+  public int countByAdaptor(final SourceAdaptor adaptor) {
+    return count(getListByAdaptorQueryString(adaptor));
+  }
+
+  /**
+   * Get the query string for getting all measurements related to a source.
+   * 
+   * @param source
+   *          The external source from which all measurements were taken.
+   * @return The query string.
+   */
+  private static String getListBySourceQueryString(final Source source) {
+    return "?s watch:adaptor ?adaptor . ?adaptor watch:source " + KBUtils.WATCH_SOURCE_PREFIX + source.getName();
+  }
+
+  /**
+   * Get all measurements related to a source.
+   * 
+   * @param source
+   *          The source from which we want all related measurements.
+   * @param start
+   *          The start index from which the return list should start.
+   * @param max
+   *          The maximum number of items to return.
+   * @return A list of the measurements taken on this source, filtered by above
+   *         constraints.
+   */
+  public List<Measurement> listBySource(final Source source, final int start, final int max) {
+    return query(getListBySourceQueryString(source), start, max);
+  }
+
+  /**
+   * Count the number of measurements related to a source.
+   * 
+   * @param source
+   *          The related source.
+   * @return The number of measurements taken in a source.
+   */
+  public int countBySource(final Source source) {
+    return count(getListBySourceQueryString(source));
+  }
+
+  /**
+   * Get the query string for getting all measurements related to a property.
+   * 
+   * @param property
+   *          The property which values are all related to the measurements.
+   * @return The query string.
+   */
+  private static String getListByPropertyQueryString(final Property property) {
+    return "?s watch:propertyValue ?value . ?value watch:property " + KBUtils.WATCH_PROPERTY_PREFIX + property.getId();
+  }
+
+  /**
+   * Get all measurements related to a property.
+   * 
+   * @param property
+   *          The property from which we want all related measurements.
+   * @param start
+   *          The start index from which the return list should start.
+   * @param max
+   *          The maximum number of items to return.
+   * @return A list of the measurements of this property, filtered by above
+   *         constraints.
+   */
+  public List<Measurement> listByProperty(final Property property, final int start, final int max) {
+    return query(getListByPropertyQueryString(property), start, max);
+  }
+
+  /**
+   * Count the number of measurements related to a property.
+   * 
+   * @param property
+   *          The related property.
+   * @return The number of measurements that refer to the given property.
+   */
+  public int countByProperty(final Property property) {
+    return count(getListByPropertyQueryString(property));
+  }
 }

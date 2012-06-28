@@ -117,4 +117,15 @@ public final class PropertyDAO extends AbstractDO<Property> {
     return this.query(bindings, start, max);
   }
 
+  /**
+   * Save a property into the knowledge base.
+   * 
+   * @param property
+   *          The property to save.
+   * @return The persisted property object.
+   */
+  public Property save(final Property property) {
+    return super.saveImpl(property);
+  }
+
 }

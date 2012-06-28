@@ -5,6 +5,7 @@ import java.util.List;
 
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.EntityType;
+import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.utils.KBUtils;
 
 import org.apache.commons.lang.StringUtils;
@@ -117,6 +118,17 @@ public final class EntityDAO extends AbstractDO<Entity> {
       bindings = "";
     }
     return this.query(bindings, start, max);
+  }
+
+  /**
+   * Save a entity into the knowledge base.
+   * 
+   * @param entity
+   *          The entity to save.
+   * @return The persisted entity object.
+   */
+  public Entity save(final Entity entity) {
+    return super.saveImpl(entity);
   }
 
 }

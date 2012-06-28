@@ -1,5 +1,6 @@
 package eu.scape_project.watch.dao;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -238,15 +239,36 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
    * exists, than only a new measurement will be created. The measurement must
    * define the adaptor that took it.
    * 
-   * @param pv
-   *          The value of the property to save
    * @param adaptor
    *          The adaptor that took the measurement of this property.
+   * @param pv
+   *          The value of the property to save
+   * 
    * 
    * @return The final {@link PropertyValue}
    */
-  public PropertyValue save(final PropertyValue pv, final SourceAdaptor adaptor) {
-    return save(pv, new Date(), adaptor);
+  public PropertyValue save(final SourceAdaptor adaptor, final PropertyValue pv) {
+    return save(adaptor, new Date(), pv);
+  }
+
+  /**
+   * Save a list of property values, using
+   * {@link #save(SourceAdaptor, PropertyValue)}.
+   * 
+   * @param adaptor
+   *          The adaptor that took the measurement of this property.
+   * @param pvs
+   *          The values of the properties to save
+   * @return A list with the saved {@link PropertyValue}
+   */
+  public List<PropertyValue> save(final SourceAdaptor adaptor, final PropertyValue... pvs) {
+    final List<PropertyValue> ret = new ArrayList<PropertyValue>();
+
+    for (PropertyValue pv : pvs) {
+      ret.add(save(adaptor, pv));
+    }
+
+    return ret;
   }
 
   /**
@@ -262,7 +284,7 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
    *          The adaptor that took the measurement of the property.
    * @return The final {@link PropertyValue}
    */
-  public synchronized PropertyValue save(final PropertyValue pv, final Date asOfDate, final SourceAdaptor adaptor) {
+  public synchronized PropertyValue save(final SourceAdaptor adaptor, final Date asOfDate, final PropertyValue pv) {
     // check if exists a property value with that value
     final Entity entity = pv.getEntity();
     final Property property = pv.getProperty();
@@ -285,7 +307,7 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
       measurement.save();
     }
 
-    return super.save(pv);
+    return super.saveImpl(pv);
   }
 
   /**
@@ -298,10 +320,10 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
   @Override
   public PropertyValue delete(final PropertyValue pv) {
 
-    final int count = DAO.MEASUREMENT.count(pv);
+    final int count = DAO.MEASUREMENT.countByPropertyValue(pv);
 
     // XXX get a complete list may not be scalable
-    final List<Measurement> measurements = DAO.MEASUREMENT.query(pv, 0, count);
+    final List<Measurement> measurements = DAO.MEASUREMENT.listByPropertyValue(pv, 0, count);
 
     for (Measurement measurement : measurements) {
       DAO.MEASUREMENT.delete(measurement);
@@ -380,4 +402,7 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
 
     return ret.toString();
   }
+
+  // TODO list all property values by adaptor
+  // TODO list all property values by source
 }

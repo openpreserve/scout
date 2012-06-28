@@ -90,7 +90,6 @@ public final class AsyncRequestDAO extends AbstractDO<AsyncRequest> {
    *          The async request to save
    * @return The saved async request.
    */
-  @Override
   public AsyncRequest save(final AsyncRequest request) {
     // save triggers
     for (Trigger t : request.getTriggers()) {

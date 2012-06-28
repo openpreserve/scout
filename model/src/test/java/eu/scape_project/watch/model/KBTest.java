@@ -29,6 +29,7 @@ import eu.scape_project.watch.domain.DataType;
 import eu.scape_project.watch.domain.DictionaryItem;
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.EntityType;
+import eu.scape_project.watch.domain.Measurement;
 import eu.scape_project.watch.domain.Notification;
 import eu.scape_project.watch.domain.Plan;
 import eu.scape_project.watch.domain.Property;
@@ -107,7 +108,7 @@ public class KBTest {
     type.setName("tests");
     type.setDescription("Test entities");
 
-    type.save();
+    DAO.save(type);
 
     // List
     final Collection<EntityType> types = Jenabean.instance().reader().load(EntityType.class);
@@ -130,7 +131,7 @@ public class KBTest {
     Assert.assertEquals(1, count);
 
     // DELETE
-    type.delete();
+    DAO.delete(type);
 
     // LIST AGAIN
     final Collection<EntityType> types3 = Jenabean.instance().reader().load(EntityType.class);
@@ -215,8 +216,8 @@ public class KBTest {
 
     final Property property = new Property(type, "property1", "property description");
 
-    type.save();
-    property.save();
+    DAO.save(type);
+    DAO.save(property);
 
     // List
     final Collection<Property> properties = Jenabean.instance().reader().load(Property.class);
@@ -238,8 +239,8 @@ public class KBTest {
     Assert.assertEquals(1, count);
 
     // DELETE
-    property.delete();
-    type.delete();
+    DAO.delete(type);
+    DAO.delete(property);
 
     // LIST AGAIN
     final Collection<Property> properties3 = Jenabean.instance().reader().load(Property.class);
@@ -274,15 +275,15 @@ public class KBTest {
 
     final Property property = new Property(type, "property1", "property description");
 
-    type.save();
-    property.save();
+    DAO.save(type);
+    DAO.save(property);
 
     final Collection<Property> properties1 = DAO.PROPERTY.listWithType(type.getName(), 0, 100);
     Assert.assertTrue(properties1.contains(property));
 
     // DELETE
-    type.delete();
-    property.delete();
+    DAO.delete(type);
+    DAO.delete(property);
   }
 
   /**
@@ -320,8 +321,8 @@ public class KBTest {
 
     final Entity entity = new Entity(type, "entity1");
 
-    type.save();
-    entity.save();
+    DAO.save(type);
+    DAO.save(entity);
 
     // List
     final Collection<Entity> entities = Jenabean.instance().reader().load(Entity.class);
@@ -343,8 +344,8 @@ public class KBTest {
     Assert.assertEquals(1, count);
 
     // DELETE
-    entity.delete();
-    type.delete();
+    DAO.delete(type);
+    DAO.delete(entity);
 
     // LIST AGAIN
     final Collection<Entity> entities3 = Jenabean.instance().reader().load(Entity.class);
@@ -376,8 +377,8 @@ public class KBTest {
 
     final Entity entity = new Entity(type, "entity1");
 
-    type.save();
-    entity.save();
+    DAO.save(type);
+    DAO.save(entity);
 
     final Collection<Entity> entities1 = DAO.ENTITY.listWithType(type.getName(), 0, 100);
     Assert.assertTrue(entities1.contains(entity));
@@ -386,8 +387,8 @@ public class KBTest {
     Assert.assertTrue(entities2.contains(entity));
 
     // DELETE
-    type.delete();
-    entity.delete();
+    DAO.delete(type);
+    DAO.delete(entity);
   }
 
   /**
@@ -466,13 +467,22 @@ public class KBTest {
     final PropertyValue stringDictionaryPropertyValue1 = new PropertyValue(entity, stringDictionaryProperty,
       Arrays.asList(new DictionaryItem("key1", "value1"), new DictionaryItem("key2", "value2")));
 
-    type.save();
-    entity.save();
-    DAO.save(stringProperty, integerProperty, /* longProperty, */floatProperty, doubleProperty, dateProperty,
-      uriProperty, stringListProperty, stringDictionaryProperty);
-    DAO.save(stringPropertyValue1, integerPropertyValue1, /* longPropertyValue1, */floatPropertyValue1,
+    final Source source = new Source("testsource", "A test source");
+    final SourceAdaptor adaptor = new SourceAdaptor("testadaptor", "0.0.1", source, Arrays.asList(type), Arrays.asList(
+      stringProperty, integerProperty, floatProperty, doubleProperty, dateProperty, uriProperty, stringListProperty,
+      stringDictionaryProperty), new HashMap<String, String>());
+
+    DAO.save(type);
+    DAO.save(entity);
+    DAO.save(source);
+    DAO.save(adaptor);
+    DAO.save(stringProperty, integerProperty, floatProperty, doubleProperty, dateProperty, uriProperty,
+      stringListProperty, stringDictionaryProperty);
+    DAO.PROPERTY_VALUE.save(adaptor, stringPropertyValue1, integerPropertyValue1, floatPropertyValue1,
       doublePropertyValue1, datePropertyValue1, uriPropertyValue1, stringListPropertyValue1,
       stringDictionaryPropertyValue1);
+
+    KBUtils.printStatements();
 
     // TESTING
     final PropertyValue stringPropertyValue2 = DAO.PROPERTY_VALUE.find(entity.getName(), type.getName(),
@@ -524,8 +534,8 @@ public class KBTest {
     KBUtils.printStatements();
 
     // CLEAN UP
-    type.delete();
-    entity.delete();
+    DAO.delete(type);
+    DAO.delete(entity);
     DAO.delete(stringProperty, integerProperty, floatProperty, doubleProperty, dateProperty, uriProperty,
       stringListProperty, stringDictionaryProperty);
     DAO.delete(stringPropertyValue1, integerPropertyValue1, floatPropertyValue1, doublePropertyValue1,
@@ -649,11 +659,17 @@ public class KBTest {
     final Property property = new Property(type, "property1", "property description");
 
     final PropertyValue pv = new PropertyValue(entity, property, "123");
+    final Source source = new Source("testsource", "A test source");
+    final SourceAdaptor adaptor = new SourceAdaptor("testadaptor", "0.0.1", source, Arrays.asList(type),
+      Arrays.asList(property), new HashMap<String, String>());
 
     DAO.save(type);
     DAO.save(entity);
     DAO.save(property);
-    DAO.save(pv);
+    DAO.save(source);
+    DAO.save(adaptor);
+
+    DAO.PROPERTY_VALUE.save(adaptor, pv);
 
     // List
     final Collection<PropertyValue> pvs = Jenabean.instance().reader().load(PropertyValue.class);
@@ -675,10 +691,10 @@ public class KBTest {
     Assert.assertEquals(1, count);
 
     // DELETE
-    pv.delete();
-    entity.delete();
-    property.delete();
-    type.delete();
+    DAO.delete(pv);
+    DAO.delete(entity);
+    DAO.delete(property);
+    DAO.delete(type);
 
     // LIST AGAIN
     final Collection<PropertyValue> pvs3 = Jenabean.instance().reader().load(PropertyValue.class);
@@ -718,10 +734,16 @@ public class KBTest {
 
     final PropertyValue pv = new PropertyValue(entity, property, "123");
 
-    type.save();
-    entity.save();
-    property.save();
-    pv.save();
+    final Source source = new Source("testsource", "A test source");
+    final SourceAdaptor adaptor = new SourceAdaptor("testadaptor", "0.0.1", source, Arrays.asList(type),
+      Arrays.asList(property), new HashMap<String, String>());
+
+    DAO.save(type);
+    DAO.save(entity);
+    DAO.save(property);
+    DAO.save(source);
+    DAO.save(adaptor);
+    DAO.PROPERTY_VALUE.save(adaptor, pv);
 
     final Collection<PropertyValue> pvs1 = DAO.PROPERTY_VALUE.listWithEntity(entity.getName(), 0, 100);
     Assert.assertTrue(pvs1.contains(pv));
@@ -735,13 +757,21 @@ public class KBTest {
     Assert.assertTrue(pvs3.contains(pv));
 
     // DELETE
-    type.delete();
-    entity.delete();
-    property.delete();
-    pv.delete();
+    DAO.delete(type);
+    DAO.delete(entity);
+    DAO.delete(property);
+    DAO.delete(pv);
+    DAO.delete(source);
+    DAO.delete(adaptor);
 
   }
 
+  /**
+   * Test {@link Measurement} DAO
+   * 
+   * @throws UnsupportedDataTypeException
+   * @throws InvalidJavaClassForDataTypeException
+   */
   @Test
   public void testMeasurements() throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
     // CREATE
@@ -756,20 +786,24 @@ public class KBTest {
     final PropertyValue pv2 = new PropertyValue(entity, property, 2);
 
     final Source source = new Source("testsource", "A test source");
-    final SourceAdaptor adaptor = new SourceAdaptor("testadaptor", "0.0.1", source, Arrays.asList(type),
+    final SourceAdaptor adaptor1 = new SourceAdaptor("testadaptor", "0.0.1", source, Arrays.asList(type),
+      Arrays.asList(property), new HashMap<String, String>());
+    final SourceAdaptor adaptor2 = new SourceAdaptor("testadaptor", "0.0.2", source, Arrays.asList(type),
       Arrays.asList(property), new HashMap<String, String>());
 
-    type.save();
-    entity.save();
-    property.save();
-    source.save();
-    adaptor.save();
+    DAO.save(type);
+    DAO.save(entity);
+    DAO.save(property);
+    DAO.save(source);
+    DAO.save(adaptor1, adaptor2);
 
     final Calendar c = Calendar.getInstance();
     c.set(2004, 1, 1);
-    DAO.PROPERTY_VALUE.save(pv1, c.getTime(), adaptor);
+    final Date date1 = c.getTime();
+    DAO.PROPERTY_VALUE.save(adaptor1, date1, pv1);
     c.set(2005, 1, 1);
-    DAO.PROPERTY_VALUE.save(pv2, c.getTime(), adaptor);
+    final Date date2 = c.getTime();
+    DAO.PROPERTY_VALUE.save(adaptor2, date2, pv2);
 
     final PropertyValue lastValue = DAO.PROPERTY_VALUE.find(entity.getName(), type.getName(), property.getName(),
       new Date());
@@ -780,18 +814,62 @@ public class KBTest {
       c.getTime());
     Assert.assertEquals(pv1, previousValue);
 
-    // DELETE
-    type.delete();
-    entity.delete();
-    property.delete();
-    source.delete();
-    adaptor.delete();
+    // FIND
+    final Measurement measurement1 = DAO.MEASUREMENT.findById(property.getName(), date1);
+    Assert.assertNotNull(measurement1);
+    Assert.assertEquals(pv1, measurement1.getPropertyValue());
+    Assert.assertEquals(adaptor1, measurement1.getAdaptor());
+    Assert.assertEquals(date1, measurement1.getTimestamp());
 
+    final Measurement measurement2 = DAO.MEASUREMENT.findById(property.getName(), date2);
+    Assert.assertNotNull(measurement2);
+    Assert.assertEquals(pv2, measurement2.getPropertyValue());
+    Assert.assertEquals(adaptor2, measurement2.getAdaptor());
+    Assert.assertEquals(date2, measurement2.getTimestamp());
+
+    // LIST BY PROPERTY VALUE
+    final List<Measurement> listByPropertyValue = DAO.MEASUREMENT.listByPropertyValue(pv1, 0, 100);
+    Assert.assertTrue(listByPropertyValue.contains(measurement1));
+    Assert.assertEquals(1, listByPropertyValue.size());
+
+    final int countByPropertyValue = DAO.MEASUREMENT.countByPropertyValue(pv2);
+    Assert.assertEquals(1, countByPropertyValue);
+
+    // LIST BY ADAPTOR
+    final List<Measurement> listByAdaptor = DAO.MEASUREMENT.listByAdaptor(adaptor1, 0, 100);
+    Assert.assertTrue(listByAdaptor.contains(measurement1));
+    Assert.assertEquals(1, listByAdaptor.size());
+
+    final int countByAdaptor = DAO.MEASUREMENT.countByAdaptor(adaptor2);
+    Assert.assertEquals(1, countByAdaptor);
+
+    // LIST BY SOURCE
+    final List<Measurement> listBySource = DAO.MEASUREMENT.listBySource(source, 0, 100);
+    Assert.assertTrue(listBySource.containsAll(Arrays.asList(measurement1, measurement2)));
+    Assert.assertEquals(2, listBySource.size());
+
+    final int countBySource = DAO.MEASUREMENT.countBySource(source);
+    Assert.assertEquals(2, countBySource);
+
+    // LIST BY PROPERTY
+    final List<Measurement> listByProperty = DAO.MEASUREMENT.listByProperty(property, 0, 100);
+    Assert.assertTrue(listByProperty.containsAll(Arrays.asList(measurement1, measurement2)));
+    Assert.assertEquals(2, listByProperty.size());
+
+    final int countByProperty = DAO.MEASUREMENT.countByProperty(property);
+    Assert.assertEquals(2, countByProperty);
+
+    // DELETE
+    DAO.delete(type);
+    DAO.delete(entity);
+    DAO.delete(property);
+    DAO.delete(source);
+    DAO.delete(adaptor1, adaptor2);
     DAO.delete(pv1, pv2);
 
     // Test measurements cleanup
-    Assert.assertEquals(0, DAO.MEASUREMENT.count(pv1));
-    Assert.assertEquals(0, DAO.MEASUREMENT.count(pv2));
+    Assert.assertEquals(0, DAO.MEASUREMENT.countByPropertyValue(pv1));
+    Assert.assertEquals(0, DAO.MEASUREMENT.countByPropertyValue(pv2));
   }
 
   /**
@@ -1047,6 +1125,103 @@ public class KBTest {
     @SuppressWarnings("unchecked")
     final List<PropertyValue> results4 = (List<PropertyValue>) DAO.REQUEST.query(target4, query4, 0, 100);
     Assert.assertTrue(results4.contains(pv));
+  }
+
+  /**
+   * Test Source DAO.
+   */
+  @Test
+  public void testSource() {
+    // CREATE
+    final String sourceName = "test";
+    final Source source = new Source(sourceName, "test source");
+
+    // SAVE
+    DAO.save(source);
+
+    // FIND
+    final Source source2 = DAO.SOURCE.findById(sourceName);
+    Assert.assertEquals(source, source2);
+
+    // QUERY
+    final List<Source> list = DAO.SOURCE.query("", 0, 100);
+    Assert.assertTrue(list.contains(source));
+    Assert.assertEquals(1, list.size());
+
+    // COUNT
+    final int count = DAO.SOURCE.count("");
+    Assert.assertEquals(1, count);
+
+    // DELETE
+    DAO.delete(source);
+    final List<Source> list2 = DAO.SOURCE.query("", 0, 100);
+    Assert.assertFalse(list2.contains(source));
+    Assert.assertEquals(0, list2.size());
+  }
+
+  /**
+   * Test Source Adaptor DAO.
+   */
+  @Test
+  public void testSourceAdaptor() {
+    // CREATE
+    final String sourceName1 = "source1";
+    final Source source1 = new Source(sourceName1, "test source number 1");
+    final String sourceName2 = "source2";
+    final Source source2 = new Source(sourceName2, "test source number 2");
+
+    final String adaptorName1 = "adaptor1";
+    final String adaptorName2 = "adaptor2";
+    final String adaptorVersion1 = "0.0.1";
+    final String adaptorVersion2 = "0.0.2";
+    final SourceAdaptor adaptor1v1 = new SourceAdaptor(adaptorName1, adaptorVersion1, source1, null, null, null);
+    final SourceAdaptor adaptor1v2 = new SourceAdaptor(adaptorName1, adaptorVersion2, source1, null, null, null);
+    final SourceAdaptor adaptor2v1 = new SourceAdaptor(adaptorName2, adaptorVersion1, source2, null, null, null);
+
+    // SAVE
+    DAO.save(source1, source2);
+    DAO.save(adaptor1v1, adaptor1v2, adaptor2v1);
+
+    // FIND
+    final SourceAdaptor foundAdaptor = DAO.SOURCE_ADAPTOR.findById(adaptorName1, adaptorVersion1);
+    Assert.assertEquals(adaptor1v1, foundAdaptor);
+
+    // QUERY
+    final List<SourceAdaptor> list = DAO.SOURCE_ADAPTOR.query("", 0, 100);
+    Assert.assertTrue(list.containsAll(Arrays.asList(adaptor1v1, adaptor1v2, adaptor2v1)));
+    Assert.assertEquals(3, list.size());
+
+    // LIST BY NAME
+    final List<SourceAdaptor> listByName = DAO.SOURCE_ADAPTOR.listByName(adaptorName1, 0, 100);
+    Assert.assertTrue(listByName.containsAll(Arrays.asList(adaptor1v1, adaptor1v2)));
+    Assert.assertFalse(listByName.contains(adaptor2v1));
+    Assert.assertEquals(2, listByName.size());
+
+    // LIST BY SOURCE
+    final List<SourceAdaptor> listBySource = DAO.SOURCE_ADAPTOR.listBySource(source2, 0, 100);
+    Assert.assertTrue(listBySource.containsAll(Arrays.asList(adaptor2v1)));
+    Assert.assertFalse(listBySource.contains(adaptor1v1));
+    Assert.assertFalse(listBySource.contains(adaptor1v2));
+    Assert.assertEquals(1, listBySource.size());
+
+    // COUNT
+    final int count = DAO.SOURCE_ADAPTOR.count("");
+    Assert.assertEquals(3, count);
+
+    // COUNT BY NAME
+    final int countByName = DAO.SOURCE_ADAPTOR.countByName(adaptorName2);
+    Assert.assertEquals(1, countByName);
+
+    // COUNT BY SOURCE
+    final int countBySource = DAO.SOURCE_ADAPTOR.countBySource(source1);
+    Assert.assertEquals(2, countBySource);
+
+    // DELETE
+    DAO.delete(adaptor1v1, adaptor1v2, adaptor2v1);
+    DAO.delete(source1, source2);
+    final int count2 = DAO.SOURCE_ADAPTOR.count("");
+    Assert.assertEquals(0, count2);
+
   }
 
 }

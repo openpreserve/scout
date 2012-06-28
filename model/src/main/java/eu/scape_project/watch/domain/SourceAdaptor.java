@@ -1,6 +1,7 @@
 package eu.scape_project.watch.domain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import eu.scape_project.watch.utils.KBUtils;
 import eu.scape_project.watch.utils.ModelUtils;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import thewebsemantic.Id;
@@ -134,8 +136,8 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
     this.name = name;
     this.version = version;
     this.source = source;
-    this.types = types;
-    this.properties = properties;
+    this.types = (types != null ? types : new ArrayList<EntityType>());
+    this.properties = (properties != null ? properties : new ArrayList<Property>());
     this.configuration = ModelUtils.mapToEntryList(configuration);
 
     this.updateId();
@@ -242,7 +244,7 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
       if (other.configuration != null) {
         return false;
       }
-    } else if (!configuration.equals(other.configuration)) {
+    } else if (!CollectionUtils.isEqualCollection(this.configuration, other.configuration)) {
       return false;
     }
     if (id == null) {
@@ -263,7 +265,7 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
       if (other.properties != null) {
         return false;
       }
-    } else if (!properties.equals(other.properties)) {
+    } else if (!CollectionUtils.isEqualCollection(this.properties, other.properties)) {
       return false;
     }
     if (source == null) {
@@ -277,7 +279,7 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
       if (other.types != null) {
         return false;
       }
-    } else if (!types.equals(other.types)) {
+    } else if (!CollectionUtils.isEqualCollection(this.properties, other.properties)) {
       return false;
     }
     if (version == null) {
@@ -290,6 +292,11 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
     return true;
   }
 
- 
+  @Override
+  public String toString() {
+    return "SourceAdaptor [name=" + name + ", version=" + version + ", source=" + source + ", types="
+      + Arrays.toString(this.types.toArray()) + ", properties=" + Arrays.toString(this.properties.toArray())
+      + ", configuration=" + Arrays.toString(this.configuration.toArray()) + "]";
+  }
 
 }

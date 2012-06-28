@@ -72,7 +72,7 @@ public final class SourceAdaptorDAO extends AbstractDO<SourceAdaptor> {
    * @return A query string that binds the source.
    */
   private static String getListBySourceQueryString(final Source source) {
-    return "?s watch:source " + KBUtils.WATCH_ENTITY_PREFIX + source.getName();
+    return "?s watch:source " + KBUtils.WATCH_SOURCE_PREFIX + source.getName();
   }
 
   /**
@@ -137,6 +137,17 @@ public final class SourceAdaptorDAO extends AbstractDO<SourceAdaptor> {
    */
   public int countByName(final String name) {
     return super.count(SourceAdaptor.class, getListByNameQueryString(name));
+  }
+
+  /**
+   * Save a source adaptor into the knowledge base.
+   * 
+   * @param sourceAdaptor
+   *          The source adaptor to save.
+   * @return The persisted source adaptor object.
+   */
+  public SourceAdaptor save(final SourceAdaptor sourceAdaptor) {
+    return super.saveImpl(sourceAdaptor);
   }
 
 }

@@ -2,6 +2,7 @@ package eu.scape_project.watch.dao;
 
 import java.util.List;
 
+import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.Source;
 
 /**
@@ -57,5 +58,16 @@ public final class SourceDAO extends AbstractDO<Source> {
    */
   public int count(final String bindings) {
     return super.count(Source.class, bindings);
+  }
+
+  /**
+   * Save a source into the knowledge base.
+   * 
+   * @param source
+   *          The source to save.
+   * @return The persisted source object.
+   */
+  public Source save(final Source source) {
+    return super.saveImpl(source);
   }
 }

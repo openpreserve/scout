@@ -70,4 +70,16 @@ public final class EntityTypeDAO extends AbstractDO<EntityType> {
   public int count(final String bindings) {
     return super.count(EntityType.class, bindings);
   }
+
+  /**
+   * Save a entity type into the knowledge base.
+   * 
+   * @param type
+   *          The entity type to save.
+   * @return The persisted entity type object.
+   */
+  public EntityType save(final EntityType type) {
+    return super.saveImpl(type);
+  }
+
 }

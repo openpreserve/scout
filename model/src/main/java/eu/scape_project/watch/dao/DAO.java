@@ -5,6 +5,8 @@ import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
+import eu.scape_project.watch.domain.Source;
+import eu.scape_project.watch.domain.SourceAdaptor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,7 +71,7 @@ public final class DAO {
   public static final AsyncRequestDAO ASYNC_REQUEST = new AsyncRequestDAO();
 
   /**
-   * {@link Request} Data Access Object.
+   * Sync request fake DAO.
    */
   public static final RequestDAO REQUEST = new RequestDAO();
 
@@ -203,9 +205,14 @@ public final class DAO {
     } else if (Entity.class.isInstance(object)) {
       ENTITY.save(Entity.class.cast(object));
     } else if (PropertyValue.class.isInstance(object)) {
-      PROPERTY_VALUE.save(PropertyValue.class.cast(object));
+      throw new IllegalArgumentException("To save PropertyValue, "
+        + "specialized PropertyValueDAO.save(PropertyValue,SourceAdaptor) must be used.");
     } else if (AsyncRequest.class.isInstance(object)) {
       ASYNC_REQUEST.save(AsyncRequest.class.cast(object));
+    } else if (Source.class.isInstance(object)) {
+      SOURCE.save(Source.class.cast(object));
+    } else if (SourceAdaptor.class.isInstance(object)) {
+      SOURCE_ADAPTOR.save(SourceAdaptor.class.cast(object));
     } else {
       throw new IllegalArgumentException(object.getClass().getSimpleName());
     }
@@ -267,6 +274,10 @@ public final class DAO {
       PROPERTY_VALUE.delete(PropertyValue.class.cast(object));
     } else if (AsyncRequest.class.isInstance(object)) {
       ASYNC_REQUEST.delete(AsyncRequest.class.cast(object));
+    } else if (Source.class.isInstance(object)) {
+      SOURCE.delete(Source.class.cast(object));
+    } else if (SourceAdaptor.class.isInstance(object)) {
+      SOURCE_ADAPTOR.delete(SourceAdaptor.class.cast(object));
     } else {
       throw new IllegalArgumentException(object.getClass().getSimpleName());
     }

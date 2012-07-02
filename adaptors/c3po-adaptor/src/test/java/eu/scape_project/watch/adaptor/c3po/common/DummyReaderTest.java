@@ -1,11 +1,11 @@
 package eu.scape_project.watch.adaptor.c3po.common;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Map;
 
 import junit.framework.Assert;
-import eu.scape_project.watch.adaptor.c3po.common.C3POProfileReader;
 
 import org.junit.After;
 import org.junit.Before;
@@ -17,17 +17,18 @@ import org.junit.Test;
  * @author Petar Petrov <me@petarpetrov.org>
  * 
  */
-public class C3POProfileReaderTest {
+public class DummyReaderTest {
 
   /**
    * The object under test.
    */
-  private C3POProfileReader reader;
+  private DummyReader reader;
 
   @Before
   public void setup() {
     try {
-      this.reader = new C3POProfileReader(new File("src/test/resources/profiles/dummy_profile.xml"));
+      this.reader = new DummyReader();
+      this.reader.setStream(new FileInputStream(new File("src/test/resources/profiles/dummy_profile.xml")));
     } catch (final FileNotFoundException e) {
       e.printStackTrace();
     }
@@ -90,16 +91,18 @@ public class C3POProfileReaderTest {
   
   @Test(expected = FileNotFoundException.class)
   public void shouldTestMissingDocument() throws Exception {
-    this.reader = new C3POProfileReader(new File("src/test/resources/missing.xml"));
+    this.reader = new DummyReader();
+    this.reader.setStream(new FileInputStream(new File("src/test/resources/missing.xml")));
     
     Assert.fail("This code should not have been reached");
   }
   
   @Test
   public void shouldTestFalseDocument() throws Exception {
-    this.reader = new C3POProfileReader(new File("src/test/resources/profiles/wrong.xml"));
+    this.reader = new DummyReader();
+    this.reader.setStream(new FileInputStream(new File("src/test/resources/profiles/wrong.xml")));
     
     final String name = this.reader.getCollectionName();
-    Assert.assertEquals(C3POProfileReader.MISSING_VALUE, name);
+    Assert.assertEquals(DummyReader.MISSING_VALUE, name);
   }
 }

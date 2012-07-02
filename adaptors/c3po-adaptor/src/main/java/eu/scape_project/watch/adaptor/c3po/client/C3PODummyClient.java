@@ -4,12 +4,16 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+
+import eu.scape_project.watch.adaptor.c3po.common.DummyReader;
+import eu.scape_project.watch.adaptor.c3po.common.ProfileVersionReader;
 
 
 /**
  * A dummy client that always returns the same job uuid and returns a random
- * collection profile for its only collection named 'Test'.
+ * collection profile for its only collection named 'coll-0-test'.
  * 
  * @author Petar Petrov <me@petarpetrov.org>
  * 
@@ -55,6 +59,16 @@ public class C3PODummyClient implements C3POClientInterface {
     }
 
     return is;
+  }
+
+  @Override
+  public InputStream getCollectionProfile(String identifier, Map<String, String> parameters) {
+    return this.pollJobResult(this.submitCollectionProfileJob(identifier, null));
+  }
+
+  @Override
+  public ProfileVersionReader getReader() {
+    return new DummyReader();
   }
 
 }

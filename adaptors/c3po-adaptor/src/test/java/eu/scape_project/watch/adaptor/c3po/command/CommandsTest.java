@@ -3,15 +3,9 @@ package eu.scape_project.watch.adaptor.c3po.command;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import eu.scape_project.watch.adaptor.c3po.common.C3POProfileReader;
-import eu.scape_project.watch.domain.DataType;
-import eu.scape_project.watch.domain.Property;
-import eu.scape_project.watch.domain.PropertyValue;
-import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +14,10 @@ import java.util.Map;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import eu.scape_project.watch.adaptor.c3po.common.C3POProfileReader;
+import eu.scape_project.watch.domain.PropertyValue;
+import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
 
 /**
  * Tests the commands that read the profile.

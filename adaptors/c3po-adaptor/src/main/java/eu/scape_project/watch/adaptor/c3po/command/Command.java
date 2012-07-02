@@ -1,16 +1,16 @@
 package eu.scape_project.watch.adaptor.c3po.command;
 
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_DESCRIPTION;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_NAME;
 import eu.scape_project.watch.adaptor.c3po.common.C3POProfileReader;
+import eu.scape_project.watch.adaptor.c3po.common.DummyReader;
 import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_DESCRIPTION;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_NAME;
-
 /**
  * An abstract command class that fetches specific property values with the
- * provided {@link C3POProfileReader}. Follows the command pattern to avoid many
+ * provided {@link DummyReader}. Follows the command pattern to avoid many
  * if else ifs.
  * 
  * @author Petar Petrov <me@petarpetrov.org>

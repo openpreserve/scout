@@ -265,22 +265,8 @@ public class C3POAdaptor implements AdaptorPluginInterface {
    * @return an {@link InputStream} containing the file.
    */
   private InputStream getCollectionProfile(final String id) {
-    final List<String> expanded = this.generatePropertyExpansionList(null);
-    final String uuid = this.source.submitCollectionProfileJob(id, expanded);
-    int counter = 1;
-
-    InputStream is = this.source.pollJobResult(uuid);
-    // this has to be done in another fashion.
-    while (is == null && counter < 10) {
-      is = this.source.pollJobResult(uuid);
-      counter++;
-      try {
-        Thread.sleep(5000);
-      } catch (final InterruptedException e) {
-        LOG.warn("An error occurred while waiting for c3po's result: {}", e.getMessage());
-      }
-    }
-
+    // final List<String> expanded = this.generatePropertyExpansionList(null);
+    final InputStream is = this.source.getCollectionProfile(id, null);
     return is;
   }
 
@@ -325,7 +311,7 @@ public class C3POAdaptor implements AdaptorPluginInterface {
     final List<PropertyValue> values = new ArrayList<PropertyValue>();
 
     if (stream != null) {
-      final C3POProfileReader reader = new C3POProfileReader(stream);
+      final C3POProfileReader reader = new C3POProfileReader(this.source.getReader(), stream);
       this.setupCommands(reader);
       if (props == null || props.size() == 0) {
 

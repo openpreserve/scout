@@ -36,6 +36,18 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
   private static final String PROPERTY_REL = KBUtils.WATCH_PREFIX + "property";
 
   /**
+   * Get the complete Property Value RDF Id to use in SPARQL.
+   * 
+   * @param propertyValue
+   *          The property value from which go get the RDF id.
+   * 
+   * @return The complete Property Value RDF Id using namescape prefix
+   */
+  public static String getPropertyValueRDFId(final PropertyValue propertyValue) {
+    return "<" + KBUtils.WATCH_NS + PropertyValue.class.getSimpleName() + "/" + propertyValue.getId() + ">";
+  }
+
+  /**
    * No other instances other then in {@link DAO}.
    */
   protected PropertyValueDAO() {

@@ -141,6 +141,9 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
     final StringBuilder sparql = new StringBuilder();
 
     sparql.append(KBUtils.PREFIXES_DECL);
+    
+    // TODO use Jena's SPARQL manipulation classes instead of strings
+    // http://jena.apache.org/documentation/query/manipulating_sparql_using_arq.html
 
     sparql.append(String.format("SELECT (count(?s) as ?count) WHERE { ?s %1$s %2$s . %3$s}", KBUtils.RDF_TYPE_REL,
       classType, bindings));

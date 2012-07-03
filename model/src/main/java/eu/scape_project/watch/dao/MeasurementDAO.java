@@ -75,7 +75,7 @@ public final class MeasurementDAO extends AbstractDO<Measurement> {
    * @return The query string.
    */
   private static String getListByPropertyValueQueryString(final PropertyValue value) {
-    return "?s watch:propertyValue " + KBUtils.WATCH_PROPERTY_VALUE_PREFIX + value.getId();
+    return "?s watch:propertyValue " + PropertyValueDAO.getPropertyValueRDFId(value);
   }
 
   /**

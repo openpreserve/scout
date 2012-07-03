@@ -396,10 +396,9 @@ public final class KBUtils {
 
     // sources and adaptors
     final Source source = new Source("testsource", "A test source");
-    final SourceAdaptor adaptor = new SourceAdaptor("testadaptor", "0.0.1", source, Arrays.asList(tools, formats,
-      profile),
-      Arrays.asList(formatPUID, formatMimetype, toolVersion, inputFormats, outputFormats, formatDistribution),
-      new HashMap<String, String>());
+    final SourceAdaptor adaptor = new SourceAdaptor("testadaptor", "0.0.1", "default", source, Arrays.asList(tools,
+      formats, profile), Arrays.asList(formatPUID, formatMimetype, toolVersion, inputFormats, outputFormats,
+      formatDistribution), new HashMap<String, String>());
     DAO.save(source);
     DAO.save(adaptor);
 

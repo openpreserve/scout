@@ -25,13 +25,15 @@ public final class SourceAdaptorDAO extends AbstractDO<SourceAdaptor> {
    * Get {@link SourceAdaptor} by its name and version.
    * 
    * @param name
-   *          the source adaptor name
+   *          the source adaptor implementation name
    * @param version
-   *          the source adaptor version
+   *          the source adaptor implementation version
+   * @param instance
+   *          the source adaptor instance identifier
    * @return The {@link SourceAdaptor} or <code>null</code> if not found
    */
-  public SourceAdaptor findById(final String name, final String version) {
-    return super.findById(SourceAdaptor.createId(name, version), SourceAdaptor.class);
+  public SourceAdaptor findById(final String name, final String version, final String instance) {
+    return super.findById(SourceAdaptor.createId(name, version, instance), SourceAdaptor.class);
   }
 
   /**
@@ -150,4 +152,6 @@ public final class SourceAdaptorDAO extends AbstractDO<SourceAdaptor> {
     return super.saveImpl(sourceAdaptor);
   }
 
+  // TODO list and count of source adaptor instances (same name and version)
+  
 }

@@ -38,13 +38,18 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
    * Create a unique Id based on the name and version.
    * 
    * @param name
-   *          The {@link SourceAdaptor} name.
+   *          The {@link SourceAdaptor} name, that identifies this
+   *          implementation.
    * @param version
    *          The {@link SourceAdaptor} version.
+   * @param instance
+   *          Identifier of the instance of the adaptor, as an adaptor
+   *          implementation might run several instances with different
+   *          configurations.
    * @return The unique Id in the format 'example-v1.0.0'
    */
-  public static String createId(final String name, final String version) {
-    return name + "-v" + version;
+  public static String createId(final String name, final String version, final String instance) {
+    return name + "-v" + version + "-" + instance;
   }
 
   /**
@@ -52,7 +57,7 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
    */
   private void updateId() {
     if (this.name != null && this.version != null) {
-      id = createId(this.name, this.version);
+      id = createId(this.name, this.version, this.instance);
     }
   }
 
@@ -64,7 +69,8 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
   private String id;
 
   /**
-   * A name that uniquely identifies the adaptor, regardless of the version.
+   * A name that uniquely identifies the adaptor implementation, regardless of
+   * the version. For example, use the class name of the adaptor plug-in.
    */
   @XmlElement
   private String name;
@@ -74,6 +80,14 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
    */
   @XmlElement
   private String version;
+
+  /**
+   * Identification of the instance of an adaptor, as the same implementation
+   * can be run with different configurations. For example, a repository adaptor
+   * might run several instances, one per each repository host of that type.
+   */
+  @XmlElement
+  private String instance;
 
   /**
    * The source from which this adaptor fetches information from.
@@ -115,10 +129,15 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
    * Create a new source adaptor.
    * 
    * @param name
-   *          A name that uniquely identifies the adaptor, regardless of the
-   *          version.
+   *          A name that uniquely identifies the adaptor implementation,
+   *          regardless of the version.
    * @param version
    *          The version of the adaptor, preferably in the 1.0.1 format.
+   * @param instance
+   *          Identification of the instance of an adaptor, as the same
+   *          implementation can be run with different configurations. For
+   *          example, a repository adaptor might run several instances, one per
+   *          each repository host of that type
    * @param source
    *          The source from which this adaptor fetches information from.
    * @param types
@@ -130,14 +149,15 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
    * @param configuration
    *          The source adaptor configuration
    */
-  public SourceAdaptor(final String name, final String version, final Source source, final List<EntityType> types,
-    final List<Property> properties, final Map<String, String> configuration) {
+  public SourceAdaptor(final String name, final String version, final String instance, final Source source,
+    final List<EntityType> types, final List<Property> properties, final Map<String, String> configuration) {
     super();
     this.name = name;
     this.version = version;
+    this.instance = instance;
     this.source = source;
-    this.types = (types != null ? types : new ArrayList<EntityType>());
-    this.properties = (properties != null ? properties : new ArrayList<Property>());
+    this.types = types != null ? types : new ArrayList<EntityType>();
+    this.properties = properties != null ? properties : new ArrayList<Property>();
     this.configuration = ModelUtils.mapToEntryList(configuration);
 
     this.updateId();
@@ -157,6 +177,10 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
 
   public String getVersion() {
     return version;
+  }
+
+  public String getInstance() {
+    return instance;
   }
 
   public List<EntityType> getTypes() {
@@ -206,6 +230,18 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
     this.updateId();
   }
 
+  /**
+   * Set the instance and update the ID.
+   * 
+   * @param instance
+   *          Identification of the implementation instance.
+   */
+  public void setInstance(final String instance) {
+    this.instance = instance;
+
+    this.updateId();
+  }
+
   public Source getSource() {
     return source;
   }
@@ -219,7 +255,7 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((configuration == null) ? 0 : configuration.hashCode());
-    result = prime * result + ((id == null) ? 0 : id.hashCode());
+    result = prime * result + ((instance == null) ? 0 : instance.hashCode());
     result = prime * result + ((name == null) ? 0 : name.hashCode());
     result = prime * result + ((properties == null) ? 0 : properties.hashCode());
     result = prime * result + ((source == null) ? 0 : source.hashCode());
@@ -289,14 +325,23 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
     } else if (!version.equals(other.version)) {
       return false;
     }
+    if (instance == null) {
+      if (other.instance != null) {
+        return false;
+      }
+    } else if (!instance.equals(other.instance)) {
+      return false;
+    }
+
     return true;
   }
 
   @Override
   public String toString() {
-    return "SourceAdaptor [name=" + name + ", version=" + version + ", source=" + source + ", types="
-      + Arrays.toString(this.types.toArray()) + ", properties=" + Arrays.toString(this.properties.toArray())
-      + ", configuration=" + Arrays.toString(this.configuration.toArray()) + "]";
+    return "SourceAdaptor [name=" + name + ", version=" + version + ", instance=" + instance + ", source=" + source
+      + ", types=" + Arrays.toString(this.types.toArray()) + ", properties="
+      + Arrays.toString(this.properties.toArray()) + ", configuration=" + Arrays.toString(this.configuration.toArray())
+      + "]";
   }
 
 }

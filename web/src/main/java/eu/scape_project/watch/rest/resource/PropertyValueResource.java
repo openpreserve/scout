@@ -129,7 +129,7 @@ public class PropertyValueResource extends JavaHelp {
         try {
           propertyValue = new PropertyValue(entity, property, value);
           final Source source = new Source("unknown", "Unknown external software component");
-          final SourceAdaptor adaptor = new SourceAdaptor("restapi", "0.0.1", source, Arrays.asList(entity
+          final SourceAdaptor adaptor = new SourceAdaptor("restapi", "0.0.1", "default", source, Arrays.asList(entity
             .getEntityType()), Arrays.asList(property), new HashMap<String, String>());
           DAO.save(source);
           DAO.save(adaptor);

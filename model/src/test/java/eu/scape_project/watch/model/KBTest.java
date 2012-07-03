@@ -468,9 +468,9 @@ public class KBTest {
       Arrays.asList(new DictionaryItem("key1", "value1"), new DictionaryItem("key2", "value2")));
 
     final Source source = new Source("testsource", "A test source");
-    final SourceAdaptor adaptor = new SourceAdaptor("testadaptor", "0.0.1", source, Arrays.asList(type), Arrays.asList(
-      stringProperty, integerProperty, floatProperty, doubleProperty, dateProperty, uriProperty, stringListProperty,
-      stringDictionaryProperty), new HashMap<String, String>());
+    final SourceAdaptor adaptor = new SourceAdaptor("testadaptor", "0.0.1", "default", source, Arrays.asList(type),
+      Arrays.asList(stringProperty, integerProperty, floatProperty, doubleProperty, dateProperty, uriProperty,
+        stringListProperty, stringDictionaryProperty), new HashMap<String, String>());
 
     DAO.save(type);
     DAO.save(entity);
@@ -660,7 +660,7 @@ public class KBTest {
 
     final PropertyValue pv = new PropertyValue(entity, property, "123");
     final Source source = new Source("testsource", "A test source");
-    final SourceAdaptor adaptor = new SourceAdaptor("testadaptor", "0.0.1", source, Arrays.asList(type),
+    final SourceAdaptor adaptor = new SourceAdaptor("testadaptor", "0.0.1", "default", source, Arrays.asList(type),
       Arrays.asList(property), new HashMap<String, String>());
 
     DAO.save(type);
@@ -735,7 +735,7 @@ public class KBTest {
     final PropertyValue pv = new PropertyValue(entity, property, "123");
 
     final Source source = new Source("testsource", "A test source");
-    final SourceAdaptor adaptor = new SourceAdaptor("testadaptor", "0.0.1", source, Arrays.asList(type),
+    final SourceAdaptor adaptor = new SourceAdaptor("testadaptor", "0.0.1", "default", source, Arrays.asList(type),
       Arrays.asList(property), new HashMap<String, String>());
 
     DAO.save(type);
@@ -786,9 +786,9 @@ public class KBTest {
     final PropertyValue pv2 = new PropertyValue(entity, property, 2);
 
     final Source source = new Source("testsource", "A test source");
-    final SourceAdaptor adaptor1 = new SourceAdaptor("testadaptor", "0.0.1", source, Arrays.asList(type),
+    final SourceAdaptor adaptor1 = new SourceAdaptor("testadaptor", "0.0.1", "default", source, Arrays.asList(type),
       Arrays.asList(property), new HashMap<String, String>());
-    final SourceAdaptor adaptor2 = new SourceAdaptor("testadaptor", "0.0.2", source, Arrays.asList(type),
+    final SourceAdaptor adaptor2 = new SourceAdaptor("testadaptor", "0.0.2", "default", source, Arrays.asList(type),
       Arrays.asList(property), new HashMap<String, String>());
 
     DAO.save(type);
@@ -1174,16 +1174,20 @@ public class KBTest {
     final String adaptorName2 = "adaptor2";
     final String adaptorVersion1 = "0.0.1";
     final String adaptorVersion2 = "0.0.2";
-    final SourceAdaptor adaptor1v1 = new SourceAdaptor(adaptorName1, adaptorVersion1, source1, null, null, null);
-    final SourceAdaptor adaptor1v2 = new SourceAdaptor(adaptorName1, adaptorVersion2, source1, null, null, null);
-    final SourceAdaptor adaptor2v1 = new SourceAdaptor(adaptorName2, adaptorVersion1, source2, null, null, null);
+    final String adaptorInstance = "default";
+    final SourceAdaptor adaptor1v1 = new SourceAdaptor(adaptorName1, adaptorVersion1, adaptorInstance, source1, null,
+      null, null);
+    final SourceAdaptor adaptor1v2 = new SourceAdaptor(adaptorName1, adaptorVersion2, adaptorInstance, source1, null,
+      null, null);
+    final SourceAdaptor adaptor2v1 = new SourceAdaptor(adaptorName2, adaptorVersion1, adaptorInstance, source2, null,
+      null, null);
 
     // SAVE
     DAO.save(source1, source2);
     DAO.save(adaptor1v1, adaptor1v2, adaptor2v1);
 
     // FIND
-    final SourceAdaptor foundAdaptor = DAO.SOURCE_ADAPTOR.findById(adaptorName1, adaptorVersion1);
+    final SourceAdaptor foundAdaptor = DAO.SOURCE_ADAPTOR.findById(adaptorName1, adaptorVersion1, adaptorInstance);
     Assert.assertEquals(adaptor1v1, foundAdaptor);
 
     // QUERY

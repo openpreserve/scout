@@ -443,9 +443,10 @@ public final class KBUtils {
    * @return The prefix, starting with "watch-", the resource class simple name,
    *         and finishing with ":"
    */
-  private static <T extends RdfBean<T>> String getResourcePrefix(final Class<T> resourceClass) {
-    return "watch-" + resourceClass.getSimpleName() + ":";
-  }
+  // private static <T extends RdfBean<T>> String getResourcePrefix(final
+  // Class<T> resourceClass) {
+  // return "watch-" + resourceClass.getSimpleName() + ":";
+  // }
 
   /**
    * Get a resource class RDF name space, to use in SPARQL queries.
@@ -457,9 +458,10 @@ public final class KBUtils {
    * @return The resource namespace, that start with the watch namespace
    *         {@link #WATCH_NS}.
    */
-  private static <T extends RdfBean<T>> String getResourceNamespace(final Class<T> resourceClass) {
-    return WATCH_NS + resourceClass.getSimpleName() + "/";
-  }
+  // private static <T extends RdfBean<T>> String getResourceNamespace(final
+  // Class<T> resourceClass) {
+  // return WATCH_NS + resourceClass.getSimpleName() + "/";
+  // }
 
   /**
    * Get the resource class prefix declaration to use in SPARQL queries.
@@ -470,9 +472,11 @@ public final class KBUtils {
    *          The resource class.
    * @return The prefix declaration.
    */
-  private static <T extends RdfBean<T>> String getResourcePrefixDecl(final Class<T> resourceClass) {
-    return createPrefixDecl(getResourcePrefix(resourceClass), getResourceNamespace(resourceClass));
-  }
+  // private static <T extends RdfBean<T>> String getResourcePrefixDecl(final
+  // Class<T> resourceClass) {
+  // return createPrefixDecl(getResourcePrefix(resourceClass),
+  // getResourceNamespace(resourceClass));
+  // }
 
   /*
    * hidden constructor.

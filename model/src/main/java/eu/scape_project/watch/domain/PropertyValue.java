@@ -1,10 +1,5 @@
 package eu.scape_project.watch.domain;
 
-import eu.scape_project.watch.dao.DAO;
-import eu.scape_project.watch.utils.KBUtils;
-import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeException;
-import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
-
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,12 +10,19 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import eu.scape_project.watch.dao.DAO;
+import eu.scape_project.watch.utils.KBUtils;
+import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeException;
+import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
+
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
+
 
 /**
  * Each Property Value is the atomic measurement of a {@link Property} for an
@@ -35,6 +37,11 @@ import thewebsemantic.binding.RdfBean;
 public class PropertyValue extends RdfBean<PropertyValue> {
 
   /**
+   * Name of the XML element to use in all java attributes that are values.
+   */
+  private static final String VALUE_XML_ELEMENT = "value";
+
+  /**
    * A unique identifier.
    */
   @Id
@@ -44,54 +51,54 @@ public class PropertyValue extends RdfBean<PropertyValue> {
   /**
    * Value holder when type is {@link String}.
    */
-  @XmlElement(name = "value")
+  @XmlElement(name = VALUE_XML_ELEMENT)
   @JsonProperty("stringValue")
   private String stringValue;
 
   /**
    * Value holder when type is {@link Integer}.
    */
-  @XmlElement(name = "value")
+  @XmlElement(name = VALUE_XML_ELEMENT)
   @JsonProperty("integerValue")
   private Integer integerValue;
 
   /**
    * Value holder when type is {@link Float}.
    */
-  @XmlElement(name = "value")
+  @XmlElement(name = VALUE_XML_ELEMENT)
   @JsonProperty("floatValue")
   private Float floatValue;
 
   /**
    * Value holder when type is {@link Double}.
    */
-  @XmlElement(name = "value")
+  @XmlElement(name = VALUE_XML_ELEMENT)
   @JsonProperty("doubleValue")
   private Double doubleValue;
 
   /**
    * Value holder when type is {@link URI}.
    */
-  @XmlElement(name = "value")
+  @XmlElement(name = VALUE_XML_ELEMENT)
   @JsonProperty("uriValue")
   private URI uriValue;
 
   /**
    * Value holder when type is {@link Date}.
    */
-  @XmlElement(name = "value")
+  @XmlElement(name = VALUE_XML_ELEMENT)
   @JsonProperty("dateValue")
   private Date dateValue;
   /**
    * Value holder when type is {@link List<String>}.
    */
-  @XmlElement(name = "value")
+  @XmlElement(name = VALUE_XML_ELEMENT)
   @JsonProperty("stringListValue")
   private List<String> stringListValue = new ArrayList<String>();
   /**
    * Value holder when type is {@link List<DictionaryItem>}.
    */
-  @XmlElement(name = "value")
+  @XmlElement(name = VALUE_XML_ELEMENT)
   @JsonProperty("stringDictionaryValue")
   private List<DictionaryItem> stringDictionaryValue = new ArrayList<DictionaryItem>();
 

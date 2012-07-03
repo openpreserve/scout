@@ -3,7 +3,9 @@ package eu.scape_project.watch.dao;
 import java.util.List;
 
 import eu.scape_project.watch.domain.Entity;
+import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.Source;
+import eu.scape_project.watch.utils.KBUtils;
 
 /**
  * {@link Source} Data Access Object.
@@ -12,6 +14,17 @@ import eu.scape_project.watch.domain.Source;
  * 
  */
 public final class SourceDAO extends AbstractDO<Source> {
+
+  /**
+   * Get the complete Source RDF Id to use in SPARQL.
+   * 
+   * @param source
+   *          The name of the source.
+   * @return The complete Source RDF Id using namescape prefix
+   */
+  public static String getSourceRDFId(final Source source) {
+    return "<" + KBUtils.WATCH_NS + Source.class.getSimpleName() + "/" + source.getName() + ">";
+  }
 
   /**
    * No other instances other then in {@link DAO}.

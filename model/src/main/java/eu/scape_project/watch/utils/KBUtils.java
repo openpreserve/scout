@@ -199,68 +199,9 @@ public final class KBUtils {
   public static final String WATCH_PREFIX_DECL = createPrefixDecl(WATCH_PREFIX, WATCH_NS);
 
   /**
-   * {@link EntityType} prefix to use in SPARQL queries.
-   */
-  public static final String WATCH_ENTITY_TYPE_PREFIX = getResourcePrefix(EntityType.class);
-
-  /**
-   * {@link EntityType} prefix declaration to use in SPARQL queries.
-   */
-  public static final String WATCH_ENTITY_TYPE_PREFIX_DECL = getResourcePrefixDecl(EntityType.class);
-  /**
-   * {@link Property} prefix to use in SPARQL queries.
-   */
-  public static final String WATCH_PROPERTY_PREFIX = getResourcePrefix(Property.class);
-
-  /**
-   * {@link Property} prefix declaration to use in SPARQL queries.
-   */
-  public static final String WATCH_PROPERTY_PREFIX_DECL = getResourcePrefixDecl(Property.class);
-  /**
-   * {@link Entity} prefix to use in SPARQL queries.
-   */
-  public static final String WATCH_ENTITY_PREFIX = getResourcePrefix(Entity.class);
-
-  /**
-   * {@link Entity} prefix declaration to use in SPARQL queries.
-   */
-  public static final String WATCH_ENTITY_PREFIX_DECL = getResourcePrefixDecl(Entity.class);
-  /**
-   * {@link PropertyValue} prefix to use in SPARQL queries.
-   */
-  public static final String WATCH_PROPERTY_VALUE_PREFIX = getResourcePrefix(PropertyValue.class);
-
-  /**
-   * {@link PropertyValue} prefix declaration to use in SPARQL queries.
-   */
-  public static final String WATCH_PROPERTY_VALUE_PREFIX_DECL = getResourcePrefixDecl(PropertyValue.class);
-
-  /**
-   * {@link Source} prefix to use in SPARQL queries.
-   */
-  public static final String WATCH_SOURCE_PREFIX = getResourcePrefix(Source.class);
-
-  /**
-   * {@link Source} prefix declaration to use in SPARQL queries.
-   */
-  public static final String WATCH_SOURCE_PREFIX_DECL = getResourcePrefixDecl(Source.class);
-
-  /**
-   * {@link SourceAdaptor} prefix to use in SPARQL queries.
-   */
-  public static final String WATCH_SOURCE_ADAPTOR_PREFIX = getResourcePrefix(SourceAdaptor.class);
-
-  /**
-   * {@link Source} prefix declaration to use in SPARQL queries.
-   */
-  public static final String WATCH_SOURCE_ADAPTOR_PREFIX_DECL = getResourcePrefixDecl(SourceAdaptor.class);
-
-  /**
    * List of all defined prefixes declarations to help creating SPARQL queries.
    */
-  public static final String PREFIXES_DECL = XSD_PREFIX_DECL + RDF_PREFIX_DECL + WATCH_PREFIX_DECL
-    + WATCH_ENTITY_TYPE_PREFIX_DECL + WATCH_PROPERTY_PREFIX_DECL + WATCH_ENTITY_PREFIX_DECL
-    + WATCH_PROPERTY_VALUE_PREFIX_DECL + WATCH_SOURCE_PREFIX_DECL + WATCH_SOURCE_ADAPTOR_PREFIX_DECL;
+  public static final String PREFIXES_DECL = XSD_PREFIX_DECL + RDF_PREFIX_DECL + WATCH_PREFIX_DECL;
 
   /**
    * String separator for IDs. Not using '/' because it does not behave well

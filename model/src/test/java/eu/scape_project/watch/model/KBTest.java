@@ -23,6 +23,7 @@ import thewebsemantic.binding.Jenabean;
 import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.dao.DOListener;
 import eu.scape_project.watch.dao.EntityDAO;
+import eu.scape_project.watch.dao.EntityTypeDAO;
 import eu.scape_project.watch.dao.PropertyDAO;
 import eu.scape_project.watch.domain.AsyncRequest;
 import eu.scape_project.watch.domain.DataType;
@@ -1103,14 +1104,15 @@ public class KBTest {
     Assert.assertTrue(results1.contains(type));
 
     // MAKE PROPERTY REQUEST
-    final String query2 = "?s watch:type watch-EntityType:" + type.getName();
+    final String query2 = "?s watch:type " + EntityTypeDAO.getEntityTypeRDFId(type);
     final RequestTarget target2 = RequestTarget.PROPERTY;
     @SuppressWarnings("unchecked")
     final List<PropertyValue> results2 = (List<PropertyValue>) DAO.REQUEST.query(target2, query2, 0, 100);
     Assert.assertTrue(results2.contains(property));
 
     // MAKE ENTITY REQUEST
-    final String query3 = "?s watch:type watch-EntityType:" + type.getName();
+    final String query3 = "?s watch:type " + EntityTypeDAO.getEntityTypeRDFId(type);
+    
     final RequestTarget target3 = RequestTarget.ENTITY;
     @SuppressWarnings("unchecked")
     final List<PropertyValue> results3 = (List<PropertyValue>) DAO.REQUEST.query(target3, query3, 0, 100);

@@ -8,7 +8,6 @@ import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.domain.SourceAdaptor;
-import eu.scape_project.watch.utils.KBUtils;
 
 /**
  * {@link Measurement} Data Access Object.
@@ -114,7 +113,7 @@ public final class MeasurementDAO extends AbstractDO<Measurement> {
    * @return The query string.
    */
   private static String getListByAdaptorQueryString(final SourceAdaptor adaptor) {
-    return "?s watch:adaptor " + KBUtils.WATCH_SOURCE_ADAPTOR_PREFIX + adaptor.getId();
+    return "?s watch:adaptor " + SourceAdaptorDAO.getSourceAdaptorRDFId(adaptor);
   }
 
   /**
@@ -152,7 +151,7 @@ public final class MeasurementDAO extends AbstractDO<Measurement> {
    * @return The query string.
    */
   private static String getListBySourceQueryString(final Source source) {
-    return "?s watch:adaptor ?adaptor . ?adaptor watch:source " + KBUtils.WATCH_SOURCE_PREFIX + source.getName();
+    return "?s watch:adaptor ?adaptor . ?adaptor watch:source " + SourceDAO.getSourceRDFId(source);
   }
 
   /**
@@ -190,7 +189,7 @@ public final class MeasurementDAO extends AbstractDO<Measurement> {
    * @return The query string.
    */
   private static String getListByPropertyQueryString(final Property property) {
-    return "?s watch:propertyValue ?value . ?value watch:property " + KBUtils.WATCH_PROPERTY_PREFIX + property.getId();
+    return "?s watch:propertyValue ?value . ?value watch:property " + PropertyDAO.getPropertyRDFId(property);
   }
 
   /**

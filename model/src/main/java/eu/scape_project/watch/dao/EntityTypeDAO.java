@@ -25,6 +25,17 @@ public final class EntityTypeDAO extends AbstractDO<EntityType> {
   }
 
   /**
+   * Get the {@link EntityType} complete RDF Id to use in SPARQL query.
+   * 
+   * @param type
+   *          The entity type
+   * @return the complete RDF Id, using namespace prefix.
+   */
+  public static String getEntityTypeRDFId(final EntityType type) {
+    return getEntityTypeRDFId(type.getName());
+  }
+
+  /**
    * No other instances other then in {@link DAO}.
    */
   protected EntityTypeDAO() {

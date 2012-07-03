@@ -15,6 +15,17 @@ import eu.scape_project.watch.utils.KBUtils;
 public final class SourceAdaptorDAO extends AbstractDO<SourceAdaptor> {
 
   /**
+   * Get the complete Source Adaptor RDF Id to use in SPARQL.
+   * 
+   * @param adaptor
+   *          The name of the source adaptor.
+   * @return The complete Source Adaptor RDF Id using namescape prefix
+   */
+  public static String getSourceAdaptorRDFId(final SourceAdaptor adaptor) {
+    return "<" + KBUtils.WATCH_NS + SourceAdaptor.class.getSimpleName() + "/" + adaptor.getId() + ">";
+  }
+
+  /**
    * No other instances other then in {@link DAO}.
    */
   protected SourceAdaptorDAO() {
@@ -74,7 +85,7 @@ public final class SourceAdaptorDAO extends AbstractDO<SourceAdaptor> {
    * @return A query string that binds the source.
    */
   private static String getListBySourceQueryString(final Source source) {
-    return "?s watch:source " + KBUtils.WATCH_SOURCE_PREFIX + source.getName();
+    return "?s watch:source " + SourceDAO.getSourceRDFId(source);
   }
 
   /**
@@ -153,5 +164,5 @@ public final class SourceAdaptorDAO extends AbstractDO<SourceAdaptor> {
   }
 
   // TODO list and count of source adaptor instances (same name and version)
-  
+
 }

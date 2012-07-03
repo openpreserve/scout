@@ -27,6 +27,7 @@ import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.test.framework.JerseyTest;
 import com.sun.jersey.test.framework.WebAppDescriptor;
 
+import eu.scape_project.watch.dao.EntityDAO;
 import eu.scape_project.watch.dao.PropertyDAO;
 import eu.scape_project.watch.domain.AsyncRequest;
 import eu.scape_project.watch.domain.DictionaryItem;
@@ -331,7 +332,8 @@ public class CoreRestTest extends JerseyTest {
 
   /**
    * Test {@link PropertyValue} CRUD operations using JSON output format.
-   * @throws UnsupportedDataTypeException 
+   * 
+   * @throws UnsupportedDataTypeException
    * 
    * @see #propertyValueCRUD(eu.scape_project.watch.rest.WatchClient.Format)
    */
@@ -342,7 +344,8 @@ public class CoreRestTest extends JerseyTest {
 
   /**
    * Test {@link PropertyValue} CRUD operations using XML output format.
-   * @throws UnsupportedDataTypeException 
+   * 
+   * @throws UnsupportedDataTypeException
    * 
    * @see #propertyValueCRUD(eu.scape_project.watch.rest.WatchClient.Format)
    */
@@ -356,7 +359,7 @@ public class CoreRestTest extends JerseyTest {
    * 
    * @param format
    *          The output format
-   * @throws UnsupportedDataTypeException 
+   * @throws UnsupportedDataTypeException
    */
   public void propertyValueCRUD(final WatchClient.Format format) throws UnsupportedDataTypeException {
     final WatchClient client = new WatchClient(this.resource, format);
@@ -459,13 +462,13 @@ public class CoreRestTest extends JerseyTest {
     final PropertyValue propertyValue = client.createPropertyValue(entity.getName(), property.getName(), value);
 
     // DO TESTS
-    final List<EntityType> typeList = client.getRequest(EntityType.class, "watch-Entity:" + entityName
+    final List<EntityType> typeList = client.getRequest(EntityType.class, EntityDAO.getEntityRDFId(entityName)
       + " watch:type ?s", 0, 100);
 
     Assert.assertTrue(typeList.contains(entitytype));
 
-    final List<PropertyValue> pvList = client.getRequest(PropertyValue.class, "?s watch:entity watch-Entity:"
-      + entityName, 0, 100);
+    final List<PropertyValue> pvList = client.getRequest(PropertyValue.class,
+      "?s watch:entity " + EntityDAO.getEntityRDFId(entityName), 0, 100);
 
     Assert.assertTrue(pvList.contains(propertyValue));
 

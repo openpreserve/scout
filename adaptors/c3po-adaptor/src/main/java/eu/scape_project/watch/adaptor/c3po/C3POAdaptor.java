@@ -1,27 +1,11 @@
 package eu.scape_project.watch.adaptor.c3po;
 
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_COLLECTION_SIZE;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_DESCRIPTION;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_DISTRIBUTION;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_NAME;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_AVG_SIZE;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_COUNT;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_MAX_SIZE;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_MIN_SIZE;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_CNF;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_DEFAULT;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_DESC;
-
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import eu.scape_project.watch.adaptor.c3po.client.C3POClient;
 import eu.scape_project.watch.adaptor.c3po.client.C3POClientInterface;
@@ -45,6 +29,21 @@ import eu.scape_project.watch.interfaces.ResultInterface;
 import eu.scape_project.watch.utils.ConfigParameter;
 import eu.scape_project.watch.utils.exceptions.InvalidParameterException;
 import eu.scape_project.watch.utils.exceptions.PluginException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_COLLECTION_SIZE;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_DESCRIPTION;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_DISTRIBUTION;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_NAME;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_AVG_SIZE;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_COUNT;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_MAX_SIZE;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_MIN_SIZE;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_CNF;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_DEFAULT;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_DESC;
 
 /**
  * A watch conforming adaptor for a collection profile source called c3po.
@@ -340,22 +339,6 @@ public class C3POAdaptor implements AdaptorPluginInterface {
     for (Command cmd : this.commands.values()) {
       cmd.setReader(reader);
     }
-  }
-
-  /**
-   * A convenience method that generates a list with the property name.
-   * 
-   * @param property
-   *          the property.
-   * @return the list with the name of the property.
-   */
-  private List<String> generatePropertyExpansionList(final Property property) {
-    List<String> props = new ArrayList<String>();
-    if (property != null) {
-      LOG.debug("generating parameter for property {}", property.getName());
-      props = Arrays.asList(property.getName());
-    }
-    return props;
   }
 
 }

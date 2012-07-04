@@ -37,7 +37,7 @@ public class PronomServiceCommunicator {
   /**
    * The endpoint.
    */
-  public URL url;
+  private URL url;
 
   /**
    * Creates a communicator for the specified url.

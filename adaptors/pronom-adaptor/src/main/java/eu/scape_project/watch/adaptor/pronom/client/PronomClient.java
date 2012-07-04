@@ -1,9 +1,8 @@
 package eu.scape_project.watch.adaptor.pronom.client;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.ProtocolException;
 
+import eu.scape_project.watch.adaptor.pronom.common.CommunicationException;
 import eu.scape_project.watch.adaptor.pronom.common.OutputFormat;
 
 /**
@@ -39,14 +38,11 @@ public class PronomClient {
    * @param sparql
    *          the query to submit.
    * @return the result of the query.
-   * @throws ProtocolException
-   *           if something goes wrong during the communication with the
-   *           endpoint.
-   * @throws IOException
-   *           if something goes wrong during the communication with the
-   *           endpoint.
+   * 
+   * @throws CommunicationException
+   *           if the endpoint throws an exception.
    */
-  public String query(final String sparql) throws ProtocolException, IOException {
+  public String query(final String sparql) throws CommunicationException {
     return query(sparql, OutputFormat.JSON);
   }
 
@@ -59,14 +55,11 @@ public class PronomClient {
    * @param format
    *          the response format.
    * @return the result of the query.
-   * @throws ProtocolException
-   *           if something goes wrong during the communication with the
-   *           endpoint.
-   * @throws IOException
-   *           if something goes wrong during the communication with the
-   *           endpoint.
+   * 
+   * @throws CommunicationException
+   *           if the endpoint throws an exception.
    */
-  public String query(String sparql, OutputFormat format) throws ProtocolException, IOException {
+  public String query(String sparql, OutputFormat format) throws CommunicationException {
     return query(sparql, format, 10, 0);
   }
 
@@ -82,15 +75,11 @@ public class PronomClient {
    * @param o
    *          the offset.
    * @return the result of the query.
-   * @throws ProtocolException
-   *           if something goes wrong during the communication with the
-   *           endpoint.
-   * @throws IOException
-   *           if something goes wrong during the communication with the
-   *           endpoint.
+   * 
+   * @throws CommunicationException
+   *           if the endpoint throws an exception.
    */
-  public String query(final String s, final OutputFormat fmt, final int l, final int o) throws ProtocolException,
-      IOException {
+  public String query(final String s, final OutputFormat fmt, final int l, final int o) throws CommunicationException {
     final String format = fmt.name().toLowerCase();
     final String query = this.buildQuery(s, l, o);
 

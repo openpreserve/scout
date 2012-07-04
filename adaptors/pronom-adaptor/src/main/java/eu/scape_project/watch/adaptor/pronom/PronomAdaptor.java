@@ -4,19 +4,15 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import eu.scape_project.watch.adaptor.pronom.client.PronomClient;
 import eu.scape_project.watch.adaptor.pronom.client.PronomServiceCommunicator;
+import eu.scape_project.watch.adaptor.pronom.common.CommunicationException;
 import eu.scape_project.watch.adaptor.pronom.common.JSONResultParser;
 import eu.scape_project.watch.adaptor.pronom.common.OutputFormat;
 import eu.scape_project.watch.adaptor.pronom.common.PronomResult;
@@ -29,6 +25,10 @@ import eu.scape_project.watch.interfaces.ResultInterface;
 import eu.scape_project.watch.utils.ConfigParameter;
 import eu.scape_project.watch.utils.exceptions.InvalidParameterException;
 import eu.scape_project.watch.utils.exceptions.PluginException;
+
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The Pronom Adaptor queries a PRONOM registry and parses the formats and their
@@ -114,7 +114,7 @@ public class PronomAdaptor implements AdaptorPluginInterface {
       this.config = new HashMap<String, String>();
       this.defaultConfig = new ArrayList<ConfigParameter>();
       this.defaultConfig.add(new ConfigParameter(CNF_PRONOM_BATCH, CNF_PRONOM_BATCH_DEFAULT,
-          CNF_PRONOM_BATCH_DESCRIPTION, false));
+        CNF_PRONOM_BATCH_DESCRIPTION, false));
 
       for (final ConfigParameter cp : this.defaultConfig) {
         this.config.put(cp.getKey(), cp.getValue());
@@ -248,12 +248,8 @@ public class PronomAdaptor implements AdaptorPluginInterface {
 
       return new PronomResult(result);
 
-    } catch (ProtocolException e) {
-      LOG.error("A protocol exception occurred while querying the pronom service '{}'", e.getMessage());
-      throw new PluginException(e);
-
-    } catch (IOException e) {
-      LOG.error("An IO error occurred while querying the pronom service '{}'", e.getMessage());
+    } catch (CommunicationException e) {
+      LOG.error("A communication exception occurred while querying the pronom service '{}'", e.getMessage());
       throw new PluginException(e);
     }
 

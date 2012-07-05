@@ -3,12 +3,11 @@ package eu.scape_project.watch.dao;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.EntityType;
-import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.utils.KBUtils;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * {@link Entity} data access object.

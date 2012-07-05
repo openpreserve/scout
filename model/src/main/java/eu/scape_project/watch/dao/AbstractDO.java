@@ -1,9 +1,16 @@
 package eu.scape_project.watch.dao;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import thewebsemantic.NotFoundException;
+import thewebsemantic.Sparql;
+import thewebsemantic.binding.Jenabean;
+import thewebsemantic.binding.RdfBean;
 
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
@@ -15,15 +22,6 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Literal;
 
 import eu.scape_project.watch.utils.KBUtils;
-
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import thewebsemantic.NotFoundException;
-import thewebsemantic.Sparql;
-import thewebsemantic.binding.Jenabean;
-import thewebsemantic.binding.RdfBean;
 
 /**
  * Abstract class to base Data Object classes creation.

@@ -23,7 +23,6 @@ import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
 
-
 /**
  * Each Property Value is the atomic measurement of a {@link Property} for an
  * {@link Entity} measured in a specific point in time. The moment in time is
@@ -248,7 +247,8 @@ public class PropertyValue extends RdfBean<PropertyValue> {
    *           the {@link DataType} defined by the class.
    */
   @SuppressWarnings("unchecked")
-  public void setValue(final Object value) throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
+  public final void setValue(final Object value) throws UnsupportedDataTypeException,
+    InvalidJavaClassForDataTypeException {
 
     if (property == null || property.getDatatype() == null) {
       throw new UnsupportedDataTypeException(null);
@@ -295,7 +295,7 @@ public class PropertyValue extends RdfBean<PropertyValue> {
         break;
       case DATE:
         if (value instanceof Date) {
-          dateValue = (Date) value;
+          dateValue = (Date) ((Date) value).clone();
         } else {
           throw new InvalidJavaClassForDataTypeException(value, datatype);
         }

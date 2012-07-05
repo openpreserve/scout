@@ -91,8 +91,7 @@ public class KBUtilsTest {
 
     final ByteArrayOutputStream outb = new ByteArrayOutputStream();
     final PrintStream outp = new PrintStream(outb);
-    System.setOut(outp);
-    KBUtils.printStatements();
+    KBUtils.printStatements(outp);
 
     Assert.assertTrue(outb.size() > 0);
 

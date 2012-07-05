@@ -78,7 +78,7 @@ public final class DAO {
   /**
    * Map of listeners for each class.
    */
-  private static final Map<Class<? extends RdfBean<?>>, List<DOListener<? extends RdfBean<?>>>> listeners = new HashMap<Class<? extends RdfBean<?>>, List<DOListener<? extends RdfBean<?>>>>();
+  private static final Map<Class<? extends RdfBean<?>>, List<DOListener<? extends RdfBean<?>>>> LISTENERS = new HashMap<Class<? extends RdfBean<?>>, List<DOListener<? extends RdfBean<?>>>>();
 
   /**
    * Add a listeners to data object events.
@@ -93,13 +93,13 @@ public final class DAO {
    *          The listener handler.
    */
   public static <T extends RdfBean<T>> void addDOListener(final Class<T> classTolisten, final DOListener<T> listener) {
-    List<DOListener<? extends RdfBean<?>>> classListeners = listeners.get(classTolisten);
+    List<DOListener<? extends RdfBean<?>>> classListeners = LISTENERS.get(classTolisten);
     if (classListeners != null) {
       classListeners.add(listener);
     } else {
       classListeners = new ArrayList<DOListener<? extends RdfBean<?>>>();
       classListeners.add(listener);
-      listeners.put(classTolisten, classListeners);
+      LISTENERS.put(classTolisten, classListeners);
     }
   }
 
@@ -116,13 +116,13 @@ public final class DAO {
    *          The listener to remove.
    */
   public static <T extends RdfBean<T>> void removeDOListener(final Class<T> classTolisten, final DOListener<T> listener) {
-    final List<DOListener<? extends RdfBean<?>>> classListeners = listeners.get(classTolisten);
+    final List<DOListener<? extends RdfBean<?>>> classListeners = LISTENERS.get(classTolisten);
 
     if (classListeners != null) {
       classListeners.remove(listener);
 
       if (classListeners.isEmpty()) {
-        listeners.remove(classTolisten);
+        LISTENERS.remove(classTolisten);
       }
     }
   }
@@ -136,7 +136,7 @@ public final class DAO {
    *          The created or updated resource.
    */
   public static <T extends RdfBean<T>> void fireOnUpdated(final T object) {
-    final List<DOListener<? extends RdfBean<?>>> classListeners = listeners.get(object.getClass());
+    final List<DOListener<? extends RdfBean<?>>> classListeners = LISTENERS.get(object.getClass());
 
     if (classListeners != null) {
       for (DOListener<? extends RdfBean<?>> listener : classListeners) {
@@ -156,7 +156,7 @@ public final class DAO {
    *          The removed object.
    */
   public static <T extends RdfBean<T>> void fireOnRemoved(final T object) {
-    final List<DOListener<? extends RdfBean<?>>> classListeners = listeners.get(object.getClass());
+    final List<DOListener<? extends RdfBean<?>>> classListeners = LISTENERS.get(object.getClass());
 
     if (classListeners != null) {
       for (DOListener<? extends RdfBean<?>> listener : classListeners) {

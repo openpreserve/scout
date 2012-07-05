@@ -2,8 +2,6 @@ package eu.scape_project.watch.dao;
 
 import java.util.List;
 
-import eu.scape_project.watch.domain.Entity;
-import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.utils.KBUtils;
 

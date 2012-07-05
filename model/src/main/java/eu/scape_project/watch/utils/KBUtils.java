@@ -2,6 +2,7 @@ package eu.scape_project.watch.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import thewebsemantic.binding.Jenabean;
-import thewebsemantic.binding.RdfBean;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.RDFNode;
@@ -210,9 +210,22 @@ public final class KBUtils {
   public static final String ID_SEPARATOR = "-";
 
   /**
-   * Debugging method that prints all statements in triple store.
+   * Debugging method that prints all statements in triple store to standard
+   * output.
    */
   public static void printStatements() {
+    if (System.out != null) {
+      printStatements(System.out);
+    }
+  }
+
+  /**
+   * Debugging method that prints all statements in triple store.
+   * 
+   * @param out
+   *          The output stream to where print the statements.
+   */
+  public static void printStatements(final PrintStream out) {
 
     final StmtIterator statements = Jenabean.instance().model().listStatements();
     try {
@@ -245,7 +258,7 @@ public final class KBUtils {
         }
         if (sinfo != null && pinfo != null && oinfo != null) {
           // LOG.debug("({}, {}, {})", new Object[] {sinfo, pinfo, oinfo});
-          System.out.println(String.format("(%1$s,%2$s,%3$s)", sinfo, pinfo, oinfo));
+          out.println(String.format("(%1$s,%2$s,%3$s)", sinfo, pinfo, oinfo));
         }
       }
     } finally {

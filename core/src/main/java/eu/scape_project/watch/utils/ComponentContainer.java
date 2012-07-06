@@ -2,7 +2,7 @@ package eu.scape_project.watch.utils;
 
 import eu.scape_project.watch.interfaces.MonitorInterface;
 import eu.scape_project.watch.monitor.CentralMonitor;
-import eu.scape_project.watch.scheduling.CoreScheduler;
+import eu.scape_project.watch.scheduling.quartz.QuartzScheduler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ public class ComponentContainer {
   /**
    * CoreScheduler
    */
-  private CoreScheduler coreScheduler = null;
+  private QuartzScheduler coreScheduler = null;
 
   /**
    * CentralMonitor
@@ -46,7 +46,7 @@ public class ComponentContainer {
   public ComponentContainer(boolean flag) {
     this();
     if (flag) {
-      coreScheduler = new CoreScheduler();
+      coreScheduler = new QuartzScheduler();
       adaptorLoader = new AdaptorLoader();
       centralMonitor = new CentralMonitor();
     }
@@ -90,11 +90,11 @@ public class ComponentContainer {
     }
   }
 
-  public CoreScheduler getCoreScheduler() {
+  public QuartzScheduler getCoreScheduler() {
     return coreScheduler;
   }
 
-  public void setCoreScheduler(CoreScheduler coreScheduler) {
+  public void setCoreScheduler(QuartzScheduler coreScheduler) {
     this.coreScheduler = coreScheduler;
   }
 

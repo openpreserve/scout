@@ -12,6 +12,8 @@ import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 
+import eu.scape_project.watch.scheduling.quartz.SimpleAdaptorJob;
+
 public class SimpleAdaptorJobTest {
 
   private String testProperties = "adaptor.name=test_adaptor\n" +

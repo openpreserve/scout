@@ -13,7 +13,7 @@ import eu.scape_project.watch.interfaces.MonitorInterface;
 import eu.scape_project.watch.monitor.CentralMonitor;
 import eu.scape_project.watch.monitor.CollectionProfilerMonitor;
 import eu.scape_project.watch.notification.NotificationService;
-import eu.scape_project.watch.scheduling.CoreScheduler;
+import eu.scape_project.watch.scheduling.quartz.QuartzScheduler;
 import eu.scape_project.watch.utils.AdaptorLoader;
 import eu.scape_project.watch.utils.ComponentContainer;
 import eu.scape_project.watch.utils.ConfigUtils;
@@ -66,7 +66,7 @@ public class ApplicationStartupListener implements ServletContextListener {
     cm.registerToAsyncRequest();
     cm.setNotificationService(NotificationService.getInstance());
 
-    componentContainer.setCoreScheduler(new CoreScheduler());
+    componentContainer.setCoreScheduler(new QuartzScheduler());
     componentContainer.setCentralMonitor(cm);
     componentContainer.setAdaptorLoader(new AdaptorLoader());
     componentContainer.addMonitor(monitor);

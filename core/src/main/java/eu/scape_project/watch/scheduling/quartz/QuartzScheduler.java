@@ -1,6 +1,10 @@
-package eu.scape_project.watch.scheduling;
+package eu.scape_project.watch.scheduling.quartz;
+
+import java.util.Map;
+import java.util.Properties;
 
 import org.quartz.JobDetail;
+import org.quartz.JobKey;
 import org.quartz.JobListener;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -11,30 +15,33 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.scape_project.watch.interfaces.AdaptorJobInterface;
+import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
 import eu.scape_project.watch.interfaces.MonitorInterface;
+import eu.scape_project.watch.scheduling.SchedulerInterface;
 
 /**
- * This class acts as an adaptor to the functionality provided by a Quartz
- * Scheduler. It offers methods that are needed by other classes for scheduling
- * jobs. Other classes should use this class for scheduling new jobs or
- * rescheduling already existing ones and not directly Scheduler class.
+ * QuartzScheduler is an implementation of the SchedulerInterface. This implementation uses Quartz Scheduler 
+ * (http://quartz-scheduler.org/) 
  * 
  * @author kresimir
  * 
  */
-public class CoreScheduler {
+public class QuartzScheduler implements SchedulerInterface {
 
-  private static final Logger LOG = LoggerFactory.getLogger(CoreScheduler.class);
+  private static final Logger LOG = LoggerFactory.getLogger(QuartzScheduler.class);
 
   /**
    * Quartz Scheduler interface
    */
   private Scheduler scheduler;
 
+  
+  private Map<AdaptorPluginInterface, JobKey> adaptors; 
+  
   /**
    * Default constructor
    */
-  public CoreScheduler() {
+  public QuartzScheduler() {
     try {
       scheduler = StdSchedulerFactory.getDefaultScheduler();
     } catch (SchedulerException e) {
@@ -80,6 +87,44 @@ public class CoreScheduler {
     }
   }
 
+  
+  @Override
+  public void start(AdaptorPluginInterface adaptor, Properties properties) {
+    if (!adaptors.containsKey(adaptor)) {
+      
+    }
+  }
+
+  @Override
+  public void stop(AdaptorPluginInterface adptor) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void resume(AdaptorPluginInterface adptor) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void reschedule(AdaptorPluginInterface adaptor, Properties properties) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void execute(AdaptorPluginInterface adaptor) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void delete(AdaptorPluginInterface adaptor) {
+    // TODO Auto-generated method stub
+    
+  }
+  
   /**
    * Clear all scheduled Jobs.
    */
@@ -92,6 +137,17 @@ public class CoreScheduler {
   }
   
   
+  
+  
+  
+  
+  
+  
+  
+  /*
+   * THIS METHODS SHALL BE DELETED
+   */
+   
   /**
    * Schedule an new job providing JobDetail and Trigger. 
    * @param jobDetail
@@ -158,6 +214,8 @@ public class CoreScheduler {
       LOG.error("Cannot add new Trigger to a Scheduler"); 
     }
   }
+
+  
 }
 
 

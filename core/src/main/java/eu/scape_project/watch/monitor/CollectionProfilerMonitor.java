@@ -20,7 +20,7 @@ import eu.scape_project.watch.domain.Trigger;
 import eu.scape_project.watch.interfaces.AdaptorJobInterface;
 import eu.scape_project.watch.interfaces.MonitorInterface;
 import eu.scape_project.watch.interfaces.ResultInterface;
-import eu.scape_project.watch.scheduling.CoreScheduler;
+import eu.scape_project.watch.scheduling.quartz.QuartzScheduler;
 
 public class CollectionProfilerMonitor implements MonitorInterface {
 
@@ -30,7 +30,7 @@ public class CollectionProfilerMonitor implements MonitorInterface {
 
   private CentralMonitor centralMonitor;
 
-  private CoreScheduler coreScheduler;
+  private QuartzScheduler coreScheduler;
 
   private List<String> aRequestUUIDS;
 
@@ -113,7 +113,7 @@ public class CollectionProfilerMonitor implements MonitorInterface {
   }
 
   @Override
-  public void registerScheduler(CoreScheduler cs) {
+  public void registerScheduler(QuartzScheduler cs) {
     coreScheduler = cs;
 
   }

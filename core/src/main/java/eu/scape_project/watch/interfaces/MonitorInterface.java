@@ -4,7 +4,7 @@ import org.quartz.JobListener;
 
 import eu.scape_project.watch.domain.AsyncRequest;
 import eu.scape_project.watch.monitor.CentralMonitor;
-import eu.scape_project.watch.scheduling.CoreScheduler;
+import eu.scape_project.watch.scheduling.quartz.QuartzScheduler;
 
 /**
  * Interface that will be implemented by all Monitor components in the system.
@@ -23,7 +23,7 @@ public interface MonitorInterface extends JobListener {
    * Register a CoreScheduler instance in to the Monitor instance. Soem Monitors will know how to reschedule AdaptorJob-s. 
    * @param cs - CoreScheduler
    */
-  void registerScheduler(CoreScheduler cs);
+  void registerScheduler(QuartzScheduler cs);
   
   /**
    * Returns the name of a group that a specific Monitor monitors.  

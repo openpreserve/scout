@@ -1,4 +1,4 @@
-package eu.scape_project.watch.scheduling;
+package eu.scape_project.watch.scheduling.quartz;
 
 import java.util.Iterator;
 import java.util.Properties;
@@ -11,6 +11,7 @@ import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 public class SimpleAdaptorJob extends AdaptorJob {
 

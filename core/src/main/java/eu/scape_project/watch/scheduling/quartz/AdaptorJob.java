@@ -1,4 +1,4 @@
-package eu.scape_project.watch.scheduling;
+package eu.scape_project.watch.scheduling.quartz;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

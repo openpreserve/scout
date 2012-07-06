@@ -2,7 +2,7 @@ package eu.scape_project.watch.core;
 
 import eu.scape_project.watch.interfaces.MonitorInterface;
 import eu.scape_project.watch.monitor.CentralMonitor;
-import eu.scape_project.watch.scheduling.CoreScheduler;
+import eu.scape_project.watch.scheduling.quartz.QuartzScheduler;
 import eu.scape_project.watch.utils.AdaptorLoader;
 import eu.scape_project.watch.utils.ComponentContainer;
 
@@ -14,7 +14,7 @@ public class ComponentContainerTest {
   @Test
   public void testInit() {
     ComponentContainer cc = new ComponentContainer();
-    CoreScheduler mockCS = Mockito.mock(CoreScheduler.class);
+    QuartzScheduler mockCS = Mockito.mock(QuartzScheduler.class);
     AdaptorLoader mockAL = Mockito.mock(AdaptorLoader.class);
 
     cc.setCoreScheduler(mockCS);
@@ -29,7 +29,7 @@ public class ComponentContainerTest {
   @Test
   public void testDestroy() {
     ComponentContainer cc = new ComponentContainer();
-    CoreScheduler mockCS = Mockito.mock(CoreScheduler.class);
+    QuartzScheduler mockCS = Mockito.mock(QuartzScheduler.class);
     AdaptorLoader mockAL = Mockito.mock(AdaptorLoader.class);
 
     cc.setCoreScheduler(mockCS);
@@ -46,7 +46,7 @@ public class ComponentContainerTest {
   public void testAddMonitor() {
     ComponentContainer cc = new ComponentContainer();
     CentralMonitor mockCM = Mockito.mock(CentralMonitor.class);
-    CoreScheduler mockCS = Mockito.mock(CoreScheduler.class);
+    QuartzScheduler mockCS = Mockito.mock(QuartzScheduler.class);
     
     cc.setCentralMonitor(mockCM);
     cc.setCoreScheduler(mockCS);

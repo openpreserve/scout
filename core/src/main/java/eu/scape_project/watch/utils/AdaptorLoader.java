@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.scape_project.watch.interfaces.AdaptorJobInterface;
-import eu.scape_project.watch.scheduling.CoreScheduler;
+import eu.scape_project.watch.scheduling.quartz.QuartzScheduler;
 
 /**
  * Class that enables loading adaptors with their config dynamically.
@@ -40,13 +40,13 @@ public class AdaptorLoader {
 
   private Timer loaderTimer;
 
-  private CoreScheduler coreScheduler;
+  private QuartzScheduler coreScheduler;
 
-  public CoreScheduler getCoreScheduler() {
+  public QuartzScheduler getCoreScheduler() {
     return coreScheduler;
   }
 
-  public void setCoreScheduler(CoreScheduler coreScheduler) {
+  public void setCoreScheduler(QuartzScheduler coreScheduler) {
     this.coreScheduler = coreScheduler;
   }
 

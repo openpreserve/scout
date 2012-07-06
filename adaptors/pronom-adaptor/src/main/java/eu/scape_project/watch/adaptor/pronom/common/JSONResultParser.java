@@ -34,6 +34,12 @@ public class JSONResultParser {
 
   private static final Logger LOG = LoggerFactory.getLogger(JSONResultParser.class);
 
+  private ResultProcessingDispatcher processDispatcher;
+
+  public JSONResultParser(final ResultProcessingDispatcher dispatcher) {
+    this.processDispatcher = dispatcher;
+  }
+
   /**
    * Parses the result string from the prepared query and stores the bindings
    * into {@link PropertyValue} objects.
@@ -52,17 +58,21 @@ public class JSONResultParser {
 
     for (int i = 0; i < bindings.size(); i++) {
       final JSONObject binding = bindings.getJSONObject(i);
-      final Entity format = new Entity(formattype, binding.getJSONObject(vars.getString(0)).getString("value"));
+      final boolean process = this.processDispatcher.process(binding.toString());
 
-      LOG.debug("parsing values for format: '{}'", format.getName());
+      if (process) {
+        final Entity format = new Entity(formattype, binding.getJSONObject(vars.getString(0)).getString("value"));
+        LOG.debug("parsing values for format: '{}'", format.getName());
 
-      for (int j = 1; j < vars.size(); j++) {
-        final String name = vars.getString(j);
-        final PropertyValue value = this.getPropertyValue(binding, name, formattype);
-        if (value != null) {
-          LOG.trace("value for property '{}' parsed successfully: '{}'", value.getProperty().getName(), value.getValue());
-          value.setEntity(format);
-          result.add(value);
+        for (int j = 1; j < vars.size(); j++) {
+          final String name = vars.getString(j);
+          final PropertyValue value = this.getPropertyValue(binding, name, formattype);
+          if (value != null) {
+            LOG.trace("value for property '{}' parsed successfully: '{}'", value.getProperty().getName(),
+                value.getValue());
+            value.setEntity(format);
+            result.add(value);
+          }
         }
       }
     }

@@ -1,5 +1,6 @@
 package eu.scape_project.watch.adaptor.pronom;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,12 +11,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import eu.scape_project.watch.adaptor.pronom.client.PronomClient;
 import eu.scape_project.watch.adaptor.pronom.client.PronomServiceCommunicator;
 import eu.scape_project.watch.adaptor.pronom.common.CommunicationException;
 import eu.scape_project.watch.adaptor.pronom.common.JSONResultParser;
 import eu.scape_project.watch.adaptor.pronom.common.OutputFormat;
 import eu.scape_project.watch.adaptor.pronom.common.PronomResult;
+import eu.scape_project.watch.adaptor.pronom.common.ResultProcessingDispatcher;
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
@@ -25,10 +31,6 @@ import eu.scape_project.watch.interfaces.ResultInterface;
 import eu.scape_project.watch.utils.ConfigParameter;
 import eu.scape_project.watch.utils.exceptions.InvalidParameterException;
 import eu.scape_project.watch.utils.exceptions.PluginException;
-
-import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * The Pronom Adaptor queries a PRONOM registry and parses the formats and their
@@ -71,9 +73,27 @@ public class PronomAdaptor implements AdaptorPluginInterface {
   private static final String CNF_PRONOM_BATCH_DESCRIPTION = "The default batch with which the data is queried";
 
   /**
+   * The key to the cache file property. Provides the path the to cache file.
+   */
+  private static final String CNF_CACHE_FILE_PATH = "pronom.cache.file.path";
+
+  /**
+   * The default path of the cache file. Currently a file called pronomcache.txt
+   * in hidden scout folder in the home directory.
+   */
+  private static final String CNF_CACHE_FILE_PATH_DEFAULT = System.getProperty("user.home") + File.separator + ".scout"
+      + File.separator + "pronomcache.txt";
+
+  /**
+   * The description of the file cache property.
+   */
+  private static final String CNF_CACHE_FILE_PATH_DESCRIPTION = "The default path to a file used by "
+      + "this adaptor for partial result caching. The default is /user_dir/.scout/pronomcache.txt";
+
+  /**
    * The current version of this plugin.
    */
-  private static final String VERSION = "0.0.1";
+  private static final String VERSION = "0.0.2";
 
   /**
    * The name of this plugin.
@@ -114,7 +134,9 @@ public class PronomAdaptor implements AdaptorPluginInterface {
       this.config = new HashMap<String, String>();
       this.defaultConfig = new ArrayList<ConfigParameter>();
       this.defaultConfig.add(new ConfigParameter(CNF_PRONOM_BATCH, CNF_PRONOM_BATCH_DEFAULT,
-        CNF_PRONOM_BATCH_DESCRIPTION, false));
+          CNF_PRONOM_BATCH_DESCRIPTION, false));
+      this.defaultConfig.add(new ConfigParameter(CNF_CACHE_FILE_PATH, CNF_CACHE_FILE_PATH_DEFAULT,
+          CNF_CACHE_FILE_PATH_DESCRIPTION, true));
 
       for (final ConfigParameter cp : this.defaultConfig) {
         this.config.put(cp.getKey(), cp.getValue());
@@ -216,6 +238,8 @@ public class PronomAdaptor implements AdaptorPluginInterface {
   @Override
   public ResultInterface execute() throws PluginException {
     final String l = this.getParameterValues().get(PronomAdaptor.CNF_PRONOM_BATCH);
+    final String cache = this.getParameterValues().get(PronomAdaptor.CNF_CACHE_FILE_PATH);
+
     String query = "";
     int offset = 0;
     final int limit = Integer.parseInt(l);
@@ -233,7 +257,8 @@ public class PronomAdaptor implements AdaptorPluginInterface {
     }
 
     final List<PropertyValue> result = new ArrayList<PropertyValue>();
-    final JSONResultParser parser = new JSONResultParser();
+    final ResultProcessingDispatcher dispatcher = new ResultProcessingDispatcher(cache);
+    final JSONResultParser parser = new JSONResultParser(dispatcher);
 
     try {
       List<PropertyValue> parsed = null;

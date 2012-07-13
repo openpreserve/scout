@@ -309,7 +309,6 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
       // create new property value with a new version.
       final int version = getNextVersionNumber(entity, property);
       pv.setVersion(version);
-      pv.save();
       final Measurement measurement = new Measurement(pv, asOfDate, adaptor);
       measurement.save();
     } else {

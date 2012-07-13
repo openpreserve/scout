@@ -10,15 +10,12 @@
 	</appender>
 
 	<logger name="eu.scape_project">
-		<level value="DEBUG" />
-		<appender-ref ref="CONSOLE" />
+		<level value="INFO" />
 	</logger>
-	
-	 <!--<logger name="org.quartz" additivity="false">
-		<level value="DEBUG" />
-		<appender-ref ref="CONSOLE" />
-	</logger>-->
-	
+
+	<!--<logger name="org.quartz" additivity="false"> <level value="DEBUG" /> 
+		<appender-ref ref="CONSOLE" /> </logger> -->
+
 	<root>
 		<priority value="WARN" />
 		<appender-ref ref="CONSOLE" />

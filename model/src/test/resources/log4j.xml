@@ -11,7 +11,7 @@
 	</appender>
 
 	<logger name="eu.scape_project.watch">
-		<level value="TRACE" />
+		<level value="INFO" />
 	</logger>
 
 

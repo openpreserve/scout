@@ -36,11 +36,6 @@ import thewebsemantic.binding.RdfBean;
 public class PropertyValue extends RdfBean<PropertyValue> {
 
   /**
-   * Name of the XML element to use in all java attributes that are values.
-   */
-  private static final String VALUE_XML_ELEMENT = "value";
-
-  /**
    * A unique identifier.
    */
   @Id
@@ -50,54 +45,54 @@ public class PropertyValue extends RdfBean<PropertyValue> {
   /**
    * Value holder when type is {@link String}.
    */
-  @XmlElement(name = VALUE_XML_ELEMENT)
+  @XmlElement(name = "value")
   @JsonProperty("stringValue")
   private String stringValue;
 
   /**
    * Value holder when type is {@link Integer}.
    */
-  @XmlElement(name = VALUE_XML_ELEMENT)
+  @XmlElement(name = "value")
   @JsonProperty("integerValue")
   private Integer integerValue;
 
   /**
    * Value holder when type is {@link Float}.
    */
-  @XmlElement(name = VALUE_XML_ELEMENT)
+  @XmlElement(name = "value")
   @JsonProperty("floatValue")
   private Float floatValue;
 
   /**
    * Value holder when type is {@link Double}.
    */
-  @XmlElement(name = VALUE_XML_ELEMENT)
+  @XmlElement(name = "value")
   @JsonProperty("doubleValue")
   private Double doubleValue;
 
   /**
    * Value holder when type is {@link URI}.
    */
-  @XmlElement(name = VALUE_XML_ELEMENT)
+  @XmlElement(name = "value")
   @JsonProperty("uriValue")
   private URI uriValue;
 
   /**
    * Value holder when type is {@link Date}.
    */
-  @XmlElement(name = VALUE_XML_ELEMENT)
+  @XmlElement(name = "value")
   @JsonProperty("dateValue")
   private Date dateValue;
   /**
    * Value holder when type is {@link List<String>}.
    */
-  @XmlElement(name = VALUE_XML_ELEMENT)
+  @XmlElement(name = "value")
   @JsonProperty("stringListValue")
   private List<String> stringListValue = new ArrayList<String>();
   /**
    * Value holder when type is {@link List<DictionaryItem>}.
    */
-  @XmlElement(name = VALUE_XML_ELEMENT)
+  @XmlElement(name = "value")
   @JsonProperty("stringDictionaryValue")
   private List<DictionaryItem> stringDictionaryValue = new ArrayList<DictionaryItem>();
 

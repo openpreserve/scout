@@ -106,7 +106,7 @@ public class DataMerger {
     if (mergeRule != null) {
       mergeRule.mergePropertyValue(adaptor, propertyValue);
     } else {
-      defaultRule.mergePropertyValue(adaptor, propertyValue);
+      this.defaultRule.mergePropertyValue(adaptor, propertyValue);
     }
 
   }

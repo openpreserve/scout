@@ -483,7 +483,6 @@ public class KBTest {
       doublePropertyValue1, datePropertyValue1, uriPropertyValue1, stringListPropertyValue1,
       stringDictionaryPropertyValue1);
 
-    KBUtils.printStatements();
 
     // TESTING
     final PropertyValue stringPropertyValue2 = DAO.PROPERTY_VALUE.find(entity.getName(), type.getName(),
@@ -531,8 +530,6 @@ public class KBTest {
       stringDictionaryProperty.getName());
 
     Assert.assertEquals(stringDictionaryPropertyValue1, stringDictionaryPropertyValue2);
-
-    KBUtils.printStatements();
 
     // CLEAN UP
     DAO.delete(type);

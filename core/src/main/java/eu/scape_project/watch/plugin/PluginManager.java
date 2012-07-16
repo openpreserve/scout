@@ -21,7 +21,6 @@ import java.util.jar.JarFile;
 import eu.scape_project.watch.interfaces.PluginInterface;
 import eu.scape_project.watch.interfaces.PluginType;
 import eu.scape_project.watch.utils.ConfigUtils;
-import eu.scape_project.watch.utils.exceptions.PluginException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,10 +77,8 @@ public final class PluginManager {
   private Map<File, JarPlugin> pluginRegistry = new HashMap<File, JarPlugin>();
 
   /**
-   * The loaded plugins.
+   * The configuration used by this plugin manager.
    */
-  private List<PluginInterface> pluginCache = new ArrayList<PluginInterface>();
-
   private ConfigUtils config;
 
   /**
@@ -111,11 +108,11 @@ public final class PluginManager {
     final String dir = config.getStringProperty("watch.plugins.directory");
     final File pluginDir = new File(dir);
 
-    LOGGER.debug("PluginInterface directory is " + pluginDir);
+    LOGGER.debug("Observerd plugin directory is " + pluginDir);
 
     this.setPluginDirectory(pluginDir);
 
-    LOGGER.debug("Starting plugin scanner timer...");
+    LOGGER.debug("Starting plugin-scanner timer...");
     this.startTimer();
 
     LOGGER.info(getClass().getSimpleName() + " is started");
@@ -143,16 +140,6 @@ public final class PluginManager {
       }
     }
 
-    if (plugin != null) {
-      try {
-        plugin.init();
-        this.pluginCache.add(plugin);
-      } catch (final PluginException e) {
-        // TODO what shall we do here..
-        LOGGER.warn("An error occurred during plugin initialization: {}", e.getMessage());
-        return null;
-      }
-    }
     return plugin;
   }
 
@@ -242,16 +229,6 @@ public final class PluginManager {
     LOGGER.info("Shutting down plugin manager");
 
     this.cancelTimer();
-
-    for (PluginInterface p : this.pluginCache) {
-      try {
-        p.shutdown();
-      } catch (final PluginException e) {
-        LOGGER.warn("PluginInterface {} did not shutdown correctly: {}", p.getName(), e.getMessage());
-      }
-    }
-
-    this.pluginCache.clear();
     this.pluginRegistry.clear();
   }
 
@@ -296,27 +273,19 @@ public final class PluginManager {
    * 
    * @param pluginDirectory
    *          the pluginDirectory to set
-<<<<<<< HEAD
-=======
-   * 
-   *          This method will throw an {@link IllegalArgumentException} if
-   *          pluginDirectory is null or not a directory.
->>>>>>> improving some sonar issues
    */
   private void setPluginDirectory(final File pluginDirectory) {
-    
-    File defDir = new File(System.getProperty("user.dir"));
-    
+
+    final File defDir = new File(System.getProperty("user.dir"));
+
     if (pluginDirectory == null) {
-      LOGGER.error("Plugin Directory cannot be null. Override it with correct configuration... setting to default");
+      LOGGER.error("Plugin Directory is null. Setting to default directory: {}", defDir.getAbsolutePath());
       this.pluginsDirectory = defDir;
-//      throw new IllegalArgumentException("pluginDirectory cannot be null");
-      
+
     } else if (!pluginDirectory.isDirectory()) {
-      LOGGER.error("Plugin Directory is not a directory. Override it with correct configuration... setting to default");
+      LOGGER.error("Plugin Directory is not a directory. Setting to default directory: {}", defDir.getAbsolutePath());
       this.pluginsDirectory = defDir;
-//      throw new IllegalArgumentException("pluginDirectory " + pluginDirectory + " is not a directory.");
-      
+
     } else {
       this.pluginsDirectory = pluginDirectory;
     }
@@ -330,9 +299,9 @@ public final class PluginManager {
 
     final File[] jarFiles = this.getPluginDirectory().listFiles(new JarFileFilter());
 
-    for (File jarFile : jarFiles) {
+    for (final File jarFile : jarFiles) {
       if (this.pluginRegistry.containsKey(jarFile)
-          && jarFile.lastModified() == this.pluginRegistry.get(jarFile).lastModified) {
+        && jarFile.lastModified() == this.pluginRegistry.get(jarFile).lastModified) {
         // The plugin already exists
         LOGGER.debug(jarFile.getName() + " is already loaded");
       } else {
@@ -341,8 +310,7 @@ public final class PluginManager {
         LOGGER.debug(jarFile.getName() + " is not loaded or modification dates differ. Inspecting Jar...");
 
         try {
-          final URL[] urls = { jarFile.toURI().toURL() };
-
+          final URL[] urls = {jarFile.toURI().toURL()};
           final PluginInterface plugin = loadPlugin(jarFile, urls);
 
           if (plugin == null) {
@@ -377,6 +345,7 @@ public final class PluginManager {
 
     try {
       jar = new JarFile(jarFile);
+
     } catch (final IOException e) {
       LOGGER.error("Could not open jar file: {}", e.getMessage());
       return plugin;
@@ -387,13 +356,18 @@ public final class PluginManager {
 
     LOGGER.debug("Looking inside jar file: {}", jarFile);
     while (entries.hasMoreElements()) {
+
       final JarEntry entry = entries.nextElement();
+
       if (entry.getName().endsWith(CLASS_EXTENSION)) {
+
         final String className = entry.getName().replaceAll("/", ".").replaceAll(CLASS_EXTENSION, "");
         LOGGER.debug("Found class: {}, trying to load it", className);
+
         try {
           final Class<?> clazz = loader.loadClass(className);
           LOGGER.debug("Loaded {}", className);
+
           final PluginInterface tmp = this.createInstance(clazz);
           if (tmp != null) {
             // set the plugin only if it was really loaded
@@ -401,6 +375,7 @@ public final class PluginManager {
             plugin = tmp;
             LOGGER.debug("PLugin instantiated");
           }
+
         } catch (final ClassNotFoundException e) {
           LOGGER.error("Class Not Found {}: {}", className, e.getMessage());
         } catch (final IllegalAccessError e) {
@@ -436,7 +411,7 @@ public final class PluginManager {
 
     try {
       if (PluginInterface.class.isAssignableFrom(clazz) && !clazz.isInterface()
-          && !Modifier.isAbstract(clazz.getModifiers())) {
+        && !Modifier.isAbstract(clazz.getModifiers())) {
         LOGGER.debug("class is a plugin, instantiating");
         plugin = (PluginInterface) clazz.newInstance();
       }

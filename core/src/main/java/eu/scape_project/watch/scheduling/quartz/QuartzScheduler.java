@@ -65,6 +65,13 @@ public class QuartzScheduler implements SchedulerInterface {
     return scheduler;
   }
 
+  public AdaptorPluginInterface getAdaptorPluginInterface(String id) {
+	
+	  //TODO implement this 
+	  return null;
+  } 
+
+  
   /**
    * Start the Scheduler. 
    */

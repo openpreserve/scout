@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class SimpleAdaptorJob extends AdaptorJob {
+public class SimpleAdaptorJob  {
 
   private static final Logger LOG = LoggerFactory.getLogger(SimpleAdaptorJob.class);
 

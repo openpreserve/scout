@@ -6,22 +6,19 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import eu.scape_project.watch.adaptor.pronom.client.PronomClient;
 import eu.scape_project.watch.adaptor.pronom.client.PronomServiceCommunicator;
 import eu.scape_project.watch.adaptor.pronom.common.CommunicationException;
 import eu.scape_project.watch.adaptor.pronom.common.JSONResultParser;
 import eu.scape_project.watch.adaptor.pronom.common.OutputFormat;
-import eu.scape_project.watch.adaptor.pronom.common.PronomResult;
 import eu.scape_project.watch.adaptor.pronom.common.ResultProcessingDispatcher;
+import eu.scape_project.watch.common.DefaultResult;
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
@@ -31,6 +28,10 @@ import eu.scape_project.watch.interfaces.ResultInterface;
 import eu.scape_project.watch.utils.ConfigParameter;
 import eu.scape_project.watch.utils.exceptions.InvalidParameterException;
 import eu.scape_project.watch.utils.exceptions.PluginException;
+
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The Pronom Adaptor queries a PRONOM registry and parses the formats and their
@@ -60,7 +61,7 @@ public class PronomAdaptor implements AdaptorPluginInterface {
   /**
    * The key to the batch property. Limits the size of the query response.
    */
-  private static final String CNF_PRONOM_BATCH = "pronom.batch";
+  private static final String CNF_PRONOM_BATCH = "pronom.batch.size";
 
   /**
    * The default batch.
@@ -82,23 +83,23 @@ public class PronomAdaptor implements AdaptorPluginInterface {
    * in hidden scout folder in the home directory.
    */
   private static final String CNF_CACHE_FILE_PATH_DEFAULT = System.getProperty("user.home") + File.separator + ".scout"
-      + File.separator + "pronomcache.txt";
+    + File.separator + "pronomcache.txt";
 
   /**
    * The description of the file cache property.
    */
   private static final String CNF_CACHE_FILE_PATH_DESCRIPTION = "The default path to a file used by "
-      + "this adaptor for partial result caching. The default is /user_dir/.scout/pronomcache.txt";
+    + "this adaptor for partial result caching. The default is /user_dir/.scout/pronomcache.txt";
 
   /**
    * The current version of this plugin.
    */
-  private static final String VERSION = "0.0.2";
+  private static final String VERSION = "0.0.3";
 
   /**
    * The name of this plugin.
    */
-  private static final String NAME = "Pronom";
+  private static final String NAME = "Pronom Adaptor";
 
   /**
    * The description of this plugin>
@@ -120,6 +121,12 @@ public class PronomAdaptor implements AdaptorPluginInterface {
    */
   private Map<String, String> config;
 
+  private List<PropertyValue> currentBatch;
+
+  private int offset;
+
+  private String query;
+
   /**
    * Inits the default config and the config, as well as the client.
    * 
@@ -128,27 +135,10 @@ public class PronomAdaptor implements AdaptorPluginInterface {
    */
   @Override
   public void init() throws PluginException {
-    LOG.info("initializing pronom adaptor");
-    try {
-      // init default config
-      this.config = new HashMap<String, String>();
-      this.defaultConfig = new ArrayList<ConfigParameter>();
-      this.defaultConfig.add(new ConfigParameter(CNF_PRONOM_BATCH, CNF_PRONOM_BATCH_DEFAULT,
-          CNF_PRONOM_BATCH_DESCRIPTION, false));
-      this.defaultConfig.add(new ConfigParameter(CNF_CACHE_FILE_PATH, CNF_CACHE_FILE_PATH_DEFAULT,
-          CNF_CACHE_FILE_PATH_DESCRIPTION, true));
-
-      for (final ConfigParameter cp : this.defaultConfig) {
-        this.config.put(cp.getKey(), cp.getValue());
-      }
-
-      // init client
-      final PronomServiceCommunicator comm = new PronomServiceCommunicator(PronomAdaptor.ENDPOINT);
-      this.client = new PronomClient(comm);
-
-    } catch (MalformedURLException e) {
-      throw new PluginException("An error occurred while creating the pronom communicatior", e);
-    }
+    LOG.info("initializing {}-{}", this.getName(), this.getVersion());
+    this.initializeConfiguration();
+    this.initialzeCommunicator();
+    this.initializePreparedQuery();
   }
 
   /**
@@ -156,7 +146,7 @@ public class PronomAdaptor implements AdaptorPluginInterface {
    */
   @Override
   public void shutdown() throws PluginException {
-    LOG.info("shutting down pronom adaptor.");
+    LOG.info("shutting down {}-{}", this.getName(), this.getVersion());
     // nothing to do here
   }
 
@@ -226,10 +216,26 @@ public class PronomAdaptor implements AdaptorPluginInterface {
 
   }
 
-  // TODO
+  @Override
+  public boolean hasNext() throws PluginException {
+    if (this.currentBatch.isEmpty()) {
+      this.currentBatch = this.getNextBatch();
+    }
+
+    return !this.currentBatch.isEmpty();
+  }
+
+  @Override
+  public ResultInterface next() {
+    final PropertyValue pv = this.currentBatch.remove(0);
+    final DefaultResult result = new DefaultResult(pv);
+
+    return result;
+  }
+
   @Override
   public ResultInterface execute(Map<Entity, List<Property>> config) throws PluginException {
-    throw new PluginException("This method is not yet implemented!");
+    throw new PluginException("This method is not supported anymore!");
   }
 
   /**
@@ -237,15 +243,73 @@ public class PronomAdaptor implements AdaptorPluginInterface {
    */
   @Override
   public ResultInterface execute() throws PluginException {
-    final String l = this.getParameterValues().get(PronomAdaptor.CNF_PRONOM_BATCH);
-    final String cache = this.getParameterValues().get(PronomAdaptor.CNF_CACHE_FILE_PATH);
+    throw new PluginException("This method is not supported anymore!");
+  }
 
-    String query = "";
-    int offset = 0;
-    final int limit = Integer.parseInt(l);
+  // TODO cache the dispatcher and the parser.
+  private List<PropertyValue> getNextBatch() throws PluginException {
+    final int limit = this.getBatchSizeFromConfig();
+    final String cache = this.getCacheFileFromConfig();
+    final ResultProcessingDispatcher dispatcher = new ResultProcessingDispatcher(cache);
+    final JSONResultParser parser = new JSONResultParser(dispatcher);
 
+    // fetch data
     try {
-      query = this.getPreparedQuery();
+      LOG.info("Getting next batch of '{}' with offset '{}'", limit, this.offset);
+      final String response = this.client.query(this.query, OutputFormat.JSON, limit, this.offset);
+      this.offset += limit;
+      return parser.parse(response);
+
+    } catch (CommunicationException e) {
+      LOG.error("A communication exception occurred while querying the pronom service '{}'", e.getMessage());
+      throw new PluginException(e);
+    }
+  }
+
+  /**
+   * Retrieves the {@link PronomAdaptor#CNF_PRONOM_BATCH} config parameter
+   * value. If the provided value is not valid a the default is used silently.
+   * 
+   * @return the batch size to use.
+   */
+  private int getBatchSizeFromConfig() {
+    final String l = this.getParameterValues().get(PronomAdaptor.CNF_PRONOM_BATCH);
+    int limit = Integer.parseInt(CNF_PRONOM_BATCH_DEFAULT);
+    try {
+      limit = Integer.parseInt(l);
+    } catch (final NumberFormatException e) {
+      LOG.warn("There was a problem with the provided batch size '{}'; using the default batch size", e.getMessage());
+    }
+
+    return limit;
+  }
+
+  /**
+   * Retrieves the file path to the cache for this plugin.
+   * 
+   * @return the file path.
+   * @throws PluginException
+   *           if the path is not provided.
+   */
+  private String getCacheFileFromConfig() throws PluginException {
+    final String cache = this.getParameterValues().get(PronomAdaptor.CNF_CACHE_FILE_PATH);
+    if (cache == null) {
+      LOG.error("No cache file provided; {}-{} will now quit", this.getName(), this.getVersion());
+      throw new PluginException("The cache file was not provided");
+    }
+
+    return cache;
+  }
+
+  /**
+   * Initializes the prepared query that is submitted to the source.
+   * 
+   * @throws PluginException
+   *           of the query file cannot be read or found.
+   */
+  private void initializePreparedQuery() throws PluginException {
+    try {
+      this.query = IOUtils.toString(new FileInputStream("src/main/resources/query.txt"));
 
     } catch (FileNotFoundException e) {
       LOG.error("Could not read the query '{}'", e.getMessage());
@@ -255,42 +319,36 @@ public class PronomAdaptor implements AdaptorPluginInterface {
       LOG.error("An IO error occurred while reading the query '{}'", e.getMessage());
       throw new PluginException(e);
     }
-
-    final List<PropertyValue> result = new ArrayList<PropertyValue>();
-    final ResultProcessingDispatcher dispatcher = new ResultProcessingDispatcher(cache);
-    final JSONResultParser parser = new JSONResultParser(dispatcher);
-
-    try {
-      List<PropertyValue> parsed = null;
-
-      do {
-        LOG.info("Getting next batch of '{}' with offset '{}'", limit, offset);
-        final String response = this.client.query(query, OutputFormat.JSON, limit, offset);
-        parsed = parser.parse(response);
-        result.addAll(parsed);
-        offset += limit;
-      } while (!parsed.isEmpty());
-
-      return new PronomResult(result);
-
-    } catch (CommunicationException e) {
-      LOG.error("A communication exception occurred while querying the pronom service '{}'", e.getMessage());
-      throw new PluginException(e);
-    }
-
   }
 
   /**
-   * Retrieves the prepared query for getting all the data.
-   * 
-   * @return the query.
-   * @throws FileNotFoundException
-   *           if the file is not found.
-   * @throws IOException
-   *           if an exception occurs while reading the file.
+   * Initializes the default and current configuration.
    */
-  private String getPreparedQuery() throws FileNotFoundException, IOException {
-    return IOUtils.toString(new FileInputStream("src/main/resources/query.txt"));
+  private void initializeConfiguration() {
+    final ConfigParameter batch = new ConfigParameter(CNF_PRONOM_BATCH, CNF_PRONOM_BATCH_DEFAULT,
+      CNF_PRONOM_BATCH_DESCRIPTION, false);
+    final ConfigParameter cache = new ConfigParameter(CNF_CACHE_FILE_PATH, CNF_CACHE_FILE_PATH_DEFAULT,
+      CNF_CACHE_FILE_PATH_DESCRIPTION, true);
+
+    this.defaultConfig = Arrays.asList(batch, cache);
+    this.config = new HashMap<String, String>();
+    this.currentBatch = new ArrayList<PropertyValue>();
+    this.offset = 0;
   }
 
+  /**
+   * Initializes the source client.
+   * 
+   * @throws PluginException
+   *           if an error occurs.
+   */
+  private void initialzeCommunicator() throws PluginException {
+    try {
+      final PronomServiceCommunicator comm = new PronomServiceCommunicator(PronomAdaptor.ENDPOINT);
+      this.client = new PronomClient(comm);
+
+    } catch (MalformedURLException e) {
+      throw new PluginException("An error occurred while creating the pronom communicatior", e);
+    }
+  }
 }

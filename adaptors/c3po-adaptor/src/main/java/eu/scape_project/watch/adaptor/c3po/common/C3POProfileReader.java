@@ -10,13 +10,17 @@ import java.util.Map;
  * A content profile parser. Currently it wraps a {@link ProfileVersionReader}
  * and uses its internal implementation. The profile version reader may be
  * specific to the source. E.g. the dummy implementation relies on a specific
- * format to read but future production c3po version can have their own format version.
+ * format to read but future production c3po version can have their own format
+ * version.
  * 
  * @author Petar Petrov <me@petarpetrov.org>
  * 
  */
 public class C3POProfileReader {
 
+  /**
+   * The version reader that is wrapped.
+   */
   private ProfileVersionReader reader;
 
   /**
@@ -25,6 +29,8 @@ public class C3POProfileReader {
    * 
    * @param f
    *          the file that has the content profile.
+   * @param reader
+   *          the version reader to wrap
    * @throws FileNotFoundException
    *           if no file was found.
    */
@@ -36,6 +42,8 @@ public class C3POProfileReader {
    * Creates the reader based on the xml document representation stored in the
    * input stream.
    * 
+   * @param reader
+   *          the version reader to wrap
    * @param is
    *          the input stream of the content profile document.
    */
@@ -98,7 +106,14 @@ public class C3POProfileReader {
     return this.reader.getObjectsAvgSize();
   }
 
-  public Map<String, String> getDistribution(String name) {
+  /**
+   * Gets a distribution for a specific property in form of a map.
+   * 
+   * @param name
+   *          the name of the property.
+   * @return the distribution.
+   */
+  public Map<String, String> getDistribution(final String name) {
     return this.reader.getDistribution(name);
   }
 

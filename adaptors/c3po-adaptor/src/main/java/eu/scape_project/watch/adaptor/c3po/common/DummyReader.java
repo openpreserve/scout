@@ -33,7 +33,13 @@ public class DummyReader implements ProfileVersionReader {
    */
   private Document doc;
 
-  public void setStream(InputStream is) {
+  /**
+   * Initializes the xml document from the passed stream.
+   * 
+   * @param is
+   *          the stream to read the document of.
+   */
+  public void setStream(final InputStream is) {
     this.getDocument(is);
   }
 
@@ -63,7 +69,7 @@ public class DummyReader implements ProfileVersionReader {
    * @return a string representation of the size.
    */
   public String getCollectionSize() {
-    Element size = this.getSizePropertyElement();
+    final Element size = this.getSizePropertyElement();
     return this.getAttributeValue(size, "sum");
   }
 
@@ -97,13 +103,22 @@ public class DummyReader implements ProfileVersionReader {
     return this.getAttributeValue(size, "avg");
   }
 
-  public Map<String, String> getDistribution(String name) {
+  /**
+   * Parses the distribution of the passed property if it is provided in the xml
+   * document. The method returns the distribution in a map or null if the
+   * profile didn't contain this property or if no distribution was provided.
+   * 
+   * @param name
+   *          the name of the property.
+   * @return the distribution map.
+   */
+  public Map<String, String> getDistribution(final String name) {
     final Element property = this.getPropertyElement(name);
     final boolean exists = Boolean.valueOf(this.getAttributeValue(property, "expanded"));
 
     if (exists) {
       final Map<String, String> distribution = new HashMap<String, String>();
-      final List items = property.selectNodes("//properties/property[@id='" + name + "']/*");
+      final List<?> items = property.selectNodes("//properties/property[@id='" + name + "']/*");
 
       for (Object o : items) {
         final Element e = (Element) o;
@@ -144,9 +159,16 @@ public class DummyReader implements ProfileVersionReader {
     return this.getPropertyElement("size");
   }
 
-  private Element getPropertyElement(String name) {
+  /**
+   * Retrieves the Property element for the specified property.
+   * 
+   * @param name
+   *          the name of the property.
+   * @return the xml Element.
+   */
+  private Element getPropertyElement(final String name) {
     final Element collection = this.getCollectionElement();
-    final List nodes = collection.selectNodes("//properties/property[@id='" + name + "']");
+    final List<?> nodes = collection.selectNodes("//properties/property[@id='" + name + "']");
 
     Element e = null;
 

@@ -1,14 +1,16 @@
 package eu.scape_project.watch.interfaces;
 
-import java.util.List;
-
+import eu.scape_project.watch.common.DefaultResult;
+import eu.scape_project.watch.domain.Entity;
+import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 
 /**
  * This is the result of a plugin. Some Plugins, such as the adaptor Plugins
  * will need specific implementations of this interface in order to provide the
  * ProeprtyValue back to the component. Others will probably not need it at all,
- * e.g. the notification plugin.
+ * e.g. the notification plugin. The class {@link DefaultResult} provides a
+ * simple default implementation.
  * 
  * @author Petar Petrov <me@petarpetrov.org>
  * 
@@ -16,9 +18,23 @@ import eu.scape_project.watch.domain.PropertyValue;
 public interface ResultInterface {
 
   /**
-   * Retrieves the property values.
+   * Retrieves the entity of the current measurement.
    * 
-   * @return the list of properties.
+   * @return the {@link Entity}.
    */
-  List<PropertyValue> getPropertyValues();
+  Entity getEntity();
+
+  /**
+   * Retrieves the property of the current measurement.
+   * 
+   * @return the {@link Property}
+   */
+  Property getProperty();
+
+  /**
+   * Retrieves the measurement.
+   * 
+   * @return the {@link PropertyValue}
+   */
+  PropertyValue getValue();
 }

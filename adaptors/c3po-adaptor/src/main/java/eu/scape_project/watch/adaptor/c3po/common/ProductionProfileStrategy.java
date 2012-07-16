@@ -13,10 +13,22 @@ import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * The profile reader for the current c3po content profile.
+ * 
+ * @author Petar Petrov <me@petarpetrov.org>
+ * 
+ */
 public class ProductionProfileStrategy implements ProfileVersionReader {
 
+  /**
+   * The default logger of this class.
+   */
   private static final Logger LOG = LoggerFactory.getLogger(ProductionProfileStrategy.class);
 
+  /**
+   * The xml document that is parsed.
+   */
   private Document doc;
 
   @Override
@@ -74,10 +86,10 @@ public class ProductionProfileStrategy implements ProfileVersionReader {
   }
 
   @Override
-  public Map<String, String> getDistribution(String name) {
+  public Map<String, String> getDistribution(final String name) {
     final Element property = this.getPropertyElement(name);
     final Map<String, String> distribution = new HashMap<String, String>();
-    final List items = property.selectNodes("//properties/property[@id='" + name + "']/*");
+    final List<?> items = property.selectNodes("//properties/property[@id='" + name + "']/*");
 
     if (items.isEmpty()) {
       return null;
@@ -95,14 +107,14 @@ public class ProductionProfileStrategy implements ProfileVersionReader {
   }
 
   @Override
-  public void setStream(InputStream is) {
+  public void setStream(final InputStream is) {
     this.getDocument(is);
 
   }
 
-  private Element getPropertyElement(String name) {
+  private Element getPropertyElement(final String name) {
     final Element root = this.doc.getRootElement();
-    final List nodes = root.selectNodes("//properties/property[@id='" + name + "']");
+    final List<?> nodes = root.selectNodes("//properties/property[@id='" + name + "']");
 
     Element e = null;
 

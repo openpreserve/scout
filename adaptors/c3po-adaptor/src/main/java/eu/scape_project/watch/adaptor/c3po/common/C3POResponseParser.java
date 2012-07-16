@@ -12,6 +12,12 @@ import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * A simple response parser for the current version of c3po.
+ * 
+ * @author Petar Petrov <me@petarpetrov.org>
+ * 
+ */
 public class C3POResponseParser {
 
   /**
@@ -24,9 +30,16 @@ public class C3POResponseParser {
    */
   private Document doc;
 
+  /**
+   * Gets the collection identifiers from the response in the input stream.
+   * 
+   * @param response
+   *          the response in the form of a input stream.
+   * @return a list with the collection identifiers, or and empty list.
+   */
   public List<String> getCollectionsFromResponse(final InputStream response) {
     this.getDocument(response);
-    final List nodes = this.doc.getRootElement().selectNodes("collection");
+    final List<?> nodes = this.doc.getRootElement().selectNodes("collection");
     final List<String> result = new ArrayList<String>();
 
     for (Object o : nodes) {

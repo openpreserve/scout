@@ -71,24 +71,30 @@ public class CollectionProfilerMonitor implements MonitorInterface {
     }
   }
 
+  // TODO fix result iteration via the new interface
+  // now only one result is obtained. Fix the result
+  // iteration. Also send data for merging before
+  // storage -- added by PP
   @Override
   public void jobWasExecuted(JobExecutionContext arg0, JobExecutionException arg1) {
     LOG.info("Collection Profiler Monitor is executed");
     ResultInterface result = (ResultInterface) arg0.getResult();
     // TODO this part needs to be improved with exceptions
     if (result != null) {
-      List<PropertyValue> rValues = result.getPropertyValues();
-      for (PropertyValue pv : rValues) {
-        Entity e = pv.getEntity();
-        Property p = pv.getProperty();
-        DAO.save(e);
-        DAO.save(p);
-
-        DAO.save(pv);
-        // LOG.info("property value {} - {}",
-        // pv.getProperty().getName(),pv.getValue());
-      }
-      LOG.debug("Monitor found {} values", rValues.size());
+      DAO.save(result.getEntity());
+      DAO.save(result.getProperty());
+      DAO.save(result.getValue());
+      // for (PropertyValue pv : rValues) {
+      // Entity e = pv.getEntity();
+      // Property p = pv.getProperty();
+      // DAO.save(e);
+      // DAO.save(p);
+      //
+      // DAO.save(pv);
+      // // LOG.info("property value {} - {}",
+      // // pv.getProperty().getName(),pv.getValue());
+      // }
+//      LOG.debug("Monitor found {} values", rValues.size());
       centralMonitor.notifyAsyncRequests(aRequestUUIDS);
     } else {
       LOG.warn("SKIPPING - CollectionProfilerMonitor recived null as a result from an AdabtorJob");
@@ -116,7 +122,7 @@ public class CollectionProfilerMonitor implements MonitorInterface {
   public void addWatchRequest(AsyncRequest aRequest) {
 
     if (!aRequestUUIDS.contains(aRequest.getId())) {
-      if (isRequestSupported(aRequest)){
+      if (isRequestSupported(aRequest)) {
         aRequestUUIDS.add(aRequest.getId());
       }
     }
@@ -134,7 +140,7 @@ public class CollectionProfilerMonitor implements MonitorInterface {
 
     for (Trigger trigger : aRequest.getTriggers()) {
       List<EntityType> eType = trigger.getQuestion().getTypes();
-      if (eType.contains(monitorType)){
+      if (eType.contains(monitorType)) {
         return true;
       }
     }

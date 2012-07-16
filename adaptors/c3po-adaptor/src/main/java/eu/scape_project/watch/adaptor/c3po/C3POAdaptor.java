@@ -18,7 +18,7 @@ import eu.scape_project.watch.adaptor.c3po.command.ObjectsCountCommand;
 import eu.scape_project.watch.adaptor.c3po.command.ObjectsMaxSizeCommand;
 import eu.scape_project.watch.adaptor.c3po.command.ObjectsMinSizeCommand;
 import eu.scape_project.watch.adaptor.c3po.common.C3POProfileReader;
-import eu.scape_project.watch.adaptor.c3po.common.ProfileResult;
+import eu.scape_project.watch.common.DefaultResult;
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.domain.Property;
@@ -33,10 +33,10 @@ import eu.scape_project.watch.utils.exceptions.PluginException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_COLLECTION_SIZE;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_DESCRIPTION;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_DISTRIBUTION;
 import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_NAME;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_DESCRIPTION;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_COLLECTION_SIZE;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_DISTRIBUTION;
 import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_AVG_SIZE;
 import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_COUNT;
 import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_MAX_SIZE;
@@ -49,7 +49,7 @@ import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_
  * A watch conforming adaptor for a collection profile source called c3po.
  * 
  * @author Petar Petrov <me@petarpetrov.org>
- * @version 0.0.2
+ * @version 0.0.3
  */
 public class C3POAdaptor implements AdaptorPluginInterface {
 
@@ -61,7 +61,7 @@ public class C3POAdaptor implements AdaptorPluginInterface {
   /**
    * The current version of the adaptor.
    */
-  private static final String VERSION = "0.0.2";
+  private static final String VERSION = "0.0.3";
 
   /**
    * The current config of c3po.
@@ -82,6 +82,21 @@ public class C3POAdaptor implements AdaptorPluginInterface {
    * The source client.
    */
   private C3POClientInterface source;
+
+  /**
+   * A pointer for the hasNext() method.
+   */
+  private int pointer;
+
+  /**
+   * A list of collection identifiers of the current c3po instance.
+   */
+  private List<String> identifiers;
+
+  /**
+   * The current batch of property values to iterate through.
+   */
+  private List<PropertyValue> currentBatch;
 
   /**
    * Initializes this plugin.
@@ -186,6 +201,31 @@ public class C3POAdaptor implements AdaptorPluginInterface {
 
   }
 
+  @Override
+  public boolean hasNext() throws PluginException {
+    if (this.source == null) {
+      this.createSource();
+    }
+    if (this.identifiers == null) {
+      this.identifiers = this.source.getCollectionIdentifiers();
+    }
+
+    if (this.currentBatch.isEmpty() && this.pointer < this.identifiers.size()) {
+      final String id = this.identifiers.get(this.pointer++);
+      this.currentBatch = this.getPropertyValues(id);
+    }
+
+    return !this.currentBatch.isEmpty();
+  }
+
+  @Override
+  public ResultInterface next() {
+    final PropertyValue pv = this.currentBatch.remove(0);
+    final DefaultResult result = new DefaultResult(pv);
+
+    return result;
+  }
+
   /**
    * Fetches all values of all collections in the pre-configured c3po instance.
    * This method should be used with caution as it might lead to a huge network
@@ -199,28 +239,7 @@ public class C3POAdaptor implements AdaptorPluginInterface {
    */
   @Override
   public ResultInterface execute() throws PluginException {
-    LOG.info("Executing c3po adaptor, fetching all properties for all known collections.");
-    this.createSource();
-
-    final List<String> identifiers = this.source.getCollectionIdentifiers();
-
-    LOG.debug("c3po adaptor has found {} collections, ... fetching", identifiers.size());
-
-    final ProfileResult result = new ProfileResult();
-    final EntityType et = new EntityType(CP_NAME, CP_DESCRIPTION);
-
-    for (String id : identifiers) {
-      final Entity e = new Entity(et, id);
-      final List<PropertyValue> values = this.getPropertyValues(id, null);
-
-      for (PropertyValue v : values) {
-        v.setEntity(e);
-      }
-
-      result.add(values);
-    }
-
-    return result;
+    throw new PluginException("This operation is not supported anymore!");
   }
 
   /**
@@ -235,7 +254,7 @@ public class C3POAdaptor implements AdaptorPluginInterface {
    */
   @Override
   public ResultInterface execute(final Map<Entity, List<Property>> context) throws PluginException {
-    throw new PluginException("This method is not yet implemented!");
+    throw new PluginException("This operation is not supported anymore");
   }
 
   // ### private methods.
@@ -253,6 +272,9 @@ public class C3POAdaptor implements AdaptorPluginInterface {
     for (final ConfigParameter cp : this.defaultConfig) {
       this.config.put(cp.getKey(), cp.getValue());
     }
+
+    this.pointer = 0;
+    this.currentBatch = new ArrayList<PropertyValue>();
   }
 
   /**
@@ -264,7 +286,6 @@ public class C3POAdaptor implements AdaptorPluginInterface {
    * @return an {@link InputStream} containing the file.
    */
   private InputStream getCollectionProfile(final String id) {
-    // final List<String> expanded = this.generatePropertyExpansionList(null);
     final InputStream is = this.source.getCollectionProfile(id, null);
     return is;
   }
@@ -301,27 +322,23 @@ public class C3POAdaptor implements AdaptorPluginInterface {
    * 
    * @param id
    *          the id of the collection in the source.
-   * @param props
-   *          the properties to fetch from the collection.
    * @return a list of {@link PropertyValue} objects containing the results.
    */
-  private List<PropertyValue> getPropertyValues(final String id, final List<Property> props) {
+  private List<PropertyValue> getPropertyValues(final String id) {
     final InputStream stream = this.getCollectionProfile(id);
     final List<PropertyValue> values = new ArrayList<PropertyValue>();
+    final EntityType et = new EntityType(CP_NAME, CP_DESCRIPTION);
+    final Entity e = new Entity(et, id);
 
     if (stream != null) {
       final C3POProfileReader reader = new C3POProfileReader(this.source.getReader(), stream);
       this.setupCommands(reader);
-      if (props == null || props.size() == 0) {
 
-        for (String c : this.commands.keySet()) {
-          final Command cmd = this.commands.get(c);
-          final PropertyValue pv = cmd.execute();
-          values.add(pv);
-        }
-      } else {
-        // TODO start only those matching the property names.
-        throw new RuntimeException("Not yet implemented");
+      for (String c : this.commands.keySet()) {
+        final Command cmd = this.commands.get(c);
+        final PropertyValue pv = cmd.execute();
+        pv.setEntity(e);
+        values.add(pv);
       }
     }
 
@@ -340,5 +357,4 @@ public class C3POAdaptor implements AdaptorPluginInterface {
       cmd.setReader(reader);
     }
   }
-
 }

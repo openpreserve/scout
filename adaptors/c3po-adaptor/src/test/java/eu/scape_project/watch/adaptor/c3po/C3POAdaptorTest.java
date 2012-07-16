@@ -74,10 +74,14 @@ public class C3POAdaptorTest {
     }
 
     this.adaptor.setParameterValues(values);
-    final ResultInterface result = this.adaptor.execute();
     
-    Assert.assertNotNull(result.getPropertyValues());
-    Assert.assertFalse(result.getPropertyValues().isEmpty());
+    final boolean hasNext = this.adaptor.hasNext();
+    Assert.assertTrue(hasNext);
+
+    final ResultInterface result = this.adaptor.next();
+    Assert.assertNotNull(result.getValue());
+    Assert.assertNotNull(result.getEntity());
+    Assert.assertNotNull(result.getProperty());
     
   }
   

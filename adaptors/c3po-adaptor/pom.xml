@@ -87,4 +87,5 @@
       </exclusions>
     </dependency>
   </dependencies>
+  <version>0.0.3</version>
 </project>

@@ -1,5 +1,12 @@
 package eu.scape_project.watch.listener;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+
 import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.domain.AsyncRequest;
 import eu.scape_project.watch.domain.Entity;
@@ -10,21 +17,11 @@ import eu.scape_project.watch.domain.Question;
 import eu.scape_project.watch.domain.RequestTarget;
 import eu.scape_project.watch.domain.Trigger;
 import eu.scape_project.watch.interfaces.MonitorInterface;
-import eu.scape_project.watch.monitor.CentralMonitor;
 import eu.scape_project.watch.monitor.CollectionProfilerMonitor;
-import eu.scape_project.watch.notification.NotificationService;
-import eu.scape_project.watch.scheduling.quartz.QuartzScheduler;
-import eu.scape_project.watch.utils.AdaptorLoader;
+import eu.scape_project.watch.plugin.PluginManager;
 import eu.scape_project.watch.utils.ComponentContainer;
 import eu.scape_project.watch.utils.ConfigUtils;
 import eu.scape_project.watch.utils.KBUtils;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +48,9 @@ public class ApplicationStartupListener implements ServletContextListener {
 //    componentContainer.destroy();
 
     KBUtils.dbDisconnect();
+
+    // shutdown the plugin manager and stop the scanners.
+    PluginManager.getDefaultPluginManager().shutdown();
   }
 
   @Override
@@ -62,7 +62,7 @@ public class ApplicationStartupListener implements ServletContextListener {
     final ComponentContainer componentContainer = new ComponentContainer();
     final MonitorInterface monitor = new CollectionProfilerMonitor();
 
-//    CentralMonitor cm = new CentralMonitor();
+//    final CentralMonitor cm = new CentralMonitor();
 //    cm.registerToAsyncRequest();
 //    cm.setNotificationService(NotificationService.getInstance());
 
@@ -78,6 +78,9 @@ public class ApplicationStartupListener implements ServletContextListener {
     //componentContainer.init();
 
     sce.getServletContext().setAttribute(COMPONENT_CONTAINER, componentContainer);
+
+    // initialize the PluginManager...
+    PluginManager.getDefaultPluginManager();
 
   }
 

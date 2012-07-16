@@ -51,8 +51,7 @@ public abstract class QuartzAdaptorJob {
 				lManager.notify(adaptor, result);
 			}
 		} catch (PluginException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
 		}
 		
 		

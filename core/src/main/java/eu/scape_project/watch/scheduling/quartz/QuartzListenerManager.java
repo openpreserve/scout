@@ -6,6 +6,7 @@ import eu.scape_project.watch.interfaces.ResultInterface;
 public class QuartzListenerManager {
 
 	
+	
 	public void notify(AdaptorPluginInterface adaptor, ResultInterface result){
 		
 	}

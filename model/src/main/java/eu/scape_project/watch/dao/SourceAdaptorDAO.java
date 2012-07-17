@@ -165,4 +165,26 @@ public final class SourceAdaptorDAO extends AbstractDO<SourceAdaptor> {
 
   // TODO list and count of source adaptor instances (same name and version)
 
+  /**
+   * Get all Source Adaptors.
+   * 
+   * @param start
+   *          The index of the first item to retrieve
+   * @param max
+   *          The maximum number of items to retrieve
+   * @return A list of source adaptors, filtered by the constraints above.
+   */
+  public List<SourceAdaptor> queryAll(final int start, final int max) {
+    return query("", start, max);
+  }
+
+  /**
+   * Get the total count of Source Adaptors.
+   * 
+   * @return The total number of source adaptors.
+   */
+  public int countAll() {
+    return count("");
+  }
+
 }

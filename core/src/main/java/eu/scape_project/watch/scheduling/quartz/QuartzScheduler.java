@@ -3,12 +3,14 @@ package eu.scape_project.watch.scheduling.quartz;
 import java.util.Map;
 import java.util.Properties;
 
+import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.quartz.JobListener;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.slf4j.Logger;
@@ -54,6 +56,17 @@ public class QuartzScheduler implements SchedulerInterface {
 @Override
 public void start(AdaptorPluginInterface adaptor, Properties properties) {
 
+//	//if (!adaptors.containsKey(adaptor.getId())) {
+//		
+//		// create job detail 
+//		JobDetail jobDetail = JobBuilder.newJob(QuartzAdaptorJob.class)
+//				.withIdentity(adaptor.getId(), "adaptors").usingJobData("adaptorId", adaptor.getId()).build();
+//		
+//		// create trigger 
+//		//Trigger trigger = TriggerBuilder.newTrigger().startNow().wi
+//		
+//		// schedule it 
+//	//}
 	
 	
 }

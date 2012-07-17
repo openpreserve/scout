@@ -100,10 +100,5 @@ public interface AdaptorPluginInterface extends PluginInterface {
    */
   ResultInterface next();
 
-  /**
-   * This method retrieves the id of an adaptor plugin. For each adaptor plugin 
-   * instance there will be a unique id created.   
-   * @return adaptor plugin id
-   */
-  String getId();
+
 }

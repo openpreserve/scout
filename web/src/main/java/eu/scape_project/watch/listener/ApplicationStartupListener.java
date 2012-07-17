@@ -46,9 +46,9 @@ public class ApplicationStartupListener implements ServletContextListener {
   public void contextDestroyed(final ServletContextEvent sce) {
     LOG.info("Destroying Watch Application context");
 
-    final ComponentContainer componentContainer = (ComponentContainer) sce.getServletContext().getAttribute(
-      COMPONENT_CONTAINER);
-    componentContainer.destroy();
+//    final ComponentContainer componentContainer = (ComponentContainer) sce.getServletContext().getAttribute(
+//      COMPONENT_CONTAINER);
+//    componentContainer.destroy();
 
     KBUtils.dbDisconnect();
   }
@@ -62,20 +62,20 @@ public class ApplicationStartupListener implements ServletContextListener {
     final ComponentContainer componentContainer = new ComponentContainer();
     final MonitorInterface monitor = new CollectionProfilerMonitor();
 
-    CentralMonitor cm = new CentralMonitor();
-    cm.registerToAsyncRequest();
-    cm.setNotificationService(NotificationService.getInstance());
+//    CentralMonitor cm = new CentralMonitor();
+//    cm.registerToAsyncRequest();
+//    cm.setNotificationService(NotificationService.getInstance());
 
-    componentContainer.setCoreScheduler(new QuartzScheduler());
-    componentContainer.setCentralMonitor(cm);
-    componentContainer.setAdaptorLoader(new AdaptorLoader());
-    componentContainer.addMonitor(monitor);
+//    componentContainer.setCoreScheduler(new QuartzScheduler());
+//    componentContainer.setCentralMonitor(cm);
+//    componentContainer.setAdaptorLoader(new AdaptorLoader());
+//    componentContainer.addMonitor(monitor);
 
     // NotificationService.getInstance().addAdaptor(new
     // LogNotificationAdaptor());
     saveTestRequest();
 
-    componentContainer.init();
+    //componentContainer.init();
 
     sce.getServletContext().setAttribute(COMPONENT_CONTAINER, componentContainer);
 

@@ -163,6 +163,7 @@ public class PluginManagerTest {
     final PluginInfo i1 = info.get(0);
     final PluginInterface plugin = this.manager.getPlugin(i1.getClassName(), i1.getVersion());
     plugin.init();
+    plugin.init();
 
     Assert.fail("This code should not have been executed!");
   }
@@ -190,7 +191,7 @@ public class PluginManagerTest {
     final AdaptorPluginInterface p2 = (AdaptorPluginInterface) this.manager.getPlugin(i2.getClassName(),
       i2.getVersion());
     Assert.assertNotSame(i1.getVersion(), i2.getVersion());
-
+    
     LOG.debug("Executing plugin 1: {}-{}", p1.getName(), p1.getVersion());
     p1.execute();
     LOG.debug("Executing plugin 2: {}-{}", p2.getName(), p2.getVersion());

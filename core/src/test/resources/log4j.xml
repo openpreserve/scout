@@ -10,7 +10,7 @@
 	</appender>
 
 	<logger name="eu.scape_project">
-		<level value="INFO" />
+		<level value="DEBUG" />
 	</logger>
 
 	<!--<logger name="org.quartz" additivity="false"> <level value="DEBUG" /> 

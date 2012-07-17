@@ -15,23 +15,24 @@ public interface SchedulerInterface {
    * Method which is responsible to start an adaptor. Possible scheduling parameters like execution interval 
    * or similar are passed as an argument. To find out which parameters are needed check specific implementations
    * of this interface.   
-   * @param adaptor - AdaptorPluginInterface to be started 
+   * @param adaptor - AdaptorPluginInterface to be started
+   * @param id - id of an adaptor plugin to be used 
    * @param properties - properties needed to successfully start an adaptor
    */
-  void start(AdaptorPluginInterface adaptor, Properties properties);
+  void start(AdaptorPluginInterface adaptor, String id, Properties properties);
 
   /**
    * Method responsible to stop an already running adaptor. Once paused adaptor can be only started again with 
    * resume method. 
    * @param adptor -  adaptor to be stopped
    */
-  void stop(AdaptorPluginInterface adptor); 
+  void stop(AdaptorPluginInterface adaptor); 
   
   /**
    * Method responsible for resuming stopped adaptor. 
    * @param adptor - adaptor to be resumed 
    */
-  void resume(AdaptorPluginInterface adptor); 
+  void resume(AdaptorPluginInterface adaptor); 
   
   /**
    * Method for deleting specific adaptor. 

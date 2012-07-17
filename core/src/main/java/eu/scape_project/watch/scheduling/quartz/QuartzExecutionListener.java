@@ -6,28 +6,37 @@ import org.quartz.JobListener;
 
 public class QuartzExecutionListener implements JobListener {
 
+	private QuartzScheduler scheduler;
+	
+	private String name; 
+	
+	public QuartzExecutionListener() {
+		
+	}
+	
+	public QuartzExecutionListener(QuartzScheduler sc) {
+		scheduler = sc;
+	}
+	
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return name;
 	}
 
 	@Override
 	public void jobToBeExecuted(JobExecutionContext context) {
-		// TODO Auto-generated method stub
-		
+		QuartzAdaptorJob job = (QuartzAdaptorJob)context.getJobInstance();
+		job.setScheduler(scheduler);
 	}
 
 	@Override
 	public void jobExecutionVetoed(JobExecutionContext context) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void jobWasExecuted(JobExecutionContext context,
 			JobExecutionException jobException) {
-		// TODO Auto-generated method stub
 		
 	}
 

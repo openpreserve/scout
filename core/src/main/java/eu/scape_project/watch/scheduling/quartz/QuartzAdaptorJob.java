@@ -1,5 +1,6 @@
 package eu.scape_project.watch.scheduling.quartz;
 
+import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +9,7 @@ import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
 import eu.scape_project.watch.interfaces.ResultInterface;
 import eu.scape_project.watch.utils.exceptions.PluginException;
 
-public abstract class QuartzAdaptorJob {
+public abstract class QuartzAdaptorJob implements Job {
 
 	private static final Logger LOG = LoggerFactory
 			.getLogger(QuartzAdaptorJob.class);
@@ -41,6 +42,7 @@ public abstract class QuartzAdaptorJob {
 		this.lManager = lManager;
 	}
 
+	@Override
 	public void execute(final JobExecutionContext jec){
 
 		AdaptorPluginInterface adaptor = scheduler.getAdaptorPluginInterface(adaptorId);

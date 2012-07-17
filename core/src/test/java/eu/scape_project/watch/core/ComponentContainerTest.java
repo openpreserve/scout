@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 
 public class ComponentContainerTest {
 
+/*
   @Test
   public void testInit() {
     ComponentContainer cc = new ComponentContainer();
@@ -62,5 +63,5 @@ public class ComponentContainerTest {
     
     
     
-  }
+  }*/
 }

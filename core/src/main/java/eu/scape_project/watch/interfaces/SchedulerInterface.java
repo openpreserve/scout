@@ -1,4 +1,4 @@
-package eu.scape_project.watch.scheduling;
+package eu.scape_project.watch.interfaces;
 
 import java.util.Properties;
 
@@ -54,4 +54,18 @@ public interface SchedulerInterface {
    * Clear all scheduled adaptors.
    */
   void clear();
+  
+  /**
+   * Adds an adaptor listener to all adaptors. This listener will be notified whenever one of the adaptors fetches some data. 
+   * @param aListener - adaptor listener 
+   */
+  void addAdaptorListener(AdaptorListenerInterface aListener);
+  
+  /**
+   * Adds an adaptor listener a specific adaptor. This listener will be notified whenever the adaptor fetches some data. 
+   * @param aListener - adaptor listener 
+   * @param adaptor - adaptor to which the listener should be added
+   */
+  void addAdaptorListener(AdaptorListenerInterface aListener, AdaptorPluginInterface adaptor);
+  
 }

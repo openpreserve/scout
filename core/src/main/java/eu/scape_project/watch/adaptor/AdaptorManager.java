@@ -1,0 +1,266 @@
+package eu.scape_project.watch.adaptor;
+
+import java.util.List;
+import java.util.Map;
+
+import eu.scape_project.watch.dao.DAO;
+import eu.scape_project.watch.domain.Source;
+import eu.scape_project.watch.domain.SourceAdaptor;
+import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
+import eu.scape_project.watch.plugin.PluginInfo;
+import eu.scape_project.watch.plugin.PluginManager;
+import eu.scape_project.watch.utils.ConfigParameter;
+import eu.scape_project.watch.utils.exceptions.InvalidParameterException;
+import eu.scape_project.watch.utils.exceptions.PluginException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * The AdaptorManager is responsible for the known SourceAdaptors (provenance
+ * information) and the loaded adaptors that are currently used in the system.
+ * It keeps a reference to them and is able to shut them down accordingly, when
+ * the time is right. It provides facilities for obtaining a fully instantiated
+ * and preconfigured adaptor instance.
+ * 
+ * @author Petar Petrov <me@petarpetrov.org>
+ * 
+ */
+public class AdaptorManager {
+
+  /**
+   * Default logger.
+   */
+  private static final Logger LOG = LoggerFactory.getLogger(AdaptorManager.class);
+
+  /**
+   * The known source adaptors.
+   */
+  private Map<String, SourceAdaptor> adaptors;
+
+  /**
+   * All running adaptors with their corresponding instance id.
+   */
+  private Map<String, AdaptorPluginInterface> cached;
+
+  /**
+   * Creates a new adaptor manager and loads the known source adaptors.
+   */
+  public AdaptorManager() {
+    reloadKnownAdaptors();
+  }
+
+  /**
+   * This method loads the known source adaptors from the knowledge base.
+   */
+  public void reloadKnownAdaptors() {
+    // TODO dependent on issue #96
+  }
+
+  /**
+   * Creates a {@link SourceAdaptor}.
+   * 
+   * @param name
+   *          the name of the adaptor.
+   * @param version
+   *          the version of the adaptor.
+   * @param uid
+   *          the unique instance identifier provided by the user.
+   * @param source
+   *          the source to which the adaptor is going to be used against.
+   * @return the source adaptor without any configuration.
+   */
+  public SourceAdaptor createAdaptor(final String name, final String version, final String uid, final Source source) {
+    LOG.debug("Craeting new source adaptor information for {}-{}", name, version);
+
+    // TODO existence check
+    // may be the method should check if the adaptor exists (name, version)
+    // and return only if such and adaptor exists, otherwise null.
+
+    final SourceAdaptor adaptor = new SourceAdaptor(name, version, uid, source, null, null, null);
+    this.updateSourceAdaptor(adaptor);
+    this.adaptors.put(adaptor.getInstance(), adaptor);
+    return adaptor;
+  }
+
+  /**
+   * Creates a {@link SourceAdaptor}.
+   * 
+   * @param info
+   *          the plugin info.
+   * @param uid
+   *          the unique instance id.
+   * @param source
+   *          the source for the source adaptor.
+   * @return the source adaptor.
+   */
+  public SourceAdaptor createAdaptor(final PluginInfo info, final String uid, final Source source) {
+    return this.createAdaptor(info.getName(), info.getVersion(), uid, source);
+  }
+
+  /**
+   * Updates the source adaptor. This method shall be used if the configuration
+   * changes.
+   * 
+   * @param adaptor
+   *          the adaptor to update.
+   */
+  public void updateSourceAdaptor(final SourceAdaptor adaptor) {
+    LOG.debug("Updating SourceAdaptor Information {}-{}", adaptor.getName(), adaptor.getVersion());
+    DAO.save(adaptor);
+    this.adaptors.put(adaptor.getInstance(), adaptor);
+  }
+
+  /**
+   * Gets the source adaptor for this instance, or null.
+   * 
+   * @param instance
+   *          the instance identifier.
+   * @return the SourceAdaptor.
+   */
+  public SourceAdaptor getSourceAdaptor(final String instance) {
+    return this.adaptors.get(instance);
+  }
+
+  // TODO extend the adaptorplugininterface and add supported types.
+  // TODO create similar methods for the types...
+  /**
+   * Provides the needed configuration parameters for an adaptor with the given
+   * name and version. Based on these the user can configure the adaptor
+   * accordingly and update it.
+   * 
+   * @param name
+   *          the name of the adaptor.
+   * @param version
+   *          the version of the adaptor.
+   * @return a list with {@link ConfigParameter} objects.
+   */
+  public List<ConfigParameter> getConfigurationParameters(final String name, final String version) {
+    LOG.debug("Retrieving the supported configuration parameters of: {}-{}", name, version);
+    final AdaptorPluginInterface plugin = this.getPlugin(name, version);
+
+    if (plugin != null) {
+      return plugin.getParameters();
+    }
+
+    return null;
+  }
+
+  // TODO decide whether or not to propagate the exceptions?
+  /**
+   * Instantiates, initializes and configures an adaptor implementation ready to
+   * fetch data. If the passed instance is not associated with any adaptor then
+   * null is returned. If the adaptor is already running, then the cached
+   * instance is used. The method makes sure that the init method is called only
+   * once for each instance, and that the parameter values are applied each time
+   * when the adaptor instance is retrieved.
+   * 
+   * @param instance
+   *          the identifier of the source adaptor instance supplied by the
+   *          user.
+   * @return the {@link AdaptorPluginInterface} implementation or null.
+   */
+  public AdaptorPluginInterface getAdaptorInstance(final String instance) {
+    final SourceAdaptor adaptor = this.getSourceAdaptor(instance);
+    AdaptorPluginInterface plugin = null;
+
+    if (adaptor == null) {
+      LOG.warn("No adaptor found with instance id: {}", instance);
+    } else {
+      LOG.debug("Looking for implementation in cache: {}-{}", adaptor.getName(), adaptor.getVersion());
+      plugin = this.cached.get(instance);
+      boolean initialized = true;
+
+      if (plugin == null) {
+        plugin = this.getPlugin(adaptor.getName(), adaptor.getVersion());
+        initialized = false;
+      }
+
+      if (plugin != null && !initialized) {
+        try {
+          plugin.init();
+          this.cached.put(instance, plugin);
+        } catch (final PluginException e) {
+          LOG.error("An error occurred during plugin initialization: {}", e.getMessage());
+        }
+      }
+
+      if (plugin != null) {
+        try {
+          plugin.setParameterValues(adaptor.getConfiguration());
+        } catch (final InvalidParameterException e) {
+          LOG.error("An error occurred during cached plugin configuration: {}", e.getMessage());
+        }
+      }
+    }
+    return plugin;
+  }
+
+  /**
+   * Shuts down the plugin with the specified id if it is existing.
+   * 
+   * @param instance
+   *          the instance id of the source adaptor.
+   */
+  public void shutdown(final String instance) {
+    LOG.info("Trying to shutdown plugin with id: {}", instance);
+    final AdaptorPluginInterface plugin = this.cached.remove(instance);
+    this.shutdown(plugin);
+  }
+
+  /**
+   * Shuts down all running plugins and removes the from the cache.
+   */
+  public void shutdownAll() {
+    LOG.info("Shutting down all plugins");
+    for (final String id : this.cached.keySet()) {
+      final AdaptorPluginInterface plugin = this.cached.remove(id);
+      this.shutdown(plugin);
+    }
+  }
+
+  /**
+   * Shutdowns a single plugin if it is not null.
+   * 
+   * @param plugin
+   *          the plugin to shut down.
+   */
+  private void shutdown(final AdaptorPluginInterface plugin) {
+    if (plugin == null) {
+      LOG.warn("Passed plugin is null, skipping shutdown");
+    } else {
+      LOG.debug("Shutting down plugin: {}-{}", plugin.getName(), plugin.getVersion());
+      try {
+        plugin.shutdown();
+      } catch (final PluginException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+  /**
+   * Retrieves a plugin instance via the {@link PluginManager} for the
+   * corresponding name and version or null if none was found.
+   * 
+   * @param name
+   *          the name of the plugin.
+   * @param version
+   *          the version of the plugin.
+   * @return the plugin implementation.
+   */
+  private AdaptorPluginInterface getPlugin(final String name, final String version) {
+    LOG.debug("Retrieving the implementation of: {}-{}", name, version);
+    final PluginManager pm = PluginManager.getDefaultPluginManager();
+    final List<PluginInfo> info = pm.getPluginInfo(name);
+
+    AdaptorPluginInterface plugin = null;
+    for (PluginInfo pi : info) {
+      if (pi.getVersion().equals(version)) {
+        plugin = (AdaptorPluginInterface) pm.getPlugin(pi.getClassName(), pi.getVersion());
+        break;
+      }
+    }
+
+    return plugin;
+  }
+}

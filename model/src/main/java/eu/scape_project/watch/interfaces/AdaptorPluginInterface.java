@@ -73,7 +73,7 @@ public interface AdaptorPluginInterface extends PluginInterface {
    * 
    * @return the result of the operation.
    * @throws PluginException
-   *           if an error occurrs.
+   *           if an error occurs.
    */
   @Deprecated
   ResultInterface execute() throws PluginException;
@@ -81,7 +81,7 @@ public interface AdaptorPluginInterface extends PluginInterface {
   /**
    * Checks with the source whether there is more info to be fetched. If there
    * is the method returns true, false otherwise. Note that the method might
-   * call the source and even fetch and chache some results.
+   * call the source and even fetch and cache some results.
    * 
    * @return true if there are more results to be fetched, false otherwise.
    * @throws PluginException

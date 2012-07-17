@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import eu.scape_project.watch.adaptor.AdaptorManager;
 import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.domain.AsyncRequest;
 import eu.scape_project.watch.domain.Entity;
@@ -39,13 +40,19 @@ public class ApplicationStartupListener implements ServletContextListener {
   private static final Logger LOG = LoggerFactory.getLogger(ApplicationStartupListener.class);
   private static final String COMPONENT_CONTAINER = "componentContainer";
 
+  /**
+   * The adaptor manager identifier within the servlet context.
+   */
+  private static final String SCOUT_ADAPTORMANAGER = "scout.core.adaptormanager";
+
   @Override
   public void contextDestroyed(final ServletContextEvent sce) {
     LOG.info("Destroying Watch Application context");
 
-//    final ComponentContainer componentContainer = (ComponentContainer) sce.getServletContext().getAttribute(
-//      COMPONENT_CONTAINER);
-//    componentContainer.destroy();
+    // final ComponentContainer componentContainer = (ComponentContainer)
+    // sce.getServletContext().getAttribute(
+    // COMPONENT_CONTAINER);
+    // componentContainer.destroy();
 
     KBUtils.dbDisconnect();
 
@@ -61,23 +68,25 @@ public class ApplicationStartupListener implements ServletContextListener {
     LOG.debug("Starting up core components");
     final ComponentContainer componentContainer = new ComponentContainer();
     final MonitorInterface monitor = new CollectionProfilerMonitor();
+    final AdaptorManager manager = new AdaptorManager();
 
-//    final CentralMonitor cm = new CentralMonitor();
-//    cm.registerToAsyncRequest();
-//    cm.setNotificationService(NotificationService.getInstance());
+    // final CentralMonitor cm = new CentralMonitor();
+    // cm.registerToAsyncRequest();
+    // cm.setNotificationService(NotificationService.getInstance());
 
-//    componentContainer.setCoreScheduler(new QuartzScheduler());
-//    componentContainer.setCentralMonitor(cm);
-//    componentContainer.setAdaptorLoader(new AdaptorLoader());
-//    componentContainer.addMonitor(monitor);
+    // componentContainer.setCoreScheduler(new QuartzScheduler());
+    // componentContainer.setCentralMonitor(cm);
+    // componentContainer.setAdaptorLoader(new AdaptorLoader());
+    // componentContainer.addMonitor(monitor);
 
     // NotificationService.getInstance().addAdaptor(new
     // LogNotificationAdaptor());
     saveTestRequest();
 
-    //componentContainer.init();
+    // componentContainer.init();
 
     sce.getServletContext().setAttribute(COMPONENT_CONTAINER, componentContainer);
+    sce.getServletContext().setAttribute(SCOUT_ADAPTORMANAGER, manager);
 
     // initialize the PluginManager...
     PluginManager.getDefaultPluginManager();

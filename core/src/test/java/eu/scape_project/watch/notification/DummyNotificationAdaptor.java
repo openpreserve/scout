@@ -10,7 +10,7 @@ import java.util.Set;
 
 import eu.scape_project.watch.domain.DataType;
 import eu.scape_project.watch.domain.Notification;
-import eu.scape_project.watch.interfaces.NotificationAdaptorInterface;
+import eu.scape_project.watch.interfaces.NotificationPluginInterface;
 import eu.scape_project.watch.interfaces.PluginType;
 import eu.scape_project.watch.utils.exceptions.PluginException;
 
@@ -21,7 +21,7 @@ import eu.scape_project.watch.utils.exceptions.PluginException;
  * @author Luis Faria <lfaria@keep.pt>
  * 
  */
-public class DummyNotificationAdaptor implements NotificationAdaptorInterface {
+public class DummyNotificationAdaptor implements NotificationPluginInterface {
 
   /**
    * The notification plugin name.

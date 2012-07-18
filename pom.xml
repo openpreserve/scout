@@ -51,6 +51,7 @@
   <modules>
     <module>web</module>
     <module>adaptors</module>
+    <module>notifications</module>
     <module>core</module>
     <module>model</module>
   </modules>

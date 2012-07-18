@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import eu.scape_project.watch.domain.DataType;
 import eu.scape_project.watch.domain.DictionaryItem;
 import eu.scape_project.watch.domain.Notification;
-import eu.scape_project.watch.interfaces.NotificationAdaptorInterface;
+import eu.scape_project.watch.interfaces.NotificationPluginInterface;
 import eu.scape_project.watch.interfaces.PluginType;
 import eu.scape_project.watch.utils.exceptions.PluginException;
 
@@ -22,7 +22,7 @@ import eu.scape_project.watch.utils.exceptions.PluginException;
  * @author Luis Faria <lfaria@keep.pt>
  * 
  */
-public class LogNotificationAdaptor implements NotificationAdaptorInterface {
+public class LogNotificationAdaptor implements NotificationPluginInterface {
 
   /**
    * The notification plugin name.

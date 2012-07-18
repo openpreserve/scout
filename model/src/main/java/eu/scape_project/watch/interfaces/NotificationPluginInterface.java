@@ -13,7 +13,7 @@ import eu.scape_project.watch.domain.Notification;
  * @author Luis Faria <lfaria@keep.pt>
  * 
  */
-public interface NotificationAdaptorInterface extends PluginInterface {
+public interface NotificationPluginInterface extends PluginInterface {
 
   /**
    * Get Notification types this adaptors supports.

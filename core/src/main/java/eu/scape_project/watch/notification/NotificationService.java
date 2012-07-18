@@ -7,7 +7,7 @@ import java.util.Set;
 
 import eu.scape_project.watch.domain.DataType;
 import eu.scape_project.watch.domain.Notification;
-import eu.scape_project.watch.interfaces.NotificationAdaptorInterface;
+import eu.scape_project.watch.interfaces.NotificationPluginInterface;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,19 +46,19 @@ public final class NotificationService {
   /**
    * Registered adaptors.
    */
-  private final Set<NotificationAdaptorInterface> adaptors;
+  private final Set<NotificationPluginInterface> adaptors;
 
   /**
    * Index of adaptors by type.
    */
-  private final Map<String, Set<NotificationAdaptorInterface>> adaptorsIndex;
+  private final Map<String, Set<NotificationPluginInterface>> adaptorsIndex;
 
   /**
    * Private constructor for the singleton.
    */
   private NotificationService() {
-    this.adaptors = new HashSet<NotificationAdaptorInterface>();
-    this.adaptorsIndex = new HashMap<String, Set<NotificationAdaptorInterface>>();
+    this.adaptors = new HashSet<NotificationPluginInterface>();
+    this.adaptorsIndex = new HashMap<String, Set<NotificationPluginInterface>>();
 
     // TODO load only notification via plugins
     addAdaptor(new LogNotificationAdaptor());
@@ -71,16 +71,16 @@ public final class NotificationService {
    *          The notification adaptor to add.
    * @return <code>true</code> if did not already contain the specified adaptor
    */
-  public boolean addAdaptor(final NotificationAdaptorInterface adaptor) {
+  public boolean addAdaptor(final NotificationPluginInterface adaptor) {
     final boolean ret = this.adaptors.add(adaptor);
 
     // update index
     for (final String type : adaptor.getSupportedTypes()) {
-      Set<NotificationAdaptorInterface> typeAdaptors = this.adaptorsIndex.get(type);
+      Set<NotificationPluginInterface> typeAdaptors = this.adaptorsIndex.get(type);
 
       // add type if this is the first adaptor to support it
       if (typeAdaptors == null) {
-        typeAdaptors = new HashSet<NotificationAdaptorInterface>();
+        typeAdaptors = new HashSet<NotificationPluginInterface>();
         this.adaptorsIndex.put(type, typeAdaptors);
       }
 
@@ -99,14 +99,14 @@ public final class NotificationService {
    *          The adaptor to remove
    * @return <code>true</code> if contained the specified adaptor
    */
-  public boolean removeAdaptor(final NotificationAdaptorInterface adaptor) {
+  public boolean removeAdaptor(final NotificationPluginInterface adaptor) {
     boolean ret;
     if (adaptor != null) {
       ret = this.adaptors.remove(adaptor);
 
       // update index
       for (final String type : adaptor.getSupportedTypes()) {
-        final Set<NotificationAdaptorInterface> typeAdaptors = this.adaptorsIndex.get(type);
+        final Set<NotificationPluginInterface> typeAdaptors = this.adaptorsIndex.get(type);
 
         if (typeAdaptors != null) {
           typeAdaptors.remove(adaptor);
@@ -126,7 +126,7 @@ public final class NotificationService {
     return ret;
   }
 
-  public Set<NotificationAdaptorInterface> getAdaptors() {
+  public Set<NotificationPluginInterface> getAdaptors() {
     return adaptors;
   }
 
@@ -149,8 +149,8 @@ public final class NotificationService {
   public Map<String, DataType> getTypeParameters(final String type) {
     final Map<String, DataType> ret = new HashMap<String, DataType>();
 
-    final Set<NotificationAdaptorInterface> typeAdaptors = this.adaptorsIndex.get(type);
-    for (final NotificationAdaptorInterface adaptor : typeAdaptors) {
+    final Set<NotificationPluginInterface> typeAdaptors = this.adaptorsIndex.get(type);
+    for (final NotificationPluginInterface adaptor : typeAdaptors) {
       final Map<String, DataType> adaptorParam = adaptor.getParametersInfo();
       ret.putAll(adaptorParam);
     }
@@ -169,10 +169,10 @@ public final class NotificationService {
     boolean ret;
     final String type = notification.getType();
 
-    final Set<NotificationAdaptorInterface> typeAdaptors = this.adaptorsIndex.get(type);
+    final Set<NotificationPluginInterface> typeAdaptors = this.adaptorsIndex.get(type);
     ret = !typeAdaptors.isEmpty();
 
-    for (NotificationAdaptorInterface adaptor : typeAdaptors) {
+    for (NotificationPluginInterface adaptor : typeAdaptors) {
       final boolean consume = adaptor.send(notification);
 
       if (consume) {

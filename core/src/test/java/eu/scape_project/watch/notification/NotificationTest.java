@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import eu.scape_project.watch.domain.Notification;
-import eu.scape_project.watch.interfaces.NotificationAdaptorInterface;
+import eu.scape_project.watch.interfaces.NotificationPluginInterface;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -55,7 +55,7 @@ public class NotificationTest {
    */
   @Test
   public void testGetAdaptors() {
-    final Set<NotificationAdaptorInterface> adaptors = service.getAdaptors();
+    final Set<NotificationPluginInterface> adaptors = service.getAdaptors();
     Assert.assertTrue(adaptors.contains(adaptor));
   }
 

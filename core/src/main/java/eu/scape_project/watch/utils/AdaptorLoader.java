@@ -1,21 +1,5 @@
 package eu.scape_project.watch.utils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import eu.scape_project.watch.interfaces.AdaptorJobInterface;
-import eu.scape_project.watch.scheduling.quartz.QuartzScheduler;
 
 /**
  * Class that enables loading adaptors with their config dynamically.

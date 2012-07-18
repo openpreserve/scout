@@ -7,6 +7,9 @@ import java.util.Map;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import eu.scape_project.watch.adaptor.AdaptorManager;
 import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.domain.AsyncRequest;
@@ -18,14 +21,10 @@ import eu.scape_project.watch.domain.Question;
 import eu.scape_project.watch.domain.RequestTarget;
 import eu.scape_project.watch.domain.Trigger;
 import eu.scape_project.watch.interfaces.MonitorInterface;
-import eu.scape_project.watch.monitor.CollectionProfilerMonitor;
 import eu.scape_project.watch.plugin.PluginManager;
 import eu.scape_project.watch.utils.ComponentContainer;
 import eu.scape_project.watch.utils.ConfigUtils;
 import eu.scape_project.watch.utils.KBUtils;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * An application startup listener, that is invoked by the container on
@@ -67,7 +66,7 @@ public class ApplicationStartupListener implements ServletContextListener {
 
     LOG.debug("Starting up core components");
     final ComponentContainer componentContainer = new ComponentContainer();
-    final MonitorInterface monitor = new CollectionProfilerMonitor();
+//    final MonitorInterface monitor = new CollectionProfilerMonitor();
     final AdaptorManager manager = new AdaptorManager();
 
     // final CentralMonitor cm = new CentralMonitor();

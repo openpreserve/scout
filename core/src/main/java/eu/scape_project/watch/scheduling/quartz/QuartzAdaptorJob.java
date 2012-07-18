@@ -30,6 +30,8 @@ public abstract class QuartzAdaptorJob implements Job {
 
 	private QuartzListenerManager lManager;
 
+	AdaptorPluginInterface adaptor;
+	
 	public void setScheduler(QuartzScheduler scheduler) {
 		this.scheduler = scheduler;
 	}
@@ -41,11 +43,15 @@ public abstract class QuartzAdaptorJob implements Job {
 	public void setlManager(QuartzListenerManager lManager) {
 		this.lManager = lManager;
 	}
+	
+	public AdaptorPluginInterface getAdaptorPlugin() {
+		return adaptor;
+	}
 
 	@Override
 	public void execute(final JobExecutionContext jec){
 
-		AdaptorPluginInterface adaptor = scheduler.getAdaptorPluginInterface(adaptorId);
+	    adaptor = scheduler.getAdaptorPluginInterface(adaptorId);
 		
 		try {
 			while (adaptor.hasNext()){

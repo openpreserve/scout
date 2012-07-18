@@ -2,7 +2,7 @@ package eu.scape_project.watch.interfaces;
 
 import java.util.Properties;
 
-import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
+import eu.scape_project.watch.adaptor.AdaptorManager;
 
 /**
  * This interface is responsible for providing methods for scheduling adaptors. 
@@ -15,11 +15,10 @@ public interface SchedulerInterface {
    * Method which is responsible to start an adaptor. Possible scheduling parameters like execution interval 
    * or similar are passed as an argument. To find out which parameters are needed check specific implementations
    * of this interface.   
-   * @param adaptor - AdaptorPluginInterface to be started
-   * @param id - id of an adaptor plugin to be used 
+   * @param adaptor - AdaptorPluginInterface to be started 
    * @param properties - properties needed to successfully start an adaptor
    */
-  void start(AdaptorPluginInterface adaptor, String id, Properties properties);
+  void start(AdaptorPluginInterface adaptor, Properties properties);
 
   /**
    * Method responsible to stop an already running adaptor. Once paused adaptor can be only started again with 
@@ -69,4 +68,5 @@ public interface SchedulerInterface {
    */
   void addAdaptorListener(AdaptorListenerInterface aListener, AdaptorPluginInterface adaptor);
   
+
 }

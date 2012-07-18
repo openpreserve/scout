@@ -1,6 +1,5 @@
 package eu.scape_project.watch.scheduling.quartz;
 
-import java.util.Map;
 import java.util.Properties;
 
 import org.quartz.JobBuilder;
@@ -36,12 +35,16 @@ public class QuartzScheduler implements SchedulerInterface {
 	 */
 	private Scheduler scheduler;
 
-	private Map<AdaptorPluginInterface, JobKey> adaptors;
+	private QuartzCache cache;	
 
+	private QuartzListenerManager listenerManager;
+	
 	/**
 	 * Default constructor
 	 */
 	public QuartzScheduler() {
+		cache = new QuartzCache();
+		listenerManager = new QuartzListenerManager();
 		try {
 			scheduler = StdSchedulerFactory.getDefaultScheduler();
 			scheduler.start();
@@ -51,41 +54,47 @@ public class QuartzScheduler implements SchedulerInterface {
 	}
 
 	@Override
-	public void start(AdaptorPluginInterface adaptor, String id,
+	public void start(AdaptorPluginInterface adaptor,
 			Properties properties) {
 
-		if (!adaptors.containsKey(id)) {
+		if (!cache.containsAdaptor(adaptor)) {
+			
+			String id = cache.addAdaptorPlugin(adaptor);
 
-			// create job detail
-			JobDetail jobDetail = JobBuilder.newJob(QuartzAdaptorJob.class)
+			if (id != null) {
+				// create job detail
+				JobDetail jobDetail = JobBuilder.newJob(QuartzAdaptorJob.class)
 					.withIdentity(id, "adaptors")
 					.usingJobData("adaptorId", id).build();
 
-			//create trigger
-			Trigger trigger = TriggerBuilder.newTrigger().startNow().
+				//create trigger
+				Trigger trigger = TriggerBuilder.newTrigger().startNow().
 					withSchedule(SimpleScheduleBuilder.simpleSchedule().
 							withIntervalInMinutes(Integer.parseInt(properties.getProperty("scheduler.intervalInMinutes")))).
 					build();
 
-			//schedule it
-			try {
-				scheduler.scheduleJob(jobDetail, trigger);
-			} catch (SchedulerException e) {
-				
+				//schedule it
+				try {
+					scheduler.scheduleJob(jobDetail, trigger);
+				} catch (SchedulerException e) {
+				 //TODO
+				}
+			
+				//store the JobKey to the cache
+				cache.addJobKey(adaptor, jobDetail.getKey());
+			
+			} else {
+			//TODO id == null 
 			}
-			
-			//store it to the map 
-			adaptors.put(adaptor, jobDetail.getKey());
-			
-		} else {
-			//TODO 
+		}else {
+			//TODO cache contains adaptor
 		}
 	}
 
 	@Override
 	public void stop(AdaptorPluginInterface adaptor) {
 		
-		JobKey key = adaptors.get(adaptor);
+		JobKey key = cache.getAdaptorJobKey(adaptor);
 		if (key!=null) {
 			try {
 				scheduler.pauseJob(key);
@@ -100,7 +109,7 @@ public class QuartzScheduler implements SchedulerInterface {
 
 	@Override
 	public void resume(AdaptorPluginInterface adaptor) {
-		JobKey key = adaptors.get(adaptor);
+		JobKey key = cache.getAdaptorJobKey(adaptor);
 		if (key!=null) {
 			try {
 				scheduler.resumeJob(key);
@@ -108,14 +117,22 @@ public class QuartzScheduler implements SchedulerInterface {
 				// TODO 
 			}
 		}else {
-			//TODO
+			// TODO
 		}
 
 	}
 
 	@Override
 	public void delete(AdaptorPluginInterface adaptor) {
-		// TODO Auto-generated method stub
+		JobKey key = cache.getAdaptorJobKey(adaptor);
+		if (key!=null) {
+				try {
+					scheduler.deleteJob(key);
+					cache.removeAdaptorPlugin(adaptor);
+				} catch (SchedulerException e) {
+					// TODO
+				}
+		}
 
 	}
 
@@ -127,7 +144,7 @@ public class QuartzScheduler implements SchedulerInterface {
 
 	@Override
 	public void execute(AdaptorPluginInterface adaptor) {
-		JobKey key = adaptors.get(adaptor);
+		JobKey key = cache.getAdaptorJobKey(adaptor);
 		if (key!=null) {
 			try {
 				scheduler.triggerJob(key);
@@ -148,20 +165,22 @@ public class QuartzScheduler implements SchedulerInterface {
 
 	@Override
 	public void addAdaptorListener(AdaptorListenerInterface aListener) {
-		// TODO Auto-generated method stub
-
+		listenerManager.addAdaptorListener(aListener);
 	}
 
 	@Override
 	public void addAdaptorListener(AdaptorListenerInterface aListener,
 			AdaptorPluginInterface adaptor) {
-		// TODO Auto-generated method stub
+		listenerManager.addAdaptorListener(aListener, adaptor);
 
 	}
 
 	public AdaptorPluginInterface getAdaptorPluginInterface(String id) {
-		// TODO implement this
-		return null;
+		AdaptorPluginInterface tmp = cache.getAdaptorPluginInterface(id);
+		return tmp;
 	}
 
+	public QuartzListenerManager getQuartzListenerManager() {
+		return listenerManager;
+	}
 }

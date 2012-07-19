@@ -160,6 +160,17 @@ public class EmailNotification implements NotificationPluginInterface {
     final String[] recipients = new String[] {recipient};
 
     final Map<String, Object> messageParams = new HashMap<String, Object>();
+    
+    messageParams.put("subject", subject);
+    // TODO add an 'archive' parameter with a link to the archived copy of the email
+    // TODO add an 'description' parameter with the description of the trigger
+    
+ 
+   // TODO add an 'twitter' parameter with a link to a twitter profile
+   // TODO add an 'facebook' parameter with a link to a facebook profile
+   // TODO add an 'forward' parameter with a link that would forward this email
+    // XXX un-comment social section in mustache if any of the above are activated
+    
     if (question != null) {
       messageParams.put("question", question);
     }

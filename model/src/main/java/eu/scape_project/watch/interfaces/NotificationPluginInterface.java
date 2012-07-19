@@ -5,6 +5,8 @@ import java.util.Set;
 
 import eu.scape_project.watch.domain.DataType;
 import eu.scape_project.watch.domain.Notification;
+import eu.scape_project.watch.domain.Plan;
+import eu.scape_project.watch.domain.Question;
 
 /**
  * 
@@ -38,9 +40,15 @@ public interface NotificationPluginInterface extends PluginInterface {
    * 
    * @param notification
    *          The notification to send
+   * @param question
+   *          The question that initiated the notification, or null if it reason
+   *          to send the notification wasn't based on a question assessment.
+   * @param plan
+   *          The plan that initiated the notification, or null if it reason to
+   *          send the notification wasn't based on a plan assessment
    * @return <code>true</code> if notification should be consumed, i.e. should
    *         not be relayed to any other adaptor
    */
-  boolean send(Notification notification);
+  boolean send(Notification notification, Question question, Plan plan);
 
 }

@@ -76,7 +76,7 @@ public class NotificationTest {
   public void testSend() {
     final Map<String, String> parameters = new HashMap<String, String>();
     final Notification notification = new Notification(DummyNotificationAdaptor.TEST_TYPE, parameters);
-    service.send(notification);
+    service.send(notification, null, null);
 
     final List<Notification> sentNotifications = adaptor.getNotifications();
     Assert.assertTrue(sentNotifications.contains(notification));
@@ -105,7 +105,7 @@ public class NotificationTest {
     adaptor1.setConsumeEvent(false);
     adaptor2.setConsumeEvent(false);
 
-    service.send(notification);
+    service.send(notification, null, null);
 
     boolean adaptor1Contains = adaptor1.getNotifications().contains(notification);
     boolean adaptor2Contains = adaptor2.getNotifications().contains(notification);
@@ -120,7 +120,7 @@ public class NotificationTest {
     adaptor1.setConsumeEvent(true);
     adaptor2.setConsumeEvent(true);
 
-    service.send(notification);
+    service.send(notification, null, null);
     adaptor1Contains = adaptor1.getNotifications().contains(notification);
     adaptor2Contains = adaptor2.getNotifications().contains(notification);
     Assert.assertFalse(adaptor1Contains && adaptor2Contains);

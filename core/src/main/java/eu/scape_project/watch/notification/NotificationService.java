@@ -5,12 +5,14 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import eu.scape_project.watch.domain.DataType;
-import eu.scape_project.watch.domain.Notification;
-import eu.scape_project.watch.interfaces.NotificationPluginInterface;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import eu.scape_project.watch.domain.DataType;
+import eu.scape_project.watch.domain.Notification;
+import eu.scape_project.watch.domain.Plan;
+import eu.scape_project.watch.domain.Question;
+import eu.scape_project.watch.interfaces.NotificationPluginInterface;
 
 /**
  * 
@@ -163,9 +165,17 @@ public final class NotificationService {
    * 
    * @param notification
    *          The notification to send
+   * @param question
+   *          The question that initiated the notification, or null if it reason
+   *          to send the notification wasn't based on a question assessment.
+   * @param plan
+   *          The plan that initiated the notification, or null if it reason to
+   *          send the notification wasn't based on a plan assessment
    * @return <code>true</code> if notification sent by one or more adaptors
+   * 
+   * @see NotificationPluginInterface#send(Notification, Question, Plan)
    */
-  public boolean send(final Notification notification) {
+  public boolean send(final Notification notification, final Question question, final Plan plan) {
     boolean ret;
     final String type = notification.getType();
 
@@ -173,7 +183,7 @@ public final class NotificationService {
     ret = !typeAdaptors.isEmpty();
 
     for (NotificationPluginInterface adaptor : typeAdaptors) {
-      final boolean consume = adaptor.send(notification);
+      final boolean consume = adaptor.send(notification, question, plan);
 
       if (consume) {
         break;

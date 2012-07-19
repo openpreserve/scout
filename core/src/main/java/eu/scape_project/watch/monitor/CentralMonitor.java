@@ -33,12 +33,12 @@ public class CentralMonitor implements DOListener<AsyncRequest> {
   private List<AsyncRequest> aRequests;
 
   /**
-   * Notification Service 
+   * Notification Service
    */
   private NotificationService nService;
 
   /**
-   * Default Constructor 
+   * Default Constructor
    */
   public CentralMonitor() {
     monitors = new ArrayList<MonitorInterface>();
@@ -47,7 +47,8 @@ public class CentralMonitor implements DOListener<AsyncRequest> {
   }
 
   /**
-   * Adding Monitor to a CentralMonitor 
+   * Adding Monitor to a CentralMonitor
+   * 
    * @param monitor
    */
   public void addMonitor(MonitorInterface monitor) {
@@ -56,7 +57,7 @@ public class CentralMonitor implements DOListener<AsyncRequest> {
   }
 
   /**
-   * Register CentralMonitor to listen when an AsyncRequest is 
+   * Register CentralMonitor to listen when an AsyncRequest is
    * created/updated/deleted
    */
   public void registerToAsyncRequest() {
@@ -74,7 +75,9 @@ public class CentralMonitor implements DOListener<AsyncRequest> {
 
   /**
    * Give a list of AsyncRequests ids to be evaluated.
-   * @param ids - list of AsyncRequest ids to be notified
+   * 
+   * @param ids
+   *          - list of AsyncRequest ids to be notified
    */
   public void notifyAsyncRequests(List<String> ids) {
     for (String uuid : ids) {
@@ -91,7 +94,6 @@ public class CentralMonitor implements DOListener<AsyncRequest> {
     return monitors;
   }
 
-  
   @Override
   public void onUpdated(AsyncRequest req) {
     LOG.debug("adding Request to monitors " + req.getId());
@@ -111,7 +113,7 @@ public class CentralMonitor implements DOListener<AsyncRequest> {
 
   private AsyncRequest findAsyncRequest(String uuid) {
     for (AsyncRequest i : aRequests) {
-      if (i.getId().equals(uuid)){
+      if (i.getId().equals(uuid)) {
         return i;
       }
     }
@@ -134,7 +136,7 @@ public class CentralMonitor implements DOListener<AsyncRequest> {
   private void notify(Trigger trigger) {
     if (nService != null) {
       for (Notification notification : trigger.getNotifications()) {
-        nService.send(notification);
+        nService.send(notification, trigger.getQuestion(), trigger.getPlan());
       }
     } else {
       LOG.warn("No NotificationService specified");

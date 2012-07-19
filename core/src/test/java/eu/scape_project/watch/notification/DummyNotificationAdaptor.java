@@ -10,6 +10,8 @@ import java.util.Set;
 
 import eu.scape_project.watch.domain.DataType;
 import eu.scape_project.watch.domain.Notification;
+import eu.scape_project.watch.domain.Plan;
+import eu.scape_project.watch.domain.Question;
 import eu.scape_project.watch.interfaces.NotificationPluginInterface;
 import eu.scape_project.watch.interfaces.PluginType;
 import eu.scape_project.watch.utils.exceptions.PluginException;
@@ -59,7 +61,7 @@ public class DummyNotificationAdaptor implements NotificationPluginInterface {
   }
 
   @Override
-  public boolean send(final Notification notification) {
+  public boolean send(final Notification notification, final Question question, final Plan plan) {
     this.notifications.add(notification);
     return this.consumeEvent;
   }

@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import eu.scape_project.watch.domain.DataType;
 import eu.scape_project.watch.domain.DictionaryItem;
 import eu.scape_project.watch.domain.Notification;
+import eu.scape_project.watch.domain.Plan;
+import eu.scape_project.watch.domain.Question;
 import eu.scape_project.watch.interfaces.NotificationPluginInterface;
 import eu.scape_project.watch.interfaces.PluginType;
 import eu.scape_project.watch.utils.exceptions.PluginException;
@@ -55,7 +57,7 @@ public class LogNotificationAdaptor implements NotificationPluginInterface {
   }
 
   @Override
-  public boolean send(final Notification notification) {
+  public boolean send(final Notification notification, final Question question, final Plan plan) {
     final StringBuilder message = new StringBuilder();
 
     message.append("NOTIFICATION LOG ");

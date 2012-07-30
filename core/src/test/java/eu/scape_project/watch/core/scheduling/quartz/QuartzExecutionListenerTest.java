@@ -27,6 +27,7 @@ public class QuartzExecutionListenerTest {
     
     Mockito.when(adaptorJob.getAdaptorPlugin()).thenReturn(adaptor);
     Mockito.when(context.getJobInstance()).thenReturn(adaptorJob);
+    Mockito.when(context.getResult()).thenReturn(new Boolean(false));
     
     listener.setScheduler(scheduler);
     

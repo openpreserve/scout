@@ -69,4 +69,10 @@ public interface SchedulerInterface {
   void addAdaptorListener(AdaptorListenerInterface aListener, AdaptorPluginInterface adaptor);
   
 
+  /**
+   * Adds a scheduler listener. This listener will be notified when a specific operation (start, stop ..) happen on a specific 
+   * adaptor. 
+   * @param listener - listener to be added 
+   */
+  void addSchedulerListener(SchedulerListenerInterface listener);
 }

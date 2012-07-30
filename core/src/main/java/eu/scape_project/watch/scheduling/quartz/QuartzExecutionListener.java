@@ -6,15 +6,21 @@ import java.util.Map;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.JobListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
 
 public class QuartzExecutionListener implements JobListener {
+  
+  private static final Logger LOG = LoggerFactory.getLogger(QuartzExecutionListener.class);
 
   private int REPEAT = 5;
 
   private QuartzScheduler scheduler;
 
+  private QuartzListenerManager listenerManager;
+  
   private String name = "QuartzExecutionListener";
 
   private Map<AdaptorPluginInterface, Integer> failed;
@@ -31,6 +37,10 @@ public class QuartzExecutionListener implements JobListener {
     scheduler = sc;
   }
 
+  public void setListenerManager(QuartzListenerManager lm) {
+    listenerManager = lm;
+  }
+  
   @Override
   public String getName() {
     return name;
@@ -40,6 +50,7 @@ public class QuartzExecutionListener implements JobListener {
   public void jobToBeExecuted(JobExecutionContext context) {
     QuartzAdaptorJob job = (QuartzAdaptorJob) context.getJobInstance();
     job.setScheduler(scheduler);
+    job.setlManager(listenerManager);
   }
 
   @Override
@@ -51,7 +62,8 @@ public class QuartzExecutionListener implements JobListener {
   public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
     QuartzAdaptorJob job = (QuartzAdaptorJob) context.getJobInstance();
     AdaptorPluginInterface adaptor = job.getAdaptorPlugin();
-    if (jobException == null) {
+    Boolean result = (Boolean) context.getResult();
+    if (result.booleanValue() == true) {
       failed.remove(adaptor);
     } else {
       int num;
@@ -65,9 +77,11 @@ public class QuartzExecutionListener implements JobListener {
         num = 1;
       }
       if (num > REPEAT) {
+        LOG.warn("Unscheduling adaptor: "+adaptor.getName());
         scheduler.stop(adaptor);
         failed.remove(adaptor);
       } else {
+        LOG.warn("Refiring adaptor: "+adaptor.getName());
         scheduler.execute(adaptor);
       }
     }

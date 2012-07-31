@@ -119,6 +119,12 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
   private List<DictionaryItem> configuration = new ArrayList<DictionaryItem>();
 
   /**
+   * True if the adaptor is activated and currently scheduled to fetch
+   * information, false if it is dormant.
+   */
+  private boolean active;
+
+  /**
    * Create a new empty source adaptor.
    */
   public SourceAdaptor() {
@@ -159,6 +165,7 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
     this.types = types != null ? types : new ArrayList<EntityType>();
     this.properties = properties != null ? properties : new ArrayList<Property>();
     this.configuration = ModelUtils.mapToEntryList(configuration);
+    this.active = true;
 
     this.updateId();
   }
@@ -250,11 +257,21 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
     this.source = source;
   }
 
+  public boolean isActive() {
+    return active;
+  }
+
+  public void setActive(final boolean active) {
+    this.active = active;
+  }
+
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
+    result = prime * result + (active ? 1231 : 1237);
     result = prime * result + ((configuration == null) ? 0 : configuration.hashCode());
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
     result = prime * result + ((instance == null) ? 0 : instance.hashCode());
     result = prime * result + ((name == null) ? 0 : name.hashCode());
     result = prime * result + ((properties == null) ? 0 : properties.hashCode());
@@ -332,6 +349,9 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
     } else if (!instance.equals(other.instance)) {
       return false;
     }
+    if (other.active != this.active) {
+      return false;
+    }
 
     return true;
   }
@@ -341,7 +361,7 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
     return "SourceAdaptor [name=" + name + ", version=" + version + ", instance=" + instance + ", source=" + source
       + ", types=" + Arrays.toString(this.types.toArray()) + ", properties="
       + Arrays.toString(this.properties.toArray()) + ", configuration=" + Arrays.toString(this.configuration.toArray())
-      + "]";
+      + ", active=" + active + "]";
   }
 
 }

@@ -483,7 +483,6 @@ public class KBTest {
       doublePropertyValue1, datePropertyValue1, uriPropertyValue1, stringListPropertyValue1,
       stringDictionaryPropertyValue1);
 
-
     // TESTING
     final PropertyValue stringPropertyValue2 = DAO.PROPERTY_VALUE.find(entity.getName(), type.getName(),
       stringProperty.getName());
@@ -1109,7 +1108,7 @@ public class KBTest {
 
     // MAKE ENTITY REQUEST
     final String query3 = "?s watch:type " + EntityTypeDAO.getEntityTypeRDFId(type);
-    
+
     final RequestTarget target3 = RequestTarget.ENTITY;
     @SuppressWarnings("unchecked")
     final List<PropertyValue> results3 = (List<PropertyValue>) DAO.REQUEST.query(target3, query3, 0, 100);
@@ -1224,6 +1223,54 @@ public class KBTest {
     DAO.delete(source1, source2);
     final int count2 = DAO.SOURCE_ADAPTOR.count("");
     Assert.assertEquals(0, count2);
+
+  }
+
+  /**
+   * Test Source Adaptor DAO active flag methods.
+   */
+  @Test
+  public void testActiveSourceAdaptor() {
+    // CREATE
+    final String sourceName = "source1";
+    final Source source = new Source(sourceName, "test source number 1");
+
+    final String adaptorName = "adaptor1";
+    final String adaptorVersion1 = "0.0.1";
+    final String adaptorVersion2 = "0.0.2";
+    final String adaptorInstance = "default";
+    final SourceAdaptor adaptor1 = new SourceAdaptor(adaptorName, adaptorVersion1, adaptorInstance, source, null,
+      null, null);
+    final SourceAdaptor adaptor2 = new SourceAdaptor(adaptorName, adaptorVersion2, adaptorInstance, source, null,
+      null, null);
+
+    adaptor2.setActive(false);
+
+    // SAVE
+    DAO.save(source);
+    DAO.save(adaptor1, adaptor2);
+
+    // QUERY ACTIVE
+    final List<SourceAdaptor> list = DAO.SOURCE_ADAPTOR.queryActive(true, 0, 100);
+    Assert.assertTrue(list.containsAll(Arrays.asList(adaptor1)));
+    Assert.assertEquals(1, list.size());
+
+    // QUERY INACTIVE
+    final List<SourceAdaptor> list2 = DAO.SOURCE_ADAPTOR.queryActive(false, 0, 100);
+    Assert.assertTrue(list2.containsAll(Arrays.asList(adaptor2)));
+    Assert.assertEquals(1, list2.size());
+
+    // COUNT ACTIVE
+    final int count1 = DAO.SOURCE_ADAPTOR.countActive(true);
+    Assert.assertEquals(1, count1);
+
+    // COUNT INACTIVE
+    final int count2 = DAO.SOURCE_ADAPTOR.countActive(false);
+    Assert.assertEquals(1, count2);
+
+    // DELETE
+    DAO.delete(adaptor1, adaptor2);
+    DAO.delete(source);
 
   }
 

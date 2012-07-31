@@ -163,8 +163,6 @@ public final class SourceAdaptorDAO extends AbstractDO<SourceAdaptor> {
     return super.saveImpl(sourceAdaptor);
   }
 
-  // TODO list and count of source adaptor instances (same name and version)
-
   /**
    * Get all Source Adaptors.
    * 
@@ -186,5 +184,47 @@ public final class SourceAdaptorDAO extends AbstractDO<SourceAdaptor> {
   public int countAll() {
     return count("");
   }
+
+  /**
+   * Get query string that finds all active/inactive source adaptor.
+   * 
+   * @param active
+   *          <code>true</code> to find all active source adaptors,
+   *          <code>false</code> to find all inactive.
+   * @return A query string that binds the source adaptor active flag.
+   */
+  private static String getListOfActiveQueryString(final boolean active) {
+    return String.format("?s watch:active \"%1$s\"^^xsd:boolean", active);
+  }
+
+  /**
+   * Get all active/inactive Source Adaptors.
+   * 
+   * @param active
+   *          <code>true</code> to find all active source adaptors,
+   *          <code>false</code> to find all inactive.
+   * @param start
+   *          The index of the first item to retrieve
+   * @param max
+   *          The maximum number of items to retrieve
+   * @return A list of source adaptors, filtered by the constraints above.
+   */
+  public List<SourceAdaptor> queryActive(final boolean active, final int start, final int max) {
+    return query(getListOfActiveQueryString(active), start, max);
+  }
+
+  /**
+   * Get the total count of Source Adaptors.
+   * 
+   * @param active
+   *          <code>true</code> to count all active source adaptors,
+   *          <code>false</code> to count all inactive.
+   * @return The total number of source adaptors.
+   */
+  public int countActive(final boolean active) {
+    return count(getListOfActiveQueryString(active));
+  }
+
+  // TODO list and count of source adaptor instances (same name and version)
 
 }

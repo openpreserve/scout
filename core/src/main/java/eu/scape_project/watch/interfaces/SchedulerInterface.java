@@ -1,8 +1,7 @@
 package eu.scape_project.watch.interfaces;
 
+import java.util.Map;
 import java.util.Properties;
-
-import eu.scape_project.watch.adaptor.AdaptorManager;
 
 /**
  * This interface is responsible for providing methods for scheduling adaptors. 
@@ -18,7 +17,7 @@ public interface SchedulerInterface {
    * @param adaptor - AdaptorPluginInterface to be started 
    * @param properties - properties needed to successfully start an adaptor
    */
-  void start(AdaptorPluginInterface adaptor, Properties properties);
+  void start(AdaptorPluginInterface adaptor, Map<String, String> properties);
 
   /**
    * Method responsible to stop an already running adaptor. Once paused adaptor can be only started again with 
@@ -42,7 +41,7 @@ public interface SchedulerInterface {
    * Method responsible for rescheduling an adaptor. The running adaptor can be rescheduled by providing new properties.  
    * @param adaptor - adaptor to be rescheduled 
    */
-  void reschedule(AdaptorPluginInterface adaptor, Properties properties);
+  void reschedule(AdaptorPluginInterface adaptor, Map<String, String> properties);
   
   /**
    * Method which allows immediate adaptor execution.  

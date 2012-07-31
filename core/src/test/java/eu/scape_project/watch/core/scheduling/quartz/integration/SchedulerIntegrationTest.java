@@ -1,6 +1,7 @@
 package eu.scape_project.watch.core.scheduling.quartz.integration;
 
-import java.util.Properties;
+import java.util.HashMap;
+import java.util.Map;
 
 import eu.scape_project.watch.scheduling.quartz.QuartzScheduler;
 
@@ -16,7 +17,7 @@ public class SchedulerIntegrationTest {
     QuartzScheduler scheduler = new QuartzScheduler();
     AdaptorPluginMock1 adaptor1 = new AdaptorPluginMock1();
     AdaptorPluginMock2 adaptor2 = new AdaptorPluginMock2();
-    Properties properties = new Properties();
+    Map<String, String> properties = new HashMap<String, String>();
     properties.put("scheduler.intervalInSeconds", "5");
     AdaptorListenerMock adList = new AdaptorListenerMock();
     

@@ -2,6 +2,7 @@ package eu.scape_project.watch.scheduling.quartz;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.quartz.JobBuilder;
@@ -67,7 +68,7 @@ public class QuartzScheduler implements SchedulerInterface {
   }
 
   @Override
-  public void start(AdaptorPluginInterface adaptor, Properties properties) {
+  public void start(AdaptorPluginInterface adaptor, Map<String, String> properties) {
 
     if (!cache.containsAdaptor(adaptor)) {
 
@@ -85,7 +86,7 @@ public class QuartzScheduler implements SchedulerInterface {
           .startNow()
           .withSchedule(
             SimpleScheduleBuilder.simpleSchedule()
-              .withIntervalInSeconds(Integer.parseInt(properties.getProperty("scheduler.intervalInSeconds")))
+              .withIntervalInSeconds(Integer.parseInt(properties.get("scheduler.intervalInSeconds")))
               .repeatForever()).build();
 
         // schedule it
@@ -153,7 +154,7 @@ public class QuartzScheduler implements SchedulerInterface {
   }
 
   @Override
-  public void reschedule(AdaptorPluginInterface adaptor, Properties properties) {
+  public void reschedule(AdaptorPluginInterface adaptor, Map<String, String> properties) {
     // TODO Auto-generated method stub
 
   }

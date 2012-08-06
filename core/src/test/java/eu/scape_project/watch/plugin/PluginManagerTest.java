@@ -76,7 +76,9 @@ public class PluginManagerTest {
   public void tearDown() {
     this.manager.shutdown();
 
-    final File path = new File("src/test/resources/plugins");
+    // if there are tests with notifications, delete the notification
+    // sub folder as well...
+    final File path = new File("src/test/resources/plugins/adaptors");
     this.deleteFolder(path);
   }
 
@@ -191,7 +193,7 @@ public class PluginManagerTest {
     final AdaptorPluginInterface p2 = (AdaptorPluginInterface) this.manager.getPlugin(i2.getClassName(),
       i2.getVersion());
     Assert.assertNotSame(i1.getVersion(), i2.getVersion());
-    
+
     LOG.debug("Executing plugin 1: {}-{}", p1.getName(), p1.getVersion());
     p1.execute();
     LOG.debug("Executing plugin 2: {}-{}", p2.getName(), p2.getVersion());
@@ -231,7 +233,9 @@ public class PluginManagerTest {
     try {
 
       final File source = new File("src/test/resources/" + s);
-      final File target = new File("src/test/resources/plugins/" + s);
+      final File targetDir = new File("src/test/resources/plugins/adaptors/");
+      targetDir.mkdir();
+      final File target = new File(targetDir, s);
 
       inStream = new FileInputStream(source);
       outStream = new FileOutputStream(target);

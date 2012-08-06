@@ -40,7 +40,7 @@
 		<url-pattern>/api/*</url-pattern>
 	</servlet-mapping>
 	<listener>
-		<listener-class>eu.scape_project.watch.listener.ApplicationStartupListener</listener-class>
+		<listener-class>eu.scape_project.watch.listener.ApplicationListener</listener-class>
 	</listener>
 	<filter>
 		<filter-name>ApiOriginFilter</filter-name>

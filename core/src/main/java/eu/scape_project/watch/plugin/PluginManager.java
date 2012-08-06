@@ -292,12 +292,32 @@ public final class PluginManager {
   }
 
   /**
-   * Checks if there are any new jars in the plugin directory or if any of the
-   * old ones has a new last modified date and loads all new plugins.
+   * Obtains the 'adaptors' and 'notifications' sub directory of the plugin
+   * directory and initiates plugin loading if they exist.
    */
   private void loadPlugins() {
+    final File adaptorPluginDir = new File(this.getPluginDirectory(), "adaptors");
+    final File notificationPluginDir = new File(this.getPluginDirectory(), "notifications");
 
-    final File[] jarFiles = this.getPluginDirectory().listFiles(new JarFileFilter());
+    if (adaptorPluginDir.exists() && adaptorPluginDir.isDirectory()) {
+      this.loadPlugins(adaptorPluginDir);
+    }
+
+    if (notificationPluginDir.exists() && notificationPluginDir.isDirectory()) {
+      this.loadPlugins(notificationPluginDir);
+    }
+  }
+
+  /**
+   * Checks if there are any new jars in the passed plugin directory or if any
+   * of the old ones has a new last modified date and loads all new plugins.
+   * 
+   * @param dir
+   *          the directory to scan.
+   */
+  private void loadPlugins(final File dir) {
+
+    final File[] jarFiles = dir.listFiles(new JarFileFilter());
 
     for (final File jarFile : jarFiles) {
       if (this.pluginRegistry.containsKey(jarFile)
@@ -326,7 +346,6 @@ public final class PluginManager {
       }
 
     }
-
   }
 
   /**

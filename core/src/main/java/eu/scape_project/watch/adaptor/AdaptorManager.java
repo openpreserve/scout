@@ -1,5 +1,7 @@
 package eu.scape_project.watch.adaptor;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,14 +49,35 @@ public class AdaptorManager {
    * Creates a new adaptor manager and loads the known source adaptors.
    */
   public AdaptorManager() {
+    this.adaptors = new HashMap<String, SourceAdaptor>();
+    this.cached = new HashMap<String, AdaptorPluginInterface>();
     reloadKnownAdaptors();
   }
 
   /**
    * This method loads the known source adaptors from the knowledge base.
    */
-  public void reloadKnownAdaptors() {
-    // TODO dependent on issue #96
+  public synchronized void reloadKnownAdaptors() {
+    this.adaptors.clear();
+    this.shutdownAll();
+
+    final int count = DAO.SOURCE_ADAPTOR.count(""); // count all
+    final List<SourceAdaptor> all = DAO.SOURCE_ADAPTOR.query("", 0, count);
+    LOG.info("Found {} source adaptors", all.size());
+
+    for (SourceAdaptor sa : all) {
+      this.adaptors.put(sa.getInstance(), sa);
+
+      if (sa.isActive()) {
+        final String instance = sa.getInstance();
+        LOG.info("Found active adaptor with instance id [{}], reloading", instance);
+        final AdaptorPluginInterface plugin = this.getAdaptorInstance(instance);
+
+        if (plugin == null) {
+          LOG.error("An error occurred while reloading the active adaptor with instance [{}]", instance);
+        }
+      }
+    }
   }
 
   /**
@@ -146,7 +169,16 @@ public class AdaptorManager {
     return null;
   }
 
-  // TODO decide whether or not to propagate the exceptions?
+  /**
+   * Retrieves a read-only map of the active adaptor plugins. The key is the
+   * instance of the adaptor and the value is the adaptor plugin.
+   * 
+   * @return the active plugins.
+   */
+  public Map<String, AdaptorPluginInterface> getActiveAdaptorPlugins() {
+    return Collections.unmodifiableMap(this.cached);
+  }
+
   /**
    * Instantiates, initializes and configures an adaptor implementation ready to
    * fetch data. If the passed instance is not associated with any adaptor then
@@ -188,6 +220,8 @@ public class AdaptorManager {
       if (plugin != null) {
         try {
           plugin.setParameterValues(adaptor.getConfiguration());
+          adaptor.setActive(true);
+          this.updateSourceAdaptor(adaptor);
         } catch (final InvalidParameterException e) {
           LOG.error("An error occurred during cached plugin configuration: {}", e.getMessage());
         }
@@ -197,19 +231,27 @@ public class AdaptorManager {
   }
 
   /**
-   * Shuts down the plugin with the specified id if it is existing.
+   * Shuts down the plugin with the specified id if it is existing and sets the
+   * corresponding adaptor as inactive.
    * 
    * @param instance
    *          the instance id of the source adaptor.
    */
   public void shutdown(final String instance) {
     LOG.info("Trying to shutdown plugin with id: {}", instance);
+    final SourceAdaptor adaptor = this.getSourceAdaptor(instance);
     final AdaptorPluginInterface plugin = this.cached.remove(instance);
+
     this.shutdown(plugin);
+
+    adaptor.setActive(false);
+    this.updateSourceAdaptor(adaptor);
   }
 
   /**
    * Shuts down all running plugins and removes the from the cache.
+   * 
+   * @see AdaptorManager#shutdown(String)
    */
   public void shutdownAll() {
     LOG.info("Shutting down all plugins");

@@ -49,6 +49,7 @@ public class AdaptorManager {
    * Creates a new adaptor manager and loads the known source adaptors.
    */
   public AdaptorManager() {
+    LOG.info("Creating adaptor manager");
     this.adaptors = new HashMap<String, SourceAdaptor>();
     this.cached = new HashMap<String, AdaptorPluginInterface>();
     reloadKnownAdaptors();
@@ -271,7 +272,7 @@ public class AdaptorManager {
     if (plugin == null) {
       LOG.warn("Passed plugin is null, skipping shutdown");
     } else {
-      LOG.debug("Shutting down plugin: {}-{}", plugin.getName(), plugin.getVersion());
+      LOG.info("Shutting down plugin: {}-{}", plugin.getName(), plugin.getVersion());
       try {
         plugin.shutdown();
       } catch (final PluginException e) {

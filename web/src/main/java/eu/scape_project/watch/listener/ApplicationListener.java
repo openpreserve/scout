@@ -20,8 +20,12 @@ import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.Question;
 import eu.scape_project.watch.domain.RequestTarget;
 import eu.scape_project.watch.domain.Trigger;
+import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
 import eu.scape_project.watch.interfaces.MonitorInterface;
+import eu.scape_project.watch.interfaces.SchedulerInterface;
+import eu.scape_project.watch.merging.DataMerger;
 import eu.scape_project.watch.plugin.PluginManager;
+import eu.scape_project.watch.scheduling.quartz.QuartzScheduler;
 import eu.scape_project.watch.utils.ComponentContainer;
 import eu.scape_project.watch.utils.ConfigUtils;
 import eu.scape_project.watch.utils.KBUtils;
@@ -31,12 +35,16 @@ import eu.scape_project.watch.utils.KBUtils;
  * application launch. It is currently used to initialize and insert some test
  * data.
  * 
- * @author petar
+ * @author Petar Petrov - <me@petarpetrov.org>
  * 
  */
 public class ApplicationListener implements ServletContextListener {
 
+  /**
+   * A default logger for this class.
+   */
   private static final Logger LOG = LoggerFactory.getLogger(ApplicationListener.class);
+
   private static final String COMPONENT_CONTAINER = "componentContainer";
 
   /**
@@ -44,51 +52,61 @@ public class ApplicationListener implements ServletContextListener {
    */
   private static final String SCOUT_ADAPTORMANAGER = "scout.core.adaptormanager";
 
+  private static final String SCOUT_DATA_MERGER = "scout.core.datamerger";
+
+  private static final String SCOUT_SCHEDULER = "scout.core.scheduler";
+
   @Override
   public void contextDestroyed(final ServletContextEvent sce) {
-    LOG.info("Destroying Watch Application context");
+    LOG.info("Preparing Scout for shutdown.");
 
-    // final ComponentContainer componentContainer = (ComponentContainer)
-    // sce.getServletContext().getAttribute(
-    // COMPONENT_CONTAINER);
-    // componentContainer.destroy();
+    final SchedulerInterface scheduler = (SchedulerInterface) sce.getServletContext().getAttribute(SCOUT_SCHEDULER);
+    final AdaptorManager manager = (AdaptorManager) sce.getServletContext().getAttribute(SCOUT_ADAPTORMANAGER);
+    final Map<String, AdaptorPluginInterface> activeAdaptors = manager.getActiveAdaptorPlugins();
+
+    for (AdaptorPluginInterface adaptor : activeAdaptors.values()) {
+      scheduler.stop(adaptor);
+    }
+
+    manager.shutdownAll();
+
+    PluginManager.getDefaultPluginManager().shutdown();
 
     KBUtils.dbDisconnect();
 
-    // shutdown the plugin manager and stop the scanners.
-    PluginManager.getDefaultPluginManager().shutdown();
   }
 
   @Override
   public void contextInitialized(final ServletContextEvent sce) {
-    LOG.info("Starting Scout Application");
+    LOG.info("Starting Scout");
+
+    // initialize the knowledgebase and make a connection.
     initDB();
-
-    LOG.debug("Starting up core components");
-    final ComponentContainer componentContainer = new ComponentContainer();
-//    final MonitorInterface monitor = new CollectionProfilerMonitor();
-    final AdaptorManager manager = new AdaptorManager();
-
-    // final CentralMonitor cm = new CentralMonitor();
-    // cm.registerToAsyncRequest();
-    // cm.setNotificationService(NotificationService.getInstance());
-
-    // componentContainer.setCoreScheduler(new QuartzScheduler());
-    // componentContainer.setCentralMonitor(cm);
-    // componentContainer.setAdaptorLoader(new AdaptorLoader());
-    // componentContainer.addMonitor(monitor);
-
-    // NotificationService.getInstance().addAdaptor(new
-    // LogNotificationAdaptor());
-    saveTestRequest();
-
-    // componentContainer.init();
-
-    sce.getServletContext().setAttribute(COMPONENT_CONTAINER, componentContainer);
-    sce.getServletContext().setAttribute(SCOUT_ADAPTORMANAGER, manager);
 
     // initialize the PluginManager...
     PluginManager.getDefaultPluginManager();
+
+    // create adaptormanager and load all active adaptors.
+    final AdaptorManager manager = new AdaptorManager();
+    final Map<String, AdaptorPluginInterface> activeAdaptors = manager.getActiveAdaptorPlugins();
+
+    // create data merger and add it as a listener.
+    final DataMerger merger = new DataMerger();
+
+    // create scheduler
+    final SchedulerInterface scheduler = new QuartzScheduler();
+
+    for (AdaptorPluginInterface adaptor : activeAdaptors.values()) {
+      scheduler.start(adaptor, null); // TODO add desired properties...
+      // scheduler.addAdaptorListener(); //TODO add the data merger or another
+      // listener.
+    }
+
+    saveTestRequest();
+
+    sce.getServletContext().setAttribute(SCOUT_DATA_MERGER, merger);
+    sce.getServletContext().setAttribute(SCOUT_SCHEDULER, scheduler);
+    sce.getServletContext().setAttribute(SCOUT_ADAPTORMANAGER, manager);
 
   }
 

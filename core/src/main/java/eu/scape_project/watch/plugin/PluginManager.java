@@ -82,6 +82,11 @@ public final class PluginManager {
   private ConfigUtils config;
 
   /**
+   * A flag that tracks whether this plugin manager is loading or not.
+   */
+  private boolean loading = false;
+
+  /**
    * Gets the default {@link PluginManager}.
    * 
    * @return the default {@link PluginManager}.
@@ -105,6 +110,7 @@ public final class PluginManager {
    * @see {@link ConfigUtils}
    */
   public void setup() {
+    this.pluginRegistry.clear();
     final String dir = config.getStringProperty("watch.plugins.directory");
     final File pluginDir = new File(dir);
 
@@ -131,6 +137,9 @@ public final class PluginManager {
    *         classname if not a {@link PluginInterface}.
    */
   public PluginInterface getPlugin(final String pluginID, final String version) {
+
+    this.waitForLoadingToFinish();
+
     PluginInterface plugin = null;
     for (JarPlugin jarPlugin : this.pluginRegistry.values()) {
       final PluginInterface tmp = jarPlugin.plugin;
@@ -161,6 +170,8 @@ public final class PluginManager {
    * @see {@link PluginType}
    */
   public List<PluginInfo> getPluginInfo(final PluginType type) {
+    this.waitForLoadingToFinish();
+
     final List<PluginInfo> info = new ArrayList<PluginInfo>();
 
     if (type == null) {
@@ -190,6 +201,8 @@ public final class PluginManager {
    * @return the list with the plugin info.
    */
   public List<PluginInfo> getPluginInfo(final String name) {
+    this.waitForLoadingToFinish();
+    
     final List<PluginInfo> result = new ArrayList<PluginInfo>();
 
     for (JarPlugin jp : this.pluginRegistry.values()) {
@@ -269,6 +282,20 @@ public final class PluginManager {
   }
 
   /**
+   * Checks if the plugin manager is currently loading plugins and waits until
+   * the loading procedure finishes, then the method returns.
+   */
+  private void waitForLoadingToFinish() {
+    while (this.loading) {
+      try {
+        Thread.sleep(300);
+      } catch (final InterruptedException e) {
+        // nothing to worry about.
+      }
+    }
+  }
+
+  /**
    * Sets the plugin directory.
    * 
    * @param pluginDirectory
@@ -296,6 +323,8 @@ public final class PluginManager {
    * directory and initiates plugin loading if they exist.
    */
   private void loadPlugins() {
+    this.loading = true;
+
     final File adaptorPluginDir = new File(this.getPluginDirectory(), "adaptors");
     final File notificationPluginDir = new File(this.getPluginDirectory(), "notifications");
 
@@ -306,6 +335,8 @@ public final class PluginManager {
     if (notificationPluginDir.exists() && notificationPluginDir.isDirectory()) {
       this.loadPlugins(notificationPluginDir);
     }
+
+    this.loading = false;
   }
 
   /**
@@ -392,7 +423,7 @@ public final class PluginManager {
             // set the plugin only if it was really loaded
             // otherwise continue to load classes.
             plugin = tmp;
-            LOGGER.debug("PLugin instantiated");
+            LOGGER.debug("Plugin instantiated");
           }
 
         } catch (final ClassNotFoundException e) {

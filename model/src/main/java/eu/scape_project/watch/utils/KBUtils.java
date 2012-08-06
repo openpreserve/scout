@@ -276,7 +276,7 @@ public final class KBUtils {
    *          database.
    */
   public static void dbConnect(final String datafolder, final boolean testdata) {
-    LOG.info("DB Connect");
+    LOG.info("Connecting to the knowledge base");
     final File dataFolderFile = new File(datafolder);
     try {
 
@@ -350,7 +350,7 @@ public final class KBUtils {
 
     // sources and adaptors
     final Source source = new Source("testsource", "A test source");
-    final SourceAdaptor adaptor = new SourceAdaptor("testadaptor", "0.0.1", "default", source, Arrays.asList(tools,
+    final SourceAdaptor adaptor = new SourceAdaptor("testadaptor", "0.1", "default", source, Arrays.asList(tools,
       formats, profile), Arrays.asList(formatPUID, formatMimetype, toolVersion, inputFormats, outputFormats,
       formatDistribution), new HashMap<String, String>());
     DAO.save(source);

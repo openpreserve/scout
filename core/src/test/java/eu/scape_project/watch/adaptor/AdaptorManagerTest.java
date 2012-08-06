@@ -2,6 +2,7 @@ package eu.scape_project.watch.adaptor;
 
 import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
+import eu.scape_project.watch.plugin.PluginManager;
 import eu.scape_project.watch.utils.ConfigUtils;
 import eu.scape_project.watch.utils.KBUtils;
 
@@ -20,6 +21,8 @@ public class AdaptorManagerTest {
     final String datafolder = System.getProperty("java.io.tmpdir");
     final boolean insertData = true;
     KBUtils.dbConnect(datafolder, insertData);
+    PluginManager.getDefaultPluginManager().getConfig().override(ConfigUtils.DEFAULT_CONFIG);
+    PluginManager.getDefaultPluginManager().setup();
   }
   
   @After

@@ -8,6 +8,9 @@ import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.domain.SourceAdaptor;
+import eu.scape_project.watch.interfaces.AdaptorListenerInterface;
+import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
+import eu.scape_project.watch.interfaces.ResultInterface;
 
 /**
  * Component that allows the merging of source adaptors created information into
@@ -110,5 +113,4 @@ public class DataMerger {
     }
 
   }
-
 }

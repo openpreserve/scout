@@ -225,6 +225,9 @@ public class AdaptorManager {
           this.updateSourceAdaptor(adaptor);
         } catch (final InvalidParameterException e) {
           LOG.error("An error occurred during cached plugin configuration: {}", e.getMessage());
+          LOG.info("Disabling plugin with instance id: " + instance);
+          adaptor.setActive(false);
+          this.updateSourceAdaptor(adaptor);
         }
       }
     }
@@ -295,7 +298,7 @@ public class AdaptorManager {
     LOG.debug("Retrieving the implementation of: {}-{}", name, version);
     final PluginManager pm = PluginManager.getDefaultPluginManager();
     final List<PluginInfo> info = pm.getPluginInfo(name);
-
+    
     AdaptorPluginInterface plugin = null;
     for (PluginInfo pi : info) {
       if (pi.getVersion().equals(version)) {

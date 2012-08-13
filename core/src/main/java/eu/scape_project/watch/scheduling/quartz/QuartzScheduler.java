@@ -94,6 +94,13 @@ public class QuartzScheduler implements SchedulerInterface {
           scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
           // TODO
+          e.printStackTrace();
+          LOG.error("An error occurred: {}", e.getMessage());
+          
+          // aaaaaaaaaaaaaarrrgh
+          // Please add a simple Log or print the stack trace at least.
+          // it is a one liner, saves a lot of debugging time and
+          // makes sure people do not get nervous breakdowns!!!!!
         }
 
         // store the JobKey to the cache
@@ -167,6 +174,8 @@ public class QuartzScheduler implements SchedulerInterface {
         scheduler.triggerJob(key);
       } catch (SchedulerException e) {
         // TODO
+        e.printStackTrace();
+        LOG.error("An error occurred: " + e.getMessage());
       }
     } else {
       // TODO

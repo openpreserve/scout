@@ -349,10 +349,12 @@ public final class KBUtils {
     DAO.save(pdf17Format, tiffFormat, jpeg2000Format, imageMagickTool, jpeg, jpeg2000, png, doc, docx, bmp, gif, cp0);
 
     // sources and adaptors
-    final Source source = new Source("testsource", "A test source");
-    final SourceAdaptor adaptor = new SourceAdaptor("testadaptor", "0.1", "default", source, Arrays.asList(tools,
+    final Map<String, String> config = new HashMap<String, String>();
+    config.put("c3po.endpoint", "dummy");
+    final Source source = new Source("c3podummy", "A c3po dummy test source");
+    final SourceAdaptor adaptor = new SourceAdaptor("c3po", "0.0.3", "c3po-0.0.3", source, Arrays.asList(tools,
       formats, profile), Arrays.asList(formatPUID, formatMimetype, toolVersion, inputFormats, outputFormats,
-      formatDistribution), new HashMap<String, String>());
+      formatDistribution), config);
     DAO.save(source);
     DAO.save(adaptor);
 

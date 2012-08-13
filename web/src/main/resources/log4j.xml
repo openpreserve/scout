@@ -13,6 +13,11 @@
 		<level value="DEBUG" />
 		<appender-ref ref="CONSOLE" />
 	</logger>
+  
+    <logger name="com.hp.hpl.jena.sparql.engine.iterator.QueryIteratorCheck">
+        <level value="ERROR" />
+        <appender-ref ref="CONSOLE" />
+    </logger>
 
 	 <!--<logger name="org.quartz" additivity="false">
 		<level value="DEBUG" />

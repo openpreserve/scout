@@ -21,12 +21,12 @@ import eu.scape_project.watch.domain.Question;
 import eu.scape_project.watch.domain.RequestTarget;
 import eu.scape_project.watch.domain.Trigger;
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
-import eu.scape_project.watch.interfaces.MonitorInterface;
 import eu.scape_project.watch.interfaces.SchedulerInterface;
+import eu.scape_project.watch.linking.DataLinker;
 import eu.scape_project.watch.merging.DataMerger;
 import eu.scape_project.watch.plugin.PluginManager;
 import eu.scape_project.watch.scheduling.quartz.QuartzScheduler;
-import eu.scape_project.watch.utils.ComponentContainer;
+import eu.scape_project.watch.utils.AllDataResultListener;
 import eu.scape_project.watch.utils.ConfigUtils;
 import eu.scape_project.watch.utils.KBUtils;
 
@@ -56,6 +56,8 @@ public class ApplicationListener implements ServletContextListener {
 
   private static final String SCOUT_SCHEDULER = "scout.core.scheduler";
 
+  private static final String SCOUT_DATA_LINKER = "scout.core.datalinker";
+
   @Override
   public void contextDestroyed(final ServletContextEvent sce) {
     LOG.info("Preparing Scout for shutdown.");
@@ -67,6 +69,8 @@ public class ApplicationListener implements ServletContextListener {
     for (AdaptorPluginInterface adaptor : activeAdaptors.values()) {
       scheduler.stop(adaptor);
     }
+    
+    scheduler.clear();
 
     manager.shutdownAll();
 
@@ -92,19 +96,30 @@ public class ApplicationListener implements ServletContextListener {
 
     // create data merger and add it as a listener.
     final DataMerger merger = new DataMerger();
+    
+    //create data linker
+    final DataLinker linker = new DataLinker();
+    //TODO add link rules as more adaptors come.
+    //TODO create interface for creating these
+    //rules
 
     // create scheduler
     final SchedulerInterface scheduler = new QuartzScheduler();
+    final AllDataResultListener resultListener = new AllDataResultListener(manager, merger);
+    scheduler.addAdaptorListener(resultListener);
 
+    //TODO read this out of file or some other way...
+    final Map<String, String> schedulerConfig = new HashMap<String, String>();
+    schedulerConfig.put("scheduler.intervalInSeconds", "300"); //run every 5 minutes...
+    
     for (AdaptorPluginInterface adaptor : activeAdaptors.values()) {
-      scheduler.start(adaptor, null); // TODO add desired properties...
-      // scheduler.addAdaptorListener(); //TODO add the data merger or another
-      // listener.
+      scheduler.start(adaptor, schedulerConfig); // TODO add desired properties...
     }
 
     saveTestRequest();
 
     sce.getServletContext().setAttribute(SCOUT_DATA_MERGER, merger);
+    sce.getServletContext().setAttribute(SCOUT_DATA_LINKER, linker);
     sce.getServletContext().setAttribute(SCOUT_SCHEDULER, scheduler);
     sce.getServletContext().setAttribute(SCOUT_ADAPTORMANAGER, manager);
 

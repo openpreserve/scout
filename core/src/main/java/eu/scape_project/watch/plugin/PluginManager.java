@@ -412,11 +412,11 @@ public final class PluginManager {
       if (entry.getName().endsWith(CLASS_EXTENSION)) {
 
         final String className = entry.getName().replaceAll("/", ".").replaceAll(CLASS_EXTENSION, "");
-        LOGGER.debug("Found class: {}, trying to load it", className);
+        LOGGER.trace("Found class: {}, trying to load it", className);
 
         try {
           final Class<?> clazz = loader.loadClass(className);
-          LOGGER.debug("Loaded {}", className);
+          LOGGER.trace("Loaded {}", className);
 
           final PluginInterface tmp = this.createInstance(clazz);
           if (tmp != null) {
@@ -462,7 +462,7 @@ public final class PluginManager {
     try {
       if (PluginInterface.class.isAssignableFrom(clazz) && !clazz.isInterface()
         && !Modifier.isAbstract(clazz.getModifiers())) {
-        LOGGER.debug("class is a plugin, instantiating");
+        LOGGER.debug("{} class is a plugin, instantiating", clazz.getName());
         plugin = (PluginInterface) clazz.newInstance();
       }
 

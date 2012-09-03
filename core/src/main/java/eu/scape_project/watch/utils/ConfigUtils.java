@@ -28,28 +28,48 @@ public class ConfigUtils {
   /**
    * The property designating the data folder of the watch tdb.
    */
-  public static final String KB_DATA_FOLDER_KEY = "watch.kb.data_folder";
+  public static final String KB_DATA_FOLDER_KEY = "scout.kb.data";
 
   /**
    * The property designating whether or not the test data should be inserted on
    * startup.
    */
-  public static final String KB_INSERT_TEST_DATA = "watch.kb.test_data";
+  public static final String KB_INSERT_TEST_DATA = "scout.kb.insert_test_data";
+  
+  
+  /**
+   * The property designating the folder where the plugins are located.
+   */
+  public static final String PLUGINS_DIRECTORY_KEY = "scout.plugins";
+
+  /**
+   * Name of the folder where all scout configurations will be located.
+   */
+  public static final String PROPERTIES_FOLDER_NAME = "scout";
+
+  /**
+   * Name of primary scout configuration file.
+   */
+  public static final String PROPERTIES_FILE_NAME = "scout.properties";
 
   /**
    * The default properties path inside of the package.
    */
-  private static final String DEFAULT_PROPERTIES = "config/watchconfig.properties";
+  private static final String DEFAULT_PROPERTIES = "config/" + PROPERTIES_FILE_NAME;
 
   /**
    * The current user properties path, currently in the users home.
    */
-  private static final String USER_PROPERTIES = System.getProperty("user.home") + "/.watchconfig";
+  private static final String USER_PROPERTIES = System.getProperty("user.home") + File.pathSeparator + "."
+    + PROPERTIES_FOLDER_NAME + File.pathSeparator + PROPERTIES_FILE_NAME;
 
   /**
    * The global properties path.
+   * 
+   * TODO support windows system properties path
    */
-  private static final String SYSTEM_PROPERTIES = "/etc/watchconfig";
+  private static final String SYSTEM_PROPERTIES = "/etc/" + PROPERTIES_FOLDER_NAME + File.pathSeparator
+    + PROPERTIES_FILE_NAME;
 
   /**
    * The identifier of the default config provided with the system.
@@ -65,6 +85,8 @@ public class ConfigUtils {
    * The identifier of the system wide config.
    */
   public static final int SYSTEM_CONFIG = 0x03;
+
+
 
   /**
    * The loaded properties.

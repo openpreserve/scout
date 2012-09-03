@@ -111,7 +111,7 @@ public final class PluginManager {
    */
   public void setup() {
     this.pluginRegistry.clear();
-    final String dir = config.getStringProperty("watch.plugins.directory");
+    final String dir = config.getStringProperty(ConfigUtils.PLUGINS_DIRECTORY_KEY);
     final File pluginDir = new File(dir);
 
     LOGGER.debug("Observerd plugin directory is " + pluginDir);

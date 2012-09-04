@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import thewebsemantic.binding.Jenabean;
 
+import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -289,7 +290,8 @@ public final class KBUtils {
         FileUtils.forceMkdir(dataFolderFile);
       }
 
-      final Model model = TDBFactory.createModel(datafolder);
+      final Dataset dataset = TDBFactory.createDataset(datafolder);
+      final Model model = dataset.getDefaultModel();
       Jenabean.instance().bind(model);
 
       LOG.info("Model was created at {} and is bound to Jenabean", datafolder);

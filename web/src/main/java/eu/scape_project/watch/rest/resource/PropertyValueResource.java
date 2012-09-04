@@ -137,10 +137,10 @@ public class PropertyValueResource extends JavaHelp {
           return Response.ok().entity(propertyValue).build();
         } catch (UnsupportedDataTypeException e) {
           LOG.error("Data type not supported", e);
-          throw new BadRequestException(400, "Data type not supported");
+          throw new BadRequestException("Data type not supported");
         } catch (InvalidJavaClassForDataTypeException e) {
           LOG.error("Invalid value Java class for the defined data type", e);
-          throw new BadRequestException(400, "Invalid value Java class for the defined data type");
+          throw new BadRequestException("Invalid value Java class for the defined data type");
         }
 
       } else {
@@ -180,12 +180,12 @@ public class PropertyValueResource extends JavaHelp {
         propertyValue.setValue(value);
         propertyValue.save();
         return Response.ok().entity(propertyName).build();
-      } catch (UnsupportedDataTypeException e) {
+      } catch (final UnsupportedDataTypeException e) {
         LOG.error("Data type not supported", e);
-        throw new BadRequestException(400, "Data type not supported");
-      } catch (InvalidJavaClassForDataTypeException e) {
+        throw new BadRequestException("Data type not supported", e);
+      } catch (final InvalidJavaClassForDataTypeException e) {
         LOG.error("Data type not supported", e);
-        throw new BadRequestException(400, "Data type not supported");
+        throw new BadRequestException("Data type not supported", e);
       }
 
     } else {

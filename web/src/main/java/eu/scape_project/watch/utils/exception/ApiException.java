@@ -31,7 +31,7 @@ public class ApiException extends WebApplicationException {
    */
   public ApiException(final int code, final String message) {
     super(Response.status(code).entity(message).type(MediaType.TEXT_PLAIN).build());
-    this.setCode(code);
+    this.code = code;
   }
 
   /**
@@ -45,8 +45,23 @@ public class ApiException extends WebApplicationException {
   public ApiException(final int code, final Throwable e) {
     super(Response.status(code).entity(e.getClass().getSimpleName() + ": " + e.getMessage()).type(MediaType.TEXT_PLAIN)
       .build());
+    this.code = code;
+  }
 
-    this.setCode(code);
+  /**
+   * Create a new generic API exception.
+   * 
+   * @param code
+   *          The HTTP code to return.
+   * @param message
+   *          The error message.
+   * @param e
+   *          The error cause.
+   */
+  public ApiException(final int code, final String message, final Throwable e) {
+    super(Response.status(code).entity(e.getClass().getSimpleName() + ": " + message + ", cause: " + e.getMessage())
+      .type(MediaType.TEXT_PLAIN).build());
+    this.code = code;
   }
 
   public int getCode() {

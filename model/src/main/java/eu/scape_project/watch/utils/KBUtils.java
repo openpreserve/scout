@@ -184,6 +184,11 @@ public final class KBUtils {
   public static final String SOURCE_ADAPTOR = "sourceadaptor";
 
   /**
+   * A plug-in constant.
+   */
+  public static final String PLUGIN = "plugin";
+
+  /**
    * The declaration of the XSD prefix to use in SPARQL queries.
    */
   public static final String XSD_PREFIX_DECL = createPrefixDecl(XSD_PREFIX, XSD_NS);

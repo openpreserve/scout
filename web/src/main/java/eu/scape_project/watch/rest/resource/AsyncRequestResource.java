@@ -63,7 +63,7 @@ public class AsyncRequestResource extends JavaHelp {
    * @return The created async request
    */
   @POST
-  @Path("/")
+  @Path("/new")
   @ApiOperation(value = "Create Async Request", notes = "This can only be done by a logged user (TODO)")
   public Response createAsyncRequest(@ApiParam(value = "Async Request", required = true) final AsyncRequest request) {
     DAO.save(request);

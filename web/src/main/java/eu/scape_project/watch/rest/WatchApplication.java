@@ -1,22 +1,24 @@
 package eu.scape_project.watch.rest;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.ws.rs.core.Application;
+
 import eu.scape_project.watch.rest.resource.AsyncRequestResourceJSON;
 import eu.scape_project.watch.rest.resource.AsyncRequestResourceXML;
 import eu.scape_project.watch.rest.resource.EntityResourceJSON;
 import eu.scape_project.watch.rest.resource.EntityResourceXML;
 import eu.scape_project.watch.rest.resource.EntityTypeResourceJSON;
 import eu.scape_project.watch.rest.resource.EntityTypeResourceXML;
+import eu.scape_project.watch.rest.resource.PluginResourceJSON;
+import eu.scape_project.watch.rest.resource.PluginResourceXML;
 import eu.scape_project.watch.rest.resource.PropertyResourceJSON;
 import eu.scape_project.watch.rest.resource.PropertyResourceXML;
 import eu.scape_project.watch.rest.resource.PropertyValueResourceJSON;
 import eu.scape_project.watch.rest.resource.PropertyValueResourceXML;
 import eu.scape_project.watch.rest.resource.RequestResourceJSON;
 import eu.scape_project.watch.rest.resource.RequestResourceXML;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.ws.rs.core.Application;
 
 /**
  * 
@@ -45,6 +47,8 @@ public class WatchApplication extends Application {
     classes.add(RequestResourceXML.class);
     classes.add(AsyncRequestResourceJSON.class);
     classes.add(AsyncRequestResourceXML.class);
+    classes.add(PluginResourceJSON.class);
+    classes.add(PluginResourceXML.class);
 
     return classes;
   }

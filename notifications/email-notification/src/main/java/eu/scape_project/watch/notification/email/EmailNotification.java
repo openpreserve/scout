@@ -1,9 +1,6 @@
 package eu.scape_project.watch.notification.email;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Arrays;
@@ -48,12 +45,12 @@ public class EmailNotification implements NotificationPluginInterface {
   /**
    * Plug-in name.
    */
-  private static final String NAME = "PlainTextEmail";
+  private static final String NAME = "HtmlEmail";
 
   /**
    * Plug-in version.
    */
-  private static final String VERSION = "0.0.1-SNAPSHOT";
+  private static final String VERSION = "0.0.2";
 
   /**
    * Plug-in description.

@@ -114,11 +114,11 @@ public final class PluginManager {
     final String dir = config.getStringProperty(ConfigUtils.PLUGINS_DIRECTORY_KEY);
     final File pluginDir = new File(dir);
 
-    LOGGER.debug("Observerd plugin directory is " + pluginDir);
+    LOGGER.debug("Observed plugin directory is {}", pluginDir);
 
     this.setPluginDirectory(pluginDir);
 
-    LOGGER.debug("Starting plugin-scanner timer...");
+    LOGGER.debug("Starting plugin-scanner timer ({}s)...", SCANNER_PERIOD / 1000);
     this.startTimer();
 
     LOGGER.info(getClass().getSimpleName() + " is started");
@@ -177,13 +177,15 @@ public final class PluginManager {
     if (type == null) {
       for (JarPlugin jp : this.pluginRegistry.values()) {
         final PluginInterface p = jp.plugin;
-        info.add(new PluginInfo(p.getName(), p.getVersion(), p.getDescription(), p.getClass().getName()));
+        info.add(new PluginInfo(p.getName(), p.getVersion(), p.getPluginType(), p.getDescription(), p.getClass()
+          .getName()));
       }
     } else {
       for (JarPlugin jp : this.pluginRegistry.values()) {
         final PluginInterface p = jp.plugin;
         if (p.getPluginType() == type) {
-          info.add(new PluginInfo(p.getName(), p.getVersion(), p.getDescription(), p.getClass().getName()));
+          info.add(new PluginInfo(p.getName(), p.getVersion(), p.getPluginType(), p.getDescription(), p.getClass()
+            .getName()));
         }
       }
     }
@@ -202,14 +204,15 @@ public final class PluginManager {
    */
   public List<PluginInfo> getPluginInfo(final String name) {
     this.waitForLoadingToFinish();
-    
+
     final List<PluginInfo> result = new ArrayList<PluginInfo>();
 
     for (JarPlugin jp : this.pluginRegistry.values()) {
       final PluginInterface p = jp.plugin;
 
       if (p.getName().equalsIgnoreCase(name)) {
-        result.add(new PluginInfo(p.getName(), p.getVersion(), p.getDescription(), p.getClass().getName()));
+        result.add(new PluginInfo(p.getName(), p.getVersion(), p.getPluginType(), p.getDescription(), p.getClass()
+          .getName()));
       }
     }
 
@@ -427,13 +430,17 @@ public final class PluginManager {
           }
 
         } catch (final ClassNotFoundException e) {
-          LOGGER.error("Class Not Found {}: {}", className, e.getMessage());
+          LOGGER.error("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
+            e.getMessage()});
         } catch (final IllegalAccessError e) {
-          LOGGER.error("IllegalAccessError caught {}: {}", className, e.getMessage());
+          LOGGER.error("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
+            e.getMessage()});
         } catch (final VerifyError e) {
-          LOGGER.error("VerifyError caught {}: {}", className, e.getMessage());
+          LOGGER.error("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
+            e.getMessage()});
         } catch (final NoClassDefFoundError e) {
-          LOGGER.error("NoClassDefFoundError caught {}: {}", className, e.getMessage());
+          LOGGER.error("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
+            e.getMessage()});
         }
       }
     }

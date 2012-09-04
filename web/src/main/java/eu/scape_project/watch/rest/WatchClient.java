@@ -5,18 +5,24 @@ import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
+
 import eu.scape_project.watch.domain.AsyncRequest;
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.domain.RequestTarget;
+import eu.scape_project.watch.interfaces.PluginType;
+import eu.scape_project.watch.plugin.PluginInfo;
 import eu.scape_project.watch.utils.KBUtils;
 import eu.scape_project.watch.utils.exception.NotFoundException;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 
 import thewebsemantic.binding.RdfBean;
 
@@ -43,6 +49,11 @@ public class WatchClient {
    * Special word that allows listing of a resource.
    */
   private static final String LIST = "list";
+
+  /**
+   * Special word that allows creation of a resource.
+   */
+  private static final String NEW = "new";
 
   /**
    * Query key to define a listing start index.
@@ -133,6 +144,12 @@ public class WatchClient {
    * Generic type for a List of {@link PropertyValue}.
    */
   private static final GenericType<List<PropertyValue>> PROPERTYVALUE_LIST_TYPE = new GenericType<List<PropertyValue>>() {
+  };
+
+  /**
+   * Generic type for a List of {@link PluginInfo}.
+   */
+  private static final GenericType<List<PluginInfo>> PLUGININFO_LIST_TYPE = new GenericType<List<PluginInfo>>() {
   };
 
   /**
@@ -530,7 +547,39 @@ public class WatchClient {
    * @return The created async request after merging with the KB
    */
   public AsyncRequest createAsyncRequest(final AsyncRequest request) {
-    return this.resource.path(KBUtils.ASYNC_REQUEST + FS + this.format).accept(this.format.getMediaType())
+    return this.resource.path(KBUtils.ASYNC_REQUEST + FS + this.format + AS + NEW).accept(this.format.getMediaType())
       .post(AsyncRequest.class, request);
   }
+
+  /**
+   * List plug-ins by name.
+   * 
+   * @param name
+   *          The name of the plug-ins.
+   * 
+   * @return A list of all plug-ins with the same name (different versions).
+   */
+  public List<PluginInfo> listPluginsByName(final String name) {
+    return (List<PluginInfo>) this.resource.path(KBUtils.PLUGIN + FS + this.format + AS + name)
+      .accept(this.format.getMediaType()).get(PLUGININFO_LIST_TYPE);
+  }
+
+  /**
+   * List all plug-ins.
+   * 
+   * @param type
+   *          Optionally filter by {@link PluginType}. Choose <code>null</code>
+   *          to list all types.
+   * 
+   * @return A list of all plug-ins, optionally filtered by type.
+   */
+  public List<PluginInfo> listPlugins(final PluginType type) {
+    final MultivaluedMap<String, String> query = new MultivaluedMapImpl();
+    if (type != null) {
+      query.put(TYPE, Arrays.asList(type.toString()));
+    }
+    return (List<PluginInfo>) this.resource.path(KBUtils.PLUGIN + FS + this.format + AS + LIST).queryParams(query)
+      .accept(this.format.getMediaType()).get(PLUGININFO_LIST_TYPE);
+  }
+
 }

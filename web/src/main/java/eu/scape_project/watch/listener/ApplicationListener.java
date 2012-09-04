@@ -64,15 +64,19 @@ public class ApplicationListener implements ServletContextListener {
 
     final SchedulerInterface scheduler = (SchedulerInterface) sce.getServletContext().getAttribute(SCOUT_SCHEDULER);
     final AdaptorManager manager = (AdaptorManager) sce.getServletContext().getAttribute(SCOUT_ADAPTORMANAGER);
-    final Map<String, AdaptorPluginInterface> activeAdaptors = manager.getActiveAdaptorPlugins();
 
-    for (AdaptorPluginInterface adaptor : activeAdaptors.values()) {
-      scheduler.stop(adaptor);
+    if (manager != null && scheduler != null) {
+      final Map<String, AdaptorPluginInterface> activeAdaptors = manager.getActiveAdaptorPlugins();
+
+      for (AdaptorPluginInterface adaptor : activeAdaptors.values()) {
+        scheduler.stop(adaptor);
+      }
+      scheduler.clear();
+
+      manager.shutdownAll();
+    } else {
+      LOG.warn("Could not get AdaptorManager or Scheduler from servlet context, skipping adaptor scheduling cleanup");
     }
-    
-    scheduler.clear();
-
-    manager.shutdownAll();
 
     PluginManager.getDefaultPluginManager().shutdown();
 
@@ -96,24 +100,31 @@ public class ApplicationListener implements ServletContextListener {
 
     // create data merger and add it as a listener.
     final DataMerger merger = new DataMerger();
-    
-    //create data linker
+
+    // create data linker
     final DataLinker linker = new DataLinker();
-    //TODO add link rules as more adaptors come.
-    //TODO create interface for creating these
-    //rules
+    // TODO add link rules as more adaptors come.
+    // TODO create interface for creating these
+    // rules
 
     // create scheduler
     final SchedulerInterface scheduler = new QuartzScheduler();
     final AllDataResultListener resultListener = new AllDataResultListener(manager, merger);
     scheduler.addAdaptorListener(resultListener);
 
-    //TODO read this out of file or some other way...
+    // TODO read this out of file or some other way...
     final Map<String, String> schedulerConfig = new HashMap<String, String>();
+<<<<<<< HEAD
     schedulerConfig.put("scheduler.intervalInSeconds", "3"); //run every 5 minutes...
     
+=======
+    schedulerConfig.put("scheduler.intervalInSeconds", "300"); // run every 5
+                                                               // minutes...
+
+>>>>>>> changed configuration file name, paths and property keys; added plugin resource to REST interface; updated email notification plugin info; improved PluginManager log messages; added guard for null in ApplicationListener for when no context is available
     for (AdaptorPluginInterface adaptor : activeAdaptors.values()) {
-      scheduler.start(adaptor, schedulerConfig); // TODO add desired properties...
+      scheduler.start(adaptor, schedulerConfig); // TODO add desired
+                                                 // properties...
     }
 
     saveTestRequest();

@@ -14,14 +14,30 @@ public class BadRequestException extends ApiException {
   private static final long serialVersionUID = 1L;
 
   /**
+   * HTTP code related to this exception.
+   */
+  public static final int CODE = 400;
+
+  /**
    * Create a new bad request exception.
    * 
-   * @param code
-   *          The HTTP code associated with this exception, usually 400.
    * @param msg
    *          A message explaining the error.
    */
-  public BadRequestException(final int code, final String msg) {
-    super(code, msg);
+  public BadRequestException(final String msg) {
+    super(CODE, msg);
+  }
+
+  /**
+   * Create a new bad request exception.
+   * 
+   * @param msg
+   *          A message explaining the error.
+   * @param cause
+   *          The error cause
+   * 
+   */
+  public BadRequestException(final String msg, final Throwable cause) {
+    super(CODE, msg, cause);
   }
 }

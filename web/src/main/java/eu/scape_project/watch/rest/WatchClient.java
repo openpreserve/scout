@@ -13,6 +13,7 @@ import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.domain.RequestTarget;
+import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.interfaces.PluginType;
 import eu.scape_project.watch.plugin.PluginInfo;
 import eu.scape_project.watch.utils.KBUtils;
@@ -54,6 +55,11 @@ public class WatchClient {
    * Special word that allows creation of a resource.
    */
   private static final String NEW = "new";
+
+  /**
+   * Special word that allows update of a resource.
+   */
+  private static final String UPDATE = "update";
 
   /**
    * Query key to define a listing start index.
@@ -150,6 +156,12 @@ public class WatchClient {
    * Generic type for a List of {@link PluginInfo}.
    */
   private static final GenericType<List<PluginInfo>> PLUGININFO_LIST_TYPE = new GenericType<List<PluginInfo>>() {
+  };
+
+  /**
+   * Generic type for a List of {@link SourceAdaptor}.
+   */
+  private static final GenericType<List<SourceAdaptor>> SOURCEADAPTOR_LIST_TYPE = new GenericType<List<SourceAdaptor>>() {
   };
 
   /**
@@ -394,19 +406,17 @@ public class WatchClient {
   }
 
   /**
-   * Create a new {@link PropertyValue}.
+   * Create or update a {@link PropertyValue}.
    * 
-   * @param entity
-   *          The {@link Entity} related to this property value
-   * @param property
-   *          the {@link Property} related to this property value
-   * @param value
-   *          the value of the related property for the related entity.
-   * @return the newly created {@link PropertyValue}
+   * @param sourceAdaptorInstance
+   *          The unique instance name to identify source adaptor
+   * @param pv
+   *          The new or updated property value.
+   * @return the committed {@link PropertyValue}
    */
-  public PropertyValue createPropertyValue(final String entity, final String property, final String value) {
-    return this.resource.path(KBUtils.PROPERTY_VALUE + FS + this.format + AS + entity + AS + property)
-      .accept(this.format.getMediaType()).post(PropertyValue.class, value);
+  public PropertyValue createPropertyValue(final String sourceAdaptorInstance, final PropertyValue pv) {
+    return this.resource.path(KBUtils.PROPERTY_VALUE + FS + this.format + AS + NEW).accept(this.format.getMediaType())
+      .post(PropertyValue.class, pv);
   }
 
   /**
@@ -433,27 +443,6 @@ public class WatchClient {
         throw e;
       }
     }
-  }
-
-  /**
-   * Update an existing {@link PropertyValue}.
-   * 
-   * @param entityType
-   *          The {@link EntityType} related to this property value
-   * @param entity
-   *          The {@link Entity} related to this property value
-   * @param property
-   *          the {@link Property} related to this property value
-   * @param value
-   *          The updated value of the related {@link Property} to the related
-   *          {@link Entity}
-   * @return the updated {@link PropertyValue}
-   */
-  public PropertyValue updatePropertyValue(final String entityType, final String entity, final String property,
-    final String value) {
-    return this.resource
-      .path(KBUtils.PROPERTY_VALUE + FS + this.format + AS + entityType + AS + entity + AS + property)
-      .accept(this.format.getMediaType()).put(PropertyValue.class, value);
   }
 
   /**
@@ -574,12 +563,87 @@ public class WatchClient {
    * @return A list of all plug-ins, optionally filtered by type.
    */
   public List<PluginInfo> listPlugins(final PluginType type) {
-    final MultivaluedMap<String, String> query = new MultivaluedMapImpl();
+    final MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
     if (type != null) {
-      query.put(TYPE, Arrays.asList(type.toString()));
+      queryParams.putSingle(TYPE, type.toString());
     }
-    return (List<PluginInfo>) this.resource.path(KBUtils.PLUGIN + FS + this.format + AS + LIST).queryParams(query)
-      .accept(this.format.getMediaType()).get(PLUGININFO_LIST_TYPE);
+    return (List<PluginInfo>) this.resource.path(KBUtils.PLUGIN + FS + this.format + AS + LIST)
+      .queryParams(queryParams).accept(this.format.getMediaType()).get(PLUGININFO_LIST_TYPE);
   }
 
+  /**
+   * Get an existing {@link SourceAdaptor}.
+   * 
+   * @param instance
+   *          Source adaptor instance unique identifier
+   * @return the {@link SourceAdaptor} or <code>null</code> if not found.
+   */
+  public SourceAdaptor getSourceAdaptor(final String instance) {
+    try {
+      return this.resource.path(KBUtils.SOURCE_ADAPTOR + FS + this.format + AS + instance)
+        .accept(this.format.getMediaType()).get(SourceAdaptor.class);
+    } catch (final UniformInterfaceException e) {
+      final ClientResponse resp = e.getResponse();
+      if (resp.getStatus() == NotFoundException.CODE) {
+        return null;
+      } else {
+        throw e;
+      }
+    }
+  }
+
+  /**
+   * List all source adaptors.
+   * 
+   * @param active
+   *          Optionally filter by active state. Choose <code>null</code> to
+   *          list all.
+   * 
+   * @return A list of all source adaptors, optionally filtered by active state.
+   */
+  public List<SourceAdaptor> listSourceAdaptors(final Boolean active) {
+    final MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
+    if (active != null) {
+      queryParams.putSingle("active", active.toString());
+    }
+    return (List<SourceAdaptor>) this.resource.path(KBUtils.SOURCE_ADAPTOR + FS + this.format + AS + LIST)
+      .queryParams(queryParams).accept(this.format.getMediaType()).get(SOURCEADAPTOR_LIST_TYPE);
+  }
+
+  /**
+   * Create and register a new source adaptor.
+   * 
+   * @param pluginName
+   *          The related plug-in name
+   * @param pluginVersion
+   *          The related plug-in version
+   * @param instance
+   *          The adaptor instance unique identifier
+   * @param sourceName
+   *          The name of the related source
+   * @return The created async request after merging with the KB
+   */
+  public SourceAdaptor createSourceAdaptor(final String pluginName, final String pluginVersion, final String instance,
+    final String sourceName) {
+    final MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
+    queryParams.putSingle("name", pluginName);
+    queryParams.putSingle("version", pluginVersion);
+    queryParams.putSingle("instance", instance);
+    queryParams.putSingle("source", sourceName);
+
+    return this.resource.path(KBUtils.SOURCE_ADAPTOR + FS + this.format + AS + NEW).queryParams(queryParams)
+      .accept(this.format.getMediaType()).post(SourceAdaptor.class);
+  }
+
+  /**
+   * Update an existing {@link SourceAdaptor}.
+   * 
+   * @param updatedSourceAdaptor
+   *          The updated source adaptor
+   * @return the commited source adaptor
+   */
+  public SourceAdaptor updateSourceAdaptor(final SourceAdaptor updatedSourceAdaptor) {
+    return this.resource.path(KBUtils.SOURCE_ADAPTOR + FS + this.format + AS + UPDATE)
+      .accept(this.format.getMediaType()).put(SourceAdaptor.class, updatedSourceAdaptor);
+  }
 }

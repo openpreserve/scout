@@ -8,11 +8,7 @@ import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import eu.scape_project.watch.utils.KBUtils;
-import eu.scape_project.watch.utils.ModelUtils;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -20,6 +16,9 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
+import eu.scape_project.watch.utils.JavaUtils;
+import eu.scape_project.watch.utils.KBUtils;
+import eu.scape_project.watch.utils.ModelUtils;
 
 /**
  * A software unit that is able to collect specific information from a specific
@@ -113,9 +112,8 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
   /**
    * The source adaptor configuration.
    */
-  @XmlElement(name = "entry")
-  @XmlElementWrapper(name = "parameters")
-  @JsonProperty
+  @XmlElement(name = "configuration")
+  @JsonProperty("configuration")
   private List<DictionaryItem> configuration = new ArrayList<DictionaryItem>();
 
   /**
@@ -359,9 +357,8 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
   @Override
   public String toString() {
     return "SourceAdaptor [name=" + name + ", version=" + version + ", instance=" + instance + ", source=" + source
-      + ", types=" + Arrays.toString(this.types.toArray()) + ", properties="
-      + Arrays.toString(this.properties.toArray()) + ", configuration=" + Arrays.toString(this.configuration.toArray())
-      + ", active=" + active + "]";
+      + ", types=" + JavaUtils.toString(types) + ", properties=" + JavaUtils.toString(this.properties)
+      + ", configuration=" + JavaUtils.toString(this.configuration) + ", active=" + active + "]";
   }
 
 }

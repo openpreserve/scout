@@ -1,10 +1,6 @@
 package eu.scape_project.watch.domain;
 
-import eu.scape_project.watch.dao.DAO;
-import eu.scape_project.watch.utils.KBUtils;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,9 +11,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
+
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
+import eu.scape_project.watch.dao.DAO;
+import eu.scape_project.watch.utils.JavaUtils;
+import eu.scape_project.watch.utils.KBUtils;
 
 /**
  * An Asynchronous Request, that will be kept in the KBUtils in order to be
@@ -165,7 +165,7 @@ public class AsyncRequest extends RdfBean<AsyncRequest> {
 
   @Override
   public String toString() {
-    return "AsyncRequest(id=" + this.id + ", triggers=" + Arrays.toString(this.triggers.toArray()) + ")";
+    return "AsyncRequest(id=" + this.id + ", triggers=" + JavaUtils.toString(this.triggers) + ")";
   }
 
   @Override

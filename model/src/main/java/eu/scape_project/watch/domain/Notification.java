@@ -1,6 +1,5 @@
 package eu.scape_project.watch.domain;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -11,15 +10,15 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import eu.scape_project.watch.utils.KBUtils;
-import eu.scape_project.watch.utils.ModelUtils;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
+import eu.scape_project.watch.utils.JavaUtils;
+import eu.scape_project.watch.utils.KBUtils;
+import eu.scape_project.watch.utils.ModelUtils;
 
 
 /**
@@ -185,7 +184,7 @@ public class Notification extends RdfBean<Notification> {
   @Override
   public String toString() {
     return "Notification [id=" + this.id + ", type=" + this.type + ", parameters="
-      + Arrays.toString(this.parameters.toArray()) + "]";
+      + JavaUtils.toString(this.parameters) + "]";
   }
 
 }

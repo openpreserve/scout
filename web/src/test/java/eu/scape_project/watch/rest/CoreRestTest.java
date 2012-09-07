@@ -38,9 +38,12 @@ import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.domain.Question;
 import eu.scape_project.watch.domain.RequestTarget;
+import eu.scape_project.watch.domain.Source;
+import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.domain.Trigger;
 import eu.scape_project.watch.utils.ConfigUtils;
 import eu.scape_project.watch.utils.KBUtils;
+import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeException;
 import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
 
 /**
@@ -334,11 +337,12 @@ public class CoreRestTest extends JerseyTest {
    * Test {@link PropertyValue} CRUD operations using JSON output format.
    * 
    * @throws UnsupportedDataTypeException
+   * @throws InvalidJavaClassForDataTypeException
    * 
    * @see #propertyValueCRUD(eu.scape_project.watch.rest.WatchClient.Format)
    */
   @Test
-  public void propertyValueCrudJSON() throws UnsupportedDataTypeException {
+  public void propertyValueCrudJSON() throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
     propertyValueCRUD(WatchClient.Format.JSON);
   }
 
@@ -346,11 +350,12 @@ public class CoreRestTest extends JerseyTest {
    * Test {@link PropertyValue} CRUD operations using XML output format.
    * 
    * @throws UnsupportedDataTypeException
+   * @throws InvalidJavaClassForDataTypeException
    * 
    * @see #propertyValueCRUD(eu.scape_project.watch.rest.WatchClient.Format)
    */
   @Test
-  public void propertyValueCrudXML() throws UnsupportedDataTypeException {
+  public void propertyValueCrudXML() throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
     propertyValueCRUD(WatchClient.Format.XML);
   }
 
@@ -360,8 +365,10 @@ public class CoreRestTest extends JerseyTest {
    * @param format
    *          The output format
    * @throws UnsupportedDataTypeException
+   * @throws InvalidJavaClassForDataTypeException
    */
-  public void propertyValueCRUD(final WatchClient.Format format) throws UnsupportedDataTypeException {
+  public void propertyValueCRUD(final WatchClient.Format format) throws UnsupportedDataTypeException,
+    InvalidJavaClassForDataTypeException {
     final WatchClient client = new WatchClient(this.resource, format);
 
     // CREATE
@@ -378,7 +385,12 @@ public class CoreRestTest extends JerseyTest {
     final Property property = client.createProperty(typeName, propertyName, propertyDescription);
 
     final String value = "99999";
-    final PropertyValue propertyValue = client.createPropertyValue(entity.getName(), property.getName(), value);
+
+    final String sourceAdaptorInstance = "default";
+    final SourceAdaptor sourceAdaptor = client.createSourceAdaptor("test", "0.1", sourceAdaptorInstance, "test");
+
+    final PropertyValue propertyValue = client.createPropertyValue(sourceAdaptorInstance, new PropertyValue(entity,
+      property, value));
     Assert.assertNotNull(propertyValue);
     Assert.assertEquals(propertyValue.getEntity(), entity);
     Assert.assertEquals(propertyValue.getProperty(), property);
@@ -422,17 +434,23 @@ public class CoreRestTest extends JerseyTest {
 
   /**
    * Tests on synchronous requests with XML output.
+   * 
+   * @throws InvalidJavaClassForDataTypeException
+   * @throws UnsupportedDataTypeException
    */
   @Test
-  public void synRequestXML() {
+  public void synRequestXML() throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
     syncRequest(WatchClient.Format.XML);
   }
 
   /**
    * Tests on synchronous requests with JSON output.
+   * 
+   * @throws InvalidJavaClassForDataTypeException
+   * @throws UnsupportedDataTypeException
    */
   @Test
-  public void synRequestJSON() {
+  public void synRequestJSON() throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
     syncRequest(WatchClient.Format.JSON);
   }
 
@@ -441,8 +459,11 @@ public class CoreRestTest extends JerseyTest {
    * 
    * @param format
    *          The format of the output.
+   * @throws InvalidJavaClassForDataTypeException
+   * @throws UnsupportedDataTypeException
    */
-  public void syncRequest(final WatchClient.Format format) {
+  public void syncRequest(final WatchClient.Format format) throws UnsupportedDataTypeException,
+    InvalidJavaClassForDataTypeException {
     final WatchClient client = new WatchClient(this.resource, format);
 
     // CREATE DATA
@@ -459,7 +480,11 @@ public class CoreRestTest extends JerseyTest {
     final Property property = client.createProperty(typeName, propertyName, propertyDescription);
 
     final String value = "99999";
-    final PropertyValue propertyValue = client.createPropertyValue(entity.getName(), property.getName(), value);
+
+    final String sourceAdaptorInstance = "default";
+    final SourceAdaptor sourceAdaptor = client.createSourceAdaptor("test", "0.1", sourceAdaptorInstance, "test");
+    final PropertyValue propertyValue = client.createPropertyValue(sourceAdaptorInstance, new PropertyValue(entity,
+      property, value));
 
     // DO TESTS
     final List<EntityType> typeList = client.getRequest(EntityType.class, EntityDAO.getEntityRDFId(entityName)
@@ -476,17 +501,23 @@ public class CoreRestTest extends JerseyTest {
 
   /**
    * Tests on asynchronous requests with XML output.
+   * 
+   * @throws InvalidJavaClassForDataTypeException
+   * @throws UnsupportedDataTypeException
    */
   @Test
-  public void asynRequestXML() {
+  public void asynRequestXML() throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
     asyncRequest(WatchClient.Format.XML);
   }
 
   /**
    * Tests on asynchronous requests with JSON output.
+   * 
+   * @throws InvalidJavaClassForDataTypeException
+   * @throws UnsupportedDataTypeException
    */
   @Test
-  public void asynRequestJSON() {
+  public void asynRequestJSON() throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
     asyncRequest(WatchClient.Format.JSON);
   }
 
@@ -495,8 +526,11 @@ public class CoreRestTest extends JerseyTest {
    * 
    * @param format
    *          The format of the output.
+   * @throws InvalidJavaClassForDataTypeException
+   * @throws UnsupportedDataTypeException
    */
-  public void asyncRequest(final WatchClient.Format format) {
+  public void asyncRequest(final WatchClient.Format format) throws UnsupportedDataTypeException,
+    InvalidJavaClassForDataTypeException {
     final WatchClient client = new WatchClient(this.resource, format);
 
     // CREATE DATA
@@ -513,7 +547,12 @@ public class CoreRestTest extends JerseyTest {
     final Property property = client.createProperty(typeName, propertyName, propertyDescription);
 
     final String value = "99999";
-    final PropertyValue propertyValue = client.createPropertyValue(entity.getName(), property.getName(), value);
+
+    final String sourceAdaptorInstance = "default";
+    final SourceAdaptor sourceAdaptor = client.createSourceAdaptor("test", "0.1", sourceAdaptorInstance, "test");
+
+    final PropertyValue propertyValue = client.createPropertyValue(sourceAdaptorInstance, new PropertyValue(entity,
+      property, value));
 
     // TESTS
 
@@ -533,4 +572,47 @@ public class CoreRestTest extends JerseyTest {
 
   }
 
+  // TODO test plugin listings.
+
+  /**
+   * Tests on source adaptor requests with XML output.
+   */
+  @Test
+  public void sourceAdaptorXML() {
+    sourceAdaptor(WatchClient.Format.XML);
+  }
+
+  /**
+   * Tests on source adaptor requests with JSON output.
+   */
+  @Test
+  public void sourceAdaptorJSON() {
+    sourceAdaptor(WatchClient.Format.JSON);
+  }
+
+  public void sourceAdaptor(final WatchClient.Format format) {
+    final WatchClient client = new WatchClient(this.resource, format);
+
+    // Empty start
+    final List<SourceAdaptor> adaptors = client.listSourceAdaptors(null);
+    LOG.info("Adaptors: {}", adaptors);
+    Assert.assertEquals(0, adaptors.size());
+
+    // TODO point to loaded plug-in
+    final String pluginName = "test";
+    final String pluginVersion = "0.1";
+
+    final String instance = "default";
+
+    // Testing non-existing source
+    client.createSourceAdaptor(pluginName, pluginVersion, instance, "sourceThatDoesNotExist");
+
+    final Source source = new Source("test", "testing source");
+
+    // TODO client.createSource
+
+    // TODO client.createSourceAdaptor(pluginName, pluginVersion, instance,
+    // sourceName)
+
+  }
 }

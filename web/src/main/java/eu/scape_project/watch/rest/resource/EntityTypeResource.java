@@ -93,7 +93,7 @@ public class EntityTypeResource extends JavaHelp {
     @ApiParam(value = "Entity type description", required = false) final String description) {
     LOG.info("creating entity name: " + name);
     final EntityType entitytype = new EntityType(name, description);
-    entitytype.save();
+    DAO.save(entitytype);
     return Response.ok().entity(entitytype).build();
 
   }
@@ -116,8 +116,7 @@ public class EntityTypeResource extends JavaHelp {
     @ApiParam(value = "Updated Entity Type object", required = true) final EntityType entitytype) {
     final EntityType original = DAO.ENTITY_TYPE.findById(name);
     if (original != null) {
-      original.delete();
-      entitytype.save();
+      DAO.save(entitytype);
       return Response.ok().entity(entitytype).build();
     } else {
       throw new NotFoundException("Entity type not found: " + name);
@@ -142,7 +141,7 @@ public class EntityTypeResource extends JavaHelp {
 
     final EntityType entitytype = DAO.ENTITY_TYPE.findById(name);
     if (entitytype != null) {
-      entitytype.delete();
+      DAO.delete(entitytype);
       return Response.ok().entity(entitytype).build();
     } else {
       throw new NotFoundException("Entity type not found: " + name);

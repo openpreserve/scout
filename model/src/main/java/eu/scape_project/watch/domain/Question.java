@@ -1,6 +1,5 @@
 package eu.scape_project.watch.domain;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -9,14 +8,14 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import eu.scape_project.watch.utils.KBUtils;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
+import eu.scape_project.watch.utils.JavaUtils;
+import eu.scape_project.watch.utils.KBUtils;
 
 /**
  * Questions are predefined points of interest related directly or indirectly to
@@ -245,8 +244,8 @@ public class Question extends RdfBean<Question> {
   @Override
   public String toString() {
     return "Question [id=" + this.id + ", sparql=" + this.sparql + ", target=" + this.target + ", types="
-      + Arrays.toString(this.types.toArray()) + ", properties=" + Arrays.toString(this.properties.toArray())
-      + ", entities=" + Arrays.toString(this.entities.toArray()) + ", period=" + this.period + "]";
+      + JavaUtils.toString(this.types) + ", properties=" + JavaUtils.toString(this.properties) + ", entities="
+      + JavaUtils.toString(this.entities) + ", period=" + this.period + "]";
   }
 
 }

@@ -62,7 +62,7 @@ public class AdaptorManager {
     this.adaptors.clear();
     this.shutdownAll();
 
-    final int count = DAO.SOURCE_ADAPTOR.count(""); // count all
+    final int count = DAO.SOURCE_ADAPTOR.countAll();
     final List<SourceAdaptor> all = DAO.SOURCE_ADAPTOR.query("", 0, count);
     LOG.info("Found {} source adaptors", all.size());
 
@@ -95,11 +95,13 @@ public class AdaptorManager {
    * @return the source adaptor without any configuration.
    */
   public SourceAdaptor createAdaptor(final String name, final String version, final String uid, final Source source) {
-    LOG.debug("Craeting new source adaptor information for {}-{}", name, version);
+    LOG.debug("Creating new source adaptor information for {}-{}", name, version);
 
     // TODO existence check
     // may be the method should check if the adaptor exists (name, version)
     // and return only if such and adaptor exists, otherwise null.
+
+    // TODO unique identifier check: check if given identifier already exists
 
     final SourceAdaptor adaptor = new SourceAdaptor(name, version, uid, source, null, null, null);
     this.updateSourceAdaptor(adaptor);
@@ -298,7 +300,7 @@ public class AdaptorManager {
     LOG.debug("Retrieving the implementation of: {}-{}", name, version);
     final PluginManager pm = PluginManager.getDefaultPluginManager();
     final List<PluginInfo> info = pm.getPluginInfo(name);
-    
+
     AdaptorPluginInterface plugin = null;
     for (PluginInfo pi : info) {
       if (pi.getVersion().equals(version)) {

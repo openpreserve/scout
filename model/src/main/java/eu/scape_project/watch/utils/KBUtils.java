@@ -282,7 +282,7 @@ public final class KBUtils {
    *          database.
    */
   public static void dbConnect(final String datafolder, final boolean testdata) {
-    LOG.info("Connecting to the knowledge base");
+    LOG.info("Connecting to the knowledge base at {}", datafolder);
     final File dataFolderFile = new File(datafolder);
     try {
 

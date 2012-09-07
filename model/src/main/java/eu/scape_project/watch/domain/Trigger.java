@@ -1,6 +1,5 @@
 package eu.scape_project.watch.domain;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -9,14 +8,14 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import eu.scape_project.watch.utils.KBUtils;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
+import eu.scape_project.watch.utils.JavaUtils;
+import eu.scape_project.watch.utils.KBUtils;
 
 /**
  * A Trigger is a unit that contains conditions used during internal assessment
@@ -176,7 +175,7 @@ public class Trigger extends RdfBean<Trigger> {
   @Override
   public String toString() {
     return String.format("Trigger(id=%1$s, plan=%2$s, question=%3$s, notifications=%4$s)", id, plan, question,
-      Arrays.toString(notifications.toArray()));
+      JavaUtils.toString(notifications));
   }
 
 }

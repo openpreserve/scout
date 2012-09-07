@@ -7,12 +7,15 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 
+import javax.servlet.ServletContext;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
@@ -27,6 +30,7 @@ import com.wordnik.swagger.core.ApiOperation;
 import com.wordnik.swagger.core.ApiParam;
 import com.wordnik.swagger.core.JavaHelp;
 
+import eu.scape_project.watch.adaptor.AdaptorManager;
 import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.EntityType;
@@ -34,6 +38,7 @@ import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.domain.SourceAdaptor;
+import eu.scape_project.watch.listener.ContextUtil;
 import eu.scape_project.watch.utils.exception.BadRequestException;
 import eu.scape_project.watch.utils.exception.NotFoundException;
 import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeException;
@@ -51,6 +56,12 @@ public class PropertyValueResource extends JavaHelp {
    * The logger.
    */
   private static final Logger LOG = LoggerFactory.getLogger(PropertyValueResource.class);
+
+  /**
+   * The servlet context to get context attributes.
+   */
+  @Context
+  private ServletContext context;
 
   /**
    * Get an existing {@link PropertyValue}.
@@ -99,98 +110,45 @@ public class PropertyValueResource extends JavaHelp {
   }
 
   /**
-   * Create a new property value.
+   * Create or update a property value.
    * 
-   * @param entityName
-   *          The name of the related {@link Entity}
-   * @param propertyName
-   *          The name of the related {@link Property}
-   * @param value
-   *          The value of the {@link Property} for the {@link Entity}
-   * @return The newly created {@link PropertyValue}.
+   * @param sourceAdaptorInstance
+   *          The unique instance name to identify source adaptor
+   * @param pv
+   *          The created or updated property value
+   * @return The committed {@link PropertyValue}.
    */
   @POST
-  @Path("/{entity}/{property}")
+  @Path("/new")
   @ApiOperation(value = "Create property value", notes = "This can only be done by a logged user (TODO)")
-  @ApiErrors(value = {@ApiError(code = NotFoundException.CODE, reason = "Entity or property does not exist")})
+  @ApiErrors(value = {@ApiError(code = NotFoundException.CODE, reason = "Entity, property or source adaptor not found")})
   public Response createPropertyValue(
-    @ApiParam(value = "Entity name (must exist)", required = true) @PathParam("entity") final String entityName,
-    @ApiParam(value = "Property name (must exist)", required = true) @PathParam("property") final String propertyName,
-    @ApiParam(value = "Property value", required = false) final String value) {
+    @ApiParam(value = "Source adaptor instance (must exist)", required = true) @QueryParam("sourceAdaptor") final String sourceAdaptorInstance,
+    @ApiParam(value = "New property value", required = true) final PropertyValue pv) {
 
-    final Entity entity = DAO.ENTITY.findById(entityName);
+    // check if referred entity and property exist
+    final Entity entity = DAO.ENTITY.findById(pv.getEntity().getName());
 
-    if (entity != null) {
-      final String typeName = entity.getEntityType().getName();
-      final Property property = DAO.PROPERTY.findByEntityTypeAndName(typeName, propertyName);
-
-      if (property != null) {
-        PropertyValue propertyValue;
-        try {
-          propertyValue = new PropertyValue(entity, property, value);
-          final Source source = new Source("unknown", "Unknown external software component");
-          final SourceAdaptor adaptor = new SourceAdaptor("restapi", "0.0.1", "default", source, Arrays.asList(entity
-            .getEntityType()), Arrays.asList(property), new HashMap<String, String>());
-          DAO.save(source);
-          DAO.save(adaptor);
-          DAO.PROPERTY_VALUE.save(adaptor, propertyValue);
-          return Response.ok().entity(propertyValue).build();
-        } catch (UnsupportedDataTypeException e) {
-          LOG.error("Data type not supported", e);
-          throw new BadRequestException("Data type not supported");
-        } catch (InvalidJavaClassForDataTypeException e) {
-          LOG.error("Invalid value Java class for the defined data type", e);
-          throw new BadRequestException("Invalid value Java class for the defined data type");
-        }
-
-      } else {
-        throw new NotFoundException("Property not found type=" + typeName + ", name=" + propertyName);
-      }
-    } else {
-      throw new NotFoundException("Entity not found: " + entityName);
+    if (entity == null) {
+      throw new NotFoundException("Related entity not found: " + pv.getEntity().getName());
     }
 
-  }
+    final Property property = DAO.PROPERTY.findByEntityTypeAndName(pv.getProperty().getType().getName(), pv
+      .getProperty().getName());
 
-  /**
-   * Update an existing {@link PropertyValue}.
-   * 
-   * @param entityName
-   *          The name of the related {@link Entity}.
-   * @param propertyName
-   *          The name of the related {@link Property}.
-   * @param value
-   *          The new value of the {@link Property} for the {@link Entity}
-   * @return The updated {@link PropertyValue}.
-   */
-  @PUT
-  @Path("/{type}/{entity}/{property}")
-  @ApiOperation(value = "Update property value", notes = "This can only be done by a logged user (TODO)")
-  @ApiErrors(value = {@ApiError(code = NotFoundException.CODE, reason = "Entity or property not found")})
-  public Response updatePropertyValue(
-    @ApiParam(value = "Name of the entity type", required = true) @PathParam("type") final String typeName,
-    @ApiParam(value = "Entity related to the property value", required = true) @PathParam("entity") final String entityName,
-    @ApiParam(value = "Property related to the property value", required = true) @PathParam("property") final String propertyName,
-    @ApiParam(value = "Updated value", required = true) final String value) {
-    // TODO support several property values, by versioning
-    final PropertyValue propertyValue = DAO.PROPERTY_VALUE.find(entityName, typeName, propertyName);
-
-    if (propertyValue != null) {
-      try {
-        propertyValue.setValue(value);
-        propertyValue.save();
-        return Response.ok().entity(propertyName).build();
-      } catch (final UnsupportedDataTypeException e) {
-        LOG.error("Data type not supported", e);
-        throw new BadRequestException("Data type not supported", e);
-      } catch (final InvalidJavaClassForDataTypeException e) {
-        LOG.error("Data type not supported", e);
-        throw new BadRequestException("Data type not supported", e);
-      }
-
-    } else {
-      throw new NotFoundException("Property value not found entity=" + entityName + ", property=" + propertyName);
+    if (property == null) {
+      throw new NotFoundException("Related property not found: " + pv.getProperty().getId());
     }
+
+    final AdaptorManager manager = ContextUtil.getAdaptorManager(context);
+    final SourceAdaptor adaptor = manager.getSourceAdaptor(sourceAdaptorInstance);
+
+    if (adaptor == null) {
+      throw new NotFoundException("Source adaptor not found: " + sourceAdaptorInstance);
+    }
+
+    DAO.PROPERTY_VALUE.save(adaptor, pv);
+    return Response.ok().entity(pv).build();
   }
 
   /**
@@ -214,6 +172,7 @@ public class PropertyValueResource extends JavaHelp {
     final PropertyValue propertyValue = DAO.PROPERTY_VALUE.find(entityName, typeName, propertyName);
 
     if (propertyValue != null) {
+      DAO.delete(propertyValue);
       propertyValue.delete();
       return Response.ok().entity(propertyValue).build();
     } else {

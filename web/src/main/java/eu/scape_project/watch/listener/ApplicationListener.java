@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
@@ -19,6 +20,8 @@ import eu.scape_project.watch.domain.Notification;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.Question;
 import eu.scape_project.watch.domain.RequestTarget;
+import eu.scape_project.watch.domain.Source;
+import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.domain.Trigger;
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
 import eu.scape_project.watch.interfaces.SchedulerInterface;
@@ -45,25 +48,13 @@ public class ApplicationListener implements ServletContextListener {
    */
   private static final Logger LOG = LoggerFactory.getLogger(ApplicationListener.class);
 
-  private static final String COMPONENT_CONTAINER = "componentContainer";
-
-  /**
-   * The adaptor manager identifier within the servlet context.
-   */
-  private static final String SCOUT_ADAPTORMANAGER = "scout.core.adaptormanager";
-
-  private static final String SCOUT_DATA_MERGER = "scout.core.datamerger";
-
-  private static final String SCOUT_SCHEDULER = "scout.core.scheduler";
-
-  private static final String SCOUT_DATA_LINKER = "scout.core.datalinker";
-
   @Override
   public void contextDestroyed(final ServletContextEvent sce) {
     LOG.info("Preparing Scout for shutdown.");
 
-    final SchedulerInterface scheduler = (SchedulerInterface) sce.getServletContext().getAttribute(SCOUT_SCHEDULER);
-    final AdaptorManager manager = (AdaptorManager) sce.getServletContext().getAttribute(SCOUT_ADAPTORMANAGER);
+    final ServletContext context = sce.getServletContext();
+    final SchedulerInterface scheduler = ContextUtil.getScheduler(context);
+    final AdaptorManager manager = ContextUtil.getAdaptorManager(context);
 
     if (manager != null && scheduler != null) {
       final Map<String, AdaptorPluginInterface> activeAdaptors = manager.getActiveAdaptorPlugins();
@@ -127,12 +118,13 @@ public class ApplicationListener implements ServletContextListener {
                                                  // properties...
     }
 
-    saveTestRequest();
+    saveTestRequest(manager);
 
-    sce.getServletContext().setAttribute(SCOUT_DATA_MERGER, merger);
-    sce.getServletContext().setAttribute(SCOUT_DATA_LINKER, linker);
-    sce.getServletContext().setAttribute(SCOUT_SCHEDULER, scheduler);
-    sce.getServletContext().setAttribute(SCOUT_ADAPTORMANAGER, manager);
+    final ServletContext context = sce.getServletContext();
+    ContextUtil.setAdaptorManager(manager, context);
+    ContextUtil.setDataMerger(merger, context);
+    ContextUtil.setDataLinker(linker, context);
+    ContextUtil.setScheduler(scheduler, context);
 
   }
 
@@ -152,22 +144,38 @@ public class ApplicationListener implements ServletContextListener {
 
   }
 
-  private void saveTestRequest() {
-    EntityType et = new EntityType("CollectionProfile", "");
-    Property prop = new Property(et, "size", "");
-    Entity ent = new Entity(et, "coll-0-test");
-    Question question1 = new Question(
-      "?s watch:property ?x . ?x watch:name \"cp.collection.size\"^^xsd:string . ?s watch:value ?y  FILTER(xsd:integer(?y) > 10000000) ",
-      RequestTarget.PROPERTY_VALUE, Arrays.asList(et), Arrays.asList(prop), Arrays.asList(ent), 60);
-    Map<String, String> not1config = new HashMap<String, String>();
+  private void saveTestRequest(final AdaptorManager manager) {
+    final EntityType et = new EntityType("CollectionProfile", "");
+    final Property prop = new Property(et, "size", "");
+    final Entity ent = new Entity(et, "coll-0-test");
+
+    DAO.save(et);
+    DAO.save(prop);
+    DAO.save(ent);
+
+    final Question question1 = new Question("?s watch:property ?x . "
+      + "?x watch:name \"cp.collection.size\"^^xsd:string . "
+      + "?s watch:value ?y  FILTER(xsd:integer(?y) > 10000000) ", RequestTarget.PROPERTY_VALUE, Arrays.asList(et),
+      Arrays.asList(prop), Arrays.asList(ent), 60);
+    final Map<String, String> not1config = new HashMap<String, String>();
     not1config.put("to", "lfaria@keep.pt");
     not1config.put("subject", "SCOUT - WARNING : Collection is over 10 000 000 ");
-    Notification notification1 = new Notification("log", not1config);
+    final Notification notification1 = new Notification("log", not1config);
 
     final Trigger trigger1 = new Trigger(question1, Arrays.asList(notification1), null);
 
-    AsyncRequest asRe = new AsyncRequest();
+    final AsyncRequest asRe = new AsyncRequest();
     asRe.addTrigger(trigger1);
     DAO.save(asRe);
+
+    final Source source = new Source("C3PO", "Content Profile");
+    // final SourceAdaptor adaptor = new SourceAdaptor("c3po", "0.0.3",
+    // "keeps_demo", source, Arrays.asList(et),
+    // Arrays.asList(prop), new HashMap<String, String>());
+
+    DAO.save(source);
+    // DAO.save(adaptor);
+
+    manager.createAdaptor("c3po", "0.0.3", "keeps_demo", source);
   }
 }

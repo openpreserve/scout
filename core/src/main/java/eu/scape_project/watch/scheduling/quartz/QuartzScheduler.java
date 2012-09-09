@@ -27,8 +27,8 @@ import eu.scape_project.watch.interfaces.SchedulerListenerInterface;
  * QuartzScheduler is an implementation of the SchedulerInterface. This
  * implementation uses Quartz Scheduler (http://quartz-scheduler.org/)
  * 
- * @author kresimir
- * 
+ * @author Kresimir Duretec <duretec@ifs.tuwien.ac.at>
+ *
  */
 public class QuartzScheduler implements SchedulerInterface {
 
@@ -51,7 +51,7 @@ public class QuartzScheduler implements SchedulerInterface {
    * Default constructor
    */
   public QuartzScheduler() {
-
+	LOG.info("Creating QuartzScheduler");
     cache = new QuartzCache();
     listenerManager = new QuartzListenerManager();
     executionListener = new QuartzExecutionListener();
@@ -185,7 +185,7 @@ public class QuartzScheduler implements SchedulerInterface {
 
   @Override
   public void clear() {
-    // TODO Auto-generated method stub
+    LOG.info("Clearing all adaptors");
 
   }
 

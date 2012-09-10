@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import junit.framework.Assert;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -55,7 +56,7 @@ public class PronomClientTest {
    * @throws Exception
    *           if something goes wrong.
    */
-  @Test
+  @Ignore @Test
   public void shouldSubmitRealQuery() throws Exception {
     final PronomClient service = new PronomClient(new PronomServiceCommunicator(PronomAdaptor.ENDPOINT));
     final String q = IOUtils.toString(new FileInputStream("src/main/resources/query.txt"));

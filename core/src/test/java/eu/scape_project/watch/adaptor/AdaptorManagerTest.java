@@ -33,7 +33,7 @@ public class AdaptorManagerTest {
   @Test
   public void shouldLoadAdaptors() throws Exception {
     final AdaptorManager manager = new AdaptorManager();
-    final SourceAdaptor adaptor = manager.getSourceAdaptor("default");
+    final SourceAdaptor adaptor = manager.getSourceAdaptor("c3po-0.0.3");
     Assert.assertNotNull(adaptor);
     
   }
@@ -41,7 +41,7 @@ public class AdaptorManagerTest {
   @Test
   public void shouldGetAdaptorPluginInterface() throws Exception {
     final AdaptorManager manager = new AdaptorManager();
-    final SourceAdaptor adaptor = manager.getSourceAdaptor("default");
+    final SourceAdaptor adaptor = manager.getSourceAdaptor("c3po-0.0.3");
     Assert.assertNotNull(adaptor);
     
     AdaptorPluginInterface plugin = manager.getAdaptorInstance(adaptor.getInstance());

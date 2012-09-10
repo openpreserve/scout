@@ -94,7 +94,7 @@ public class PronomAdaptor implements AdaptorPluginInterface {
   /**
    * The current version of this plugin.
    */
-  private static final String VERSION = "0.0.3";
+  private static final String VERSION = "0.0.4";
 
   /**
    * The name of this plugin.
@@ -221,8 +221,14 @@ public class PronomAdaptor implements AdaptorPluginInterface {
     if (this.currentBatch.isEmpty()) {
       this.currentBatch = this.getNextBatch();
     }
+    
+    final boolean hasNext = !this.currentBatch.isEmpty();
+    
+    if (!hasNext) {
+      this.reset();
+    }
 
-    return !this.currentBatch.isEmpty();
+    return hasNext;
   }
 
   @Override
@@ -244,6 +250,14 @@ public class PronomAdaptor implements AdaptorPluginInterface {
   @Override
   public ResultInterface execute() throws PluginException {
     throw new PluginException("This method is not supported anymore!");
+  }
+  
+  /**
+   * Resets the offset. This method should be called after
+   * all the data has been retrieved and iterated.
+   */
+  private void reset() {
+    this.offset = 0;
   }
 
   // TODO cache the dispatcher and the parser.

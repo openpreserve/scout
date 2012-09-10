@@ -61,7 +61,7 @@ public class C3POAdaptor implements AdaptorPluginInterface {
   /**
    * The current version of the adaptor.
    */
-  private static final String VERSION = "0.0.3";
+  private static final String VERSION = "0.0.4";
 
   /**
    * The current config of c3po.
@@ -215,7 +215,14 @@ public class C3POAdaptor implements AdaptorPluginInterface {
       this.currentBatch = this.getPropertyValues(id);
     }
 
-    return !this.currentBatch.isEmpty();
+    final boolean hasNext = !this.currentBatch.isEmpty();
+    
+    //reset for next call of this method
+    if (!hasNext) {
+      this.reset();
+    }
+    
+    return hasNext; 
   }
 
   @Override
@@ -259,6 +266,17 @@ public class C3POAdaptor implements AdaptorPluginInterface {
 
   // ### private methods.
 
+  /**
+   * As soon as the hasNext method returns false, this adaptor
+   * will be put to sleep until it is scheduled again and thus
+   * a reset for the next run has to be done.
+   */
+  private void reset() {
+    this.identifiers = null;
+    this.pointer = 0;
+    
+  }
+  
   /**
    * Initializes the default configuration of the adaptor. Currently it starts a
    * dummy adaptor.

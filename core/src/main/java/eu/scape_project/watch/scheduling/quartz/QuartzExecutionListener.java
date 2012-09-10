@@ -62,6 +62,7 @@ public class QuartzExecutionListener implements JobListener {
   public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
     QuartzAdaptorJob job = (QuartzAdaptorJob) context.getJobInstance();
     AdaptorPluginInterface adaptor = job.getAdaptorPlugin();
+    LOG.info(adaptor.getName() + " was executed");
     Boolean result = (Boolean) context.getResult();
     if (result.booleanValue() == true) {
       failed.remove(adaptor);
@@ -73,7 +74,7 @@ public class QuartzExecutionListener implements JobListener {
         num = i.intValue();
         failed.put(adaptor, i);
       } else {
-        failed.put(adaptor, new Integer(1));
+        failed.put(adaptor, Integer.valueOf(1));
         num = 1;
       }
       if (num > REPEAT) {

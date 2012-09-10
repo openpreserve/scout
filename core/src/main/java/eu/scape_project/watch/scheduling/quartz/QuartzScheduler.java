@@ -106,12 +106,12 @@ public class QuartzScheduler implements SchedulerInterface {
         // store the JobKey to the cache
         cache.addJobKey(adaptor, jobDetail.getKey());
         notifyStart(adaptor);  
+        LOG.info(adaptor.getName() + " scheduled");
       } else {
-        // TODO id == null
+        LOG.error(adaptor.getName() + "problem when scheduling adaptor - it can not be scheduled!");
       }
-      LOG.info(adaptor.getName() + " scheduled");
     } else {
-      // TODO cache contains adaptor
+       LOG.error(adaptor.getName() + " is already scheduled!");
     }
   }
 
@@ -124,10 +124,10 @@ public class QuartzScheduler implements SchedulerInterface {
         scheduler.pauseJob(key);
         notifyStop(adaptor);
       } catch (SchedulerException e) {
-        // TODO
+        e.printStackTrace();
       }
     } else {
-      // TODO
+      LOG.error(adaptor.getName()+ " unknown adaptor to stop");
     }
   }
 
@@ -139,10 +139,10 @@ public class QuartzScheduler implements SchedulerInterface {
         scheduler.resumeJob(key);
         notifyResume(adaptor);
       } catch (SchedulerException e) {
-        // TODO
+        e.printStackTrace();
       }
     } else {
-      // TODO
+      LOG.error(adaptor.getName()+ " unknown adaptor to resume");
     }
   }
 
@@ -155,7 +155,7 @@ public class QuartzScheduler implements SchedulerInterface {
         notifyDelete(adaptor);
         cache.removeAdaptorPlugin(adaptor);
       } catch (SchedulerException e) {
-        // TODO
+        e.printStackTrace();
       }
     }
   }
@@ -178,7 +178,7 @@ public class QuartzScheduler implements SchedulerInterface {
         LOG.error("An error occurred: " + e.getMessage());
       }
     } else {
-      // TODO
+      LOG.error(adaptor.getName()+ " unknown adaptor to execute");
     }
 
   }

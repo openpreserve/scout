@@ -10,6 +10,11 @@ import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
 import eu.scape_project.watch.interfaces.ResultInterface;
 import eu.scape_project.watch.utils.exceptions.PluginException;
 
+/**
+ * Quartz Adaptor Job class which wraps up an adaptor. 
+ * @author Kresimir Duretec <duretec@ifs.tuwien.ac.at>
+ *
+ */
 public class QuartzAdaptorJob implements Job {
 
   private static final Logger LOG = LoggerFactory.getLogger(QuartzAdaptorJob.class);
@@ -57,9 +62,12 @@ public class QuartzAdaptorJob implements Job {
         ResultInterface result = adaptor.next();
         lManager.notify(adaptor, result);
       }
+      LOG.info(adaptor.getName()+" has nothing to give");
       jec.setResult(new Boolean(true));
       return;
     } catch (PluginException e) {
+      LOG.info("An error occured in Adaptor");
+      
       jec.setResult(new Boolean(false));
       return;
     }

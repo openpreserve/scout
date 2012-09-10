@@ -3,17 +3,21 @@ package eu.scape_project.watch.scheduling.quartz;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.openjena.atlas.logging.Log;
 import org.quartz.JobKey;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
 
 /**
  * This class is used by QuartzScheduler
- * 
- * @author kresimir
- * 
+ * @author Kresimir Duretec <duretec@ifs.tuwien.ac.at>
+ *
  */
 public class QuartzCache {
+  
+  private static final Logger LOG = LoggerFactory.getLogger(QuartzCache.class);
 
   private Map<AdaptorPluginInterface, AdaptorState> aStates;
 
@@ -61,7 +65,7 @@ public class QuartzCache {
       aStates.remove(adaptor);
       adaptors.remove(id);
     } else {
-      // TODO
+      LOG.warn(adaptor.getName() + " is not in cache,  nothing to remove!");
     }
   }
 

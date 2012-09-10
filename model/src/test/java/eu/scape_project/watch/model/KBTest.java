@@ -1,6 +1,7 @@
 package eu.scape_project.watch.model;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -12,8 +13,8 @@ import java.util.List;
 import junit.framework.Assert;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
@@ -40,6 +41,7 @@ import eu.scape_project.watch.domain.RequestTarget;
 import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.domain.Trigger;
+import eu.scape_project.watch.utils.JavaUtils;
 import eu.scape_project.watch.utils.KBUtils;
 import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeException;
 import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
@@ -60,26 +62,28 @@ public class KBTest {
   /**
    * A temporary directory to hold the data.
    */
-  private static final String DATA_TEMP_DIR = "/tmp/watch";
+  private File dataTempir;
 
   /**
    * Initialize the data folder.
+   * 
+   * @throws IOException
+   *           Error creating temporary data folder
    */
-  @BeforeClass
-  public static void beforeClass() {
-    final String datafolder = DATA_TEMP_DIR;
-    final boolean initdata = false;
-    KBUtils.dbConnect(datafolder, initdata);
+  @Before
+  public void beforeClass() throws IOException {
+    dataTempir = JavaUtils.createTempDirectory();
+    KBUtils.dbConnect(dataTempir.getPath(), false);
   }
 
   /**
    * Cleanup the data folder.
    */
-  @AfterClass
-  public static void afterClass() {
-    LOG.info("Deleting data folder at " + DATA_TEMP_DIR);
+  @After
+  public void afterClass() {
+    LOG.info("Deleting data folder at " + dataTempir);
     KBUtils.dbDisconnect();
-    FileUtils.deleteQuietly(new File(DATA_TEMP_DIR));
+    FileUtils.deleteQuietly(dataTempir);
   }
 
   /**
@@ -1239,10 +1243,10 @@ public class KBTest {
     final String adaptorVersion1 = "0.0.1";
     final String adaptorVersion2 = "0.0.2";
     final String adaptorInstance = "default";
-    final SourceAdaptor adaptor1 = new SourceAdaptor(adaptorName, adaptorVersion1, adaptorInstance, source, null,
-      null, null);
-    final SourceAdaptor adaptor2 = new SourceAdaptor(adaptorName, adaptorVersion2, adaptorInstance, source, null,
-      null, null);
+    final SourceAdaptor adaptor1 = new SourceAdaptor(adaptorName, adaptorVersion1, adaptorInstance, source, null, null,
+      null);
+    final SourceAdaptor adaptor2 = new SourceAdaptor(adaptorName, adaptorVersion2, adaptorInstance, source, null, null,
+      null);
 
     adaptor2.setActive(false);
 

@@ -123,7 +123,7 @@ public class SourceAdaptorResource extends JavaHelp {
   @POST
   @Path("/new")
   @ApiOperation(value = "Create and register a new Source Adaptor", notes = "This can only be done by an admin user (TODO)")
-  @ApiErrors(value = {@ApiError(code = NotFoundException.CODE, reason = "Related plug-in not found"),
+  @ApiErrors(value = {@ApiError(code = NotFoundException.CODE, reason = "Related plug-in or source not found"),
     @ApiError(code = BadRequestException.CODE, reason = "Instance already exists")})
   public Response createSourceAdaptor(
     @ApiParam(value = "Related plug-in name", required = true) @QueryParam("name") final String name,
@@ -133,10 +133,15 @@ public class SourceAdaptorResource extends JavaHelp {
 
     final AdaptorManager manager = ContextUtil.getAdaptorManager(context);
     final Source source = DAO.SOURCE.findById(sourceName);
-    final SourceAdaptor adaptor = manager.createAdaptor(name, version, instance, source);
+
     // TODO catch exception related to plug-in not found and instance already
     // exists to send correct service exceptions.
 
+    if (source == null) {
+      throw new NotFoundException("Source not found: " + sourceName);
+    }
+
+    final SourceAdaptor adaptor = manager.createAdaptor(name, version, instance, source);
     return Response.ok().entity(adaptor).build();
   }
 

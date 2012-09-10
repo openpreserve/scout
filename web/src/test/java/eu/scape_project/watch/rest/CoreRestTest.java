@@ -3,14 +3,15 @@ package eu.scape_project.watch.rest;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.MethodRule;
@@ -41,7 +42,7 @@ import eu.scape_project.watch.domain.RequestTarget;
 import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.domain.Trigger;
-import eu.scape_project.watch.utils.ConfigUtils;
+import eu.scape_project.watch.utils.JavaUtils;
 import eu.scape_project.watch.utils.KBUtils;
 import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeException;
 import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
@@ -81,27 +82,35 @@ public class CoreRestTest extends JerseyTest {
   /**
    * Temporary directory to keep the KB data.
    */
-  private static final String DATA_TEMP_DIR = "/tmp/watch";
+  private static File dataTempDir;
 
   /**
    * Initialize the data folder.
+   * 
+   * @throws IOException
+   *           Error creating temporary directory
    */
-  @BeforeClass
-  public static void beforeClass() {
-    final ConfigUtils conf = new ConfigUtils();
-    final String datafolder = conf.getStringProperty(ConfigUtils.KB_DATA_FOLDER_KEY);
-    final boolean initdata = conf.getBooleanProperty(ConfigUtils.KB_INSERT_TEST_DATA);
-    KBUtils.dbConnect(datafolder, initdata);
+  @Before
+  public void before() throws IOException {
+
+    dataTempDir = JavaUtils.createTempDirectory();
+
+    // final ConfigUtils conf = new ConfigUtils();
+    // final String datafolder =
+    // conf.getStringProperty(ConfigUtils.KB_DATA_FOLDER_KEY);
+    // final boolean initdata =
+    // conf.getBooleanProperty(ConfigUtils.KB_INSERT_TEST_DATA);
+    KBUtils.dbConnect(dataTempDir.getPath(), false);
   }
 
   /**
    * Cleanup the data folder.
    */
-  @AfterClass
-  public static void afterClass() {
-    LOG.info("Deleting data folder at " + DATA_TEMP_DIR);
+  @After
+  public void after() {
+    LOG.info("Deleting data folder at " + dataTempDir);
     KBUtils.dbDisconnect();
-    FileUtils.deleteQuietly(new File(DATA_TEMP_DIR));
+    FileUtils.deleteQuietly(dataTempDir);
   }
 
   /**
@@ -386,11 +395,11 @@ public class CoreRestTest extends JerseyTest {
 
     final String value = "99999";
 
-    final String sourceAdaptorInstance = "default";
-    final SourceAdaptor sourceAdaptor = client.createSourceAdaptor("test", "0.1", sourceAdaptorInstance, "test");
+    final Source source = client.createSource(new Source("test", "test source"));
+    final SourceAdaptor sourceAdaptor = client.createSourceAdaptor("test", "0.1", "default", source.getName());
 
-    final PropertyValue propertyValue = client.createPropertyValue(sourceAdaptorInstance, new PropertyValue(entity,
-      property, value));
+    final PropertyValue propertyValue = client.createPropertyValue(sourceAdaptor.getInstance(), new PropertyValue(
+      entity, property, value));
     Assert.assertNotNull(propertyValue);
     Assert.assertEquals(propertyValue.getEntity(), entity);
     Assert.assertEquals(propertyValue.getProperty(), property);
@@ -481,10 +490,10 @@ public class CoreRestTest extends JerseyTest {
 
     final String value = "99999";
 
-    final String sourceAdaptorInstance = "default";
-    final SourceAdaptor sourceAdaptor = client.createSourceAdaptor("test", "0.1", sourceAdaptorInstance, "test");
-    final PropertyValue propertyValue = client.createPropertyValue(sourceAdaptorInstance, new PropertyValue(entity,
-      property, value));
+    final Source source = client.createSource(new Source("test", "test source"));
+    final SourceAdaptor sourceAdaptor = client.createSourceAdaptor("test", "0.1", "default", source.getName());
+    final PropertyValue propertyValue = client.createPropertyValue(sourceAdaptor.getInstance(), new PropertyValue(
+      entity, property, value));
 
     // DO TESTS
     final List<EntityType> typeList = client.getRequest(EntityType.class, EntityDAO.getEntityRDFId(entityName)
@@ -548,11 +557,11 @@ public class CoreRestTest extends JerseyTest {
 
     final String value = "99999";
 
-    final String sourceAdaptorInstance = "default";
-    final SourceAdaptor sourceAdaptor = client.createSourceAdaptor("test", "0.1", sourceAdaptorInstance, "test");
+    final Source source = client.createSource(new Source("test", "test source"));
+    final SourceAdaptor sourceAdaptor = client.createSourceAdaptor("test", "0.1", "default", source.getName());
 
-    final PropertyValue propertyValue = client.createPropertyValue(sourceAdaptorInstance, new PropertyValue(entity,
-      property, value));
+    final PropertyValue propertyValue = client.createPropertyValue(sourceAdaptor.getInstance(), new PropertyValue(
+      entity, property, value));
 
     // TESTS
 
@@ -573,6 +582,70 @@ public class CoreRestTest extends JerseyTest {
   }
 
   // TODO test plugin listings.
+
+  /**
+   * Test source with JSON output.
+   * 
+   * @see CoreRestTest#sourceCRUD(eu.scape_project.watch.rest.WatchClient.Format)
+   */
+  @Test
+  public void sourceCrudJson() {
+    sourceCRUD(WatchClient.Format.JSON);
+  }
+
+  /**
+   * Test source with XML output.
+   */
+  @Test
+  public void sourceCrudXML() {
+    sourceCRUD(WatchClient.Format.XML);
+  }
+
+  /**
+   * Test Source CRUD operations.
+   * 
+   * @param format
+   *          The output format.
+   */
+  public void sourceCRUD(final WatchClient.Format format) {
+    final WatchClient client = new WatchClient(this.resource, format);
+
+    // CREATE
+    final String name = "test";
+    final String description = "A test";
+
+    final Source source = client.createSource(new Source(name, description));
+
+    System.out.println("Created: " + source);
+
+    assertEquals(source.getName(), name);
+    assertEquals(source.getDescription(), description);
+
+    // TODO test creating an already existing source
+
+    // GET
+    final Source source3 = client.getSource(name);
+    Assert.assertNotNull(source3);
+    assertEquals(source, source3);
+
+    // LIST
+    final List<Source> list = client.listSources();
+    Assert.assertTrue(list.contains(source));
+
+    // TODO test update
+
+    // DELETE
+    final Source source4 = client.deleteSource(name);
+    Assert.assertEquals(source4, source);
+
+    // GET
+    final Source source5 = client.getSource(name);
+    Assert.assertNull(source5);
+
+    // LIST
+    final List<Source> list2 = client.listSources();
+    Assert.assertFalse(list2.contains(source));
+  }
 
   /**
    * Tests on source adaptor requests with XML output.
@@ -605,14 +678,45 @@ public class CoreRestTest extends JerseyTest {
     final String instance = "default";
 
     // Testing non-existing source
-    client.createSourceAdaptor(pluginName, pluginVersion, instance, "sourceThatDoesNotExist");
+    final SourceAdaptor adaptor = client.createSourceAdaptor(pluginName, pluginVersion, instance,
+      "sourceThatDoesNotExist");
+    Assert.assertNull(adaptor);
 
-    final Source source = new Source("test", "testing source");
+    final List<SourceAdaptor> adaptors2 = client.listSourceAdaptors(null);
+    LOG.info("Adaptors: {}", adaptors2);
+    Assert.assertEquals(0, adaptors2.size());
 
-    // TODO client.createSource
+    // Create
+    final Source source = client.createSource(new Source("test", "testing source"));
+    final SourceAdaptor adaptor2 = client.createSourceAdaptor(pluginName, pluginVersion, instance, source.getName());
+    Assert.assertNotNull(adaptor2);
+    Assert.assertEquals(pluginName, adaptor2.getName());
+    Assert.assertEquals(pluginVersion, adaptor2.getVersion());
+    Assert.assertEquals(instance, adaptor2.getInstance());
+    Assert.assertEquals(source, adaptor2.getSource());
 
-    // TODO client.createSourceAdaptor(pluginName, pluginVersion, instance,
-    // sourceName)
+    // Get
+    final SourceAdaptor adaptor3 = client.getSourceAdaptor(adaptor2.getInstance());
+    Assert.assertEquals(adaptor2, adaptor3);
+
+    // List
+    final List<SourceAdaptor> sourceAdaptors = client.listSourceAdaptors(true);
+    Assert.assertEquals(1, sourceAdaptors.size());
+    Assert.assertTrue(sourceAdaptors.contains(adaptor2));
+
+    // Update
+    adaptor2.setActive(false);
+    final SourceAdaptor adaptor4 = client.updateSourceAdaptor(adaptor2);
+    Assert.assertEquals(false, adaptor4.isActive());
+
+    final List<SourceAdaptor> sourceAdaptors2 = client.listSourceAdaptors(true);
+    Assert.assertEquals(0, sourceAdaptors2.size());
+
+    final List<SourceAdaptor> sourceAdaptors3 = client.listSourceAdaptors(false);
+    Assert.assertEquals(1, sourceAdaptors3.size());
+    Assert.assertTrue(sourceAdaptors3.contains(adaptor2));
+
+    // TODO Delete
 
   }
 }

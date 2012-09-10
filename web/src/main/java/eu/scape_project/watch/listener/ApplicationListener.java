@@ -21,7 +21,6 @@ import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.Question;
 import eu.scape_project.watch.domain.RequestTarget;
 import eu.scape_project.watch.domain.Source;
-import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.domain.Trigger;
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
 import eu.scape_project.watch.interfaces.SchedulerInterface;
@@ -105,14 +104,8 @@ public class ApplicationListener implements ServletContextListener {
 
     // TODO read this out of file or some other way...
     final Map<String, String> schedulerConfig = new HashMap<String, String>();
-<<<<<<< HEAD
-    schedulerConfig.put("scheduler.intervalInSeconds", "3"); //run every 5 minutes...
-    
-=======
     schedulerConfig.put("scheduler.intervalInSeconds", "300"); // run every 5
                                                                // minutes...
-
->>>>>>> changed configuration file name, paths and property keys; added plugin resource to REST interface; updated email notification plugin info; improved PluginManager log messages; added guard for null in ApplicationListener for when no context is available
     for (AdaptorPluginInterface adaptor : activeAdaptors.values()) {
       scheduler.start(adaptor, schedulerConfig); // TODO add desired
                                                  // properties...

@@ -1,7 +1,6 @@
 package eu.scape_project.watch.domain;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -203,13 +202,21 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
   public void setProperties(final List<Property> properties) {
     this.properties = properties;
   }
+  
+  public List<DictionaryItem> getConfiguration() {
+    return configuration;
+  }
+
+  public void setConfiguration(List<DictionaryItem> configuration) {
+    this.configuration = configuration;
+  }
 
   /**
    * Get the configuration as a map of strings.
    * 
    * @return A map of strings with each entry as a key-value pair.
    */
-  public Map<String, String> getConfiguration() {
+  public Map<String, String> getConfigurationAsMap() {
     return ModelUtils.entryListToMap(this.configuration);
   }
 
@@ -219,7 +226,7 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
    * @param configuration
    *          A map of strings with each entry as a key-value pair.
    */
-  public void setConfiguration(final Map<String, String> configuration) {
+  public void setConfigurationAsMap(final Map<String, String> configuration) {
     this.configuration = ModelUtils.mapToEntryList(configuration);
   }
 

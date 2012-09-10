@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.domain.SourceAdaptor;
@@ -14,9 +17,6 @@ import eu.scape_project.watch.plugin.PluginManager;
 import eu.scape_project.watch.utils.ConfigParameter;
 import eu.scape_project.watch.utils.exceptions.InvalidParameterException;
 import eu.scape_project.watch.utils.exceptions.PluginException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * The AdaptorManager is responsible for the known SourceAdaptors (provenance
@@ -222,7 +222,7 @@ public class AdaptorManager {
 
       if (plugin != null) {
         try {
-          plugin.setParameterValues(adaptor.getConfiguration());
+          plugin.setParameterValues(adaptor.getConfigurationAsMap());
           adaptor.setActive(true);
           this.updateSourceAdaptor(adaptor);
         } catch (final InvalidParameterException e) {

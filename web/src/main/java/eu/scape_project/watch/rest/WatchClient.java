@@ -1,5 +1,12 @@
 package eu.scape_project.watch.rest;
 
+import java.util.List;
+
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+
+import thewebsemantic.binding.RdfBean;
+
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.UniformInterfaceException;
@@ -13,19 +20,12 @@ import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.domain.RequestTarget;
+import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.interfaces.PluginType;
 import eu.scape_project.watch.plugin.PluginInfo;
 import eu.scape_project.watch.utils.KBUtils;
 import eu.scape_project.watch.utils.exception.NotFoundException;
-
-import java.util.Arrays;
-import java.util.List;
-
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-
-import thewebsemantic.binding.RdfBean;
 
 /**
  * Client for Watch REST service.
@@ -162,6 +162,12 @@ public class WatchClient {
    * Generic type for a List of {@link SourceAdaptor}.
    */
   private static final GenericType<List<SourceAdaptor>> SOURCEADAPTOR_LIST_TYPE = new GenericType<List<SourceAdaptor>>() {
+  };
+
+  /**
+   * Generic type for a List of {@link Source}.
+   */
+  private static final GenericType<List<Source>> SOURCE_LIST_TYPE = new GenericType<List<Source>>() {
   };
 
   /**
@@ -415,7 +421,8 @@ public class WatchClient {
    * @return the committed {@link PropertyValue}
    */
   public PropertyValue createPropertyValue(final String sourceAdaptorInstance, final PropertyValue pv) {
-    return this.resource.path(KBUtils.PROPERTY_VALUE + FS + this.format + AS + NEW).accept(this.format.getMediaType())
+    return this.resource.path(KBUtils.PROPERTY_VALUE + FS + this.format + AS + NEW)
+      .queryParam("sourceAdaptor", sourceAdaptorInstance).accept(this.format.getMediaType())
       .post(PropertyValue.class, pv);
   }
 
@@ -631,8 +638,17 @@ public class WatchClient {
     queryParams.putSingle("instance", instance);
     queryParams.putSingle("source", sourceName);
 
-    return this.resource.path(KBUtils.SOURCE_ADAPTOR + FS + this.format + AS + NEW).queryParams(queryParams)
-      .accept(this.format.getMediaType()).post(SourceAdaptor.class);
+    try {
+      return this.resource.path(KBUtils.SOURCE_ADAPTOR + FS + this.format + AS + NEW).queryParams(queryParams)
+        .accept(this.format.getMediaType()).post(SourceAdaptor.class);
+    } catch (final UniformInterfaceException e) {
+      final ClientResponse resp = e.getResponse();
+      if (resp.getStatus() == NotFoundException.CODE) {
+        return null;
+      } else {
+        throw e;
+      }
+    }
   }
 
   /**
@@ -640,10 +656,87 @@ public class WatchClient {
    * 
    * @param updatedSourceAdaptor
    *          The updated source adaptor
-   * @return the commited source adaptor
+   * @return the committed source adaptor
    */
   public SourceAdaptor updateSourceAdaptor(final SourceAdaptor updatedSourceAdaptor) {
     return this.resource.path(KBUtils.SOURCE_ADAPTOR + FS + this.format + AS + UPDATE)
       .accept(this.format.getMediaType()).put(SourceAdaptor.class, updatedSourceAdaptor);
+  }
+
+  /**
+   * Get an existing {@link Source}.
+   * 
+   * @param name
+   *          Source name
+   * @return the {@link Source} or <code>null</code> if not found.
+   */
+  public Source getSource(final String name) {
+    try {
+      return this.resource.path(KBUtils.SOURCE + FS + this.format + AS + name).accept(this.format.getMediaType())
+        .get(Source.class);
+    } catch (final UniformInterfaceException e) {
+      final ClientResponse resp = e.getResponse();
+      if (resp.getStatus() == NotFoundException.CODE) {
+        return null;
+      } else {
+        throw e;
+      }
+    }
+  }
+
+  /**
+   * List all sources.
+   * 
+   * @return A list of all sources.
+   */
+  public List<Source> listSources() {
+    return (List<Source>) this.resource.path(KBUtils.SOURCE + FS + this.format + AS + LIST)
+      .accept(this.format.getMediaType()).get(SOURCE_LIST_TYPE);
+  }
+
+  /**
+   * Create a {@link PropertyValue}.
+   * 
+   * @param source
+   *          The new source.
+   * @return the committed {@link Source}
+   */
+  public Source createSource(final Source source) {
+    return this.resource.path(KBUtils.SOURCE + FS + this.format + AS + NEW).accept(this.format.getMediaType())
+      .post(Source.class, source);
+  }
+
+  /**
+   * Update an existing {@link Source}.
+   * 
+   * @param updatedSource
+   *          The updated source
+   * @return the committed source adaptor
+   */
+  public Source updateSource(final Source updatedSource) {
+    return this.resource.path(KBUtils.SOURCE + FS + this.format + AS + UPDATE).accept(this.format.getMediaType())
+      .put(Source.class, updatedSource);
+  }
+
+  /**
+   * Delete an existing source.
+   * 
+   * @param sourceName
+   *          The source name.
+   * @return the deleted source.
+   */
+  public Source deleteSource(final String sourceName) {
+    try {
+      return this.resource.path(KBUtils.SOURCE + FS + this.format + AS + sourceName).accept(this.format.getMediaType())
+        .delete(Source.class);
+    } catch (final UniformInterfaceException e) {
+      final ClientResponse resp = e.getResponse();
+      if (resp.getStatus() == NotFoundException.CODE) {
+        // TODO throw exception
+        return null;
+      } else {
+        throw e;
+      }
+    }
   }
 }

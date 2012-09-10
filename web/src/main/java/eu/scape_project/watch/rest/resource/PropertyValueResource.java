@@ -130,6 +130,7 @@ public class PropertyValueResource extends JavaHelp {
     final Entity entity = DAO.ENTITY.findById(pv.getEntity().getName());
 
     if (entity == null) {
+      LOG.debug("Related entity not found: {}", pv.getEntity().getName());
       throw new NotFoundException("Related entity not found: " + pv.getEntity().getName());
     }
 
@@ -137,6 +138,7 @@ public class PropertyValueResource extends JavaHelp {
       .getProperty().getName());
 
     if (property == null) {
+      LOG.debug("Related property not found: {}", pv.getProperty().getId());
       throw new NotFoundException("Related property not found: " + pv.getProperty().getId());
     }
 
@@ -144,6 +146,7 @@ public class PropertyValueResource extends JavaHelp {
     final SourceAdaptor adaptor = manager.getSourceAdaptor(sourceAdaptorInstance);
 
     if (adaptor == null) {
+      LOG.debug("Source adaptor not found: {}", sourceAdaptorInstance);
       throw new NotFoundException("Source adaptor not found: " + sourceAdaptorInstance);
     }
 

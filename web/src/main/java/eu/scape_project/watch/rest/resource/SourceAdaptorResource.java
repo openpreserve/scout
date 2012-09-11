@@ -142,6 +142,11 @@ public class SourceAdaptorResource extends JavaHelp {
     }
 
     final SourceAdaptor adaptor = manager.createAdaptor(name, version, instance, source);
+    
+    if (adaptor == null) {
+      throw new NotFoundException("No plugin implementation found for " + name + " " + version);
+    }
+    
     return Response.ok().entity(adaptor).build();
   }
 

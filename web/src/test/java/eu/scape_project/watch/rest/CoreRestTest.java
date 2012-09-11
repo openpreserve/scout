@@ -42,6 +42,8 @@ import eu.scape_project.watch.domain.RequestTarget;
 import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.domain.Trigger;
+import eu.scape_project.watch.plugin.PluginManager;
+import eu.scape_project.watch.utils.ConfigUtils;
 import eu.scape_project.watch.utils.JavaUtils;
 import eu.scape_project.watch.utils.KBUtils;
 import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeException;
@@ -101,6 +103,7 @@ public class CoreRestTest extends JerseyTest {
     // final boolean initdata =
     // conf.getBooleanProperty(ConfigUtils.KB_INSERT_TEST_DATA);
     KBUtils.dbConnect(dataTempDir.getPath(), false);
+    PluginManager.getDefaultPluginManager().getConfig().override(ConfigUtils.DEFAULT_CONFIG);
   }
 
   /**
@@ -396,7 +399,7 @@ public class CoreRestTest extends JerseyTest {
     final String value = "99999";
 
     final Source source = client.createSource(new Source("test", "test source"));
-    final SourceAdaptor sourceAdaptor = client.createSourceAdaptor("test", "0.1", "default", source.getName());
+    final SourceAdaptor sourceAdaptor = client.createSourceAdaptor("TestAdaptor", "0.1", "default", source.getName());
 
     final PropertyValue propertyValue = client.createPropertyValue(sourceAdaptor.getInstance(), new PropertyValue(
       entity, property, value));
@@ -491,7 +494,7 @@ public class CoreRestTest extends JerseyTest {
     final String value = "99999";
 
     final Source source = client.createSource(new Source("test", "test source"));
-    final SourceAdaptor sourceAdaptor = client.createSourceAdaptor("test", "0.1", "default", source.getName());
+    final SourceAdaptor sourceAdaptor = client.createSourceAdaptor("TestAdaptor", "0.1", "default", source.getName());
     final PropertyValue propertyValue = client.createPropertyValue(sourceAdaptor.getInstance(), new PropertyValue(
       entity, property, value));
 
@@ -558,7 +561,7 @@ public class CoreRestTest extends JerseyTest {
     final String value = "99999";
 
     final Source source = client.createSource(new Source("test", "test source"));
-    final SourceAdaptor sourceAdaptor = client.createSourceAdaptor("test", "0.1", "default", source.getName());
+    final SourceAdaptor sourceAdaptor = client.createSourceAdaptor("TestAdaptor", "0.1", "default", source.getName());
 
     final PropertyValue propertyValue = client.createPropertyValue(sourceAdaptor.getInstance(), new PropertyValue(
       entity, property, value));
@@ -672,7 +675,7 @@ public class CoreRestTest extends JerseyTest {
     Assert.assertEquals(0, adaptors.size());
 
     // TODO point to loaded plug-in
-    final String pluginName = "test";
+    final String pluginName = "TestAdaptor";
     final String pluginVersion = "0.1";
 
     final String instance = "default";

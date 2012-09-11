@@ -5,18 +5,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
+import eu.scape_project.watch.interfaces.PluginType;
 import eu.scape_project.watch.plugin.PluginInfo;
 import eu.scape_project.watch.plugin.PluginManager;
 import eu.scape_project.watch.utils.ConfigParameter;
 import eu.scape_project.watch.utils.exceptions.InvalidParameterException;
 import eu.scape_project.watch.utils.exceptions.PluginException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The AdaptorManager is responsible for the known SourceAdaptors (provenance
@@ -82,7 +83,10 @@ public class AdaptorManager {
   }
 
   /**
-   * Creates a {@link SourceAdaptor}.
+   * Creates a {@link SourceAdaptor}. Note that the method checks, whether an
+   * implementation of such an adaptor exists. If no implementation is found
+   * than the method returns null, otherwise a {@link SourceAdaptor} object is
+   * returned.
    * 
    * @param name
    *          the name of the adaptor.
@@ -92,20 +96,32 @@ public class AdaptorManager {
    *          the unique instance identifier provided by the user.
    * @param source
    *          the source to which the adaptor is going to be used against.
-   * @return the source adaptor without any configuration.
+   * @return the source adaptor without any configuration or null if no
+   *         implementation was found..
    */
   public SourceAdaptor createAdaptor(final String name, final String version, final String uid, final Source source) {
     LOG.debug("Creating new source adaptor information for {}-{}", name, version);
 
-    // TODO existence check
-    // may be the method should check if the adaptor exists (name, version)
-    // and return only if such and adaptor exists, otherwise null.
+    // existence check
+    final List<PluginInfo> plugins = PluginManager.getDefaultPluginManager().getPluginInfo(name);
+    boolean exist = false;
+    for (PluginInfo info : plugins) {
+      if (info.getName().equalsIgnoreCase(name) && info.getVersion().equals(version)) {
+        exist = true;
+        break;
+      }
+    }
 
-    // TODO unique identifier check: check if given identifier already exists
+    SourceAdaptor adaptor = null;
+    if (exist) {
+      adaptor = new SourceAdaptor(name, version, uid, source, null, null, null);
+      this.updateSourceAdaptor(adaptor);
+      this.adaptors.put(adaptor.getInstance(), adaptor);
 
-    final SourceAdaptor adaptor = new SourceAdaptor(name, version, uid, source, null, null, null);
-    this.updateSourceAdaptor(adaptor);
-    this.adaptors.put(adaptor.getInstance(), adaptor);
+    } else {
+      LOG.warn("Cannot create source adaptor. No plugin implementation found for [{}-{}].", name, version);
+    }
+
     return adaptor;
   }
 

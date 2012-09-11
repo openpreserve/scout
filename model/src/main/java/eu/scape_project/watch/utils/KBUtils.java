@@ -359,7 +359,7 @@ public final class KBUtils {
     final Map<String, String> config = new HashMap<String, String>();
     config.put("c3po.endpoint", "dummy");
     final Source source = new Source("c3podummy", "A c3po dummy test source");
-    final SourceAdaptor adaptor = new SourceAdaptor("c3po", "0.0.3", "c3po-0.0.3", source, Arrays.asList(tools,
+    final SourceAdaptor adaptor = new SourceAdaptor("c3po", "0.0.4", "c3po-0.0.4", source, Arrays.asList(tools,
       formats, profile), Arrays.asList(formatPUID, formatMimetype, toolVersion, inputFormats, outputFormats,
       formatDistribution), config);
     DAO.save(source);

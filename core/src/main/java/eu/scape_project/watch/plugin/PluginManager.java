@@ -426,20 +426,20 @@ public final class PluginManager {
             // set the plugin only if it was really loaded
             // otherwise continue to load classes.
             plugin = tmp;
-            LOGGER.debug("Plugin instantiated");
+            LOGGER.info("Plugin instantiated");
           }
 
         } catch (final ClassNotFoundException e) {
-          LOGGER.error("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
+          LOGGER.warn("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
             e.getMessage()});
         } catch (final IllegalAccessError e) {
-          LOGGER.error("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
+          LOGGER.warn("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
             e.getMessage()});
         } catch (final VerifyError e) {
-          LOGGER.error("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
+          LOGGER.warn("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
             e.getMessage()});
         } catch (final NoClassDefFoundError e) {
-          LOGGER.error("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
+          LOGGER.warn("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
             e.getMessage()});
         }
       }
@@ -469,7 +469,7 @@ public final class PluginManager {
     try {
       if (PluginInterface.class.isAssignableFrom(clazz) && !clazz.isInterface()
         && !Modifier.isAbstract(clazz.getModifiers())) {
-        LOGGER.debug("{} class is a plugin, instantiating", clazz.getName());
+        LOGGER.info("{} class is a plugin, instantiating", clazz.getName());
         plugin = (PluginInterface) clazz.newInstance();
       }
 

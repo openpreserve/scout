@@ -162,13 +162,9 @@ public class ApplicationListener implements ServletContextListener {
     DAO.save(asRe);
 
     final Source source = new Source("C3PO", "Content Profile");
-    // final SourceAdaptor adaptor = new SourceAdaptor("c3po", "0.0.3",
-    // "keeps_demo", source, Arrays.asList(et),
-    // Arrays.asList(prop), new HashMap<String, String>());
 
     DAO.save(source);
-    // DAO.save(adaptor);
 
-    manager.createAdaptor("c3po", "0.0.3", "keeps_demo", source);
+    manager.createAdaptor("c3po", "0.0.4", "demo", source);
   }
 }

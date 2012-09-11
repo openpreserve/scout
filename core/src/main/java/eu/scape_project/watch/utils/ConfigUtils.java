@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
  * back to the /etc/ directory and if none is found again it takes the default
  * properties.
  * 
- * @author Watch Dev Team
+ * @author Scout Dev Team
  * 
  */
 public class ConfigUtils {
@@ -35,8 +35,7 @@ public class ConfigUtils {
    * startup.
    */
   public static final String KB_INSERT_TEST_DATA = "scout.kb.insert_test_data";
-  
-  
+
   /**
    * The property designating the folder where the plugins are located.
    */
@@ -60,15 +59,15 @@ public class ConfigUtils {
   /**
    * The current user properties path, currently in the users home.
    */
-  private static final String USER_PROPERTIES = System.getProperty("user.home") + File.pathSeparator + "."
-    + PROPERTIES_FOLDER_NAME + File.pathSeparator + PROPERTIES_FILE_NAME;
+  private static final String USER_PROPERTIES = System.getProperty("user.home") + File.separator + "."
+    + PROPERTIES_FOLDER_NAME + File.separator + PROPERTIES_FILE_NAME;
 
   /**
    * The global properties path.
    * 
    * TODO support windows system properties path
    */
-  private static final String SYSTEM_PROPERTIES = "/etc/" + PROPERTIES_FOLDER_NAME + File.pathSeparator
+  private static final String SYSTEM_PROPERTIES = "/etc/" + PROPERTIES_FOLDER_NAME + File.separator
     + PROPERTIES_FILE_NAME;
 
   /**
@@ -86,19 +85,28 @@ public class ConfigUtils {
    */
   public static final int SYSTEM_CONFIG = 0x03;
 
-
-
   /**
    * The loaded properties.
    */
   private Properties config;
 
   /**
+   * The sub component that uses this configuration.
+   */
+  private String module;
+
+  /**
    * The default constructor loads the properties.
    * 
+   * @param module
+   *          the name of the sub component that is using this instance of the
+   *          configuration.
    * @see {@link ConfigUtils#loadConfig()}
    */
-  public ConfigUtils() {
+  public ConfigUtils(final String module) {
+    LOGGER.info("Subcomponent [{}] has created new configuration instance", module);
+
+    this.module = module;
     loadConfig();
   }
 
@@ -117,7 +125,7 @@ public class ConfigUtils {
    * Loads the default properties.
    */
   private void loadDefaultConfig() {
-    LOGGER.debug("loading default config file: {}", DEFAULT_PROPERTIES);
+    LOGGER.info("Subcomponent [{}] is loading default config file: {}", this.module, DEFAULT_PROPERTIES);
     this.config = new Properties();
     try {
       this.config.load(ConfigUtils.class.getClassLoader().getResourceAsStream(DEFAULT_PROPERTIES));
@@ -138,7 +146,7 @@ public class ConfigUtils {
     final File f = new File(USER_PROPERTIES);
 
     if (f.exists() && f.isFile()) {
-      LOGGER.debug("found user defined properties, loading.");
+      LOGGER.info("Subcomponent [{}] is loading user defined config file: {}.", this.module, USER_PROPERTIES);
       FileInputStream stream = null;
       try {
         stream = new FileInputStream(f);
@@ -178,7 +186,7 @@ public class ConfigUtils {
     final File f = new File(SYSTEM_PROPERTIES);
 
     if (f.exists() && f.isFile()) {
-      LOGGER.debug("found system wide properties, loading.");
+      LOGGER.info("Subcomponent [{}] is loading system wide config file: {}.", this.module, SYSTEM_PROPERTIES);
 
       FileInputStream stream = null;
 

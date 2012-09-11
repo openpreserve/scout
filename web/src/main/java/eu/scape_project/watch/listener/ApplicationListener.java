@@ -21,6 +21,7 @@ import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.Question;
 import eu.scape_project.watch.domain.RequestTarget;
 import eu.scape_project.watch.domain.Source;
+import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.domain.Trigger;
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
 import eu.scape_project.watch.interfaces.SchedulerInterface;
@@ -88,6 +89,9 @@ public class ApplicationListener implements ServletContextListener {
     final AdaptorManager manager = new AdaptorManager();
     final Map<String, AdaptorPluginInterface> activeAdaptors = manager.getActiveAdaptorPlugins();
 
+    saveTestRequest(manager);
+    manager.reloadKnownAdaptors();
+    
     // create data merger and add it as a listener.
     final DataMerger merger = new DataMerger();
 
@@ -104,14 +108,11 @@ public class ApplicationListener implements ServletContextListener {
 
     // TODO read this out of file or some other way...
     final Map<String, String> schedulerConfig = new HashMap<String, String>();
-    schedulerConfig.put("scheduler.intervalInSeconds", "300"); // run every 5
-                                                               // minutes...
+    schedulerConfig.put("scheduler.intervalInSeconds", "60");
     for (AdaptorPluginInterface adaptor : activeAdaptors.values()) {
       scheduler.start(adaptor, schedulerConfig); // TODO add desired
                                                  // properties...
     }
-
-    saveTestRequest(manager);
 
     final ServletContext context = sce.getServletContext();
     ContextUtil.setAdaptorManager(manager, context);
@@ -129,7 +130,7 @@ public class ApplicationListener implements ServletContextListener {
    */
   private void initDB() {
 
-    final ConfigUtils conf = new ConfigUtils();
+    final ConfigUtils conf = new ConfigUtils("Knowledge Base");
     final String datafolder = conf.getStringProperty(ConfigUtils.KB_DATA_FOLDER_KEY);
     final boolean initdata = conf.getBooleanProperty(ConfigUtils.KB_INSERT_TEST_DATA);
 
@@ -165,6 +166,14 @@ public class ApplicationListener implements ServletContextListener {
 
     DAO.save(source);
 
-    manager.createAdaptor("c3po", "0.0.4", "demo", source);
+    final Map<String, String> config = new HashMap<String, String>();
+    config.put("c3po.endpoint", "dummy");
+
+    final SourceAdaptor c3po = manager.createAdaptor("c3po", "0.0.4", "demo", source);
+    if (c3po != null) {
+      c3po.setConfigurationAsMap(config);
+      c3po.setActive(true);
+      manager.updateSourceAdaptor(c3po);
+    }
   }
 }

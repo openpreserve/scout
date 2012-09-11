@@ -9,21 +9,34 @@
 		</layout>
 	</appender>
 
-	<logger name="eu.scape_project.watch" additivity="false">
-		<level value="DEBUG" />
+  <logger name="eu.scape_project.watch" additivity="false">
+    <level value="DEBUG" />
+    <appender-ref ref="CONSOLE" />
+  </logger>
+
+ <logger name="eu.scape_project.watch.utils" additivity="false">
+    <level value="INFO" />
+    <appender-ref ref="CONSOLE" />
+  </logger>
+  
+  <logger name="eu.scape_project.watch.plugin" additivity="false">
+    <level value="INFO" />
+    <appender-ref ref="CONSOLE" />
+  </logger>
+
+ 
+	<logger name="com.hp.hpl.jena.sparql.engine.iterator.QueryIteratorCheck">
+		<level value="ERROR" />
 		<appender-ref ref="CONSOLE" />
 	</logger>
-  
-    <logger name="com.hp.hpl.jena.sparql.engine.iterator.QueryIteratorCheck">
-        <level value="ERROR" />
-        <appender-ref ref="CONSOLE" />
-    </logger>
 
-	 <!--<logger name="org.quartz" additivity="false">
-		<level value="DEBUG" />
-		<appender-ref ref="CONSOLE" />
-	</logger>-->
-	
+	<!--
+	<logger name="org.quartz" additivity="false">
+	 <level value="DEBUG" /> 
+	 <appender-ref ref="CONSOLE" />
+	</logger> 
+	-->
+
 	<root>
 		<priority value="WARN" />
 		<appender-ref ref="CONSOLE" />

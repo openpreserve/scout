@@ -254,7 +254,7 @@ public final class PluginManager {
    * 
    */
   private PluginManager() {
-    this.config = new ConfigUtils();
+    this.config = new ConfigUtils("Plugin Management");
     this.setup();
   }
 

@@ -79,11 +79,15 @@ public class QuartzExecutionListener implements JobListener {
       }
       if (num > REPEAT) {
         LOG.warn("Unscheduling adaptor: "+adaptor.getName());
-        scheduler.stop(adaptor);
+        QuartzEventDetails details = new QuartzEventDetails();
+        details.setReason("Adaptor failed 5 times in a row");
+        scheduler.stop(adaptor, details);
         failed.remove(adaptor);
       } else {
         LOG.warn("Refiring adaptor: "+adaptor.getName());
-        scheduler.execute(adaptor);
+        QuartzEventDetails details = new QuartzEventDetails();
+        details.setReason("Adaptor failed to execute so it will be reexecuted immediately");
+        scheduler.execute(adaptor,details);
       }
     }
 

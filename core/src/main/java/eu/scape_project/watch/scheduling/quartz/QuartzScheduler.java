@@ -3,7 +3,6 @@ package eu.scape_project.watch.scheduling.quartz;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -20,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import eu.scape_project.watch.interfaces.AdaptorListenerInterface;
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
+import eu.scape_project.watch.interfaces.EventDetails;
 import eu.scape_project.watch.interfaces.SchedulerInterface;
 import eu.scape_project.watch.interfaces.SchedulerListenerInterface;
 
@@ -28,7 +28,7 @@ import eu.scape_project.watch.interfaces.SchedulerListenerInterface;
  * implementation uses Quartz Scheduler (http://quartz-scheduler.org/)
  * 
  * @author Kresimir Duretec <duretec@ifs.tuwien.ac.at>
- *
+ * 
  */
 public class QuartzScheduler implements SchedulerInterface {
 
@@ -46,33 +46,54 @@ public class QuartzScheduler implements SchedulerInterface {
   private QuartzExecutionListener executionListener;
 
   private List<SchedulerListenerInterface> schedulerListeners;
- 
+
   /**
    * Default constructor
    */
   public QuartzScheduler() {
-	LOG.info("Creating QuartzScheduler");
+    LOG.info("Creating QuartzScheduler");
     cache = new QuartzCache();
     listenerManager = new QuartzListenerManager();
     executionListener = new QuartzExecutionListener();
     schedulerListeners = new ArrayList<SchedulerListenerInterface>();
     executionListener.setScheduler(this);
     executionListener.setListenerManager(listenerManager);
+  }
+
+  @Override
+  public void init() {
     try {
       scheduler = StdSchedulerFactory.getDefaultScheduler();
       scheduler.start();
       scheduler.getListenerManager().addJobListener(executionListener, EverythingMatcher.allJobs());
+      LOG.info("QuartzScheduler initialized");
     } catch (SchedulerException e) {
-      LOG.error("Exception occured when creating a DefaultScheduler");
+      LOG.error("An exception occured when initializing QuartzScheduler " + e.getStackTrace());
+    }
+
+  }
+
+  @Override
+  public void shutdown() {
+    clear();
+    try {
+      scheduler.shutdown();
+      LOG.info("QuartzScheduler shutdown");
+    } catch (SchedulerException e) {
+      LOG.error("Failed to shut down QuartzScheduler, an exception occured " + e.getStackTrace());
     }
   }
 
   @Override
-  public void start(AdaptorPluginInterface adaptor, Map<String, String> properties) {
+  public void start(AdaptorPluginInterface adaptor, Map<String, String> properties, EventDetails details) {
 
+    if (details==null) {
+      details = new QuartzEventDetails();
+    }
+    
     if (!cache.containsAdaptor(adaptor)) {
 
-      LOG.info("Scheduling new adaptor plugin " + adaptor.getName());
+      LOG.info("Starting the new adaptor plugin " + adaptor.getName());
       String id = cache.addAdaptorPlugin(adaptor);
 
       if (id != null) {
@@ -86,106 +107,165 @@ public class QuartzScheduler implements SchedulerInterface {
           .startNow()
           .withSchedule(
             SimpleScheduleBuilder.simpleSchedule()
-              .withIntervalInSeconds(Integer.parseInt(properties.get("scheduler.intervalInSeconds")))
-              .repeatForever()).build();
+              .withIntervalInSeconds(Integer.parseInt(properties.get("scheduler.intervalInSeconds"))).repeatForever())
+          .build();
 
         // schedule it
         try {
           scheduler.scheduleJob(jobDetail, trigger);
+          // store the JobKey to the cache
+          cache.addJobKey(adaptor, jobDetail.getKey());
+          LOG.info(adaptor.getName() + " is scheduled");
+          details.setSuccessful(true);
+          details.addMessage(adaptor.getName() + " is scheduled");
         } catch (SchedulerException e) {
-          // TODO
-          e.printStackTrace();
-          LOG.error("An error occurred: {}", e.getMessage());
-          
-          // aaaaaaaaaaaaaarrrgh
-          // Please add a simple Log or print the stack trace at least.
-          // it is a one liner, saves a lot of debugging time and
-          // makes sure people do not get nervous breakdowns!!!!!
+          LOG.error("A scheduler exception occurred while starting the adaptor " + adaptor.getName());
+          details.setSuccessful(false);
+          details.addMessage("A scheduler exception occurred while starting the adaptor " + adaptor.getName());
         }
 
-        // store the JobKey to the cache
-        cache.addJobKey(adaptor, jobDetail.getKey());
-        notifyStart(adaptor);  
-        LOG.info(adaptor.getName() + " scheduled");
       } else {
-        LOG.error(adaptor.getName() + "problem when scheduling adaptor - it can not be scheduled!");
+        LOG.error("A problem occured when scheduling "+ adaptor.getName() +" it is not scheduled!");
+        details.setSuccessful(false);
+        details.addMessage("A problem occured when scheduling "+ adaptor.getName() +" it is not scheduled!");
       }
     } else {
-       LOG.error(adaptor.getName() + " is already scheduled!");
+      LOG.error(adaptor.getName() + " is already scheduled!");
+      details.setSuccessful(false);
+      details.addMessage(adaptor.getName() + " is already scheduled!");
     }
+    
+    notifyStart(adaptor, details);
+  
   }
 
   @Override
-  public void stop(AdaptorPluginInterface adaptor) {
-
+  public void stop(AdaptorPluginInterface adaptor, EventDetails details) {
+    
+    if (details==null) {
+      details = new QuartzEventDetails();
+    }
+    
     JobKey key = cache.getAdaptorJobKey(adaptor);
+    
     if (key != null) {
       try {
         scheduler.pauseJob(key);
-        notifyStop(adaptor);
+        LOG.info("Adaptor " + adaptor.getName() + " successfully stoped");
+        details.setSuccessful(true);
+        details.addMessage("Adaptor " + adaptor.getName() + " successfully stoped");
       } catch (SchedulerException e) {
-        e.printStackTrace();
+        LOG.error("A scheduler exception occured while stoping the adaptor "+ adaptor.getName());
+        details.setSuccessful(false);
+        details.addMessage("A scheduler exception occured while stoping the adaptor "+ adaptor.getName());
       }
     } else {
-      LOG.error(adaptor.getName()+ " unknown adaptor to stop");
+      LOG.error(adaptor.getName() + " unknown adaptor to stop");
+      details.setSuccessful(false);
+      details.addMessage(adaptor.getName() + " unknown adaptor to stop");
     }
+    
+    notifyStop(adaptor, details);
+  
   }
 
   @Override
-  public void resume(AdaptorPluginInterface adaptor) {
+  public void resume(AdaptorPluginInterface adaptor, EventDetails details) {
+    
+    if (details==null) {
+      details = new QuartzEventDetails();
+    }
+    
     JobKey key = cache.getAdaptorJobKey(adaptor);
     if (key != null) {
       try {
         scheduler.resumeJob(key);
-        notifyResume(adaptor);
+        LOG.info("Adaptor "+ adaptor.getName() +" successfully resumed");
+        details.setSuccessful(true);
+        details.addMessage("Adaptor "+ adaptor.getName() +" successfully resumed");
       } catch (SchedulerException e) {
-        e.printStackTrace();
+        LOG.error("A scheduler exception occured while resuming the adaptor "+ adaptor.getName());
+        details.setSuccessful(false);
+        details.addMessage("A scheduler exception occured while resuming the adaptor "+ adaptor.getName());
       }
     } else {
-      LOG.error(adaptor.getName()+ " unknown adaptor to resume");
+      LOG.error(adaptor.getName() + " unknown adaptor to resume");
+      details.setSuccessful(false);
+      details.addMessage(adaptor.getName() + " unknown adaptor to resume");
     }
+
+    notifyResume(adaptor, details);
+  
   }
 
   @Override
-  public void delete(AdaptorPluginInterface adaptor) {
+  public void delete(AdaptorPluginInterface adaptor, EventDetails details) {
+
+    if (details==null) {
+      details = new QuartzEventDetails();
+    }
+    
     JobKey key = cache.getAdaptorJobKey(adaptor);
     if (key != null) {
       try {
         scheduler.deleteJob(key);
-        notifyDelete(adaptor);
         cache.removeAdaptorPlugin(adaptor);
+        LOG.info("Adaptor "+ adaptor.getName() +" successfully deleted");
+        details.setSuccessful(true);
+        details.addMessage("Adaptor "+ adaptor.getName() +" successfully deleted");
       } catch (SchedulerException e) {
-        e.printStackTrace();
+        LOG.error("A scheduler exception occured while deleting the adaptor "+ adaptor.getName());
+        details.setSuccessful(false);
+        details.addMessage("A scheduler exception occured while deleting the adaptor "+ adaptor.getName());
       }
+    }else {
+      LOG.error(adaptor.getName() + " unknown adaptor to delete");
+      details.setSuccessful(false);
+      details.addMessage(adaptor.getName() + " unknown adaptor to delete");
     }
+    
+    notifyDelete(adaptor, details);
+  
   }
 
-  @Override
-  public void reschedule(AdaptorPluginInterface adaptor, Map<String, String> properties) {
-    // TODO Auto-generated method stub
-
-  }
 
   @Override
-  public void execute(AdaptorPluginInterface adaptor) {
+  public void execute(AdaptorPluginInterface adaptor, EventDetails details) {
+
+    if (details==null) {
+      details = new QuartzEventDetails();
+    }
+    
     JobKey key = cache.getAdaptorJobKey(adaptor);
     if (key != null) {
       try {
         scheduler.triggerJob(key);
+        LOG.info("Adaptor "+ adaptor.getName() +" successfully executed");
+        details.setSuccessful(true);
+        details.addMessage("Adaptor "+ adaptor.getName() +" successfully executed");
       } catch (SchedulerException e) {
-        // TODO
-        e.printStackTrace();
-        LOG.error("An error occurred: " + e.getMessage());
+        LOG.error("A scheduler exception occured while executing the adaptor "+ adaptor.getName());
+        details.setSuccessful(false);
+        details.addMessage("A scheduler exception occured while executing the adaptor "+ adaptor.getName());
       }
     } else {
-      LOG.error(adaptor.getName()+ " unknown adaptor to execute");
+      LOG.error(adaptor.getName() + " unknown adaptor to execute");
+      details.setSuccessful(false);
+      details.addMessage(adaptor.getName() + " unknown adaptor to execute");
     }
 
+    notifyExecute(adaptor,details);
+    
   }
 
   @Override
   public void clear() {
-    LOG.info("Clearing all adaptors");
+    try {
+      scheduler.clear();
+      LOG.info("All adaptors cleared from the scheduler");
+    } catch (SchedulerException e) {
+      LOG.info("A scheduler exception occured while clearing all adaptors");
+    }
 
   }
 
@@ -213,33 +293,45 @@ public class QuartzScheduler implements SchedulerInterface {
     return listenerManager;
   }
 
-  private void notifyStart(AdaptorPluginInterface adaptor){
-    for (SchedulerListenerInterface sch : schedulerListeners){
-      sch.adaptorPluginWasStarted(adaptor);
+  private void notifyStart(AdaptorPluginInterface adaptor, EventDetails details) {
+    for (SchedulerListenerInterface sch : schedulerListeners) {
+      sch.adaptorPluginWasStarted(adaptor, details);
     }
   }
-  
-  private void notifyStop(AdaptorPluginInterface adaptor){
-    for (SchedulerListenerInterface sch : schedulerListeners){
-      sch.adaptorPluginWasStoped(adaptor);
+
+  private void notifyStop(AdaptorPluginInterface adaptor, EventDetails details) {
+    for (SchedulerListenerInterface sch : schedulerListeners) {
+      sch.adaptorPluginWasStoped(adaptor, details);
     }
   }
-  
-  private void notifyDelete(AdaptorPluginInterface adaptor){
-    for (SchedulerListenerInterface sch : schedulerListeners){
-      sch.adaptorPluginWasDeleted(adaptor);
+
+  private void notifyDelete(AdaptorPluginInterface adaptor, EventDetails details) {
+    for (SchedulerListenerInterface sch : schedulerListeners) {
+      sch.adaptorPluginWasDeleted(adaptor, details);
     }
   }
-  
-  private void notifyResume(AdaptorPluginInterface adaptor){
-    for (SchedulerListenerInterface sch : schedulerListeners){
-      sch.adaptorPluginWasResumed(adaptor);
+
+  private void notifyResume(AdaptorPluginInterface adaptor, EventDetails details) {
+    for (SchedulerListenerInterface sch : schedulerListeners) {
+      sch.adaptorPluginWasResumed(adaptor, details);
     }
   }
-  
-  private void notifyReschedule(AdaptorPluginInterface adaptor){
-    for (SchedulerListenerInterface sch : schedulerListeners){
-      sch.adaptorPluginWasRescheduled(adaptor);
+
+  private void notifyExecute(AdaptorPluginInterface adaptor, EventDetails details) {
+    for (SchedulerListenerInterface sch : schedulerListeners) {
+      sch.adaptorPluginWasExecuted(adaptor, details);
     }
+  }
+
+  @Override
+  public void removeAdaptorListener(AdaptorListenerInterface aListener) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void removeSchedulerListener(SchedulerListenerInterface listener) {
+    // TODO Auto-generated method stub
+
   }
 }

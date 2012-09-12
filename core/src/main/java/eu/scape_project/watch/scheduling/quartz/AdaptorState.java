@@ -4,6 +4,11 @@ import java.util.UUID;
 
 import org.quartz.JobKey;
 
+/**
+ * 
+ * @author Kresimir Duretec <duretec@ifs.tuwien.ac.at>
+ *
+ */
 public class AdaptorState {
 
 	private String id;

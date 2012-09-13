@@ -240,18 +240,18 @@ public class QuartzScheduler implements SchedulerInterface {
     if (key != null) {
       try {
         scheduler.triggerJob(key);
-        LOG.info("Adaptor "+ adaptor.getName() +" successfully executed");
+        LOG.info("Adaptor "+ adaptor.getName() +" refired");
         details.setSuccessful(true);
-        details.addMessage("Adaptor "+ adaptor.getName() +" successfully executed");
+        details.addMessage("Adaptor "+ adaptor.getName() +" refired");
       } catch (SchedulerException e) {
-        LOG.error("A scheduler exception occured while executing the adaptor "+ adaptor.getName());
+        LOG.error("A scheduler exception occured while refiring the adaptor "+ adaptor.getName());
         details.setSuccessful(false);
-        details.addMessage("A scheduler exception occured while executing the adaptor "+ adaptor.getName());
+        details.addMessage("A scheduler exception occured while refiring the adaptor "+ adaptor.getName());
       }
     } else {
-      LOG.error(adaptor.getName() + " unknown adaptor to execute");
+      LOG.error(adaptor.getName() + " unknown adaptor to refire");
       details.setSuccessful(false);
-      details.addMessage(adaptor.getName() + " unknown adaptor to execute");
+      details.addMessage(adaptor.getName() + " unknown adaptor to refire");
     }
 
     notifyExecute(adaptor,details);
@@ -266,7 +266,6 @@ public class QuartzScheduler implements SchedulerInterface {
     } catch (SchedulerException e) {
       LOG.info("A scheduler exception occured while clearing all adaptors");
     }
-
   }
 
   @Override
@@ -280,8 +279,18 @@ public class QuartzScheduler implements SchedulerInterface {
   }
 
   @Override
+  public void removeAdaptorListener(AdaptorListenerInterface aListener) {
+    listenerManager.removeAdaptorListener(aListener);
+  }
+  
+  @Override
   public void addSchedulerListener(SchedulerListenerInterface listener) {
     schedulerListeners.add(listener);
+  }
+
+  @Override
+  public void removeSchedulerListener(SchedulerListenerInterface listener) {
+    schedulerListeners.remove(listener);
   }
 
   public AdaptorPluginInterface getAdaptorPluginInterface(String id) {
@@ -317,21 +326,15 @@ public class QuartzScheduler implements SchedulerInterface {
     }
   }
 
-  private void notifyExecute(AdaptorPluginInterface adaptor, EventDetails details) {
+  /**
+   * This method is public because execution event can happen outside of the QuartzScheduler class.
+   * @param adaptor - adaptor to be notified
+   * @param details - details to be send 
+   */
+  public void notifyExecute(AdaptorPluginInterface adaptor, EventDetails details) {
     for (SchedulerListenerInterface sch : schedulerListeners) {
       sch.adaptorPluginWasExecuted(adaptor, details);
     }
   }
 
-  @Override
-  public void removeAdaptorListener(AdaptorListenerInterface aListener) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void removeSchedulerListener(SchedulerListenerInterface listener) {
-    // TODO Auto-generated method stub
-
-  }
 }

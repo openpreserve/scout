@@ -60,9 +60,9 @@ public class ApplicationListener implements ServletContextListener {
       final Map<String, AdaptorPluginInterface> activeAdaptors = manager.getActiveAdaptorPlugins();
 
       for (AdaptorPluginInterface adaptor : activeAdaptors.values()) {
-        scheduler.stop(adaptor);
+        scheduler.stop(adaptor,null);
       }
-      scheduler.clear();
+      scheduler.shutdown();
 
       manager.shutdownAll();
     } else {
@@ -103,6 +103,7 @@ public class ApplicationListener implements ServletContextListener {
 
     // create scheduler
     final SchedulerInterface scheduler = new QuartzScheduler();
+    scheduler.init();
     final AllDataResultListener resultListener = new AllDataResultListener(manager, merger);
     scheduler.addAdaptorListener(resultListener);
 
@@ -110,7 +111,7 @@ public class ApplicationListener implements ServletContextListener {
     final Map<String, String> schedulerConfig = new HashMap<String, String>();
     schedulerConfig.put("scheduler.intervalInSeconds", "60");
     for (AdaptorPluginInterface adaptor : activeAdaptors.values()) {
-      scheduler.start(adaptor, schedulerConfig); // TODO add desired
+      scheduler.start(adaptor, schedulerConfig,null); // TODO add desired
                                                  // properties...
     }
 

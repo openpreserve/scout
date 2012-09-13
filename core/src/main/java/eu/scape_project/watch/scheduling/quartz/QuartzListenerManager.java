@@ -12,6 +12,11 @@ import eu.scape_project.watch.interfaces.AdaptorListenerInterface;
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
 import eu.scape_project.watch.interfaces.ResultInterface;
 
+/**
+ * This class is responsible for managing adaptor listeners. 
+ * @author Kresimir Duretec <duretec@ifs.tuwien.ac.at>
+ *
+ */
 public class QuartzListenerManager {
 
   private static final Logger LOG = LoggerFactory.getLogger(QuartzListenerManager.class);
@@ -26,6 +31,7 @@ public class QuartzListenerManager {
     listeners =    new HashMap<AdaptorPluginInterface, List<AdaptorListenerInterface>>();
     
   }
+  
   public void notify(AdaptorPluginInterface adaptor, ResultInterface result) {
 
     for (AdaptorListenerInterface listener : listenersAll) {
@@ -54,4 +60,15 @@ public class QuartzListenerManager {
       listeners.put(adaptor, list);
     }
   }
+  
+  public void removeAdaptorListener(AdaptorListenerInterface listener) {
+    
+    listenersAll.remove(listener);
+    
+    for (AdaptorPluginInterface ap : listeners.keySet()) {
+      listeners.get(ap).remove(listener);
+    }
+    
+  }
+  
 }

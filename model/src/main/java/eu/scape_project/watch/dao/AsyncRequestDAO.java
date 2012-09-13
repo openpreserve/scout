@@ -142,7 +142,6 @@ public final class AsyncRequestDAO extends AbstractDO<AsyncRequest> {
     }
 
     request.delete();
-    DAO.fireOnUpdated(request);
     return request;
   }
 

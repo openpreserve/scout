@@ -16,6 +16,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
+import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.utils.JavaUtils;
 import eu.scape_project.watch.utils.KBUtils;
 import eu.scape_project.watch.utils.ModelUtils;
@@ -179,6 +180,19 @@ public class Notification extends RdfBean<Notification> {
       return false;
     }
     return true;
+  }
+  
+  @Override
+  public Notification save() {
+    final Notification notification = super.save();
+    DAO.fireOnUpdated(this);
+    return notification;
+  }
+
+  @Override
+  public void delete() {
+    super.delete();
+    DAO.fireOnRemoved(this);
   }
 
   @Override

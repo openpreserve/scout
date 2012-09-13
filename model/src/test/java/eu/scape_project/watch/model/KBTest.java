@@ -1001,10 +1001,16 @@ public class KBTest {
 
     final PropertyValue pv = new PropertyValue(entity, property, "123");
 
-    type.save();
-    entity.save();
-    property.save();
-    pv.save();
+    final Source source = new Source("testsource", "A test source");
+    final SourceAdaptor adaptor = new SourceAdaptor("testadaptor", "0.0.1", "default", source, Arrays.asList(type),
+      Arrays.asList(property), new HashMap<String, String>());
+
+    DAO.save(type);
+    DAO.save(entity);
+    DAO.save(property);
+    DAO.save(source);
+    DAO.save(adaptor);
+    DAO.PROPERTY_VALUE.save(adaptor, pv);
 
     // CREATE ASYNC REQUEST
     final String sparql = "?s watch:entity watch-Entity:" + entity.getName() + ". ?s watch:property watch-Property:"

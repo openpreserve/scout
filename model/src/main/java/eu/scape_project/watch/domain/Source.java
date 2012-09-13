@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.utils.KBUtils;
 
 import thewebsemantic.Id;
@@ -110,6 +111,19 @@ public class Source extends RdfBean<Source> {
       return false;
     }
     return true;
+  }
+  
+  @Override
+  public Source save() {
+    final Source source = super.save();
+    DAO.fireOnUpdated(this);
+    return source;
+  }
+
+  @Override
+  public void delete() {
+    super.delete();
+    DAO.fireOnRemoved(this);
   }
 
   @Override

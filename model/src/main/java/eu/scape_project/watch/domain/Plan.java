@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.utils.KBUtils;
 
 import thewebsemantic.Id;
@@ -88,6 +89,24 @@ public class Plan extends RdfBean<Plan> {
       return false;
     }
     return true;
+  }
+  
+  @Override
+  public Plan save() {
+    final Plan plan = super.save();
+    DAO.fireOnUpdated(this);
+    return plan;
+  }
+
+  @Override
+  public void delete() {
+    super.delete();
+    DAO.fireOnRemoved(this);
+  }
+
+  @Override
+  public String toString() {
+    return "Plan [id=" + id + "]";
   }
 
 }

@@ -15,6 +15,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
+import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.utils.JavaUtils;
 import eu.scape_project.watch.utils.KBUtils;
 import eu.scape_project.watch.utils.ModelUtils;
@@ -202,7 +203,7 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
   public void setProperties(final List<Property> properties) {
     this.properties = properties;
   }
-  
+
   public List<DictionaryItem> getConfiguration() {
     return configuration;
   }
@@ -359,6 +360,19 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
     }
 
     return true;
+  }
+
+  @Override
+  public SourceAdaptor save() {
+    final SourceAdaptor adaptor = super.save();
+    DAO.fireOnUpdated(this);
+    return adaptor;
+  }
+
+  @Override
+  public void delete() {
+    super.delete();
+    DAO.fireOnRemoved(this);
   }
 
   @Override

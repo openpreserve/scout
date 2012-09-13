@@ -71,7 +71,7 @@ public class KBTest {
    *           Error creating temporary data folder
    */
   @Before
-  public void beforeClass() throws IOException {
+  public void before() throws IOException {
     dataTempir = JavaUtils.createTempDirectory();
     KBUtils.dbConnect(dataTempir.getPath(), false);
   }
@@ -80,7 +80,7 @@ public class KBTest {
    * Cleanup the data folder.
    */
   @After
-  public void afterClass() {
+  public void after() {
     LOG.info("Deleting data folder at " + dataTempir);
     KBUtils.dbDisconnect();
     FileUtils.deleteQuietly(dataTempir);

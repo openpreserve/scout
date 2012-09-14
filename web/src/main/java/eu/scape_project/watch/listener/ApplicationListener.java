@@ -1,27 +1,15 @@
 package eu.scape_project.watch.listener;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import mustachelet.MustacheletService;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Lists;
-import com.google.inject.Binder;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.Module;
-import com.google.inject.TypeLiteral;
-import com.google.inject.name.Names;
 
 import eu.scape_project.watch.adaptor.AdaptorManager;
 import eu.scape_project.watch.dao.DAO;
@@ -44,8 +32,6 @@ import eu.scape_project.watch.scheduling.quartz.QuartzScheduler;
 import eu.scape_project.watch.utils.AllDataResultListener;
 import eu.scape_project.watch.utils.ConfigUtils;
 import eu.scape_project.watch.utils.KBUtils;
-import eu.scape_project.watch.web.Index;
-import eu.scape_project.watch.web.Post;
 
 /**
  * An application startup listener, that is invoked by the container on

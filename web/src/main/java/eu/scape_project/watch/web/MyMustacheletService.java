@@ -23,23 +23,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import mustachelet.annotations.Controller;
-import mustachelet.annotations.HttpMethod;
-import mustachelet.annotations.Path;
-import mustachelet.annotations.Template;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheException;
-import com.github.mustachejava.MustacheFactory;
-import com.github.mustachejava.MustacheVisitor;
 import com.google.inject.Binder;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+
+import eu.scape_project.watch.web.annotations.Controller;
+import eu.scape_project.watch.web.annotations.HttpMethod;
+import eu.scape_project.watch.web.annotations.Path;
+import eu.scape_project.watch.web.annotations.Template;
 
 /**
  * 

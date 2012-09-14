@@ -1,8 +1,8 @@
 package eu.scape_project.watch.web;
 
-import mustachelet.annotations.Controller;
-import mustachelet.annotations.Path;
-import mustachelet.annotations.Template;
+import eu.scape_project.watch.web.annotations.Controller;
+import eu.scape_project.watch.web.annotations.Path;
+import eu.scape_project.watch.web.annotations.Template;
 
 @Path("/")
 @Template("index.html")

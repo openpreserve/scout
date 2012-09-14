@@ -174,9 +174,14 @@
 			</exclusion> <exclusion> <artifactId>maven-findbugs-plugin</artifactId> <groupId>maven-plugins</groupId> 
 			</exclusion> </exclusions> </dependency> -->
 		<dependency>
-			<groupId>com.github.spullara.mustachelet</groupId>
-			<artifactId>mustachelet</artifactId>
-			<version>0.2-SNAPSHOT</version>
+			<groupId>com.github.spullara.mustache.java</groupId>
+			<artifactId>compiler</artifactId>
+			<version>0.8.4</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>2.0</version>
 		</dependency>
 	</dependencies>
 	<scm>

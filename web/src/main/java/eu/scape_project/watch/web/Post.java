@@ -1,20 +1,19 @@
 package eu.scape_project.watch.web;
 
-import static mustachelet.annotations.HttpMethod.Type.GET;
-import static mustachelet.annotations.HttpMethod.Type.POST;
-
 import java.io.IOException;
 import java.util.regex.Matcher;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import mustachelet.annotations.Controller;
-import mustachelet.annotations.HttpMethod;
-import mustachelet.annotations.Path;
-import mustachelet.annotations.Template;
-
 import com.google.inject.Inject;
+
+import eu.scape_project.watch.web.annotations.Controller;
+import eu.scape_project.watch.web.annotations.HttpMethod;
+import eu.scape_project.watch.web.annotations.Path;
+import eu.scape_project.watch.web.annotations.Template;
+
+import static eu.scape_project.watch.web.annotations.HttpMethod.Type.*;
 
 /**
  * Post / redirect handling

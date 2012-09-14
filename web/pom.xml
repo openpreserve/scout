@@ -47,10 +47,8 @@
 							<directory>swagger-ui-1.0</directory>
 						</resource>
 						<resource>
-							<directory>${project.basedir}/src/test/resources</directory>
-							<excludes>
-								<exclude>**/*</exclude>
-							</excludes>
+							<directory>bootstrap-v2.1.1</directory>
+							<targetPath>bootstrap</targetPath>
 						</resource>
 					</webResources>
 				</configuration>
@@ -169,26 +167,17 @@
 		</dependency>
 
 		<!-- THIS SHOULD BE ON THE CLASS PATH BECAUSE OF THE ADAPTOR. -->
-		<!--   <dependency>
-			<groupId>dom4j</groupId>
-			<artifactId>dom4j</artifactId>
-			<version>1.6.1</version>
-		</dependency>
+		<!-- <dependency> <groupId>dom4j</groupId> <artifactId>dom4j</artifactId> 
+			<version>1.6.1</version> </dependency> <dependency> <groupId>jaxen</groupId> 
+			<artifactId>jaxen</artifactId> <version>1.1.3</version> <exclusions> <exclusion> 
+			<artifactId>maven-cobertura-plugin</artifactId> <groupId>maven-plugins</groupId> 
+			</exclusion> <exclusion> <artifactId>maven-findbugs-plugin</artifactId> <groupId>maven-plugins</groupId> 
+			</exclusion> </exclusions> </dependency> -->
 		<dependency>
-			<groupId>jaxen</groupId>
-			<artifactId>jaxen</artifactId>
-			<version>1.1.3</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>maven-cobertura-plugin</artifactId>
-					<groupId>maven-plugins</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>maven-findbugs-plugin</artifactId>
-					<groupId>maven-plugins</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency> -->
+			<groupId>com.github.spullara.mustachelet</groupId>
+			<artifactId>mustachelet</artifactId>
+			<version>0.2-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<scm>
 		<connection>scm:git:git://github.com/openplanets/scape-pw.git</connection>

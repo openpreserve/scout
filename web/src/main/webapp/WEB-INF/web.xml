@@ -35,9 +35,17 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	<servlet>
+		<servlet-name>mustachelet</servlet-name>
+		<servlet-class>eu.scape_project.watch.web.MyMustacheletService</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>jersey</servlet-name>
 		<url-pattern>/api/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>mustachelet</servlet-name>
+		<url-pattern>/web/*</url-pattern>
 	</servlet-mapping>
 	<listener>
 		<listener-class>eu.scape_project.watch.listener.ApplicationListener</listener-class>

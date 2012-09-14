@@ -1,15 +1,27 @@
 package eu.scape_project.watch.listener;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import mustachelet.MustacheletService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.Lists;
+import com.google.inject.Binder;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Module;
+import com.google.inject.TypeLiteral;
+import com.google.inject.name.Names;
 
 import eu.scape_project.watch.adaptor.AdaptorManager;
 import eu.scape_project.watch.dao.DAO;
@@ -32,6 +44,8 @@ import eu.scape_project.watch.scheduling.quartz.QuartzScheduler;
 import eu.scape_project.watch.utils.AllDataResultListener;
 import eu.scape_project.watch.utils.ConfigUtils;
 import eu.scape_project.watch.utils.KBUtils;
+import eu.scape_project.watch.web.Index;
+import eu.scape_project.watch.web.Post;
 
 /**
  * An application startup listener, that is invoked by the container on
@@ -60,7 +74,7 @@ public class ApplicationListener implements ServletContextListener {
       final Map<String, AdaptorPluginInterface> activeAdaptors = manager.getActiveAdaptorPlugins();
 
       for (AdaptorPluginInterface adaptor : activeAdaptors.values()) {
-        scheduler.stop(adaptor,null);
+        scheduler.stop(adaptor, null);
       }
       scheduler.shutdown();
 
@@ -89,9 +103,13 @@ public class ApplicationListener implements ServletContextListener {
     final AdaptorManager manager = new AdaptorManager();
     final Map<String, AdaptorPluginInterface> activeAdaptors = manager.getActiveAdaptorPlugins();
 
-    saveTestRequest(manager);
-    manager.reloadKnownAdaptors();
-    
+    try {
+      saveTestRequest(manager);
+      manager.reloadKnownAdaptors();
+    } catch (final Throwable e) {
+      LOG.error("Error saving test request", e);
+    }
+
     // create data merger and add it as a listener.
     final DataMerger merger = new DataMerger();
 
@@ -111,8 +129,8 @@ public class ApplicationListener implements ServletContextListener {
     final Map<String, String> schedulerConfig = new HashMap<String, String>();
     schedulerConfig.put("scheduler.intervalInSeconds", "60");
     for (AdaptorPluginInterface adaptor : activeAdaptors.values()) {
-      scheduler.start(adaptor, schedulerConfig,null); // TODO add desired
-                                                 // properties...
+      scheduler.start(adaptor, schedulerConfig, null); // TODO add desired
+      // properties...
     }
 
     final ServletContext context = sce.getServletContext();

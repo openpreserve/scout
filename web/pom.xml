@@ -45,6 +45,7 @@
 					<webResources>
 						<resource>
 							<directory>swagger-ui-1.0</directory>
+							<targetPath>apidoc</targetPath>
 						</resource>
 						<resource>
 							<directory>bootstrap-v2.1.1</directory>
@@ -67,12 +68,6 @@
 	</reporting>
 
 	<dependencies>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
-			<scope>provided</scope>
-		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -130,13 +125,6 @@
 			<groupId>javax.ws.rs</groupId>
 			<artifactId>jsr311-api</artifactId>
 			<version>1.1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jboss.spec</groupId>
-			<artifactId>jboss-javaee-6.0</artifactId>
-			<version>2.0.0.Final</version>
-			<type>pom</type>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey.jersey-test-framework</groupId>

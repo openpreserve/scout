@@ -112,7 +112,7 @@ public final class PropertyDAO extends AbstractDO<Property> {
    *          the maximum number of items to retrieve
    * @return The list of properties filtered by the above constraints
    */
-  public Collection<Property> listWithType(final String type, final int start, final int max) {
+  public List<Property> listWithType(final String type, final int start, final int max) {
     final String bindings = String.format("?s %1$s %2$s", ENTITY_TYPE_REL, EntityTypeDAO.getEntityTypeRDFId(type));
     return this.query(bindings, start, max);
   }

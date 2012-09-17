@@ -1,0 +1,91 @@
+{{> header}}
+<div class="container">
+	<h1>Administration</h1>
+	<p>Private page to manage the configurations of scout.</p>
+
+	<h2>Source Adaptors</h2>
+	<table class="table table-hover table-striped">
+		<thead>
+			<tr>
+				<th>Instance</th>
+				<th>Plug-in name</th>
+				<th>Plug-in version</th>
+				<th>Source</th>
+				<th>Categories</th>
+				<th>Properties</th>
+				<th>Active</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#sourceadaptor}}
+			<tr>
+				<td>{{instance}}</td>
+				<td>{{name}}</td>
+				<td>{{version}}</td>
+				<td>{{#source}}{{name}}<i class="icon-info-sign"></i>{{/source}}
+				</td>
+				<td><ul>
+						{{#types}}
+						<li>{{name}}</li>{{/types}}
+					</ul></td>
+				<td><ul>
+						{{#properties}}
+						<li>{{name}}</li>{{/properties}}
+					</ul></td>
+				<td>{{#active}}<i class="icon-ok"></i>{{/active}}
+				</td>
+				<td>
+					<div class="btn-group">
+						<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+							Action <span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li><a href="#edit/{{id}}">Edit</a></li> 
+							{{#active}}<li><a href="#activate/{{id}}">Activate</a></li> {{/active}}
+							{{^active}}<li><a href="#deactivate/{{id}}">Deactivate</a></li> {{/active}}
+							<li class="divider"></li>
+							<li><a href="#remove/{{id}}">Remove</a></li>
+						</ul>
+					</div>
+				</td>
+			</tr>
+			{{/sourceadaptor}}
+		</tbody>
+	</table>
+	{{^sourceadaptor}}
+	<div class="alert alert-warning">
+		<b>Empty!</b> There are no defined source adaptors.
+	</div>
+	{{/sourceadaptor}} <a class="btn btn-primary"
+		href="{{basePath}}/adaptor/new">New source adaptor</a>
+	<h2>Installed plug-ins</h2>
+	<table class="table table-hover table-striped">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Version</th>
+				<th>Description</th>
+				<th>Class name</th>
+				<th>Type</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#plugin}}
+			<tr>
+				<td>{{name}}</td>
+				<td>{{version}}</td>
+				<td>{{desc}}</td>
+				<td>{{className}}</td>
+				<td>{{type}}</td>
+			</tr>
+			{{/plugin}}
+		</tbody>
+	</table>
+	{{^plugin}}
+	<div class="alert alert-warning">
+		<b>Empty!</b> There are no installed plug-ins.
+	</div>
+	{{/plugin}}
+</div>
+{{> footer}}

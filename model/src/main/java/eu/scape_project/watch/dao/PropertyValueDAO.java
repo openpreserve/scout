@@ -195,7 +195,7 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
    *          The maximum number of items to retrieve
    * @return The list of {@link PropertyValue} filtered by the above constraints
    */
-  public Collection<PropertyValue> listWithEntity(final String entityName, final int start, final int max) {
+  public List<PropertyValue> listWithEntity(final String entityName, final int start, final int max) {
     final String bindings = String.format("?s %1$s %2$s", ENTITY_REL, EntityDAO.getEntityRDFId(entityName));
     return this.query(bindings, start, max);
   }

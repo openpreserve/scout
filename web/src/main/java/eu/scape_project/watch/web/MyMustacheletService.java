@@ -56,7 +56,8 @@ public class MyMustacheletService extends HttpServlet implements Filter {
   /**
    * DEFINE AVAILABLE MUSTACHELETS.
    */
-  private static final List<Class<?>> MUSTACHELETS = Arrays.asList(Index.class, Post.class);
+  private static final List<Class<? extends Mustachelet>> MUSTACHELETS = Arrays.asList(Index.class, Browse.class,
+    BrowseType.class, BrowseEntity.class, Administration.class, CreateSourceAdaptor.class);
 
   private static final boolean DISABLE_CACHE = Boolean.parseBoolean(System.getProperty(
     "mustache.servlet.cache.disable", "false"));
@@ -129,17 +130,22 @@ public class MyMustacheletService extends HttpServlet implements Filter {
     resp.setContentType("text/html");
     resp.setCharacterEncoding("UTF-8");
 
-    // String requestURI = req.getRequestURI();
-    String requestURI = req.getPathInfo();
+    final String requestURI = req.getRequestURI();
+    final String contextPath = req.getContextPath();
+    String pathInfo = req.getPathInfo();
+    final String basePath = requestURI.substring(0, requestURI.length() - pathInfo.length());
 
-    if (requestURI == null || requestURI.equals("")) {
-      requestURI = "/";
+    if (pathInfo == null || pathInfo.equals("")) {
+      pathInfo = "/";
     }
 
-    logger.info("Request URI {}", requestURI);
+    logger.info("Request URI: {}", requestURI);
+    logger.info("Context path: {}", contextPath);
+    logger.info("Path info: {}", pathInfo);
+    logger.info("Base path: {}", basePath);
 
     for (Map.Entry<Pattern, Map<HttpMethod.Type, Class<?>>> entry : pathMap.entrySet()) {
-      final Matcher matcher = entry.getKey().matcher(requestURI);
+      final Matcher matcher = entry.getKey().matcher(pathInfo);
       if (matcher.matches()) {
         final Map<HttpMethod.Type, Class<?>> methodClassMap = entry.getValue();
         String httpMethod = req.getMethod();
@@ -160,6 +166,7 @@ public class MyMustacheletService extends HttpServlet implements Filter {
             binder.bind(Matcher.class).toInstance(matcher);
             binder.bind(HttpServletRequest.class).toInstance(req);
             binder.bind(HttpServletResponse.class).toInstance(resp);
+            binder.bind(String.class).toInstance(basePath);
           }
         });
 
@@ -179,7 +186,7 @@ public class MyMustacheletService extends HttpServlet implements Filter {
                   return true;
                 }
               } catch (final Exception e) {
-                e.printStackTrace();
+                logger.error("Error invoking mustache controller method", e);
                 resp.setStatus(500);
                 return true;
               }
@@ -198,7 +205,7 @@ public class MyMustacheletService extends HttpServlet implements Filter {
             return true;
           } catch (final MustacheException e) {
             resp.setStatus(500);
-            e.printStackTrace();
+            logger.error("Error executing mustache", e);
             return true;
           }
         } else {

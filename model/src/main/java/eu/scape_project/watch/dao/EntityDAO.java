@@ -108,7 +108,7 @@ public final class EntityDAO extends AbstractDO<Entity> {
    *          the maximum number of items to return
    * @return a list of {@link Entity} filtered by the defined constraints
    */
-  public Collection<Entity> listWithType(final String type, final int start, final int max) {
+  public List<Entity> listWithType(final String type, final int start, final int max) {
     String bindings;
 
     if (StringUtils.isNotBlank(type)) {

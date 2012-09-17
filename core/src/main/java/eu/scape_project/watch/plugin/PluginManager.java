@@ -177,8 +177,10 @@ public final class PluginManager {
     if (type == null) {
       for (JarPlugin jp : this.pluginRegistry.values()) {
         final PluginInterface p = jp.plugin;
-        info.add(new PluginInfo(p.getName(), p.getVersion(), p.getPluginType(), p.getDescription(), p.getClass()
-          .getName()));
+        if (p != null) {
+          info.add(new PluginInfo(p.getName(), p.getVersion(), p.getPluginType(), p.getDescription(), p.getClass()
+            .getName()));
+        }
       }
     } else {
       for (JarPlugin jp : this.pluginRegistry.values()) {

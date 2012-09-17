@@ -1,0 +1,24 @@
+{{> header}}
+<form class="container">
+<legend>Create source adaptor</legend>
+
+<label>Name</label>
+<input type="text" placeholder="Unique identifying name">
+
+<label>Plug-in</label>
+<select name="plugin">
+	{{#plugin}}<option value="{{name}}|{{version}}">{{name}} version {{version}}</option>{{/plugin}}
+</select>
+
+<label>Source</label>
+<select name="source">
+	{{#source}}<option value="{{name}}">{{name}}: {{description}}</option>{{/source}}
+</select>
+<a class="btn" href="#createSource">Create new source</a>
+
+<br/>
+<br/>
+<button type="submit" class="btn btn-primary">Create</button>
+
+</form>
+{{> footer}}

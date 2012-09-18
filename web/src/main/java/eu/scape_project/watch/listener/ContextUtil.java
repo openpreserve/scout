@@ -1,6 +1,7 @@
 package eu.scape_project.watch.listener;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 import eu.scape_project.watch.adaptor.AdaptorManager;
 import eu.scape_project.watch.interfaces.SchedulerInterface;
@@ -142,6 +143,17 @@ public final class ContextUtil {
    */
   public static void setScheduler(final SchedulerInterface scheduler, final ServletContext context) {
     context.setAttribute(SCOUT_DATA_LINKER, scheduler);
+  }
+
+  /**
+   * Get servlet context from request.
+   * 
+   * @param request
+   *          The servlet request
+   * @return The servlet context.
+   */
+  public static ServletContext getServletContext(final HttpServletRequest request) {
+    return request.getSession().getServletContext();
   }
 
 }

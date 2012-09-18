@@ -43,7 +43,6 @@ public class CreateSourceAdaptor extends Mustachelet {
   @Inject
   private HttpServletRequest request;
 
-
   @Controller(HttpMethod.Type.POST)
   boolean redirectPostData() throws IOException {
     final String instance = request.getParameter("instance");
@@ -55,7 +54,7 @@ public class CreateSourceAdaptor extends Mustachelet {
     final Source source = DAO.SOURCE.findById(sourceName);
 
     if (source != null) {
-      final ServletContext context = request.getServletContext();
+      final ServletContext context = ContextUtil.getServletContext(request);
       final AdaptorManager adaptorManager = ContextUtil.getAdaptorManager(context);
       final SourceAdaptor adaptor = adaptorManager.createAdaptor(pluginName, pluginVersion, instance, source);
 

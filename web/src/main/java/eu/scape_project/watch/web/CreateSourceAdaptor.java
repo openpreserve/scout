@@ -13,6 +13,7 @@ import eu.scape_project.watch.adaptor.AdaptorManager;
 import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.domain.SourceAdaptor;
+import eu.scape_project.watch.interfaces.PluginType;
 import eu.scape_project.watch.listener.ContextUtil;
 import eu.scape_project.watch.plugin.PluginInfo;
 import eu.scape_project.watch.plugin.PluginManager;
@@ -30,7 +31,7 @@ public class CreateSourceAdaptor extends Mustachelet {
   }
 
   public List<PluginInfo> plugin() {
-    return PluginManager.getDefaultPluginManager().getPluginInfo();
+    return PluginManager.getDefaultPluginManager().getPluginInfo(PluginType.ADAPTOR);
   }
 
   public List<Source> source() {

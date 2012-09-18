@@ -187,7 +187,7 @@ public class MyMustacheletService extends HttpServlet implements Filter {
                   return true;
                 }
               } catch (final Exception e) {
-                logger.error("Error invoking mustache controller method", e);
+                logger.error("Error invoking mustache controller method: " + method, e);
                 resp.setStatus(500);
                 return true;
               }

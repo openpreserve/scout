@@ -26,10 +26,6 @@ public class BrowseEntity extends Mustachelet {
     return DAO.PROPERTY.listWithType(entity().getEntityType().getName(), 0, 100);
   }
 
-  @Controller
-  public PropertyValue getValue(String propertyName) {
-    return DAO.PROPERTY_VALUE.find(entityName(), entity().getEntityType().getName(), propertyName);
-  }
   
   public List<PropertyValue> value() {
     return DAO.PROPERTY_VALUE.listWithEntity(entityName(), 0, 100);

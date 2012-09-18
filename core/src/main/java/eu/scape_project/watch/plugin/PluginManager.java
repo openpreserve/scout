@@ -212,7 +212,7 @@ public final class PluginManager {
     for (JarPlugin jp : this.pluginRegistry.values()) {
       final PluginInterface p = jp.plugin;
 
-      if (p.getName().equalsIgnoreCase(name)) {
+      if (p != null && p.getName().equalsIgnoreCase(name)) {
         result.add(new PluginInfo(p.getName(), p.getVersion(), p.getPluginType(), p.getDescription(), p.getClass()
           .getName()));
       }

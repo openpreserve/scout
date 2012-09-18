@@ -3,6 +3,7 @@ package eu.scape_project.watch.web;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -42,6 +43,7 @@ public class CreateSourceAdaptor extends Mustachelet {
   @Inject
   private HttpServletRequest request;
 
+
   @Controller(HttpMethod.Type.POST)
   boolean redirectPostData() throws IOException {
     final String instance = request.getParameter("instance");
@@ -53,7 +55,8 @@ public class CreateSourceAdaptor extends Mustachelet {
     final Source source = DAO.SOURCE.findById(sourceName);
 
     if (source != null) {
-      final AdaptorManager adaptorManager = ContextUtil.getAdaptorManager(request.getServletContext());
+      final ServletContext context = request.getServletContext();
+      final AdaptorManager adaptorManager = ContextUtil.getAdaptorManager(context);
       final SourceAdaptor adaptor = adaptorManager.createAdaptor(pluginName, pluginVersion, instance, source);
 
       if (adaptor != null) {

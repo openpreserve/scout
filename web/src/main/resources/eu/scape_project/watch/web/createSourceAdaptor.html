@@ -1,9 +1,9 @@
 {{> header}}
-<form class="container">
+<form class="container" method="POST">
 <legend>Create source adaptor</legend>
 
 <label>Name</label>
-<input type="text" placeholder="Unique identifying name">
+<input name="instance" type="text" placeholder="Unique identifying name">
 
 <label>Plug-in</label>
 <select name="plugin">
@@ -14,7 +14,7 @@
 <select name="source">
 	{{#source}}<option value="{{name}}">{{name}}: {{description}}</option>{{/source}}
 </select>
-<a class="btn btn-link" href="#createSource">create new source</a>
+<a class="btn btn-link" href="{{basePath}}/source/new">create new source</a>
 
 <br/>
 <br/>

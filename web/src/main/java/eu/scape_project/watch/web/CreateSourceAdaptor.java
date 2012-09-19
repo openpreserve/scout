@@ -24,6 +24,7 @@ import eu.scape_project.watch.web.annotations.Template;
 
 @Path("/adaptor/new")
 @Template("createSourceAdaptor.html")
+@HttpMethod({HttpMethod.Type.GET, HttpMethod.Type.POST})
 public class CreateSourceAdaptor extends Mustachelet {
 
   boolean page_administration() {

@@ -58,7 +58,7 @@ public class MyMustacheletService extends HttpServlet implements Filter {
    * DEFINE AVAILABLE MUSTACHELETS.
    */
   private static final List<Class<? extends Mustachelet>> MUSTACHELETS = Arrays.asList(Index.class, Browse.class,
-    BrowseType.class, BrowseEntity.class, Administration.class, CreateSourceAdaptor.class);
+    BrowseType.class, BrowseEntity.class, Administration.class, CreateSourceAdaptor.class, CreateSource.class);
 
   private static final boolean DISABLE_CACHE = Boolean.parseBoolean(System.getProperty(
     "mustache.servlet.cache.disable", "false"));

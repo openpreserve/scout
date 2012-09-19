@@ -185,7 +185,7 @@ public final class PluginManager {
     } else {
       for (JarPlugin jp : this.pluginRegistry.values()) {
         final PluginInterface p = jp.plugin;
-        if (p.getPluginType() == type) {
+        if (p!=null && p.getPluginType() == type) {
           info.add(new PluginInfo(p.getName(), p.getVersion(), p.getPluginType(), p.getDescription(), p.getClass()
             .getName()));
         }

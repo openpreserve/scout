@@ -1,11 +1,14 @@
 package eu.scape_project.watch.plugin;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import eu.scape_project.watch.interfaces.PluginType;
+import eu.scape_project.watch.utils.ConfigParameter;
 import eu.scape_project.watch.utils.KBUtils;
 
 /**
@@ -48,6 +51,11 @@ public class PluginInfo {
    */
   @XmlElement
   private String className;
+
+  /**
+   * The config parameters of this plugin.
+   */
+  private List<ConfigParameter> parameters;
 
   /**
    * Empty constructor for serialization purposes.
@@ -96,4 +104,13 @@ public class PluginInfo {
   public String getClassName() {
     return this.className;
   }
+
+  public List<ConfigParameter> getParameters() {
+    return parameters;
+  }
+
+  public void setParameters(List<ConfigParameter> parameters) {
+    this.parameters = parameters;
+  }
+
 }

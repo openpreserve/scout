@@ -174,21 +174,13 @@ public final class PluginManager {
 
     final List<PluginInfo> info = new ArrayList<PluginInfo>();
 
-    if (type == null) {
-      for (JarPlugin jp : this.pluginRegistry.values()) {
-        final PluginInterface p = jp.plugin;
-        if (p != null) {
-          info.add(new PluginInfo(p.getName(), p.getVersion(), p.getPluginType(), p.getDescription(), p.getClass()
-            .getName()));
-        }
-      }
-    } else {
-      for (JarPlugin jp : this.pluginRegistry.values()) {
-        final PluginInterface p = jp.plugin;
-        if (p!=null && p.getPluginType() == type) {
-          info.add(new PluginInfo(p.getName(), p.getVersion(), p.getPluginType(), p.getDescription(), p.getClass()
-            .getName()));
-        }
+    for (JarPlugin jp : this.pluginRegistry.values()) {
+      final PluginInterface p = jp.plugin;
+      if (p != null && PluginType.match(type, p.getPluginType())) {
+        PluginInfo pluginInfo = new PluginInfo(p.getName(), p.getVersion(), p.getPluginType(), p.getDescription(), p
+            .getClass().getName());
+        pluginInfo.setParameters(p.getParameters());
+        info.add(pluginInfo);
       }
     }
 
@@ -214,7 +206,7 @@ public final class PluginManager {
 
       if (p != null && p.getName().equalsIgnoreCase(name)) {
         result.add(new PluginInfo(p.getName(), p.getVersion(), p.getPluginType(), p.getDescription(), p.getClass()
-          .getName()));
+            .getName()));
       }
     }
 
@@ -357,7 +349,7 @@ public final class PluginManager {
 
     for (final File jarFile : jarFiles) {
       if (this.pluginRegistry.containsKey(jarFile)
-        && jarFile.lastModified() == this.pluginRegistry.get(jarFile).lastModified) {
+          && jarFile.lastModified() == this.pluginRegistry.get(jarFile).lastModified) {
         // The plugin already exists
         LOGGER.debug(jarFile.getName() + " is already loaded");
       } else {
@@ -366,7 +358,7 @@ public final class PluginManager {
         LOGGER.debug(jarFile.getName() + " is not loaded or modification dates differ. Inspecting Jar...");
 
         try {
-          final URL[] urls = {jarFile.toURI().toURL()};
+          final URL[] urls = { jarFile.toURI().toURL() };
           final PluginInterface plugin = loadPlugin(jarFile, urls);
 
           if (plugin == null) {
@@ -432,17 +424,17 @@ public final class PluginManager {
           }
 
         } catch (final ClassNotFoundException e) {
-          LOGGER.warn("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
-            e.getMessage()});
+          LOGGER.warn("{}#{} thrown {}: {}", new Object[] { jarFile.getName(), className, e.getClass().getSimpleName(),
+              e.getMessage() });
         } catch (final IllegalAccessError e) {
-          LOGGER.warn("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
-            e.getMessage()});
+          LOGGER.warn("{}#{} thrown {}: {}", new Object[] { jarFile.getName(), className, e.getClass().getSimpleName(),
+              e.getMessage() });
         } catch (final VerifyError e) {
-          LOGGER.warn("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
-            e.getMessage()});
+          LOGGER.warn("{}#{} thrown {}: {}", new Object[] { jarFile.getName(), className, e.getClass().getSimpleName(),
+              e.getMessage() });
         } catch (final NoClassDefFoundError e) {
-          LOGGER.warn("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
-            e.getMessage()});
+          LOGGER.warn("{}#{} thrown {}: {}", new Object[] { jarFile.getName(), className, e.getClass().getSimpleName(),
+              e.getMessage() });
         }
       }
     }
@@ -470,7 +462,7 @@ public final class PluginManager {
 
     try {
       if (PluginInterface.class.isAssignableFrom(clazz) && !clazz.isInterface()
-        && !Modifier.isAbstract(clazz.getModifiers())) {
+          && !Modifier.isAbstract(clazz.getModifiers())) {
         LOGGER.info("{} class is a plugin, instantiating", clazz.getName());
         plugin = (PluginInterface) clazz.newInstance();
       }

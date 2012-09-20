@@ -1,8 +1,10 @@
 package eu.scape_project.watch.notification;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -16,6 +18,7 @@ import eu.scape_project.watch.domain.Plan;
 import eu.scape_project.watch.domain.Question;
 import eu.scape_project.watch.interfaces.NotificationPluginInterface;
 import eu.scape_project.watch.interfaces.PluginType;
+import eu.scape_project.watch.utils.ConfigParameter;
 import eu.scape_project.watch.utils.exceptions.PluginException;
 
 /**
@@ -34,12 +37,17 @@ public class LogNotificationAdaptor implements NotificationPluginInterface {
   /**
    * The notification plugin version.
    */
-  private static final String VERSION = "0.0.1";
+  private static final String VERSION = "0.0.2";
 
   /**
    * Message parameter key.
    */
   public static final String PARAM_MESSAGE = "message";
+
+  /**
+   * The description of the param message.
+   */
+  private static final String PARAM_MESSAGE_DESC = "The log statement that will be printed on the appended to the log";
 
   /**
    * Supported types.
@@ -114,6 +122,12 @@ public class LogNotificationAdaptor implements NotificationPluginInterface {
     final Map<String, DataType> ret = new HashMap<String, DataType>();
     ret.put(PARAM_MESSAGE, DataType.STRING);
     return ret;
+  }
+
+  @Override
+  public List<ConfigParameter> getParameters() {
+    final ConfigParameter cp = new ConfigParameter(PARAM_MESSAGE, null, PARAM_MESSAGE_DESC, true, false);
+    return Arrays.asList(cp);
   }
 
 }

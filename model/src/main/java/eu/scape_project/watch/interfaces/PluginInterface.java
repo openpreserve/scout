@@ -1,5 +1,8 @@
 package eu.scape_project.watch.interfaces;
 
+import java.util.List;
+
+import eu.scape_project.watch.utils.ConfigParameter;
 import eu.scape_project.watch.utils.exceptions.PluginException;
 
 
@@ -61,5 +64,14 @@ public interface PluginInterface {
    * @return the plugin type.
    */
   PluginType getPluginType();
+  
+  /**
+   * Retrieves a list with {@link ConfigParameter} objects needed/supported by
+   * this plugin. Note the not all config parameters have to be requried (
+   * {@link ConfigParameter#isRequired()} )
+   * 
+   * @return the list with the parameters.
+   */
+  List<ConfigParameter> getParameters();
 
 }

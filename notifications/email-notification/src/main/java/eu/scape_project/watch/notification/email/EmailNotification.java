@@ -3,6 +3,7 @@ package eu.scape_project.watch.notification.email;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -32,6 +33,7 @@ import eu.scape_project.watch.domain.RequestTarget;
 import eu.scape_project.watch.interfaces.NotificationPluginInterface;
 import eu.scape_project.watch.interfaces.PluginType;
 import eu.scape_project.watch.notification.email.utils.MailUtils;
+import eu.scape_project.watch.utils.ConfigParameter;
 import eu.scape_project.watch.utils.exceptions.PluginException;
 
 /**
@@ -66,14 +68,20 @@ public class EmailNotification implements NotificationPluginInterface {
    * Information about what parameters should be present in the notification.
    */
   private static final Map<String, DataType> PARAMETERS_INFO = new HashMap<String, DataType>();
+  
+  private static final List<ConfigParameter> PARAMETERS = new ArrayList<ConfigParameter>();
 
   /**
    * Recipients parameter key.
    */
   public static final String PARAM_RECIPIENT = "recipient";
+  
+  public static final String PARAM_RECIPIENT_DESC = "The email of the recipient of this notification.";
 
   static {
+    final ConfigParameter cp = new ConfigParameter(PARAM_RECIPIENT, null, PARAM_RECIPIENT_DESC, true, false);
     PARAMETERS_INFO.put(PARAM_RECIPIENT, DataType.STRING);
+    PARAMETERS.add(cp);
   }
 
   /**
@@ -146,6 +154,11 @@ public class EmailNotification implements NotificationPluginInterface {
   @Override
   public Map<String, DataType> getParametersInfo() {
     return PARAMETERS_INFO;
+  }
+
+  @Override
+  public List<ConfigParameter> getParameters() {
+    return PARAMETERS;
   }
 
   @Override
@@ -240,5 +253,6 @@ public class EmailNotification implements NotificationPluginInterface {
       System.exit(2);
     }
   }
+
 
 }

@@ -22,14 +22,6 @@ import eu.scape_project.watch.utils.exceptions.PluginException;
  */
 public interface AdaptorPluginInterface extends PluginInterface {
 
-  /**
-   * Retrieves a list with {@link ConfigParameter} objects needed/supported by
-   * this plugin. Note the not all config parameters have to be requried (
-   * {@link ConfigParameter#isRequired()} )
-   * 
-   * @return the list with the parameters.
-   */
-  List<ConfigParameter> getParameters();
 
   /**
    * Returns a pre-polulated map with the configuration of this plugin. The keys

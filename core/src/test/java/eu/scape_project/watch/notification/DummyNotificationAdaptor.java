@@ -14,6 +14,7 @@ import eu.scape_project.watch.domain.Plan;
 import eu.scape_project.watch.domain.Question;
 import eu.scape_project.watch.interfaces.NotificationPluginInterface;
 import eu.scape_project.watch.interfaces.PluginType;
+import eu.scape_project.watch.utils.ConfigParameter;
 import eu.scape_project.watch.utils.exceptions.PluginException;
 
 /**
@@ -33,7 +34,7 @@ public class DummyNotificationAdaptor implements NotificationPluginInterface {
   /**
    * The notification plugin version.
    */
-  private static final String VERSION = "0.0.1";
+  private static final String VERSION = "0.0.2";
 
   /**
    * Test notification type.
@@ -111,6 +112,11 @@ public class DummyNotificationAdaptor implements NotificationPluginInterface {
   @Override
   public Map<String, DataType> getParametersInfo() {
     return new HashMap<String, DataType>();
+  }
+
+  @Override
+  public List<ConfigParameter> getParameters() {
+    return new ArrayList<ConfigParameter>();
   }
 
 }

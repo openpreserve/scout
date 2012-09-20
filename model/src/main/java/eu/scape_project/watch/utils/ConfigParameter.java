@@ -1,5 +1,7 @@
 package eu.scape_project.watch.utils;
 
+import eu.scape_project.watch.domain.DataType;
+
 /**
  * Represents a config parameter of a plugin.
  * 
@@ -30,6 +32,17 @@ public class ConfigParameter {
   private boolean required;
 
   /**
+   * Whether or not the parameter value should be hidden or not (e.g.
+   * passwords).
+   */
+  private boolean hidden;
+
+  /**
+   * The data type of this parameter. DataType.STRING by default
+   */
+  private DataType dataType;
+
+  /**
    * Inits a config parameter.
    * 
    * @param key
@@ -42,6 +55,8 @@ public class ConfigParameter {
     this.value = value;
     this.description = "";
     this.required = false;
+    this.hidden = false;
+    this.dataType = DataType.STRING;
   }
 
   /**
@@ -91,6 +106,26 @@ public class ConfigParameter {
     this.required = req;
   }
 
+  /**
+   * Inits a config parameter.
+   * 
+   * @param key
+   *          the key of the parameter
+   * @param value
+   *          the value of the parameter (could be the default value).
+   * @param desc
+   *          the description for this parameter.
+   * @param req
+   *          whether or not this parameter is required.
+   * @param hidden
+   *          whether or not the value of this parameter should be hidden.
+   */
+  public ConfigParameter(final String key, final String value, final String desc, final boolean req,
+      final boolean hidden) {
+    this(key, value, desc, req);
+    this.hidden = hidden;
+  }
+
   public String getKey() {
     return this.key;
   }
@@ -121,6 +156,22 @@ public class ConfigParameter {
 
   public void setRequired(final boolean required) {
     this.required = required;
+  }
+
+  public boolean isHidden() {
+    return hidden;
+  }
+
+  public void setHidden(boolean hidden) {
+    this.hidden = hidden;
+  }
+
+  public DataType getDataType() {
+    return dataType;
+  }
+
+  public void setDataType(DataType dataType) {
+    this.dataType = dataType;
   }
 
 }

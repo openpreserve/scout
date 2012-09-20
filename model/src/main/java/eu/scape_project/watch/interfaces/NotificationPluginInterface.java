@@ -7,6 +7,7 @@ import eu.scape_project.watch.domain.DataType;
 import eu.scape_project.watch.domain.Notification;
 import eu.scape_project.watch.domain.Plan;
 import eu.scape_project.watch.domain.Question;
+import eu.scape_project.watch.utils.ConfigParameter;
 
 /**
  * 
@@ -30,9 +31,14 @@ public interface NotificationPluginInterface extends PluginInterface {
    * TODO add parameter description, mandatory/optional flag, readable/password
    * flag, etc.
    * 
+   * Use of this method is discouraged as there is a better support
+   * for this via the {@link PluginInterface#getParameters()} method.
+   * @see {@link ConfigParameter}
+   * 
    * @return A map with possible parameter names as key and the data type as
    *         value.
    */
+  @Deprecated
   Map<String, DataType> getParametersInfo();
 
   /**

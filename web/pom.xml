@@ -51,6 +51,20 @@
 							<directory>bootstrap-v2.1.1</directory>
 							<targetPath>bootstrap</targetPath>
 						</resource>
+						<resource>
+							<directory>mustache.js-v0.7.0</directory>
+							<includes>
+								<include>mustache.js</include>
+							</includes>
+							<targetPath>mustache</targetPath>
+						</resource>
+						<resource>
+							<directory>icanhaz.js-v0.10</directory>
+							<includes>
+								<include>ICanHaz-no-mustache.min.js</include>
+							</includes>
+							<targetPath>icanhaz</targetPath>
+						</resource>
 					</webResources>
 				</configuration>
 			</plugin>

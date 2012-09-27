@@ -97,6 +97,31 @@ public class PluginResource extends JavaHelp {
     }).build();
   }
 
-  // TODO get a plugin based on name and version
+  /**
+   * Get a {@link PluginInfo}.
+   * 
+   * @param name
+   *          The name of the plug-in.
+   * @param version
+   *          The version of the plug-in.
+   * @return A list of plug-ins.
+   */
+  @GET
+  @Path("/{name}/{version}")
+  @ApiOperation(value = "Find a plug-in", notes = "")
+  @ApiErrors(value = {@ApiError(code = NotFoundException.CODE, reason = "Plug-in not found")})
+  public Response getPluginByNameAndVersion(
+    @ApiParam(value = "Name of the plug-in", required = true) @PathParam("name") final String name,
+    @ApiParam(value = "Version of the plug-in", required = true) @PathParam("version") final String version) {
+
+    final PluginInfo pluginInfo = PluginManager.getDefaultPluginManager().getPluginInfo(name, version);
+
+    if (pluginInfo != null) {
+      return Response.ok().entity(pluginInfo).build();
+    } else {
+      throw new NotFoundException("Plug-in not found, name=" + name + ", version=" + version);
+    }
+
+  }
 
 }

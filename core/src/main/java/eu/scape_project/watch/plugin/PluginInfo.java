@@ -7,9 +7,11 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import eu.scape_project.watch.interfaces.PluginInterface;
 import eu.scape_project.watch.interfaces.PluginType;
 import eu.scape_project.watch.utils.ConfigParameter;
 import eu.scape_project.watch.utils.KBUtils;
+import eu.scape_project.watch.utils.exceptions.PluginException;
 
 /**
  * A simple class that summarizes a plugin.
@@ -83,6 +85,12 @@ public class PluginInfo {
     this.type = type;
     this.desc = d;
     this.className = c;
+  }
+
+  public PluginInfo(final PluginInterface plugin) {
+    this(plugin.getName(), plugin.getVersion(), plugin.getPluginType(), plugin.getDescription(), plugin.getClass()
+      .getName());
+    this.parameters = plugin.getParameters();
   }
 
   public String getName() {

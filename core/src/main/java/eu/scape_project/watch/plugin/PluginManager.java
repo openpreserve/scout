@@ -21,6 +21,7 @@ import java.util.jar.JarFile;
 import eu.scape_project.watch.interfaces.PluginInterface;
 import eu.scape_project.watch.interfaces.PluginType;
 import eu.scape_project.watch.utils.ConfigUtils;
+import eu.scape_project.watch.utils.exceptions.PluginException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -177,9 +178,7 @@ public final class PluginManager {
     for (JarPlugin jp : this.pluginRegistry.values()) {
       final PluginInterface p = jp.plugin;
       if (p != null && PluginType.match(type, p.getPluginType())) {
-        PluginInfo pluginInfo = new PluginInfo(p.getName(), p.getVersion(), p.getPluginType(), p.getDescription(), p
-            .getClass().getName());
-        pluginInfo.setParameters(p.getParameters());
+        PluginInfo pluginInfo = new PluginInfo(p);
         info.add(pluginInfo);
       }
     }
@@ -205,13 +204,38 @@ public final class PluginManager {
       final PluginInterface p = jp.plugin;
 
       if (p != null && p.getName().equalsIgnoreCase(name)) {
-        result.add(new PluginInfo(p.getName(), p.getVersion(), p.getPluginType(), p.getDescription(), p.getClass()
-            .getName()));
+        result.add(new PluginInfo(p));
       }
     }
 
     return result;
 
+  }
+
+  /**
+   * Checks the plugin registry for a plugin with the given name and version.
+   * 
+   * @param name
+   *          the name of the plugin you are looking for.
+   * @param version
+   *          the version of the plugin you are looking for.
+   * @return the {@link PluginInfo} ir <code>null</code> if not found.
+   */
+  public PluginInfo getPluginInfo(final String name, final String version) {
+    this.waitForLoadingToFinish();
+
+    PluginInfo plugin = null;
+
+    for (JarPlugin jp : this.pluginRegistry.values()) {
+      final PluginInterface p = jp.plugin;
+
+      if (p != null && p.getName().equalsIgnoreCase(name) && p.getVersion().equals(version)) {
+        plugin = new PluginInfo(p);
+        break;
+      }
+    }
+
+    return plugin;
   }
 
   /**
@@ -349,7 +373,7 @@ public final class PluginManager {
 
     for (final File jarFile : jarFiles) {
       if (this.pluginRegistry.containsKey(jarFile)
-          && jarFile.lastModified() == this.pluginRegistry.get(jarFile).lastModified) {
+        && jarFile.lastModified() == this.pluginRegistry.get(jarFile).lastModified) {
         // The plugin already exists
         LOGGER.debug(jarFile.getName() + " is already loaded");
       } else {
@@ -358,18 +382,21 @@ public final class PluginManager {
         LOGGER.debug(jarFile.getName() + " is not loaded or modification dates differ. Inspecting Jar...");
 
         try {
-          final URL[] urls = { jarFile.toURI().toURL() };
+          final URL[] urls = {jarFile.toURI().toURL()};
           final PluginInterface plugin = loadPlugin(jarFile, urls);
 
           if (plugin == null) {
             LOGGER.trace(jarFile.getName() + " is not a PluginInterface");
-          }
-
-          synchronized (this.pluginRegistry) {
-            this.pluginRegistry.put(jarFile, new JarPlugin(plugin, jarFile.lastModified()));
+          } else {
+            plugin.init();
+            synchronized (this.pluginRegistry) {
+              this.pluginRegistry.put(jarFile, new JarPlugin(plugin, jarFile.lastModified()));
+            }
           }
         } catch (final MalformedURLException e) {
           LOGGER.error("An error caught: {}", e.getMessage());
+        } catch (final PluginException e) {
+          LOGGER.error("Error initializing plugin", e);
         }
       }
 
@@ -424,17 +451,17 @@ public final class PluginManager {
           }
 
         } catch (final ClassNotFoundException e) {
-          LOGGER.warn("{}#{} thrown {}: {}", new Object[] { jarFile.getName(), className, e.getClass().getSimpleName(),
-              e.getMessage() });
+          LOGGER.warn("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
+            e.getMessage()});
         } catch (final IllegalAccessError e) {
-          LOGGER.warn("{}#{} thrown {}: {}", new Object[] { jarFile.getName(), className, e.getClass().getSimpleName(),
-              e.getMessage() });
+          LOGGER.warn("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
+            e.getMessage()});
         } catch (final VerifyError e) {
-          LOGGER.warn("{}#{} thrown {}: {}", new Object[] { jarFile.getName(), className, e.getClass().getSimpleName(),
-              e.getMessage() });
+          LOGGER.warn("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
+            e.getMessage()});
         } catch (final NoClassDefFoundError e) {
-          LOGGER.warn("{}#{} thrown {}: {}", new Object[] { jarFile.getName(), className, e.getClass().getSimpleName(),
-              e.getMessage() });
+          LOGGER.warn("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
+            e.getMessage()});
         }
       }
     }
@@ -462,7 +489,7 @@ public final class PluginManager {
 
     try {
       if (PluginInterface.class.isAssignableFrom(clazz) && !clazz.isInterface()
-          && !Modifier.isAbstract(clazz.getModifiers())) {
+        && !Modifier.isAbstract(clazz.getModifiers())) {
         LOGGER.info("{} class is a plugin, instantiating", clazz.getName());
         plugin = (PluginInterface) clazz.newInstance();
       }

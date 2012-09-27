@@ -323,7 +323,7 @@ public class PronomAdaptor implements AdaptorPluginInterface {
    */
   private void initializePreparedQuery() throws PluginException {
     try {
-      this.query = IOUtils.toString(new FileInputStream("src/main/resources/query.txt"));
+      this.query = IOUtils.toString(getClass().getResourceAsStream("/query.txt"));
 
     } catch (FileNotFoundException e) {
       LOG.error("Could not read the query '{}'", e.getMessage());

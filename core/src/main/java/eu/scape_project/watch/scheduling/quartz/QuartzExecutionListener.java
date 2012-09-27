@@ -13,7 +13,7 @@ import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
 import eu.scape_project.watch.utils.exceptions.PluginException;
 
 public class QuartzExecutionListener implements JobListener {
-  
+
   private static final Logger LOG = LoggerFactory.getLogger(QuartzExecutionListener.class);
 
   private int REPEAT = 5;
@@ -21,7 +21,7 @@ public class QuartzExecutionListener implements JobListener {
   private QuartzScheduler scheduler;
 
   private QuartzListenerManager listenerManager;
-  
+
   private String name = "QuartzExecutionListener";
 
   private Map<AdaptorPluginInterface, Integer> failed;
@@ -41,7 +41,7 @@ public class QuartzExecutionListener implements JobListener {
   public void setListenerManager(QuartzListenerManager lm) {
     listenerManager = lm;
   }
-  
+
   @Override
   public String getName() {
     return name;
@@ -64,7 +64,7 @@ public class QuartzExecutionListener implements JobListener {
     QuartzAdaptorJob job = (QuartzAdaptorJob) context.getJobInstance();
     AdaptorPluginInterface adaptor = job.getAdaptorPlugin();
     Boolean result = (Boolean) context.getResult();
-    if (result.booleanValue() == true) {
+    if (result != null && result.booleanValue()) {
       failed.remove(adaptor);
       LOG.info(adaptor.getName() + " was successfully executed");
       QuartzEventDetails details = new QuartzEventDetails();
@@ -73,10 +73,10 @@ public class QuartzExecutionListener implements JobListener {
       scheduler.notifyExecute(adaptor, details);
     } else {
       PluginException e = (PluginException) context.get("exception");
-      LOG.warn(adaptor.getName() + " was not successfully executed. An exception happened + " + e.toString());
+      LOG.warn(adaptor.getName() + " was not successfully executed. An exception happened: " + e);
       QuartzEventDetails details = new QuartzEventDetails();
       details.setSuccessful(false);
-      details.addMessage(adaptor.getName() + " was not successfully executed. An exception happened + " + e.toString());
+      details.addMessage(adaptor.getName() + " was not successfully executed. An exception happened + " + e);
       scheduler.notifyExecute(adaptor, details);
       int num;
       if (failed.containsKey(adaptor)) {
@@ -89,16 +89,16 @@ public class QuartzExecutionListener implements JobListener {
         num = 1;
       }
       if (num > REPEAT) {
-        LOG.warn("Unscheduling adaptor: "+adaptor.getName());
+        LOG.warn("Unscheduling adaptor: " + adaptor.getName());
         QuartzEventDetails details2 = new QuartzEventDetails();
         details2.setReason("Adaptor failed 5 times in a row");
         scheduler.stop(adaptor, details2);
         failed.remove(adaptor);
       } else {
-        LOG.warn("Refiring adaptor: "+adaptor.getName());
+        LOG.warn("Refiring adaptor: " + adaptor.getName());
         QuartzEventDetails details3 = new QuartzEventDetails();
         details3.setReason("Adaptor failed to execute so it will be reexecuted immediately");
-        scheduler.execute(adaptor,details3);
+        scheduler.execute(adaptor, details3);
       }
     }
 

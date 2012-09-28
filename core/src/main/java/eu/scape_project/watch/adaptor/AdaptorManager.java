@@ -5,19 +5,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import eu.scape_project.watch.dao.DAO;
+import eu.scape_project.watch.domain.EntityType;
+import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
+import eu.scape_project.watch.interfaces.PluginInterface;
 import eu.scape_project.watch.interfaces.PluginType;
 import eu.scape_project.watch.plugin.PluginInfo;
 import eu.scape_project.watch.plugin.PluginManager;
 import eu.scape_project.watch.utils.ConfigParameter;
 import eu.scape_project.watch.utils.exceptions.InvalidParameterException;
 import eu.scape_project.watch.utils.exceptions.PluginException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * The AdaptorManager is responsible for the known SourceAdaptors (provenance
@@ -96,25 +99,26 @@ public class AdaptorManager {
    *          the unique instance identifier provided by the user.
    * @param source
    *          the source to which the adaptor is going to be used against.
+   * @param configuration
    * @return the source adaptor without any configuration or null if no
    *         implementation was found..
    */
-  public SourceAdaptor createAdaptor(final String name, final String version, final String uid, final Source source) {
+  public SourceAdaptor createAdaptor(final String name, final String version, final String uid,
+    final Map<String, String> configuration, final Source source) {
     LOG.debug("Creating new source adaptor information for {}-{}", name, version);
 
-    // existence check
-    final List<PluginInfo> plugins = PluginManager.getDefaultPluginManager().getPluginInfo(name);
-    boolean exist = false;
-    for (PluginInfo info : plugins) {
-      if (info.getName().equalsIgnoreCase(name) && info.getVersion().equals(version)) {
-        exist = true;
-        break;
-      }
-    }
+    final PluginInfo pluginInfo = PluginManager.getDefaultPluginManager().getPluginInfo(name, version);
 
     SourceAdaptor adaptor = null;
-    if (exist) {
-      adaptor = new SourceAdaptor(name, version, uid, source, null, null, null);
+
+    // existence check
+    if (pluginInfo != null && pluginInfo.getType().equals(PluginType.ADAPTOR)) {
+
+      // TODO get types and properties from adaptorPlugin, blocked by #120.
+      final List<EntityType> types = null;
+      final List<Property> properties = null;
+
+      adaptor = new SourceAdaptor(name, version, uid, source, types, properties, configuration);
       this.updateSourceAdaptor(adaptor);
       this.adaptors.put(adaptor.getInstance(), adaptor);
 
@@ -136,8 +140,9 @@ public class AdaptorManager {
    *          the source for the source adaptor.
    * @return the source adaptor.
    */
-  public SourceAdaptor createAdaptor(final PluginInfo info, final String uid, final Source source) {
-    return this.createAdaptor(info.getName(), info.getVersion(), uid, source);
+  public SourceAdaptor createAdaptor(final PluginInfo info, final String uid, final Map<String, String> configuration,
+    final Source source) {
+    return this.createAdaptor(info.getName(), info.getVersion(), uid, configuration, source);
   }
 
   /**

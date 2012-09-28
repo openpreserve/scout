@@ -1,10 +1,37 @@
 {{> header}}
 <div class="container">
-	{{#entityType}}
-	<h1>Category {{name}}</h1>
-	<p>{{description}}</p>
+	{{#adaptor}}
+	<h1>Source Adaptor {{instance}}</h1>
+	<p>This adaptor is currently {{#active}}<i class="icon-ok"></i>active{{/active}}{{^active}}inactive{{/active}}.</p>
 
 	<div>
+		<h2>Plug-in</h2>
+		<p>Name: {{name}}</p>
+		<p>Version: {{version}}</p>
+		
+		<h2>Configuration</h2>
+		<table class="table table-hover table-striped">
+			<thead>
+				<tr>
+					<th>Parameter</th>
+					<th>Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#configuration}}
+				<tr>
+					<td>{{key}}</td>
+					<td>{{value}}</td>
+				</tr>
+				{{/configuration}}
+			</tbody>
+		</table>
+		{{^configuration}}
+		<div class="alert alert-warning">
+			<b>Empty!</b> No configuration defined.
+		</div>
+		{{/configuration}}
+
 		<h2>Entities</h2>
 		<table class="table table-hover table-striped">
 			<thead>
@@ -55,11 +82,17 @@
 			<b>Empty!</b> There are no defined properties.
 		</div>
 		{{/property}}
+		<h2>Source</h2>
+		{{#source}}
+		<p>Name: {{name}}</p>
+		<p>Description: {{description}}</p>
+		{{/source}}
 	</div>
-	{{/entityType}} {{^entityType}}
+	{{/adaptor}} {{^adaptor}}
 	<div class="alert alert-error">
-		<b>Not found!</b> Could not find a category with name '{{typeName}}'.
+		<b>Not found!</b> Could not find an adaptor with instance name
+		'{{instance}}'.
 	</div>
-	{{/entityType}}
+	{{/adaptor}}
 </div>
 {{> jslibs}} {{> footer}}

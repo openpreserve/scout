@@ -421,7 +421,7 @@ public final class PluginManager {
       jar = new JarFile(jarFile);
 
     } catch (final IOException e) {
-      LOGGER.error("Could not open jar file: {}", e.getMessage());
+      LOGGER.error("Could not open jar file '{}': {}", new Object[] {jarFile.getName(), e.getMessage()});
       return plugin;
     }
 

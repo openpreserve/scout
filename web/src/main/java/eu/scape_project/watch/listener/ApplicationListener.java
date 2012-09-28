@@ -89,12 +89,11 @@ public class ApplicationListener implements ServletContextListener {
     final AdaptorManager manager = new AdaptorManager();
     final Map<String, AdaptorPluginInterface> activeAdaptors = manager.getActiveAdaptorPlugins();
 
-    try {
-      saveTestRequest(manager);
-      manager.reloadKnownAdaptors();
-    } catch (final Throwable e) {
-      LOG.error("Error saving test request", e);
-    }
+    /**
+     * TEST DATA try { saveTestRequest(manager); manager.reloadKnownAdaptors();
+     * } catch (final Throwable e) { LOG.error("Error saving test request", e);
+     * }
+     */
 
     // create data merger and add it as a listener.
     final DataMerger merger = new DataMerger();
@@ -174,11 +173,6 @@ public class ApplicationListener implements ServletContextListener {
     final Map<String, String> config = new HashMap<String, String>();
     config.put("c3po.endpoint", "dummy");
 
-    final SourceAdaptor c3po = manager.createAdaptor("c3po", "0.0.4", "demo", source);
-    if (c3po != null) {
-      c3po.setConfigurationAsMap(config);
-      c3po.setActive(true);
-      manager.updateSourceAdaptor(c3po);
-    }
+    final SourceAdaptor c3po = manager.createAdaptor("c3po", "0.0.4", "demo", config, source);
   }
 }

@@ -11,9 +11,7 @@
 				<th>Plug-in name</th>
 				<th>Plug-in version</th>
 				<th>Source</th>
-				<th>Categories</th>
-				<th>Properties</th>
-				<th>Active</th>
+				<th style="width: 20px">Active</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -25,27 +23,20 @@
 				<td>{{version}}</td>
 				<td>{{#source}}{{name}}<i class="icon-info-sign"></i>{{/source}}
 				</td>
-				<td><ul>
-						{{#types}}
-						<li>{{name}}</li>{{/types}}
-					</ul></td>
-				<td><ul>
-						{{#properties}}
-						<li>{{name}}</li>{{/properties}}
-					</ul></td>
 				<td>{{#active}}<i class="icon-ok"></i>{{/active}}
 				</td>
 				<td>
 					<div class="btn-group">
-						<a class="btn btn-small dropdown-toggle" data-toggle="dropdown" href="#">
-							<i class="icon-wrench"></i> <!-- <span class="caret"></span> -->
+						<a class="btn btn-small dropdown-toggle" data-toggle="dropdown"
+							href="#"> <i class="icon-wrench"></i> <!-- <span class="caret"></span> -->
 						</a>
 						<ul class="dropdown-menu">
-							<li><a href="#edit/{{id}}">Edit</a></li> 
-							{{#active}}<li><a href="#deactivate/{{id}}">Deactivate</a></li> {{/active}}
-							{{^active}}<li><a href="#activate/{{id}}">Activate</a></li> {{/active}}
+							<li><a href="{{basePath}}/browse/adaptor/{{instance}}">Browse</a></li>
 							<li class="divider"></li>
-							<li><a href="#remove/{{id}}">Remove</a></li>
+							<li><a href="#edit/{{instance}}">Edit</a></li> 
+							{{#active}}<li><a href="?operation=deactivateAdaptor&adaptor={{instance}}">Deactivate</a></li>{{/active}}
+							{{^active}}<li><a href="?operation=activateAdaptor&adaptor={{instance}}">Activate</a></li>{{/active}}
+							<li><a href="?operation=removeAdaptor&adaptor={{instance}}">Remove</a></li>
 						</ul>
 					</div>
 				</td>
@@ -88,5 +79,4 @@
 	</div>
 	{{/plugin}}
 </div>
-{{> jslibs}}
-{{> footer}}
+{{> jslibs}} {{> footer}}

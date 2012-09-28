@@ -1,6 +1,8 @@
 package eu.scape_project.watch.notification.email;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -52,7 +54,7 @@ public class EmailNotification implements NotificationPluginInterface {
   /**
    * Plug-in version.
    */
-  private static final String VERSION = "0.0.2";
+  private static final String VERSION = "0.0.3";
 
   /**
    * Plug-in description.
@@ -68,14 +70,14 @@ public class EmailNotification implements NotificationPluginInterface {
    * Information about what parameters should be present in the notification.
    */
   private static final Map<String, DataType> PARAMETERS_INFO = new HashMap<String, DataType>();
-  
+
   private static final List<ConfigParameter> PARAMETERS = new ArrayList<ConfigParameter>();
 
   /**
    * Recipients parameter key.
    */
   public static final String PARAM_RECIPIENT = "recipient";
-  
+
   public static final String PARAM_RECIPIENT_DESC = "The email of the recipient of this notification.";
 
   static {
@@ -115,10 +117,15 @@ public class EmailNotification implements NotificationPluginInterface {
     subject = bundle.getString("subject");
     fromAddress = bundle.getString("fromAddress");
     fromName = bundle.getString("fromName");
-    
+
     final String template = bundle.getString("template");
+    InputStream templateStream = getClass().getResourceAsStream(template);
+    if (templateStream == null) {
+      templateStream = getClass().getResourceAsStream("/" + template);
+    }
+
     final MustacheFactory mf = new DefaultMustacheFactory();
-    mustache = mf.compile(template);
+    mustache = mf.compile(new InputStreamReader(templateStream), template);
   }
 
   @Override
@@ -170,17 +177,18 @@ public class EmailNotification implements NotificationPluginInterface {
     final String[] recipients = new String[] {recipient};
 
     final Map<String, Object> messageParams = new HashMap<String, Object>();
-    
+
     messageParams.put("subject", subject);
-    // TODO add an 'archive' parameter with a link to the archived copy of the email
+    // TODO add an 'archive' parameter with a link to the archived copy of the
+    // email
     // TODO add an 'description' parameter with the description of the trigger
-    
- 
-   // TODO add an 'twitter' parameter with a link to a twitter profile
-   // TODO add an 'facebook' parameter with a link to a facebook profile
-   // TODO add an 'forward' parameter with a link that would forward this email
-    // XXX un-comment social section in mustache if any of the above are activated
-    
+
+    // TODO add an 'twitter' parameter with a link to a twitter profile
+    // TODO add an 'facebook' parameter with a link to a facebook profile
+    // TODO add an 'forward' parameter with a link that would forward this email
+    // XXX un-comment social section in mustache if any of the above are
+    // activated
+
     if (question != null) {
       messageParams.put("question", question);
     }
@@ -228,7 +236,7 @@ public class EmailNotification implements NotificationPluginInterface {
     parameters.put(PARAM_RECIPIENT, args[0]);
 
     final Notification notification = new Notification("email", parameters);
-    
+
     final EntityType type = new EntityType("tests", "Test entities");
     final Entity entity = new Entity(type, "entity1");
     final Property property = new Property(type, "property1", "property description");
@@ -246,6 +254,7 @@ public class EmailNotification implements NotificationPluginInterface {
 
     try {
       email.init();
+      System.out.println("Sending notification to " + args[0]);
       email.send(notification, question, plan);
       email.shutdown();
     } catch (final PluginException e) {
@@ -253,6 +262,5 @@ public class EmailNotification implements NotificationPluginInterface {
       System.exit(2);
     }
   }
-
 
 }

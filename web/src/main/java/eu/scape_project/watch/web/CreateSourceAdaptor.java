@@ -1,11 +1,17 @@
 package eu.scape_project.watch.web;
 
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
@@ -26,6 +32,10 @@ import eu.scape_project.watch.web.annotations.Template;
 @Template("createSourceAdaptor.html")
 @HttpMethod({HttpMethod.Type.GET, HttpMethod.Type.POST})
 public class CreateSourceAdaptor extends Mustachelet {
+
+  private static final String CONFIG_PREFIX = "config.";
+
+  private final Logger log = LoggerFactory.getLogger(getClass());
 
   boolean page_administration() {
     return true;
@@ -53,24 +63,39 @@ public class CreateSourceAdaptor extends Mustachelet {
     final String pluginVersion = plugin.substring(plugin.indexOf('|') + 1);
     final String sourceName = request.getParameter("source");
 
+    // Get configuration parameters
+    final Map<String, String> configuration = new HashMap<String, String>();
+    final Enumeration<String> parameterNames = request.getParameterNames();
+    while (parameterNames.hasMoreElements()) {
+      String parameterName = parameterNames.nextElement();
+      if (parameterName.startsWith(CONFIG_PREFIX)) {
+        String configName = parameterName.substring(CONFIG_PREFIX.length());
+        String configValue = request.getParameter(parameterName);
+        log.debug("Configuration parameter {}: {}", new Object[] {configName, configValue});
+        configuration.put(configName, configValue);
+      }
+    }
+
     final Source source = DAO.SOURCE.findById(sourceName);
 
     if (source != null) {
       final ServletContext context = ContextUtil.getServletContext(request);
       final AdaptorManager adaptorManager = ContextUtil.getAdaptorManager(context);
-      final SourceAdaptor adaptor = adaptorManager.createAdaptor(pluginName, pluginVersion, instance, source);
+      final SourceAdaptor adaptor = adaptorManager.createAdaptor(pluginName, pluginVersion, instance, configuration,
+        source);
 
       if (adaptor != null) {
         response.sendRedirect(basePath + "/administration.html");
       } else {
         // TODO send error of plugin does not exist.
+        response.sendError(404, "Plug-in does not exist: " + pluginName + "-" + pluginVersion);
       }
 
     } else {
       // TODO send error source does not exist.
+      response.sendError(404, "Source does not exist: " + sourceName);
     }
 
     return false;
   }
-
 }

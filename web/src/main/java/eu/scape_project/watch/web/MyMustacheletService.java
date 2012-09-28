@@ -16,7 +16,6 @@ import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -58,7 +57,8 @@ public class MyMustacheletService extends HttpServlet implements Filter {
    * DEFINE AVAILABLE MUSTACHELETS.
    */
   private static final List<Class<? extends Mustachelet>> MUSTACHELETS = Arrays.asList(Index.class, Browse.class,
-    BrowseType.class, BrowseEntity.class, Administration.class, CreateSourceAdaptor.class, CreateSource.class);
+    BrowseType.class, BrowseEntity.class, Administration.class, CreateSourceAdaptor.class, CreateSource.class,
+    BrowseAdaptor.class);
 
   private static final boolean DISABLE_CACHE = Boolean.parseBoolean(System.getProperty(
     "mustache.servlet.cache.disable", "false"));

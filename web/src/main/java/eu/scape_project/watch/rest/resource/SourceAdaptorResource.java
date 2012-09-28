@@ -4,6 +4,7 @@
 package eu.scape_project.watch.rest.resource;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -141,12 +142,13 @@ public class SourceAdaptorResource extends JavaHelp {
       throw new NotFoundException("Source not found: " + sourceName);
     }
 
-    final SourceAdaptor adaptor = manager.createAdaptor(name, version, instance, source);
-    
+    // TODO support configuration
+    final SourceAdaptor adaptor = manager.createAdaptor(name, version, instance, null, source);
+
     if (adaptor == null) {
       throw new NotFoundException("No plugin implementation found for " + name + " " + version);
     }
-    
+
     return Response.ok().entity(adaptor).build();
   }
 

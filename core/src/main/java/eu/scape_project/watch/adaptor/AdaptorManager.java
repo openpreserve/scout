@@ -50,12 +50,18 @@ public class AdaptorManager {
   private Map<String, AdaptorPluginInterface> cached;
 
   /**
+   * Reverse cache to get adaptors from adaptor plugin interface.
+   */
+  private Map<AdaptorPluginInterface, String> reverseCached;
+
+  /**
    * Creates a new adaptor manager and loads the known source adaptors.
    */
   public AdaptorManager() {
     LOG.info("Creating adaptor manager");
     this.adaptors = new HashMap<String, SourceAdaptor>();
     this.cached = new HashMap<String, AdaptorPluginInterface>();
+    this.reverseCached = new HashMap<AdaptorPluginInterface, String>();
     reloadKnownAdaptors();
   }
 
@@ -236,6 +242,7 @@ public class AdaptorManager {
         try {
           plugin.init();
           this.cached.put(instance, plugin);
+          this.reverseCached.put(plugin, instance);
         } catch (final PluginException e) {
           LOG.error("An error occurred during plugin initialization: {}", e.getMessage());
         }
@@ -257,6 +264,15 @@ public class AdaptorManager {
     return plugin;
   }
 
+  public SourceAdaptor getSourceAdaptor(final AdaptorPluginInterface adaptorPlugin) {
+    SourceAdaptor sourceAdaptor = null;
+    String instance = reverseCached.get(adaptorPlugin);
+    if (instance != null) {
+      sourceAdaptor = getSourceAdaptor(instance);
+    }
+    return sourceAdaptor;
+  }
+
   /**
    * Shuts down the plugin with the specified id if it is existing and sets the
    * corresponding adaptor as inactive.
@@ -268,6 +284,7 @@ public class AdaptorManager {
     LOG.info("Trying to shutdown plugin with id: {}", instance);
     final SourceAdaptor adaptor = this.getSourceAdaptor(instance);
     final AdaptorPluginInterface plugin = this.cached.remove(instance);
+    this.reverseCached.remove(plugin);
 
     this.shutdown(plugin);
 
@@ -284,6 +301,7 @@ public class AdaptorManager {
     LOG.info("Shutting down all plugins");
     for (final String id : this.cached.keySet()) {
       final AdaptorPluginInterface plugin = this.cached.remove(id);
+      this.reverseCached.remove(plugin);
       this.shutdown(plugin);
     }
   }
@@ -332,4 +350,5 @@ public class AdaptorManager {
 
     return plugin;
   }
+
 }

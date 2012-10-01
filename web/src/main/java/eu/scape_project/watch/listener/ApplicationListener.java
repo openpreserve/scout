@@ -24,11 +24,14 @@ import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.domain.Trigger;
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
+import eu.scape_project.watch.interfaces.EventDetails;
 import eu.scape_project.watch.interfaces.SchedulerInterface;
+import eu.scape_project.watch.interfaces.SchedulerListenerInterface;
 import eu.scape_project.watch.linking.DataLinker;
 import eu.scape_project.watch.merging.DataMerger;
 import eu.scape_project.watch.plugin.PluginManager;
 import eu.scape_project.watch.scheduling.quartz.QuartzScheduler;
+import eu.scape_project.watch.utils.AdaptorsLifecycleListener;
 import eu.scape_project.watch.utils.AllDataResultListener;
 import eu.scape_project.watch.utils.ConfigUtils;
 import eu.scape_project.watch.utils.KBUtils;
@@ -107,8 +110,13 @@ public class ApplicationListener implements ServletContextListener {
     // create scheduler
     final SchedulerInterface scheduler = new QuartzScheduler();
     scheduler.init();
+
+    // Add scheduler listeners
     final AllDataResultListener resultListener = new AllDataResultListener(manager, merger);
     scheduler.addAdaptorListener(resultListener);
+
+    final AdaptorsLifecycleListener schedulerListener = new AdaptorsLifecycleListener(manager);
+    scheduler.addSchedulerListener(schedulerListener);
 
     // TODO read this out of file or some other way...
     final Map<String, String> schedulerConfig = new HashMap<String, String>();

@@ -114,6 +114,7 @@ public final class KBUtils {
    * A measurement constant.
    */
   public static final String MEASUREMENT = "measurement";
+  
 
   /**
    * A asynchronous request constant.
@@ -183,6 +184,11 @@ public final class KBUtils {
    * A source adaptor constant.
    */
   public static final String SOURCE_ADAPTOR = "sourceadaptor";
+  
+  /**
+   * A source adaptor event.
+   */
+  public static final String SOURCE_ADAPTOR_EVENT = "sourceadaptorevent";
 
   /**
    * A plug-in constant.

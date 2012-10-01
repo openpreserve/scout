@@ -1,19 +1,19 @@
 package eu.scape_project.watch.dao;
 
-import eu.scape_project.watch.domain.AsyncRequest;
-import eu.scape_project.watch.domain.Entity;
-import eu.scape_project.watch.domain.EntityType;
-import eu.scape_project.watch.domain.Property;
-import eu.scape_project.watch.domain.PropertyValue;
-import eu.scape_project.watch.domain.Source;
-import eu.scape_project.watch.domain.SourceAdaptor;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import thewebsemantic.binding.RdfBean;
+import eu.scape_project.watch.domain.AsyncRequest;
+import eu.scape_project.watch.domain.Entity;
+import eu.scape_project.watch.domain.EntityType;
+import eu.scape_project.watch.domain.Measurement;
+import eu.scape_project.watch.domain.Property;
+import eu.scape_project.watch.domain.PropertyValue;
+import eu.scape_project.watch.domain.Source;
+import eu.scape_project.watch.domain.SourceAdaptor;
 
 /**
  * Data Access Object to access all resources.
@@ -64,6 +64,11 @@ public final class DAO {
    * {@link SourceAdaptor} Data Access Object.
    */
   public static final SourceAdaptorDAO SOURCE_ADAPTOR = new SourceAdaptorDAO();
+
+  /**
+   * {@link SourceAdaptorEvents} Data Access Object.
+   */
+  public static final SourceAdaptorEventDAO SOURCE_ADAPTOR_EVENTS = new SourceAdaptorEventDAO();
 
   /**
    * {@link AsyncRequest} Data Access Object.

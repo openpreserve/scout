@@ -45,7 +45,7 @@ public class BrowseAdaptor extends Mustachelet {
   }
 
   public List<SourceAdaptorEvent> events() {
-    return DAO.SOURCE_ADAPTOR_EVENTS.listByAdaptor(adaptor(), 0, PAGE_SIZE);
+    return DAO.SOURCE_ADAPTOR_EVENT.listByAdaptor(adaptor(), 0, PAGE_SIZE);
   }
 
 }

@@ -50,33 +50,9 @@ public class ApplicationListener implements ServletContextListener {
    * A default logger for this class.
    */
   private static final Logger LOG = LoggerFactory.getLogger(ApplicationListener.class);
-
-  @Override
-  public void contextDestroyed(final ServletContextEvent sce) {
-    LOG.info("Preparing Scout for shutdown.");
-
-    final ServletContext context = sce.getServletContext();
-    final SchedulerInterface scheduler = ContextUtil.getScheduler(context);
-    final AdaptorManager manager = ContextUtil.getAdaptorManager(context);
-
-    if (manager != null && scheduler != null) {
-      final Map<String, AdaptorPluginInterface> activeAdaptors = manager.getActiveAdaptorPlugins();
-
-      for (AdaptorPluginInterface adaptor : activeAdaptors.values()) {
-        scheduler.stop(adaptor, null);
-      }
-      scheduler.shutdown();
-
-      manager.shutdownAll();
-    } else {
-      LOG.warn("Could not get AdaptorManager or Scheduler from servlet context, skipping adaptor scheduling cleanup");
-    }
-
-    PluginManager.getDefaultPluginManager().shutdown();
-
-    KBUtils.dbDisconnect();
-
-  }
+  
+  private AdaptorManager manager = null;
+  private SchedulerInterface scheduler = null;
 
   @Override
   public void contextInitialized(final ServletContextEvent sce) {
@@ -89,7 +65,7 @@ public class ApplicationListener implements ServletContextListener {
     PluginManager.getDefaultPluginManager();
 
     // create adaptormanager and load all active adaptors.
-    final AdaptorManager manager = new AdaptorManager();
+    manager = new AdaptorManager();
     final Map<String, AdaptorPluginInterface> activeAdaptors = manager.getActiveAdaptorPlugins();
 
     /**
@@ -108,7 +84,7 @@ public class ApplicationListener implements ServletContextListener {
     // rules
 
     // create scheduler
-    final SchedulerInterface scheduler = new QuartzScheduler();
+    scheduler = new QuartzScheduler();
     scheduler.init();
 
     // Add scheduler listeners
@@ -182,5 +158,28 @@ public class ApplicationListener implements ServletContextListener {
     config.put("c3po.endpoint", "dummy");
 
     final SourceAdaptor c3po = manager.createAdaptor("c3po", "0.0.4", "demo", config, source);
+  }
+  
+  @Override
+  public void contextDestroyed(final ServletContextEvent sce) {
+    LOG.info("Preparing Scout for shutdown.");
+
+    if (manager != null && scheduler != null) {
+      final Map<String, AdaptorPluginInterface> activeAdaptors = manager.getActiveAdaptorPlugins();
+
+      for (AdaptorPluginInterface adaptor : activeAdaptors.values()) {
+        scheduler.stop(adaptor, null);
+      }
+      scheduler.shutdown();
+
+      manager.shutdownAll();
+    } else {
+      LOG.warn("Could not get AdaptorManager or Scheduler from servlet context, skipping adaptor scheduling cleanup");
+    }
+
+    PluginManager.getDefaultPluginManager().shutdown();
+
+    KBUtils.dbDisconnect();
+
   }
 }

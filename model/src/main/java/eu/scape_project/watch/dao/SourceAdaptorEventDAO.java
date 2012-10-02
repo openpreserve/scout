@@ -141,4 +141,15 @@ public final class SourceAdaptorEventDAO extends AbstractDO<SourceAdaptorEvent> 
   public int countBySource(final Source source) {
     return count(getListBySourceQueryString(source));
   }
+  
+  /**
+   * Save a source adaptor event into the knowledge base.
+   * 
+   * @param sourceAdaptorEvent
+   *          The source adaptor event to save.
+   * @return The persisted source adaptor event object.
+   */
+  public SourceAdaptorEvent save(final SourceAdaptorEvent sourceAdaptorEvent) {
+    return super.saveImpl(sourceAdaptorEvent);
+  }
 }

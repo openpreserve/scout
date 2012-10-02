@@ -14,6 +14,7 @@ import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.domain.SourceAdaptor;
+import eu.scape_project.watch.domain.SourceAdaptorEvent;
 
 /**
  * Data Access Object to access all resources.
@@ -68,7 +69,7 @@ public final class DAO {
   /**
    * {@link SourceAdaptorEvents} Data Access Object.
    */
-  public static final SourceAdaptorEventDAO SOURCE_ADAPTOR_EVENTS = new SourceAdaptorEventDAO();
+  public static final SourceAdaptorEventDAO SOURCE_ADAPTOR_EVENT = new SourceAdaptorEventDAO();
 
   /**
    * {@link AsyncRequest} Data Access Object.
@@ -218,6 +219,8 @@ public final class DAO {
       SOURCE.save(Source.class.cast(object));
     } else if (SourceAdaptor.class.isInstance(object)) {
       SOURCE_ADAPTOR.save(SourceAdaptor.class.cast(object));
+    }else if (SourceAdaptorEvent.class.isInstance(object)) {
+      SOURCE_ADAPTOR_EVENT.save(SourceAdaptorEvent.class.cast(object));
     } else {
       throw new IllegalArgumentException(object.getClass().getSimpleName());
     }

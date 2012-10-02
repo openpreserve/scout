@@ -89,7 +89,7 @@ public class SourceAdaptorEvent extends RdfBean<SourceAdaptorEvent> {
    * @param successful
    *          <code>true</code> if the related action was a success,
    *          <code>false</code> if it was a failure.
-   * @param The
+   * @param reason
    *          underlying reason in case of failure.
    * @param timestamp
    *          The moment in time of the event.

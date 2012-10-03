@@ -31,7 +31,7 @@
 							href="#"> <i class="icon-wrench"></i> <!-- <span class="caret"></span> -->
 						</a>
 						<ul class="dropdown-menu">
-							<li><a href="{{basePath}}/browse/adaptor/{{instance}}">Browse</a></li>
+							<li><a href="{{mustacheletPath}}/browse/adaptor/{{instance}}">Browse</a></li>
 							<li class="divider"></li>
 							<li><a href="#edit/{{instance}}">Edit</a></li> 
 							{{#active}}<li><a href="?operation=deactivateAdaptor&adaptor={{instance}}">Deactivate</a></li>{{/active}}
@@ -49,7 +49,7 @@
 		<b>Empty!</b> There are no defined source adaptors.
 	</div>
 	{{/sourceadaptor}} <a class="btn btn-primary"
-		href="{{basePath}}/adaptor/new">New source adaptor</a>
+		href="{{mustacheletPath}}/adaptor/new">New source adaptor</a>
 	<h2>Installed plug-ins</h2>
 	<table class="table table-hover table-striped">
 		<thead>

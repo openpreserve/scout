@@ -23,7 +23,7 @@ public class BrowseEntity extends Mustachelet {
   }
 
   public List<Property> property() {
-    return DAO.PROPERTY.listWithType(entity().getEntityType().getName(), 0, 100);
+    return DAO.PROPERTY.listWithType(entity().getType().getName(), 0, 100);
   }
 
   

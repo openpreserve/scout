@@ -40,7 +40,7 @@ public class CreateSource extends Mustachelet {
     final Source source = DAO.SOURCE.save(new Source(name, description));
 
     if (source != null) {
-      response.sendRedirect(basePath + redirect);
+      response.sendRedirect(mustacheletPath + redirect);
     } else {
       // TODO send error of source could not be created.
     }

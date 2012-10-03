@@ -240,8 +240,8 @@ public class CoreRestTest extends JerseyTest {
     final Entity entity = client.createEntity(name, typeName);
     Assert.assertNotNull(entity);
     Assert.assertEquals(entity.getName(), name);
-    Assert.assertNotNull(entity.getEntityType());
-    Assert.assertEquals(entity.getEntityType(), entitytype);
+    Assert.assertNotNull(entity.getType());
+    Assert.assertEquals(entity.getType(), entitytype);
 
     // TODO test creating an already existing entity
 

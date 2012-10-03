@@ -1,5 +1,7 @@
 package eu.scape_project.watch.domain;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +12,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import thewebsemantic.Id;
@@ -48,7 +51,7 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
    * @return The unique Id in the format 'example-v1.0.0'
    */
   public static String createId(final String name, final String version, final String instance) {
-    return name + "-v" + version + "-" + instance;
+    return KBUtils.encodeId(name + "-v" + version + "-" + instance);
   }
 
   /**

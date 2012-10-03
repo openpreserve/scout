@@ -37,7 +37,7 @@ public class SourceAdaptorEvent extends RdfBean<SourceAdaptorEvent> {
    * @return The id to be used in RDF queries.
    */
   public static final String createId(final SourceAdaptor adaptor, final Date timestamp) {
-    return adaptor.getId() + KBUtils.ID_SEPARATOR + timestamp.getTime();
+    return KBUtils.encodeId(adaptor.getId() + KBUtils.ID_SEPARATOR + timestamp.getTime());
   }
 
   /**
@@ -78,7 +78,13 @@ public class SourceAdaptorEvent extends RdfBean<SourceAdaptorEvent> {
    * Create a new empty event.
    */
   public SourceAdaptorEvent() {
-    super();
+    this.timestamp = new Date();
+  }
+
+  public SourceAdaptorEvent(String message) {
+    this.message = message;
+    this.timestamp = new Date();
+    this.successful = true;
   }
 
   /**

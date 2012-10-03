@@ -37,7 +37,7 @@ public class Measurement extends RdfBean<Measurement> {
    * @return The id to be used in RDF queries.
    */
   public static final String createId(final String propertyName, final Date timestamp) {
-    return propertyName + KBUtils.ID_SEPARATOR + timestamp.getTime();
+    return KBUtils.encodeId(propertyName + KBUtils.ID_SEPARATOR + timestamp.getTime());
   }
 
   /**

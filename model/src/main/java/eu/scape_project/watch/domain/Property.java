@@ -36,7 +36,7 @@ public class Property extends RdfBean<Property> {
    * @return The identifier
    */
   public static String createId(final String entityTypeName, final String propertyName) {
-    return entityTypeName + KBUtils.ID_SEPARATOR + propertyName;
+    return KBUtils.encodeId(entityTypeName + KBUtils.ID_SEPARATOR + propertyName);
   }
 
   /**

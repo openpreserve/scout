@@ -45,7 +45,7 @@
 				<tr>
 					<td>{{name}}</td>
 					<td><a class="btn btn-info"
-						href="{{basePath}}/browse/entity/{{name}}">Browse</a></td>
+						href="{{mustacheletPath}}/browse/entity/{{name}}">Browse</a></td>
 				</tr>
 				{{/entity}}
 			</tbody>
@@ -107,7 +107,7 @@
 			<tbody>
 				{{#events}}
 				<tr class="{{#successful}}success{{/successful}}{{^successful}}error{{/successful}}">
-					<td>{{timestamp}}</td>
+					<td style="white-space: nowrap;">{{timestamp}}</td>
 					<td>{{message}}</td>
 					<td>{{reason}}</td>
 				</tr>

@@ -142,7 +142,7 @@ public final class ContextUtil {
    *          The servlet context.
    */
   public static void setScheduler(final SchedulerInterface scheduler, final ServletContext context) {
-    context.setAttribute(SCOUT_DATA_LINKER, scheduler);
+    context.setAttribute(SCOUT_SCHEDULER, scheduler);
   }
 
   /**

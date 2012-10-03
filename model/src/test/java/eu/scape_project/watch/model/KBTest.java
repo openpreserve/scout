@@ -59,6 +59,22 @@ public class KBTest {
    */
   private static final Logger LOG = LoggerFactory.getLogger(KBTest.class.getSimpleName());
 
+  private static final String STRANGE_CHARS = " âñüç!#%\"<>«»€";
+
+  private static final String DATA_TYPE_NAME = "Entity type name" + STRANGE_CHARS;
+  private static final String DATA_TYPE_DESC = "Entity type description" + STRANGE_CHARS;
+  private static final String DATA_PROPERTY_NAME = "Property name" + STRANGE_CHARS;
+  private static final String DATA_PROPERTY_DESC = "Property description" + STRANGE_CHARS;
+  private static final String DATA_ENTITY_NAME = "Entity name" + STRANGE_CHARS;
+  private static final String DATA_SOURCE_NAME = "Source name" + STRANGE_CHARS;
+  private static final String DATA_SOURCE_DESCRIPTION = "Source description" + STRANGE_CHARS;
+  private static final String DATA_PLUGIN_NAME = "Plugin adaptor" + STRANGE_CHARS;
+  private static final String DATA_PLUGIN_VERSION = "0.0.1-SNAPSHOT";
+  private static final String DATA_SOURCE_ADAPTOR_INSTANCE = "My default instance" + STRANGE_CHARS;
+
+  private static final String DATA_TYPE_NAME_ALT = "Alternative entity type name" + STRANGE_CHARS;
+  private static final String DATA_TYPE_DESC_ALT = "Alternative entity type description" + STRANGE_CHARS;
+
   /**
    * A temporary directory to hold the data.
    */
@@ -169,8 +185,8 @@ public class KBTest {
 
     DAO.addDOListener(EntityType.class, mockDOListener);
 
-    final EntityType type1 = new EntityType("test1", "this is a test");
-    final EntityType type2 = new EntityType("test2", "this is another test");
+    final EntityType type1 = new EntityType(DATA_TYPE_NAME, DATA_TYPE_DESC);
+    final EntityType type2 = new EntityType(DATA_TYPE_NAME_ALT, DATA_TYPE_DESC_ALT);
 
     DAO.save(type1, type2);
     Mockito.verify(mockDOListener).onUpdated(type1);
@@ -190,14 +206,11 @@ public class KBTest {
   @Test
   public void testPropertyEquals() {
 
-    final String typename = "typename";
-    final String typedescription = "typedescription";
+    final EntityType type1 = new EntityType(DATA_TYPE_NAME, DATA_TYPE_DESC);
+    final EntityType type2 = new EntityType(DATA_TYPE_NAME, DATA_TYPE_DESC);
 
-    final EntityType type1 = new EntityType(typename, typedescription);
-    final EntityType type2 = new EntityType(typename, typedescription);
-
-    final String name = "propertyname";
-    final String description = "propertydescription";
+    final String name = DATA_PROPERTY_NAME;
+    final String description = DATA_PROPERTY_DESC;
 
     final Property property1 = new Property(type1, name, description);
     final Property property2 = new Property();
@@ -216,10 +229,10 @@ public class KBTest {
 
     // CREATE
     final EntityType type = new EntityType();
-    type.setName("tests");
-    type.setDescription("Test entities");
+    type.setName(DATA_TYPE_NAME);
+    type.setDescription(DATA_TYPE_DESC);
 
-    final Property property = new Property(type, "property1", "property description");
+    final Property property = new Property(type, DATA_PROPERTY_NAME, DATA_PROPERTY_DESC);
 
     DAO.save(type);
     DAO.save(property);
@@ -275,10 +288,10 @@ public class KBTest {
 
     // CREATE
     final EntityType type = new EntityType();
-    type.setName("tests");
-    type.setDescription("Test entities");
+    type.setName(DATA_TYPE_NAME);
+    type.setDescription(DATA_TYPE_DESC);
 
-    final Property property = new Property(type, "property1", "property description");
+    final Property property = new Property(type, DATA_PROPERTY_NAME, DATA_PROPERTY_DESC);
 
     DAO.save(type);
     DAO.save(property);
@@ -297,17 +310,14 @@ public class KBTest {
   @Test
   public void testEntityEquals() {
 
-    final String typename = "typename";
-    final String typedescription = "typedescription";
+    final EntityType type1 = new EntityType(DATA_TYPE_NAME, DATA_TYPE_DESC);
+    final EntityType type2 = new EntityType(DATA_TYPE_NAME, DATA_TYPE_DESC);
 
-    final EntityType type1 = new EntityType(typename, typedescription);
-    final EntityType type2 = new EntityType(typename, typedescription);
-
-    final String name = "entityname";
+    final String name = DATA_ENTITY_NAME;
 
     final Entity entity1 = new Entity(type1, name);
     final Entity entity2 = new Entity();
-    entity2.setEntityType(type2);
+    entity2.setType(type2);
     entity2.setName(name);
 
     Assert.assertTrue(entity1.equals(entity2));
@@ -321,10 +331,10 @@ public class KBTest {
 
     // CREATE
     final EntityType type = new EntityType();
-    type.setName("tests");
-    type.setDescription("Test entities");
+    type.setName(DATA_TYPE_NAME);
+    type.setDescription(DATA_TYPE_DESC);
 
-    final Entity entity = new Entity(type, "entity1");
+    final Entity entity = new Entity(type, DATA_ENTITY_NAME);
 
     DAO.save(type);
     DAO.save(entity);
@@ -377,10 +387,10 @@ public class KBTest {
 
     // CREATE
     final EntityType type = new EntityType();
-    type.setName("tests");
-    type.setDescription("Test entities");
+    type.setName(DATA_TYPE_NAME);
+    type.setDescription(DATA_TYPE_DESC);
 
-    final Entity entity = new Entity(type, "entity1");
+    final Entity entity = new Entity(type, DATA_ENTITY_NAME);
 
     DAO.save(type);
     DAO.save(entity);
@@ -405,19 +415,16 @@ public class KBTest {
   @Test
   public void testPropertyValueEquals() throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
 
-    final String typeName = "typename";
-    final String typeDescription = "typedescription";
+    final EntityType type1 = new EntityType(DATA_TYPE_NAME, DATA_TYPE_DESC);
+    final EntityType type2 = new EntityType(DATA_TYPE_NAME, DATA_TYPE_DESC);
 
-    final EntityType type1 = new EntityType(typeName, typeDescription);
-    final EntityType type2 = new EntityType(typeName, typeDescription);
-
-    final String propertyName = "propertyname";
-    final String propertyDescription = "propertydescription";
+    final String propertyName = DATA_PROPERTY_NAME;
+    final String propertyDescription = DATA_PROPERTY_DESC;
 
     final Property property1 = new Property(type1, propertyName, propertyDescription, DataType.STRING);
     final Property property2 = new Property(type2, propertyName, propertyDescription, DataType.STRING);
 
-    final String entityName = "entityname";
+    final String entityName = DATA_ENTITY_NAME;
 
     final Entity entity1 = new Entity(type1, entityName);
     final Entity entity2 = new Entity(type2, entityName);
@@ -437,12 +444,9 @@ public class KBTest {
   public void testPropertyValueDataTypes() throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
 
     // CREATING DATA
-    final String typeName = "typename";
-    final String typeDescription = "typedescription";
+    final EntityType type = new EntityType(DATA_TYPE_NAME, DATA_TYPE_DESC);
 
-    final EntityType type = new EntityType(typeName, typeDescription);
-
-    final String entityName = "entityname";
+    final String entityName = DATA_ENTITY_NAME;
     final Entity entity = new Entity(type, entityName);
 
     final Property stringProperty = new Property(type, "stringProperty", "", DataType.STRING);
@@ -472,10 +476,11 @@ public class KBTest {
     final PropertyValue stringDictionaryPropertyValue1 = new PropertyValue(entity, stringDictionaryProperty,
       Arrays.asList(new DictionaryItem("key1", "value1"), new DictionaryItem("key2", "value2")));
 
-    final Source source = new Source("testsource", "A test source");
-    final SourceAdaptor adaptor = new SourceAdaptor("testadaptor", "0.0.1", "default", source, Arrays.asList(type),
-      Arrays.asList(stringProperty, integerProperty, floatProperty, doubleProperty, dateProperty, uriProperty,
-        stringListProperty, stringDictionaryProperty), new HashMap<String, String>());
+    final Source source = new Source(DATA_SOURCE_NAME, DATA_SOURCE_DESCRIPTION);
+    final SourceAdaptor adaptor = new SourceAdaptor(DATA_PLUGIN_NAME, DATA_PLUGIN_VERSION,
+      DATA_SOURCE_ADAPTOR_INSTANCE, source, Arrays.asList(type), Arrays.asList(stringProperty, integerProperty,
+        floatProperty, doubleProperty, dateProperty, uriProperty, stringListProperty, stringDictionaryProperty),
+      new HashMap<String, String>());
 
     DAO.save(type);
     DAO.save(entity);
@@ -565,18 +570,15 @@ public class KBTest {
     }
 
     // data
-    final String typeName = "typename";
-    final String typeDescription = "typedescription";
+    final EntityType type = new EntityType(DATA_TYPE_NAME, DATA_TYPE_DESC);
 
-    final EntityType type = new EntityType(typeName, typeDescription);
-
-    final String entityName = "entityname";
+    final String entityName = DATA_ENTITY_NAME;
     final Entity entity = new Entity(type, entityName);
 
     Property property;
 
     // java class not compatible with data type
-    property = new Property(type, "property", "generic property", DataType.STRING);
+    property = new Property(type, DATA_PROPERTY_NAME, DATA_PROPERTY_DESC, DataType.STRING);
     try {
       new PropertyValue(entity, property, 0);
       Assert.fail();
@@ -584,7 +586,7 @@ public class KBTest {
 
     }
 
-    property = new Property(type, "property", "generic property", DataType.INTEGER);
+    property = new Property(type, DATA_PROPERTY_NAME, DATA_PROPERTY_DESC, DataType.INTEGER);
     try {
       new PropertyValue(entity, property, "0");
       Assert.fail();
@@ -592,7 +594,7 @@ public class KBTest {
 
     }
 
-    property = new Property(type, "property", "generic property", DataType.FLOAT);
+    property = new Property(type, DATA_PROPERTY_NAME, DATA_PROPERTY_DESC, DataType.FLOAT);
     try {
       new PropertyValue(entity, property, "0");
       Assert.fail();
@@ -600,7 +602,7 @@ public class KBTest {
 
     }
 
-    property = new Property(type, "property", "generic property", DataType.DOUBLE);
+    property = new Property(type, DATA_PROPERTY_NAME, DATA_PROPERTY_DESC, DataType.DOUBLE);
     try {
       new PropertyValue(entity, property, "0");
       Assert.fail();
@@ -608,7 +610,7 @@ public class KBTest {
 
     }
 
-    property = new Property(type, "property", "generic property", DataType.URI);
+    property = new Property(type, DATA_PROPERTY_NAME, DATA_PROPERTY_DESC, DataType.URI);
     try {
       new PropertyValue(entity, property, "0");
       Assert.fail();
@@ -616,7 +618,7 @@ public class KBTest {
 
     }
 
-    property = new Property(type, "property", "generic property", DataType.DATE);
+    property = new Property(type, DATA_PROPERTY_NAME, DATA_PROPERTY_DESC, DataType.DATE);
     try {
       new PropertyValue(entity, property, "0");
       Assert.fail();
@@ -624,7 +626,7 @@ public class KBTest {
 
     }
 
-    property = new Property(type, "property", "generic property", DataType.STRING_LIST);
+    property = new Property(type, DATA_PROPERTY_NAME, DATA_PROPERTY_DESC, DataType.STRING_LIST);
     try {
       new PropertyValue(entity, property, "0");
       Assert.fail();
@@ -632,7 +634,7 @@ public class KBTest {
 
     }
 
-    property = new Property(type, "property", "generic property", DataType.STRING_DICTIONARY);
+    property = new Property(type, DATA_PROPERTY_NAME, DATA_PROPERTY_DESC, DataType.STRING_DICTIONARY);
     try {
       new PropertyValue(entity, property, "0");
       Assert.fail();
@@ -653,16 +655,16 @@ public class KBTest {
 
     // CREATE
     final EntityType type = new EntityType();
-    type.setName("tests");
-    type.setDescription("Test entities");
+    type.setName(DATA_TYPE_NAME);
+    type.setDescription(DATA_TYPE_DESC);
 
-    final Entity entity = new Entity(type, "entity1");
-    final Property property = new Property(type, "property1", "property description");
+    final Entity entity = new Entity(type, DATA_ENTITY_NAME);
+    final Property property = new Property(type, DATA_PROPERTY_NAME, DATA_PROPERTY_DESC);
 
     final PropertyValue pv = new PropertyValue(entity, property, "123");
-    final Source source = new Source("testsource", "A test source");
-    final SourceAdaptor adaptor = new SourceAdaptor("testadaptor", "0.0.1", "default", source, Arrays.asList(type),
-      Arrays.asList(property), new HashMap<String, String>());
+    final Source source = new Source(DATA_SOURCE_NAME, DATA_SOURCE_DESCRIPTION);
+    final SourceAdaptor adaptor = new SourceAdaptor(DATA_PLUGIN_NAME, DATA_PLUGIN_VERSION,
+      DATA_SOURCE_ADAPTOR_INSTANCE, source, Arrays.asList(type), Arrays.asList(property), new HashMap<String, String>());
 
     DAO.save(type);
     DAO.save(entity);
@@ -727,17 +729,17 @@ public class KBTest {
   public void testPropertyValueListings() throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
     // CREATE
     final EntityType type = new EntityType();
-    type.setName("tests");
-    type.setDescription("Test entities");
+    type.setName(DATA_TYPE_NAME);
+    type.setDescription(DATA_TYPE_DESC);
 
-    final Entity entity = new Entity(type, "entity1");
-    final Property property = new Property(type, "property1", "property description");
+    final Entity entity = new Entity(type, DATA_ENTITY_NAME);
+    final Property property = new Property(type, DATA_PROPERTY_NAME, DATA_PROPERTY_DESC);
 
     final PropertyValue pv = new PropertyValue(entity, property, "123");
 
-    final Source source = new Source("testsource", "A test source");
-    final SourceAdaptor adaptor = new SourceAdaptor("testadaptor", "0.0.1", "default", source, Arrays.asList(type),
-      Arrays.asList(property), new HashMap<String, String>());
+    final Source source = new Source(DATA_SOURCE_NAME, DATA_SOURCE_DESCRIPTION);
+    final SourceAdaptor adaptor = new SourceAdaptor(DATA_PLUGIN_NAME, DATA_PLUGIN_VERSION,
+      DATA_SOURCE_ADAPTOR_INSTANCE, source, Arrays.asList(type), Arrays.asList(property), new HashMap<String, String>());
 
     DAO.save(type);
     DAO.save(entity);
@@ -777,20 +779,20 @@ public class KBTest {
   public void testMeasurements() throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
     // CREATE
     final EntityType type = new EntityType();
-    type.setName("tests");
-    type.setDescription("Test entities");
+    type.setName(DATA_TYPE_NAME);
+    type.setDescription(DATA_TYPE_DESC);
 
-    final Entity entity = new Entity(type, "entity1");
-    final Property property = new Property(type, "property1", "property description", DataType.INTEGER);
+    final Entity entity = new Entity(type, DATA_ENTITY_NAME);
+    final Property property = new Property(type, DATA_PROPERTY_NAME, DATA_PROPERTY_DESC, DataType.INTEGER);
 
     final PropertyValue pv1 = new PropertyValue(entity, property, 1);
     final PropertyValue pv2 = new PropertyValue(entity, property, 2);
 
-    final Source source = new Source("testsource", "A test source");
-    final SourceAdaptor adaptor1 = new SourceAdaptor("testadaptor", "0.0.1", "default", source, Arrays.asList(type),
-      Arrays.asList(property), new HashMap<String, String>());
-    final SourceAdaptor adaptor2 = new SourceAdaptor("testadaptor", "0.0.2", "default", source, Arrays.asList(type),
-      Arrays.asList(property), new HashMap<String, String>());
+    final Source source = new Source(DATA_SOURCE_NAME, DATA_SOURCE_DESCRIPTION);
+    final SourceAdaptor adaptor1 = new SourceAdaptor(DATA_PLUGIN_NAME, "0.0.1", DATA_SOURCE_ADAPTOR_INSTANCE, source,
+      Arrays.asList(type), Arrays.asList(property), new HashMap<String, String>());
+    final SourceAdaptor adaptor2 = new SourceAdaptor(DATA_PLUGIN_NAME, "0.0.2", DATA_SOURCE_ADAPTOR_INSTANCE, source,
+      Arrays.asList(type), Arrays.asList(property), new HashMap<String, String>());
 
     DAO.save(type);
     DAO.save(entity);
@@ -879,11 +881,11 @@ public class KBTest {
   @Test
   public void testQuestionEquals() {
     final EntityType type = new EntityType();
-    type.setName("tests");
-    type.setDescription("Test entities");
+    type.setName(DATA_TYPE_NAME);
+    type.setDescription(DATA_TYPE_DESC);
 
-    final Entity entity = new Entity(type, "entity1");
-    final Property property = new Property(type, "property1", "property description");
+    final Entity entity = new Entity(type, DATA_ENTITY_NAME);
+    final Property property = new Property(type, DATA_PROPERTY_NAME, DATA_PROPERTY_DESC);
 
     final String sparql = "?s watch:entity watch-Entity:" + entity.getName() + ". ?s watch:property watch-Property:"
       + Property.createId(type.getName(), property.getName() + ". FILTER(?s < 200)");
@@ -922,11 +924,11 @@ public class KBTest {
 
     // CREATE DATA
     final EntityType type = new EntityType();
-    type.setName("tests");
-    type.setDescription("Test entities");
+    type.setName(DATA_TYPE_NAME);
+    type.setDescription(DATA_TYPE_DESC);
 
-    final Entity entity = new Entity(type, "entity1");
-    final Property property = new Property(type, "property1", "property description");
+    final Entity entity = new Entity(type, DATA_ENTITY_NAME);
+    final Property property = new Property(type, DATA_PROPERTY_NAME, DATA_PROPERTY_DESC);
 
     type.save();
     entity.save();
@@ -993,17 +995,17 @@ public class KBTest {
 
     // CREATE DATA
     final EntityType type = new EntityType();
-    type.setName("tests");
-    type.setDescription("Test entities");
+    type.setName(DATA_TYPE_NAME);
+    type.setDescription(DATA_TYPE_DESC);
 
-    final Entity entity = new Entity(type, "entity1");
-    final Property property = new Property(type, "property1", "property description");
+    final Entity entity = new Entity(type, DATA_ENTITY_NAME);
+    final Property property = new Property(type, DATA_PROPERTY_NAME, DATA_PROPERTY_DESC);
 
     final PropertyValue pv = new PropertyValue(entity, property, "123");
 
-    final Source source = new Source("testsource", "A test source");
-    final SourceAdaptor adaptor = new SourceAdaptor("testadaptor", "0.0.1", "default", source, Arrays.asList(type),
-      Arrays.asList(property), new HashMap<String, String>());
+    final Source source = new Source(DATA_SOURCE_NAME, DATA_SOURCE_DESCRIPTION);
+    final SourceAdaptor adaptor = new SourceAdaptor(DATA_PLUGIN_NAME, DATA_PLUGIN_VERSION,
+      DATA_SOURCE_ADAPTOR_INSTANCE, source, Arrays.asList(type), Arrays.asList(property), new HashMap<String, String>());
 
     DAO.save(type);
     DAO.save(entity);
@@ -1089,11 +1091,11 @@ public class KBTest {
 
     // CREATE DATA
     final EntityType type = new EntityType();
-    type.setName("tests");
-    type.setDescription("Test entities");
+    type.setName(DATA_TYPE_NAME);
+    type.setDescription(DATA_TYPE_DESC);
 
-    final Entity entity = new Entity(type, "entity1");
-    final Property property = new Property(type, "property1", "property description");
+    final Entity entity = new Entity(type, DATA_ENTITY_NAME);
+    final Property property = new Property(type, DATA_PROPERTY_NAME, DATA_PROPERTY_DESC);
 
     final PropertyValue pv = new PropertyValue(entity, property, "123");
 
@@ -1141,14 +1143,13 @@ public class KBTest {
   @Test
   public void testSource() {
     // CREATE
-    final String sourceName = "test";
-    final Source source = new Source(sourceName, "test source");
+    final Source source = new Source(DATA_SOURCE_NAME, DATA_SOURCE_DESCRIPTION);
 
     // SAVE
     DAO.save(source);
 
     // FIND
-    final Source source2 = DAO.SOURCE.findById(sourceName);
+    final Source source2 = DAO.SOURCE.findById(DATA_SOURCE_NAME);
     Assert.assertEquals(source, source2);
 
     // QUERY

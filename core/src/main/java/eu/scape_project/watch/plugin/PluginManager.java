@@ -451,16 +451,16 @@ public final class PluginManager {
           }
 
         } catch (final ClassNotFoundException e) {
-          LOGGER.warn("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
+          LOGGER.trace("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
             e.getMessage()});
         } catch (final IllegalAccessError e) {
-          LOGGER.warn("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
+          LOGGER.trace("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
             e.getMessage()});
         } catch (final VerifyError e) {
-          LOGGER.warn("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
+          LOGGER.trace("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
             e.getMessage()});
         } catch (final NoClassDefFoundError e) {
-          LOGGER.warn("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
+          LOGGER.trace("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
             e.getMessage()});
         }
       }

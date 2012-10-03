@@ -33,6 +33,7 @@ import com.google.inject.Binder;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import com.google.inject.name.Names;
 
 import eu.scape_project.watch.web.annotations.Controller;
 import eu.scape_project.watch.web.annotations.HttpMethod;
@@ -132,18 +133,18 @@ public class MyMustacheletService extends HttpServlet implements Filter {
     resp.setCharacterEncoding("UTF-8");
 
     final String requestURI = req.getRequestURI();
-    final String contextPath = req.getContextPath();
     String pathInfo = req.getPathInfo();
-    final String basePath = requestURI.substring(0, requestURI.length() - pathInfo.length());
+    final String contextPath = req.getContextPath();
+    final String mustacheletPath = req.getContextPath() + req.getServletPath();
 
     if (pathInfo == null || pathInfo.equals("")) {
       pathInfo = "/";
     }
 
     logger.info("Request URI: {}", requestURI);
-    logger.info("Context path: {}", contextPath);
+    logger.info("context path: {}", contextPath);
+    logger.info("Mustachelet path: {}", mustacheletPath);
     logger.info("Path info: {}", pathInfo);
-    logger.info("Base path: {}", basePath);
 
     for (Map.Entry<Pattern, Map<HttpMethod.Type, Class<?>>> entry : pathMap.entrySet()) {
       final Matcher matcher = entry.getKey().matcher(pathInfo);
@@ -167,7 +168,8 @@ public class MyMustacheletService extends HttpServlet implements Filter {
             binder.bind(Matcher.class).toInstance(matcher);
             binder.bind(HttpServletRequest.class).toInstance(req);
             binder.bind(HttpServletResponse.class).toInstance(resp);
-            binder.bind(String.class).toInstance(basePath);
+            binder.bind(String.class).annotatedWith(Names.named("contextPath")).toInstance(contextPath);
+            binder.bind(String.class).annotatedWith(Names.named("mustacheletPath")).toInstance(mustacheletPath);
           }
         });
 

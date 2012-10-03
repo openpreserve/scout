@@ -1,7 +1,5 @@
 package eu.scape_project.watch.utils;
 
-import java.util.Date;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,7 +8,6 @@ import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.domain.SourceAdaptorEvent;
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
-import eu.scape_project.watch.interfaces.EventDetails;
 import eu.scape_project.watch.interfaces.SchedulerListenerInterface;
 
 /**
@@ -30,56 +27,45 @@ public class AdaptorsLifecycleListener implements SchedulerListenerInterface {
     this.adaptorManager = adaptorManager;
   }
 
-  private SourceAdaptorEvent createEvent(AdaptorPluginInterface adaptorInterface, EventDetails details) {
-    SourceAdaptorEvent event = null;
+  private void registerEvent(AdaptorPluginInterface adaptorInterface, SourceAdaptorEvent event) {
     final SourceAdaptor sourceAdaptor = adaptorManager.getSourceAdaptor(adaptorInterface);
 
     if (sourceAdaptor != null) {
-      event = new SourceAdaptorEvent(details.getMessage(), details.isSucessful(), details.getReason(), new Date(),
-        sourceAdaptor);
-    }
-    return event;
-  }
-
-  private void registerEvent(AdaptorPluginInterface adaptorInterface, EventDetails details) {
-    final SourceAdaptorEvent event = createEvent(adaptorInterface, details);
-
-    if (event != null) {
+      event.setAdaptor(sourceAdaptor);
       DAO.save(event);
     } else {
-      log.warn("Could not save adaptor event!");
+      log.warn("Could not save adaptor event because adaptor was not found");
     }
   }
 
   @Override
-  public void adaptorPluginWasStarted(AdaptorPluginInterface adaptor, EventDetails details) {
-    registerEvent(adaptor, details);
+  public void adaptorPluginWasStarted(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
+    registerEvent(adaptor, event);
   }
 
   @Override
-  public void adaptorPluginWasStoped(AdaptorPluginInterface adaptor, EventDetails details) {
-    registerEvent(adaptor, details);
+  public void adaptorPluginWasStopped(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
+    registerEvent(adaptor, event);
   }
 
   @Override
-  public void adaptorPluginWasResumed(AdaptorPluginInterface adaptor, EventDetails details) {
-    registerEvent(adaptor, details);
+  public void adaptorPluginWasResumed(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
+    registerEvent(adaptor, event);
   }
 
   @Override
-  public void adaptorPluginWasRescheduled(AdaptorPluginInterface adaptor, EventDetails details) {
-    registerEvent(adaptor, details);
+  public void adaptorPluginWasRescheduled(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
+    registerEvent(adaptor, event);
   }
 
   @Override
-  public void adaptorPluginWasDeleted(AdaptorPluginInterface adaptor, EventDetails details) {
-    // If it was deleted it cannot be created!
-    // registerEvent(adaptor, details);
+  public void adaptorPluginWasDeleted(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
+    registerEvent(adaptor, event);
   }
 
   @Override
-  public void adaptorPluginWasExecuted(AdaptorPluginInterface adaptor, EventDetails details) {
-    registerEvent(adaptor, details);
+  public void adaptorPluginWasExecuted(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
+    registerEvent(adaptor, event);
   }
 
 }

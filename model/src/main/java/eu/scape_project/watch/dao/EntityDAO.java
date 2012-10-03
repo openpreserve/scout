@@ -36,7 +36,7 @@ public final class EntityDAO extends AbstractDO<Entity> {
    * @return Get the RDF ID.
    */
   public static String getEntityRDFId(final String entityName) {
-    return "<" + KBUtils.WATCH_NS + Entity.class.getSimpleName() + "/" + entityName + ">";
+    return KBUtils.getRdfId(Entity.class, entityName);
   }
 
   /**
@@ -65,7 +65,7 @@ public final class EntityDAO extends AbstractDO<Entity> {
    * @return the {@link Entity} or <code>null</code> if not found
    */
   public Entity findById(final String entityName) {
-    return super.findById(entityName, Entity.class);
+    return super.findById(KBUtils.encodeId(entityName), Entity.class);
   }
 
   /**

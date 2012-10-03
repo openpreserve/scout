@@ -176,7 +176,7 @@ public class DataLinker {
    *          affected rules.
    */
   private void onEntityChanged(final Entity entity) {
-    final EntityType type = entity.getEntityType();
+    final EntityType type = entity.getType();
 
     if (type != null) {
       final Set<LinkRule> typeRules = typeObservers.get(type);

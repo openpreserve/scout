@@ -12,7 +12,6 @@ import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
 
-
 /**
  * A Source represents certain aspects of the world for which there exists a
  * known way of investigating certain properties that represent these aspects.
@@ -49,7 +48,6 @@ public class Source extends RdfBean<Source> {
   /**
    * Source unique name.
    */
-  @Id
   @XmlElement
   private String name;
 
@@ -58,6 +56,11 @@ public class Source extends RdfBean<Source> {
    */
   @XmlElement
   private String description;
+
+  @Id
+  public String getId() {
+    return KBUtils.encodeId(getName());
+  }
 
   public String getName() {
     return name;
@@ -112,7 +115,7 @@ public class Source extends RdfBean<Source> {
     }
     return true;
   }
-  
+
   @Override
   public Source save() {
     final Source source = super.save();
@@ -130,7 +133,5 @@ public class Source extends RdfBean<Source> {
   public String toString() {
     return "Source [name=" + name + ", description=" + description + "]";
   }
-  
-  
 
 }

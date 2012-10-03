@@ -3,6 +3,9 @@ package eu.scape_project.watch.utils;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -10,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.http.client.utils.URIUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +27,7 @@ import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.tdb.TDB;
 import com.hp.hpl.jena.tdb.TDBFactory;
+import com.hp.hpl.jena.util.URIref;
 
 import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.domain.AsyncRequest;
@@ -114,7 +119,6 @@ public final class KBUtils {
    * A measurement constant.
    */
   public static final String MEASUREMENT = "measurement";
-  
 
   /**
    * A asynchronous request constant.
@@ -184,7 +188,7 @@ public final class KBUtils {
    * A source adaptor constant.
    */
   public static final String SOURCE_ADAPTOR = "sourceadaptor";
-  
+
   /**
    * A source adaptor event.
    */
@@ -515,6 +519,25 @@ public final class KBUtils {
    */
   private KBUtils() {
 
+  }
+
+  public static String encodeId(String id) {
+    String uriRef = URIref.encode(id);
+    uriRef = uriRef.replace("#", "%23");
+    return uriRef;
+  }
+
+  public static String getRdfId(Class<?> entityClass, String id) {
+    final StringBuilder builder = new StringBuilder();
+
+    builder.append("<");
+    builder.append(WATCH_NS);
+    builder.append(entityClass.getSimpleName());
+    builder.append("/");
+    builder.append(encodeId(id));
+    builder.append(">");
+
+    return builder.toString();
   }
 
 }

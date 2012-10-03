@@ -22,7 +22,7 @@ public final class SourceAdaptorDAO extends AbstractDO<SourceAdaptor> {
    * @return The complete Source Adaptor RDF Id using namescape prefix
    */
   public static String getSourceAdaptorRDFId(final SourceAdaptor adaptor) {
-    return "<" + KBUtils.WATCH_NS + SourceAdaptor.class.getSimpleName() + "/" + adaptor.getId() + ">";
+    return KBUtils.getRdfId(SourceAdaptor.class, adaptor.getId());
   }
 
   /**

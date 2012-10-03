@@ -34,21 +34,20 @@ public class EntityType extends RdfBean<EntityType> {
   /**
    * Create an entity type.
    * 
-   * @param n
+   * @param name
    *          the entity type unique name
-   * @param d
+   * @param description
    *          a description
    */
-  public EntityType(final String n, final String d) {
+  public EntityType(final String name, final String description) {
     super();
-    this.name = n;
-    this.description = d;
+    this.name = name;
+    this.description = description;
   }
 
   /**
    * Unique name that identifies the entity type.
    */
-  @Id
   @XmlElement
   private String name;
 
@@ -57,6 +56,11 @@ public class EntityType extends RdfBean<EntityType> {
    */
   @XmlElement
   private String description;
+
+  @Id
+  public String getId() {
+    return KBUtils.encodeId(getName());
+  }
 
   public String getName() {
     return name;

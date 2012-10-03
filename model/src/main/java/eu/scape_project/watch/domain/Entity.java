@@ -48,7 +48,6 @@ public class Entity extends RdfBean<Entity> {
   /**
    * The unique name of the entity.
    */
-  @Id
   @XmlElement(required = true)
   private String name;
 
@@ -59,6 +58,11 @@ public class Entity extends RdfBean<Entity> {
   @JsonProperty
   private EntityType type;
 
+  @Id
+  public String getId() {
+    return KBUtils.encodeId(getName());
+  }
+
   public String getName() {
     return name;
   }
@@ -67,12 +71,12 @@ public class Entity extends RdfBean<Entity> {
     this.name = name;
   }
 
-  public EntityType getEntityType() {
+  public EntityType getType() {
     return type;
   }
 
-  public void setEntityType(final EntityType entityType) {
-    this.type = entityType;
+  public void setType(final EntityType type) {
+    this.type = type;
   }
 
   @Override

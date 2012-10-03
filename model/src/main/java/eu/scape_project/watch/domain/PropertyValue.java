@@ -536,7 +536,7 @@ public class PropertyValue extends RdfBean<PropertyValue> {
    * @return The {@link PropertyValue} unique Id.
    */
   public static String createId(final String entityId, final String propertyId, final int version) {
-    return entityId + KBUtils.ID_SEPARATOR + propertyId + KBUtils.ID_SEPARATOR + version;
+    return KBUtils.encodeId(entityId + KBUtils.ID_SEPARATOR + propertyId + KBUtils.ID_SEPARATOR + version);
   }
 
   @Override

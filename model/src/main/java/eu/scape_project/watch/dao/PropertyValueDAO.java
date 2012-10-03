@@ -44,7 +44,7 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
    * @return The complete Property Value RDF Id using namescape prefix
    */
   public static String getPropertyValueRDFId(final PropertyValue propertyValue) {
-    return "<" + KBUtils.WATCH_NS + PropertyValue.class.getSimpleName() + "/" + propertyValue.getId() + ">";
+    return KBUtils.getRdfId(PropertyValue.class, propertyValue.getId());
   }
 
   /**

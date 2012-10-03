@@ -21,7 +21,7 @@ public final class EntityTypeDAO extends AbstractDO<EntityType> {
    * @return the complete RDF Id, using namespace prefix.
    */
   public static String getEntityTypeRDFId(final String entityTypeName) {
-    return "<" + KBUtils.WATCH_NS + EntityType.class.getSimpleName() + "/" + entityTypeName + ">";
+    return KBUtils.getRdfId(EntityType.class, entityTypeName);
   }
 
   /**

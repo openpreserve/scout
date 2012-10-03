@@ -12,7 +12,7 @@
 
 	<label>Source</label> <select name="source"> {{#source}}
 		<option value="{{name}}">{{name}}: {{description}}</option>{{/source}}
-	</select> <a class="btn btn-link" href="{{basePath}}/source/new">create new
+	</select> <a class="btn btn-link" href="{{mustacheletPath}}/source/new">create new
 		source</a> <br /> <br />
 	<button type="submit" class="btn btn-primary">Create</button>
 
@@ -35,7 +35,7 @@ function updateConfiguration() {
 	var pluginName = pluginIdSplit[0];
 	var pluginVersion = pluginIdSplit[1];
 	
-	$.getJSON('/api/plugin.json/'+pluginName+'/'+pluginVersion, function(plugin_data) {
+	$.getJSON('{{contextPath}}/api/plugin.json/'+pluginName+'/'+pluginVersion, function(plugin_data) {
 		var plugin = ich.plugin_configuration(plugin_data);
 		$('#configuration').html(plugin);
 	});

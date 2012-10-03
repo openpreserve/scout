@@ -19,7 +19,10 @@ import eu.scape_project.watch.adaptor.AdaptorManager;
 import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.domain.SourceAdaptor;
+import eu.scape_project.watch.domain.SourceAdaptorEvent;
+import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
 import eu.scape_project.watch.interfaces.PluginType;
+import eu.scape_project.watch.interfaces.SchedulerInterface;
 import eu.scape_project.watch.listener.ContextUtil;
 import eu.scape_project.watch.plugin.PluginInfo;
 import eu.scape_project.watch.plugin.PluginManager;
@@ -81,16 +84,20 @@ public class CreateSourceAdaptor extends Mustachelet {
     if (source != null) {
       final ServletContext context = ContextUtil.getServletContext(request);
       final AdaptorManager adaptorManager = ContextUtil.getAdaptorManager(context);
+      final SchedulerInterface scheduler = ContextUtil.getScheduler(context);
+
       final SourceAdaptor adaptor = adaptorManager.createAdaptor(pluginName, pluginVersion, instance, configuration,
         source);
 
       if (adaptor != null) {
-        response.sendRedirect(basePath + "/administration.html");
+        final AdaptorPluginInterface adaptorInstance = adaptorManager.getAdaptorInstance(adaptor.getInstance());
+        scheduler.start(adaptorInstance, new SourceAdaptorEvent("First run"));
+
+        response.sendRedirect(mustacheletPath + "/administration.html");
       } else {
         // TODO send error of plugin does not exist.
         response.sendError(404, "Plug-in does not exist: " + pluginName + "-" + pluginVersion);
       }
-
     } else {
       // TODO send error source does not exist.
       response.sendError(404, "Source does not exist: " + sourceName);

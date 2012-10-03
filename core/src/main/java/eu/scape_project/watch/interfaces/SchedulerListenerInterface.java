@@ -1,18 +1,19 @@
 package eu.scape_project.watch.interfaces;
 
+import eu.scape_project.watch.domain.SourceAdaptorEvent;
+
 public interface SchedulerListenerInterface {
 
-  
-  void adaptorPluginWasStarted(AdaptorPluginInterface adaptor, EventDetails details);
-  
-  void adaptorPluginWasStoped(AdaptorPluginInterface adaptor, EventDetails details);
-  
-  void adaptorPluginWasResumed(AdaptorPluginInterface adaptor, EventDetails details);
-  
-  void adaptorPluginWasRescheduled(AdaptorPluginInterface adaptor, EventDetails details);
-  
-  void adaptorPluginWasDeleted(AdaptorPluginInterface adaptor, EventDetails details);
-  
-  void adaptorPluginWasExecuted(AdaptorPluginInterface adaptor, EventDetails details);
-  
+  void adaptorPluginWasStarted(AdaptorPluginInterface adaptor, SourceAdaptorEvent event);
+
+  void adaptorPluginWasStopped(AdaptorPluginInterface adaptor, SourceAdaptorEvent event);
+
+  void adaptorPluginWasResumed(AdaptorPluginInterface adaptor, SourceAdaptorEvent event);
+
+  void adaptorPluginWasRescheduled(AdaptorPluginInterface adaptor, SourceAdaptorEvent event);
+
+  void adaptorPluginWasDeleted(AdaptorPluginInterface adaptor, SourceAdaptorEvent event);
+
+  void adaptorPluginWasExecuted(AdaptorPluginInterface adaptor, SourceAdaptorEvent event);
+
 }

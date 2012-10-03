@@ -63,7 +63,7 @@ public class Administration extends Mustachelet {
       if (adaptor != null) {
         DAO.delete(adaptor);
         adaptorManager.reloadKnownAdaptors();
-        response.sendRedirect(basePath + "/administration.html");
+        response.sendRedirect(mustacheletPath + "/administration.html");
       } else {
         response.sendError(404, "Source adaptor not found: " + adaptorUID);
       }

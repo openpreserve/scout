@@ -16,6 +16,7 @@ import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.query.QueryParseException;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.QuerySolutionMap;
 import com.hp.hpl.jena.query.ResultSet;
@@ -91,10 +92,16 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
       sparql.append(orderBy);
     }
 
-    LOG.trace("SPARQL:\n {}", sparql);
+    LinkedList<T> results;
 
-    final LinkedList<T> results = Sparql.exec(Jenabean.instance().reader(), typeClass, sparql.toString(),
-      new QuerySolutionMap(), start, max);
+    try {
+      results = Sparql.exec(Jenabean.instance().reader(), typeClass, sparql.toString(), new QuerySolutionMap(), start,
+        max);
+      LOG.trace("The following query gave {} results:\n{} ", new Object[] {results.size(), sparql});
+    } catch (final QueryParseException e) {
+      LOG.error("Error parsing query: " + sparql, e);
+      throw e;
+    }
 
     return results;
   }
@@ -139,7 +146,7 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
     final StringBuilder sparql = new StringBuilder();
 
     sparql.append(KBUtils.PREFIXES_DECL);
-    
+
     // TODO use Jena's SPARQL manipulation classes instead of strings
     // http://jena.apache.org/documentation/query/manipulating_sparql_using_arq.html
 

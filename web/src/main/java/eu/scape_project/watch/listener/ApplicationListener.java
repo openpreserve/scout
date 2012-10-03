@@ -22,11 +22,10 @@ import eu.scape_project.watch.domain.Question;
 import eu.scape_project.watch.domain.RequestTarget;
 import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.domain.SourceAdaptor;
+import eu.scape_project.watch.domain.SourceAdaptorEvent;
 import eu.scape_project.watch.domain.Trigger;
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
-import eu.scape_project.watch.interfaces.EventDetails;
 import eu.scape_project.watch.interfaces.SchedulerInterface;
-import eu.scape_project.watch.interfaces.SchedulerListenerInterface;
 import eu.scape_project.watch.linking.DataLinker;
 import eu.scape_project.watch.merging.DataMerger;
 import eu.scape_project.watch.plugin.PluginManager;
@@ -94,14 +93,11 @@ public class ApplicationListener implements ServletContextListener {
     final AdaptorsLifecycleListener schedulerListener = new AdaptorsLifecycleListener(manager);
     scheduler.addSchedulerListener(schedulerListener);
 
-    // TODO read this out of file or some other way...
-    final Map<String, String> schedulerConfig = new HashMap<String, String>();
-    schedulerConfig.put("scheduler.intervalInSeconds", "60");
     for (AdaptorPluginInterface adaptor : activeAdaptors.values()) {
-      scheduler.start(adaptor, schedulerConfig, null); // TODO add desired
-      // properties...
+      scheduler.start(adaptor, new SourceAdaptorEvent("Application startup"));
     }
 
+    LOG.info("Setting adaptor manager and scheduler in context");
     final ServletContext context = sce.getServletContext();
     ContextUtil.setAdaptorManager(manager, context);
     ContextUtil.setDataMerger(merger, context);

@@ -81,7 +81,7 @@ public class DataMerger {
    *          The entity to merge.
    */
   public void merge(final Entity entity) {
-    final EntityType type = entity.getEntityType();
+    final EntityType type = entity.getType();
 
     final MergeRule mergeRule = typeSpecializedRules.get(type);
 

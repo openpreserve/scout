@@ -87,13 +87,15 @@ public class PropertyValue extends RdfBean<PropertyValue> {
    * Value holder when type is {@link List<String>}.
    */
   @XmlElement(name = "value")
-  @JsonProperty("stringListValue")
+  //@JsonProperty("stringListValue")
+  @JsonIgnore
   private List<String> stringListValue = new ArrayList<String>();
   /**
    * Value holder when type is {@link List<DictionaryItem>}.
    */
   @XmlElement(name = "value")
-  @JsonProperty("stringDictionaryValue")
+  //@JsonProperty("stringDictionaryValue")
+  @JsonIgnore
   private List<DictionaryItem> stringDictionaryValue = new ArrayList<DictionaryItem>();
 
   /**

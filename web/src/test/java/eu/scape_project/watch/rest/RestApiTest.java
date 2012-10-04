@@ -55,12 +55,12 @@ import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
  * @author Luis Faria <lfaria@keep.pt>
  * 
  */
-public class CoreRestTest extends JerseyTest {
+public class RestApiTest extends JerseyTest {
 
   /**
    * Logger.
    */
-  private static final Logger LOG = LoggerFactory.getLogger(CoreRestTest.class);
+  private static final Logger LOG = LoggerFactory.getLogger(RestApiTest.class);
 
   /**
    * Logging start and finish of tests.
@@ -120,7 +120,7 @@ public class CoreRestTest extends JerseyTest {
    * Initialize Jersey Test Framework.
    * 
    */
-  public CoreRestTest() {
+  public RestApiTest() {
     // super("eu.scape_project.watch.rest.resource");
     super(new WebAppDescriptor.Builder("javax.ws.rs.Application", WatchApplication.class.getName()).initParam(
       JSONConfiguration.FEATURE_POJO_MAPPING, "true").build());
@@ -140,7 +140,7 @@ public class CoreRestTest extends JerseyTest {
   /**
    * Test entity type with JSON output.
    * 
-   * @see CoreRestTest#entityCRUD(eu.scape_project.watch.rest.WatchClient.Format)
+   * @see RestApiTest#entityCRUD(eu.scape_project.watch.rest.WatchClient.Format)
    */
   @Test
   public void entityTypeCrudJson() {
@@ -246,7 +246,7 @@ public class CoreRestTest extends JerseyTest {
     // TODO test creating an already existing entity
 
     // GET
-    final Entity entity2 = client.getEntity(name);
+    final Entity entity2 = client.getEntity(typeName, name);
     assertEquals(entity, entity2);
 
     // LIST
@@ -257,14 +257,14 @@ public class CoreRestTest extends JerseyTest {
     // TODO test update
 
     // DELETE
-    final Entity entity3 = client.deleteEntity(name);
+    final Entity entity3 = client.deleteEntity(typeName, name);
     Assert.assertEquals(entity3, entity);
 
     final EntityType entitytype2 = client.deleteEntityType(typeName);
     Assert.assertEquals(entitytype2, entitytype);
 
     // GET
-    final Entity entity4 = client.getEntity(name);
+    final Entity entity4 = client.getEntity(typeName, name);
     Assert.assertNull(entity4);
 
     // LIST
@@ -425,7 +425,7 @@ public class CoreRestTest extends JerseyTest {
     final PropertyValue propertyValue3 = client.deletePropertyValue(typeName, entityName, propertyName);
     Assert.assertEquals(propertyValue3, propertyValue);
 
-    final Entity entity2 = client.deleteEntity(entityName);
+    final Entity entity2 = client.deleteEntity(typeName, entityName);
     Assert.assertEquals(entity.getName(), entity2.getName());
 
     property2 = client.deleteProperty(typeName, propertyName);
@@ -499,13 +499,13 @@ public class CoreRestTest extends JerseyTest {
       entity, property, value));
 
     // DO TESTS
-    final List<EntityType> typeList = client.getRequest(EntityType.class, EntityDAO.getEntityRDFId(entityName)
+    final List<EntityType> typeList = client.getRequest(EntityType.class, EntityDAO.getEntityRDFId(entity)
       + " watch:type ?s", 0, 100);
 
     Assert.assertTrue(typeList.contains(entitytype));
 
     final List<PropertyValue> pvList = client.getRequest(PropertyValue.class,
-      "?s watch:entity " + EntityDAO.getEntityRDFId(entityName), 0, 100);
+      "?s watch:entity " + EntityDAO.getEntityRDFId(entity), 0, 100);
 
     Assert.assertTrue(pvList.contains(propertyValue));
 
@@ -589,7 +589,7 @@ public class CoreRestTest extends JerseyTest {
   /**
    * Test source with JSON output.
    * 
-   * @see CoreRestTest#sourceCRUD(eu.scape_project.watch.rest.WatchClient.Format)
+   * @see RestApiTest#sourceCRUD(eu.scape_project.watch.rest.WatchClient.Format)
    */
   @Test
   public void sourceCrudJson() {

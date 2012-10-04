@@ -93,7 +93,7 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
 
     final StringBuilder query = new StringBuilder();
 
-    query.append("?s watch:entity " + EntityDAO.getEntityRDFId(entityName));
+    query.append("?s watch:entity " + EntityDAO.getEntityRDFId(entityType, entityName));
     query.append(" . ");
     query.append("?s watch:property " + PropertyDAO.getPropertyRDFId(entityType, propertyName));
     query.append(" . ");
@@ -195,8 +195,14 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
    *          The maximum number of items to retrieve
    * @return The list of {@link PropertyValue} filtered by the above constraints
    */
-  public List<PropertyValue> listWithEntity(final String entityName, final int start, final int max) {
-    final String bindings = String.format("?s %1$s %2$s", ENTITY_REL, EntityDAO.getEntityRDFId(entityName));
+  public List<PropertyValue> listWithEntity(final String typeName, final String entityName, final int start,
+    final int max) {
+    final String bindings = String.format("?s %1$s %2$s", ENTITY_REL, EntityDAO.getEntityRDFId(typeName, entityName));
+    return this.query(bindings, start, max);
+  }
+
+  public List<PropertyValue> listWithEntity(final Entity entity, final int start, final int max) {
+    final String bindings = String.format("?s %1$s %2$s", ENTITY_REL, EntityDAO.getEntityRDFId(entity));
     return this.query(bindings, start, max);
   }
 
@@ -216,10 +222,11 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
    *          The maximum number of items to retrieve
    * @return The list of {@link PropertyValue} filtered by the above constraints
    */
-  public Collection<PropertyValue> listWithEntityAndProperty(final String entityName, final String entityType,
+  public Collection<PropertyValue> listWithEntityAndProperty(final String entityType, final String entityName,
     final String propertyName, final int start, final int max) {
     final String bindings = String.format("?s %1$s %2$s . ?s %3$s %4$s", ENTITY_REL,
-      EntityDAO.getEntityRDFId(entityName), PROPERTY_REL, PropertyDAO.getPropertyRDFId(entityType, propertyName));
+      EntityDAO.getEntityRDFId(entityType, entityName), PROPERTY_REL,
+      PropertyDAO.getPropertyRDFId(entityType, propertyName));
     return this.query(bindings, start, max);
   }
 

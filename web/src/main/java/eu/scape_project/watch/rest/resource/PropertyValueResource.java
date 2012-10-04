@@ -127,7 +127,7 @@ public class PropertyValueResource extends JavaHelp {
     @ApiParam(value = "New property value", required = true) final PropertyValue pv) {
 
     // check if referred entity and property exist
-    final Entity entity = DAO.ENTITY.findById(pv.getEntity().getName());
+    final Entity entity = DAO.ENTITY.findById(pv.getEntity().getType().getName(), pv.getEntity().getName());
 
     if (entity == null) {
       LOG.debug("Related entity not found: {}", pv.getEntity().getName());

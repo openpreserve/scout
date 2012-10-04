@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
@@ -24,6 +25,39 @@ import thewebsemantic.binding.RdfBean;
 @XmlRootElement(name = KBUtils.ENTITY)
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Entity extends RdfBean<Entity> {
+
+  /**
+   * Get the property id based on the entity type and entity name.
+   * 
+   * @param entityTypeName
+   *          the related entity type
+   * @param entityName
+   *          the entity name, unique for the related entity type
+   * @return The identifier
+   */
+  public static String createId(final String entityTypeName, final String entityName) {
+    return KBUtils.encodeId(entityTypeName + KBUtils.ID_SEPARATOR + entityName);
+  }
+
+  /**
+   * The unique Id.
+   */
+  @Id
+  @JsonIgnore
+  private String id;
+
+  /**
+   * The unique name of the entity.
+   */
+  @XmlElement(required = true)
+  private String name;
+
+  /**
+   * The type of the entity.
+   */
+  @XmlElement
+  @JsonProperty
+  private EntityType type;
 
   /**
    * Create a new empty Entity.
@@ -43,24 +77,22 @@ public class Entity extends RdfBean<Entity> {
   public Entity(final EntityType et, final String n) {
     this.type = et;
     this.name = n;
+    
+    updateId();
   }
 
   /**
-   * The unique name of the entity.
+   * Update property Id based on the related {@link EntityType} and property
+   * name.
    */
-  @XmlElement(required = true)
-  private String name;
-
-  /**
-   * The type of the entity.
-   */
-  @XmlElement
-  @JsonProperty
-  private EntityType type;
-
-  @Id
+  private void updateId() {
+    if (this.type != null && this.name != null) {
+      this.id = createId(this.type.getName(), this.name);
+    }
+  }
+  
   public String getId() {
-    return KBUtils.encodeId(getName());
+    return id;
   }
 
   public String getName() {
@@ -69,6 +101,8 @@ public class Entity extends RdfBean<Entity> {
 
   public void setName(final String name) {
     this.name = name;
+    
+    updateId();
   }
 
   public EntityType getType() {
@@ -77,6 +111,8 @@ public class Entity extends RdfBean<Entity> {
 
   public void setType(final EntityType type) {
     this.type = type;
+    
+    updateId();
   }
 
   @Override

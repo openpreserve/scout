@@ -52,13 +52,14 @@ public class EntityResource extends JavaHelp {
    *         {@link NotFoundException} if none found.
    */
   @GET
-  @Path("/{name}")
+  @Path("/{type}/{name}")
   @ApiOperation(value = "Find Entity by name", notes = "")
   @ApiErrors(value = {@ApiError(code = NotFoundException.CODE, reason = "Entity not found")})
   public Response getEntityByName(
+    @ApiParam(value = "Name of the Entity", required = true) @PathParam("type") final String type,
     @ApiParam(value = "Name of the Entity", required = true) @PathParam("name") final String name) {
 
-    final Entity entity = DAO.ENTITY.findById(name);
+    final Entity entity = DAO.ENTITY.findById(type, name);
 
     if (entity != null) {
       return Response.ok().entity(entity).build();
@@ -130,13 +131,14 @@ public class EntityResource extends JavaHelp {
    * @return The entity merged into the KB.
    */
   @PUT
-  @Path("/{name}")
+  @Path("/{type}/{name}")
   @ApiOperation(value = "Update Entity", notes = "This can only be done by a logged user (TODO)")
   @ApiErrors(value = {@ApiError(code = NotFoundException.CODE, reason = "Entity not found")})
   public Response updateEntity(
-    @ApiParam(value = "Name that need to be deleted", required = true) @PathParam("name") final String name,
+    @ApiParam(value = "Type of the entity to be updated", required = true) @PathParam("type") final String type,
+    @ApiParam(value = "Name of the entity to be updated", required = true) @PathParam("name") final String name,
     @ApiParam(value = "Updated Entity object", required = true) final Entity entity) {
-    final Entity original = DAO.ENTITY.findById(name);
+    final Entity original = DAO.ENTITY.findById(type, name);
     if (original != null) {
       original.delete();
       entity.save();
@@ -156,13 +158,14 @@ public class EntityResource extends JavaHelp {
    * 
    */
   @DELETE
-  @Path("/{name}")
+  @Path("/{type}/{name}")
   @ApiOperation(value = "Delete Entity", notes = "This can only be done by a logged user (TODO)")
   @ApiErrors(value = {@ApiError(code = NotFoundException.CODE, reason = "Entity not found")})
   public Response deleteEntity(
+    @ApiParam(value = "The type of the Entity to be deleted", required = true) @PathParam("type") final String type,
     @ApiParam(value = "The name of the Entity to be deleted", required = true) @PathParam("name") final String name) {
     LOG.info("deleting entity name: " + name);
-    final Entity entity = DAO.ENTITY.findById(name);
+    final Entity entity = DAO.ENTITY.findById(type, name);
     if (entity != null) {
       entity.delete();
       return Response.ok().entity(entity).build();

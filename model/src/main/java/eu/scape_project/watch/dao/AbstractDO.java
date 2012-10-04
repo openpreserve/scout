@@ -21,6 +21,8 @@ import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.QuerySolutionMap;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Literal;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.shared.Lock;
 
 import eu.scape_project.watch.utils.KBUtils;
 
@@ -138,7 +140,7 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
    *          ... \< ...
    * @return The number of results expected for this query.
    */
-  protected int count(final Class<T> typeClass, final String bindings) {
+  protected synchronized int count(final Class<T> typeClass, final String bindings) {
     int count = -1;
 
     final String classType = KBUtils.WATCH_PREFIX + typeClass.getSimpleName();
@@ -156,8 +158,10 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
     LOG.trace("SPARQL:\n {}", sparql);
 
     final Query query = QueryFactory.create(sparql.toString());
-    final QueryExecution qexec = QueryExecutionFactory.create(query, Jenabean.instance().model());
+    final Model model = Jenabean.instance().model();
+    final QueryExecution qexec = QueryExecutionFactory.create(query, model);
     try {
+      model.enterCriticalSection(Lock.READ);
       final ResultSet results = qexec.execSelect();
       if (results.hasNext()) {
         final QuerySolution soln = results.nextSolution();
@@ -167,6 +171,7 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
         count = 0;
       }
     } finally {
+      model.leaveCriticalSection();
       qexec.close();
     }
 

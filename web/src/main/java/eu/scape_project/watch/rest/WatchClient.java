@@ -201,14 +201,16 @@ public class WatchClient {
   /**
    * Get entity from server.
    * 
+   * @param type
+   *          the entity type
    * @param name
    *          the entity name
    * @return the entity with that name or <code>null</code> if not found
    */
-  public Entity getEntity(final String name) {
+  public Entity getEntity(final String type, final String name) {
     try {
-      return this.resource.path(KBUtils.ENTITY + FS + this.format + AS + name).accept(this.format.getMediaType())
-        .get(Entity.class);
+      return this.resource.path(KBUtils.ENTITY + FS + this.format + AS + type + AS + name)
+        .accept(this.format.getMediaType()).get(Entity.class);
     } catch (final UniformInterfaceException e) {
       final ClientResponse resp = e.getResponse();
       if (resp.getStatus() == NotFoundException.CODE) {
@@ -222,15 +224,17 @@ public class WatchClient {
   /**
    * Update the entity defined by the name.
    * 
+   * @param type
+   *          the type of the entity to update
    * @param name
    *          the name of the entity to update
    * @param entity
    *          the updated entity that will replace the previous one
    * @return the updated entity after merged with the knowledge base
    */
-  public Entity updateEntity(final String name, final Entity entity) {
-    return this.resource.path(KBUtils.ENTITY + FS + this.format + AS + name).accept(this.format.getMediaType())
-      .put(Entity.class, entity);
+  public Entity updateEntity(final String type, final String name, final Entity entity) {
+    return this.resource.path(KBUtils.ENTITY + FS + this.format + AS + type + AS + name)
+      .accept(this.format.getMediaType()).put(Entity.class, entity);
   }
 
   /**
@@ -251,13 +255,15 @@ public class WatchClient {
   /**
    * Delete an entity.
    * 
+   * @param type
+   *          the type of the entity to delete.
    * @param name
    *          the name of the entity to delete.
    * @return the deleted entity.
    */
-  public Entity deleteEntity(final String name) {
-    return this.resource.path(KBUtils.ENTITY + FS + this.format + AS + name).accept(this.format.getMediaType())
-      .delete(Entity.class);
+  public Entity deleteEntity(final String type, final String name) {
+    return this.resource.path(KBUtils.ENTITY + FS + this.format + AS + type + AS + name)
+      .accept(this.format.getMediaType()).delete(Entity.class);
   }
 
   /**

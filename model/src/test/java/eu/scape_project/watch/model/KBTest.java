@@ -57,9 +57,9 @@ public class KBTest {
   /**
    * The logger.
    */
-  private static final Logger LOG = LoggerFactory.getLogger(KBTest.class.getSimpleName());
+  private static final Logger LOG = LoggerFactory.getLogger(KBTest.class);
 
-  private static final String STRANGE_CHARS = " âñüç!#%\"<>«»€";
+  private static final String STRANGE_CHARS = " âñüç!\"<>«»€#%";
 
   private static final String DATA_TYPE_NAME = "Entity type name" + STRANGE_CHARS;
   private static final String DATA_TYPE_DESC = "Entity type description" + STRANGE_CHARS;
@@ -349,7 +349,7 @@ public class KBTest {
     Assert.assertTrue(entities2.contains(entity));
 
     // FIND
-    final Entity entity2 = DAO.ENTITY.findById(entity.getName());
+    final Entity entity2 = DAO.ENTITY.findById(type.getName(), entity.getName());
 
     Assert.assertNotNull(entity2);
     Assert.assertEquals(entity, entity2);
@@ -371,7 +371,7 @@ public class KBTest {
     Assert.assertFalse(entities4.contains(entity));
 
     // FIND AGAIN
-    final Entity entity3 = DAO.ENTITY.findById(entity.getName());
+    final Entity entity3 = DAO.ENTITY.findById(type.getName(), entity.getName());
     Assert.assertNull(entity3);
 
     // COUNT AGAIN
@@ -748,15 +748,15 @@ public class KBTest {
     DAO.save(adaptor);
     DAO.PROPERTY_VALUE.save(adaptor, pv);
 
-    final Collection<PropertyValue> pvs1 = DAO.PROPERTY_VALUE.listWithEntity(entity.getName(), 0, 100);
+    final Collection<PropertyValue> pvs1 = DAO.PROPERTY_VALUE.listWithEntity(type.getName(), entity.getName(), 0, 100);
     Assert.assertTrue(pvs1.contains(pv));
 
     final Collection<PropertyValue> pvs2 = DAO.PROPERTY_VALUE.listWithProperty(type.getName(), property.getName(), 0,
       100);
     Assert.assertTrue(pvs2.contains(pv));
 
-    final Collection<PropertyValue> pvs3 = DAO.PROPERTY_VALUE.listWithEntityAndProperty(entity.getName(),
-      type.getName(), property.getName(), 0, 100);
+    final Collection<PropertyValue> pvs3 = DAO.PROPERTY_VALUE.listWithEntityAndProperty(type.getName(),
+      entity.getName(), property.getName(), 0, 100);
     Assert.assertTrue(pvs3.contains(pv));
 
     // DELETE
@@ -1105,7 +1105,7 @@ public class KBTest {
     pv.save();
 
     // MAKE ENTITY TYPE REQUEST
-    final String query1 = EntityDAO.getEntityRDFId(entity.getName()) + " watch:type ?s";
+    final String query1 = EntityDAO.getEntityRDFId(type.getName(), entity.getName()) + " watch:type ?s";
     final RequestTarget target1 = RequestTarget.ENTITY_TYPE;
     @SuppressWarnings("unchecked")
     final List<PropertyValue> results1 = (List<PropertyValue>) DAO.REQUEST.query(target1, query1, 0, 100);
@@ -1127,8 +1127,8 @@ public class KBTest {
     Assert.assertTrue(results3.contains(entity));
 
     // MAKE PROPERTY VALUE REQUEST
-    final String query4 = "?s watch:entity " + EntityDAO.getEntityRDFId(entity.getName()) + " . ?s watch:property "
-      + PropertyDAO.getPropertyRDFId(type.getName(), property.getName());
+    final String query4 = "?s watch:entity " + EntityDAO.getEntityRDFId(type.getName(), entity.getName())
+      + " . ?s watch:property " + PropertyDAO.getPropertyRDFId(type.getName(), property.getName());
     // TODO test " . FILTER(?s < 200)";
     final RequestTarget target4 = RequestTarget.PROPERTY_VALUE;
 

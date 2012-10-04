@@ -13,7 +13,7 @@ import eu.scape_project.watch.web.annotations.Controller;
 import eu.scape_project.watch.web.annotations.Path;
 import eu.scape_project.watch.web.annotations.Template;
 
-@Path("/browse/entity/([^/]*)")
+@Path("/browse/entity/([^/]*)/([^/]*)")
 @Template("browseEntity.html")
 public class BrowseEntity extends Mustachelet {
 
@@ -28,17 +28,21 @@ public class BrowseEntity extends Mustachelet {
 
   
   public List<PropertyValue> value() {
-    return DAO.PROPERTY_VALUE.listWithEntity(entityName(), 0, 100);
+    return DAO.PROPERTY_VALUE.listWithEntity(entity(), 0, 100);
   }
 
   @Inject
-  Matcher m;
+  private Matcher m;
 
-  String entityName() {
+  private String typeName() {
     return m.group(1);
   }
+  
+  private String entityName() {
+    return m.group(2);
+  }
 
-  Entity entity() {
-    return DAO.ENTITY.findById(entityName());
+  private Entity entity() {
+    return DAO.ENTITY.findById(typeName(), entityName());
   }
 }

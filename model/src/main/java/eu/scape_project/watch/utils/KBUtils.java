@@ -322,7 +322,7 @@ public final class KBUtils {
    * model.
    */
   public static void dbDisconnect() {
-    TDB.sync(Jenabean.instance().model());
+    // TDB.sync(Jenabean.instance().model());
     Jenabean.instance().model().close();
     TDB.closedown();
   }

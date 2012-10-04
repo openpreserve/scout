@@ -10,8 +10,9 @@
 		</layout>
 	</appender>
 
-	<logger name="eu.scape_project.watch">
-		<level value="INFO" />
+	<logger name="eu.scape_project.watch" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="CONSOLE" />
 	</logger>
 
 

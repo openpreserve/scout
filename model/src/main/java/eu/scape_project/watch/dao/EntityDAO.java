@@ -7,6 +7,7 @@ import org.apache.commons.lang.StringUtils;
 
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.EntityType;
+import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.utils.KBUtils;
 
 /**
@@ -35,19 +36,21 @@ public final class EntityDAO extends AbstractDO<Entity> {
    *          The entity name that uniquely identifies this entity.
    * @return Get the RDF ID.
    */
-  public static String getEntityRDFId(final String entityName) {
-    return KBUtils.getRdfId(Entity.class, entityName);
+  public static String getEntityRDFId(final String entityType, final String entityName) {
+    return KBUtils.getRdfId(Entity.class, Entity.createId(entityType, entityName));
   }
 
   /**
    * Get Entity RDF ID.
    * 
+   * @param entityType
+   *          The name of the entity type that contains this property.
    * @param entity
    *          The entity from which to get the RDF Id.
    * @return Get the RDF ID.
    */
   public static String getEntityRDFId(final Entity entity) {
-    return getEntityRDFId(entity.getName());
+    return KBUtils.getRdfId(Entity.class, entity.getId());
   }
 
   /**
@@ -60,12 +63,14 @@ public final class EntityDAO extends AbstractDO<Entity> {
   /**
    * Find {@link Entity} by id.
    * 
+   * @param typeName
+   *          the relates entity type name
    * @param entityName
    *          the entity name
    * @return the {@link Entity} or <code>null</code> if not found
    */
-  public Entity findById(final String entityName) {
-    return super.findById(KBUtils.encodeId(entityName), Entity.class);
+  public Entity findById(final String typeName, final String entityName) {
+    return super.findById(Entity.createId(typeName, entityName), Entity.class);
   }
 
   /**

@@ -14,7 +14,6 @@ import junit.framework.Assert;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,20 +74,19 @@ public class KBConcurrencyTest {
    * Testing concurrent writes.
    */
   @Test
-  @Ignore
   public void testConcurrentWrites() {
 
-    long startTimestamp = System.nanoTime();
+    final long startTimestamp = System.nanoTime();
     LOG.info("Starting concurrent execution");
-    ExecutorService pool = Executors.newFixedThreadPool(10);
+    final ExecutorService pool = Executors.newFixedThreadPool(10);
 
     final int numberOfTypes = 100;
     final int numberOfEntitiesPerType = 100;
     final int numberOfPropertiesPerType = 10;
 
-    final Source source = new Source("test", "");
-    final SourceAdaptor adaptor = new SourceAdaptor("test", "0.0.1", "default", source, new ArrayList<EntityType>(),
-      new ArrayList<Property>(), new HashMap<String, String>());
+    final Source source = new Source("Source 1", "");
+    final SourceAdaptor adaptor = new SourceAdaptor("Plugin 1", "0.0.1", "default", source,
+      new ArrayList<EntityType>(), new ArrayList<Property>(), new HashMap<String, String>());
 
     DAO.save(source);
     DAO.save(adaptor);
@@ -125,12 +123,10 @@ public class KBConcurrencyTest {
               try {
                 pv = new PropertyValue(entities.get(j), properties.get(k), "Value " + k + "x" + j);
                 DAO.PROPERTY_VALUE.save(adaptor, pv);
-              } catch (UnsupportedDataTypeException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-              } catch (InvalidJavaClassForDataTypeException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+              } catch (final UnsupportedDataTypeException e) {
+                LOG.error("Error saving property value", e);
+              } catch (final InvalidJavaClassForDataTypeException e) {
+                LOG.error("Error saving property value", e);
               }
             }
           }
@@ -148,22 +144,26 @@ public class KBConcurrencyTest {
           LOG.error("Pool did not terminate");
         }
       }
-    } catch (InterruptedException ie) {
+    } catch (final InterruptedException ie) {
       pool.shutdownNow();
       Thread.currentThread().interrupt();
     }
 
     // STATISTICS
-    long endTimestamp = System.nanoTime();
-    long duration = endTimestamp - startTimestamp;
-    int count = numberOfTypes + numberOfTypes * numberOfEntitiesPerType + numberOfTypes * numberOfPropertiesPerType
-      + numberOfTypes * numberOfPropertiesPerType * numberOfEntitiesPerType + 2;
-    double throughput = ((double) count * 1000000) / duration;
+    final long endTimestamp = System.nanoTime();
+    final long duration = endTimestamp - startTimestamp;
+    final int count = numberOfTypes + numberOfTypes * numberOfEntitiesPerType + numberOfTypes
+      * numberOfPropertiesPerType + numberOfTypes * numberOfPropertiesPerType * numberOfEntitiesPerType + 2;
+    final double throughput = ((double) count * 1000000) / duration;
     LOG.info("Duration {}s", duration / 1000000);
     LOG.info("Number of records {}", count);
     LOG.info("Throughput was {} records/s", throughput);
 
-    // check if everything was correctly written
+    // VALIDATION
+    final List<EntityType> listOfTypes = DAO.ENTITY_TYPE.query("", 0, numberOfTypes);
+    // LOG.info("Types: {}", listOfTypes);
+    Assert.assertEquals(numberOfTypes, listOfTypes.size());
+
     final int typeCount = DAO.ENTITY_TYPE.count("");
     Assert.assertEquals(numberOfTypes, typeCount);
 
@@ -173,12 +173,6 @@ public class KBConcurrencyTest {
     final int entityCount = DAO.ENTITY.count("");
     Assert.assertEquals(numberOfTypes * numberOfEntitiesPerType, entityCount);
 
-  }
-
-  //@Test
-  public void testCountIsClean() {
-    final int typeCount = DAO.ENTITY_TYPE.count("");
-    Assert.assertEquals(0, typeCount);
   }
 
 }

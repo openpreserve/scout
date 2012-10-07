@@ -22,6 +22,7 @@ import com.hp.hpl.jena.query.QuerySolutionMap;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.shared.Lock;
 
 import eu.scape_project.watch.utils.KBUtils;
@@ -152,11 +153,16 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
     // TODO use Jena's SPARQL manipulation classes instead of strings
     // http://jena.apache.org/documentation/query/manipulating_sparql_using_arq.html
 
-    sparql.append(String.format("SELECT (count(?s) as ?count) WHERE { ?s %1$s %2$s . %3$s}", KBUtils.RDF_TYPE_REL,
-      classType, bindings));
+    if (StringUtils.isNotBlank(bindings)) {
+      sparql.append(String.format("SELECT (count(?x) as ?s) WHERE { ?x %1$s %2$s . %3$s}", KBUtils.RDF_TYPE_REL,
+        classType, bindings));
+    } else {
+      sparql.append(String.format("SELECT (count(?x) as ?s) WHERE { ?x %1$s %2$s}", KBUtils.RDF_TYPE_REL, classType));
+    }
 
     LOG.trace("SPARQL:\n {}", sparql);
 
+    /** MAIN */
     final Query query = QueryFactory.create(sparql.toString());
     final Model model = Jenabean.instance().model();
     final QueryExecution qexec = QueryExecutionFactory.create(query, model);
@@ -165,7 +171,7 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
       final ResultSet results = qexec.execSelect();
       if (results.hasNext()) {
         final QuerySolution soln = results.nextSolution();
-        final Literal literal = soln.getLiteral("count");
+        final Literal literal = soln.getLiteral("s");
         count = literal.getInt();
       } else {
         count = 0;

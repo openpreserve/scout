@@ -359,7 +359,7 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
    *          The property value related property.
    * @return The next version number, which will be 0 if none exist.
    */
-  private int getNextVersionNumber(final Entity entity, final Property property) {
+  public int getNextVersionNumber(final Entity entity, final Property property) {
     return count("?s watch:entity " + EntityDAO.getEntityRDFId(entity) + " . ?s watch:property "
       + PropertyDAO.getPropertyRDFId(property));
   }

@@ -93,7 +93,7 @@ public final class KBUtils {
   /**
    * The RDF type relation.
    */
-  public static final String RDF_TYPE_REL = RDF_PREFIX + "type";
+  public static final String RDF_TYPE_REL = RDF_NS + "type";
 
   /**
    * An entity constant.
@@ -282,6 +282,8 @@ public final class KBUtils {
     }
   }
 
+  private static Dataset dataset = null;
+
   /**
    * Create a connection with the database.
    * 
@@ -300,9 +302,14 @@ public final class KBUtils {
         FileUtils.forceMkdir(dataFolderFile);
       }
 
-      final Dataset dataset = TDBFactory.createDataset(datafolder);
+      dataset = TDBFactory.createDataset(datafolder);
       final Model model = dataset.getDefaultModel();
       Jenabean.instance().bind(model);
+
+      // register namespace prefixes
+      model.setNsPrefix("xsd", XSD_NS);
+      model.setNsPrefix("rdf", RDF_NS);
+      model.setNsPrefix("watch", WATCH_NS);
 
       LOG.info("Model was created at {} and is bound to Jenabean", datafolder);
 
@@ -322,8 +329,10 @@ public final class KBUtils {
    * model.
    */
   public static void dbDisconnect() {
-    // TDB.sync(Jenabean.instance().model());
-    Jenabean.instance().model().close();
+    if (dataset != null) {
+      dataset.close();
+      dataset = null;
+    }
     TDB.closedown();
   }
 

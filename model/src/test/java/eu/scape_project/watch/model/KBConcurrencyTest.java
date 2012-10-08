@@ -14,11 +14,13 @@ import junit.framework.Assert;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.scape_project.watch.dao.DAO;
+import eu.scape_project.watch.dao.EntityTypeDAO;
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.domain.Property;
@@ -62,8 +64,10 @@ public class KBConcurrencyTest {
 
   /**
    * Cleanup the data folder.
+   * 
+   * @throws InterruptedException
    */
-  @After
+   @After
   public void after() {
     LOG.info("Deleting data folder at " + dataTempir);
     KBUtils.dbDisconnect();
@@ -74,6 +78,7 @@ public class KBConcurrencyTest {
    * Testing concurrent writes.
    */
   @Test
+  @Ignore
   public void testConcurrentWrites() {
 
     final long startTimestamp = System.nanoTime();
@@ -97,7 +102,7 @@ public class KBConcurrencyTest {
 
         @Override
         public void run() {
-          LOG.debug("Task {}", runnableIndex);
+          LOG.trace("Task {}", runnableIndex);
           final EntityType type = new EntityType("Type " + runnableIndex, "");
           DAO.save(type);
 
@@ -172,6 +177,38 @@ public class KBConcurrencyTest {
 
     final int entityCount = DAO.ENTITY.count("");
     Assert.assertEquals(numberOfTypes * numberOfEntitiesPerType, entityCount);
+
+  }
+
+  @Test
+  public void testCountOpenIter() throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
+    final Source source = new Source("Source 1", "");
+    final SourceAdaptor adaptor = new SourceAdaptor("Plugin 1", "0.0.1", "default", source,
+      new ArrayList<EntityType>(), new ArrayList<Property>(), new HashMap<String, String>());
+
+    DAO.save(source);
+    DAO.save(adaptor);
+
+    final EntityType type = new EntityType("type", "");
+    final Entity entity = new Entity(type, "entity");
+    final Property property = new Property(type, "property", "");
+    DAO.save(type);
+    DAO.save(entity);
+    DAO.save(property);
+
+    LOG.info("EMPTY COUNT");
+    final int typeCount = DAO.ENTITY_TYPE.count("");
+    Assert.assertEquals(1, typeCount);
+
+    LOG.info("BINDED COUNT");
+    final int entityCount = DAO.ENTITY.count("?s watch:type " + EntityTypeDAO.getEntityTypeRDFId(type));
+    Assert.assertEquals(1, entityCount);
+
+    LOG.info("PROPERTY VALUE SAVE");
+    final PropertyValue pv = new PropertyValue(entity, property, "123");
+    DAO.PROPERTY_VALUE.save(adaptor, pv);
+    // int nextVersionNumber = DAO.PROPERTY_VALUE.getNextVersionNumber(entity,
+    // property);
 
   }
 

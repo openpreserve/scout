@@ -22,6 +22,7 @@ import com.hp.hpl.jena.query.QuerySolutionMap;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.shared.Lock;
 
@@ -82,24 +83,32 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
   protected List<T> query(final Class<T> typeClass, final String bindings, final int start, final int max,
     final String orderBy) {
 
-    final String classType = KBUtils.WATCH_PREFIX + typeClass.getSimpleName();
+    final String classType = KBUtils.WATCH_NS + typeClass.getSimpleName();
 
     final StringBuilder sparql = new StringBuilder();
 
     sparql.append(KBUtils.PREFIXES_DECL);
 
-    sparql.append(String.format("SELECT ?s WHERE { ?s %1$s %2$s . %3$s}", KBUtils.RDF_TYPE_REL, classType, bindings));
+    if (StringUtils.isNotBlank(bindings)) {
+      sparql.append(String.format("SELECT ?s WHERE { ?s ?rel ?class . %1$s}", bindings));
+    } else {
+      sparql.append("SELECT ?s WHERE { ?s ?rel ?class }");
+    }
 
     if (StringUtils.isNotBlank(orderBy)) {
       sparql.append(" ORDER BY ");
       sparql.append(orderBy);
     }
 
+    final Model model = Jenabean.instance().model();
+    final QuerySolutionMap initialBinding = new QuerySolutionMap();
+    initialBinding.add("rel", model.createProperty(KBUtils.RDF_TYPE_REL));
+    initialBinding.add("class", model.createResource(classType));
+
     LinkedList<T> results;
 
     try {
-      results = Sparql.exec(Jenabean.instance().reader(), typeClass, sparql.toString(), new QuerySolutionMap(), start,
-        max);
+      results = Sparql.exec(Jenabean.instance().reader(), typeClass, sparql.toString(), initialBinding, start, max);
       LOG.trace("The following query gave {} results:\n{} ", new Object[] {results.size(), sparql});
     } catch (final QueryParseException e) {
       LOG.error("Error parsing query: " + sparql, e);
@@ -144,7 +153,7 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
   protected synchronized int count(final Class<T> typeClass, final String bindings) {
     int count = -1;
 
-    final String classType = KBUtils.WATCH_PREFIX + typeClass.getSimpleName();
+    final String classType = KBUtils.WATCH_NS + typeClass.getSimpleName();
 
     final StringBuilder sparql = new StringBuilder();
 
@@ -154,24 +163,26 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
     // http://jena.apache.org/documentation/query/manipulating_sparql_using_arq.html
 
     if (StringUtils.isNotBlank(bindings)) {
-      sparql.append(String.format("SELECT (count(?x) as ?s) WHERE { ?x %1$s %2$s . %3$s}", KBUtils.RDF_TYPE_REL,
-        classType, bindings));
+      sparql.append(String.format("SELECT (count(?s) AS ?total) WHERE { ?s ?rel ?class . %1$s }", bindings));
     } else {
-      sparql.append(String.format("SELECT (count(?x) as ?s) WHERE { ?x %1$s %2$s}", KBUtils.RDF_TYPE_REL, classType));
+      sparql.append("SELECT (count(?s) AS ?total) WHERE { ?s ?rel ?class }");
     }
 
     LOG.trace("SPARQL:\n {}", sparql);
 
-    /** MAIN */
-    final Query query = QueryFactory.create(sparql.toString());
     final Model model = Jenabean.instance().model();
-    final QueryExecution qexec = QueryExecutionFactory.create(query, model);
+    final QuerySolutionMap initialBinding = new QuerySolutionMap();
+    initialBinding.add("rel", model.createProperty(KBUtils.RDF_TYPE_REL));
+    initialBinding.add("class", model.createResource(classType));
+    final Query query = QueryFactory.create(sparql.toString());
+
+    final QueryExecution qexec = QueryExecutionFactory.create(query, model, initialBinding);
     try {
       model.enterCriticalSection(Lock.READ);
       final ResultSet results = qexec.execSelect();
       if (results.hasNext()) {
         final QuerySolution soln = results.nextSolution();
-        final Literal literal = soln.getLiteral("s");
+        final Literal literal = soln.getLiteral("total");
         count = literal.getInt();
       } else {
         count = 0;

@@ -3,13 +3,15 @@ package eu.scape_project.watch.web;
 import java.util.List;
 import java.util.regex.Matcher;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.inject.Inject;
 
 import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
-import eu.scape_project.watch.web.annotations.Controller;
 import eu.scape_project.watch.web.annotations.Path;
 import eu.scape_project.watch.web.annotations.Template;
 
@@ -17,6 +19,7 @@ import eu.scape_project.watch.web.annotations.Template;
 @Template("browseEntity.html")
 public class BrowseEntity extends Mustachelet {
 
+  private Logger log = LoggerFactory.getLogger(getClass());
 
   public boolean page_browse() {
     return true;
@@ -26,7 +29,6 @@ public class BrowseEntity extends Mustachelet {
     return DAO.PROPERTY.listWithType(entity().getType().getName(), 0, 100);
   }
 
-  
   public List<PropertyValue> value() {
     return DAO.PROPERTY_VALUE.listWithEntity(entity(), 0, 100);
   }
@@ -34,15 +36,15 @@ public class BrowseEntity extends Mustachelet {
   @Inject
   private Matcher m;
 
-  private String typeName() {
+  public String typeName() {
     return m.group(1);
   }
-  
-  private String entityName() {
+
+  public String entityName() {
     return m.group(2);
   }
 
-  private Entity entity() {
+  public Entity entity() {
     return DAO.ENTITY.findById(typeName(), entityName());
   }
 }

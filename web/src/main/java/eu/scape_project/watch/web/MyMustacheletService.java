@@ -149,6 +149,7 @@ public class MyMustacheletService extends HttpServlet implements Filter {
     for (Map.Entry<Pattern, Map<HttpMethod.Type, Class<?>>> entry : pathMap.entrySet()) {
       final Matcher matcher = entry.getKey().matcher(pathInfo);
       if (matcher.matches()) {
+        logger.info("Path: {}", entry.getKey().pattern());
         final Map<HttpMethod.Type, Class<?>> methodClassMap = entry.getValue();
         String httpMethod = req.getMethod();
         final boolean head;

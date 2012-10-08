@@ -16,8 +16,6 @@ import eu.scape_project.watch.web.annotations.Template;
 @Template("browseType.html")
 public class BrowseType extends Mustachelet {
 
-  private static final int PAGE_SIZE = 100;
-
   public boolean page_browse() {
     return true;
   }

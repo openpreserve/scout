@@ -10,6 +10,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -96,11 +97,12 @@ public class CreateSourceAdaptor extends Mustachelet {
         response.sendRedirect(mustacheletPath + "/administration.html");
       } else {
         // TODO send error of plugin does not exist.
-        response.sendError(404, "Plug-in does not exist: " + pluginName + "-" + pluginVersion);
+        response.sendError(404, "Plug-in does not exist: " + StringEscapeUtils.escapeHtml(pluginName) + "-"
+          + StringEscapeUtils.escapeHtml(pluginVersion));
       }
     } else {
       // TODO send error source does not exist.
-      response.sendError(404, "Source does not exist: " + sourceName);
+      response.sendError(404, "Source does not exist: " + StringEscapeUtils.escapeHtml(sourceName));
     }
 
     return false;

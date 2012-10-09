@@ -10,6 +10,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import com.google.inject.Inject;
 
 import eu.scape_project.watch.adaptor.AdaptorManager;
@@ -53,7 +55,7 @@ public class Administration extends Mustachelet {
 
     if (operation == null || operation.length() == 0) {
       continueChain = true;
-    } else if (operation != null && operation.equals("removeAdaptor")) {
+    } else if (operation.equals("removeAdaptor")) {
       final String adaptorUID = request.getParameter("adaptor");
 
       final ServletContext context = ContextUtil.getServletContext(request);
@@ -65,12 +67,12 @@ public class Administration extends Mustachelet {
         adaptorManager.reloadKnownAdaptors();
         response.sendRedirect(mustacheletPath + "/administration.html");
       } else {
-        response.sendError(404, "Source adaptor not found: " + adaptorUID);
+        response.sendError(404, "Source adaptor not found: " + StringEscapeUtils.escapeHtml(adaptorUID));
       }
       continueChain = false;
 
     } else {
-      response.sendError(400, "Unrecognized operation requested: " + operation);
+      response.sendError(400, "Unrecognized operation requested: " + StringEscapeUtils.escapeHtml(operation));
       continueChain = false;
     }
 

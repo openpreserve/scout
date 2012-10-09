@@ -1,9 +1,14 @@
 package eu.scape_project.watch.dao;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import eu.scape_project.watch.domain.Measurement;
+import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.domain.SourceAdaptor;
+import eu.scape_project.watch.domain.SourceAdaptorEvent;
 import eu.scape_project.watch.utils.KBUtils;
 
 /**
@@ -161,6 +166,51 @@ public final class SourceAdaptorDAO extends AbstractDO<SourceAdaptor> {
    */
   public SourceAdaptor save(final SourceAdaptor sourceAdaptor) {
     return super.saveImpl(sourceAdaptor);
+  }
+
+  /**
+   * Delete Property Value and related Measurement.
+   * 
+   * @param pv
+   *          The property value to delete.
+   * @return the deleted property value.
+   */
+  @Override
+  public SourceAdaptor delete(final SourceAdaptor adaptor) {
+
+    // Delete all related measurements
+    final int measurementCount = DAO.MEASUREMENT.countByAdaptor(adaptor);
+    final Set<PropertyValue> relatedProperties = new HashSet<PropertyValue>();
+    int i = 0;
+    while (i < measurementCount) {
+      final List<Measurement> measurements = DAO.MEASUREMENT.listByAdaptor(adaptor, i, 100);
+      for (Measurement measurement : measurements) {
+        relatedProperties.add(measurement.getPropertyValue());
+        DAO.MEASUREMENT.delete(measurement);
+      }
+      i += measurements.size();
+    }
+
+    // clean up property values with no related measurements
+    for (PropertyValue pv : relatedProperties) {
+      final int pvMeasurementCount = DAO.MEASUREMENT.countByPropertyValue(pv);
+      if (pvMeasurementCount == 0) {
+        DAO.PROPERTY_VALUE.delete(pv);
+      }
+    }
+
+    // delete all related source adaptor events
+    final int eventCount = DAO.SOURCE_ADAPTOR_EVENT.countByAdaptor(adaptor);
+    int j = 0;
+    while (j < eventCount) {
+      final List<SourceAdaptorEvent> events = DAO.SOURCE_ADAPTOR_EVENT.listByAdaptor(adaptor, j, 100);
+      for (SourceAdaptorEvent event : events) {
+        DAO.SOURCE_ADAPTOR_EVENT.delete(event);
+      }
+      j += events.size();
+    }
+
+    return super.delete(adaptor);
   }
 
   /**

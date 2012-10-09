@@ -340,11 +340,13 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
 
     final int count = DAO.MEASUREMENT.countByPropertyValue(pv);
 
-    // XXX get a complete list may not be scalable
-    final List<Measurement> measurements = DAO.MEASUREMENT.listByPropertyValue(pv, 0, count);
-
-    for (Measurement measurement : measurements) {
-      DAO.MEASUREMENT.delete(measurement);
+    int i = 0;
+    while (i < count) {
+      final List<Measurement> measurements = DAO.MEASUREMENT.listByPropertyValue(pv, i, 100);
+      for (Measurement measurement : measurements) {
+        DAO.MEASUREMENT.delete(measurement);
+      }
+      i += measurements.size();
     }
 
     return super.delete(pv);

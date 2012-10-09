@@ -113,7 +113,7 @@ public class KBConcurrencyTest {
             properties.add(property);
             DAO.save(property);
           }
-
+          LOG.trace("Task {} tried to insert {} properties.", runnableIndex, numberOfPropertiesPerType);
           final List<Entity> entities = new ArrayList<Entity>();
 
           for (int j = 0; j < numberOfEntitiesPerType; j++) {
@@ -122,6 +122,8 @@ public class KBConcurrencyTest {
             DAO.save(entity);
           }
 
+          LOG.trace("Task {} tried to insert {} entities.", runnableIndex, numberOfEntitiesPerType);
+          
           for (int k = 0; k < numberOfPropertiesPerType; k++) {
             for (int j = 0; j < numberOfEntitiesPerType; j++) {
               PropertyValue pv;
@@ -136,18 +138,23 @@ public class KBConcurrencyTest {
             }
           }
 
+          LOG.trace("Task {} tried to insert {} values.", runnableIndex, numberOfEntitiesPerType * numberOfPropertiesPerType);
         }
       });
-    }
+    } 
 
     // SHUTDOWN AND AWAIT TERMINATION
     pool.shutdown();
     try {
-      if (!pool.awaitTermination(60, TimeUnit.SECONDS)) {
+      //increase timeout if test starts to fail due to closed channel...
+      if (!pool.awaitTermination(30, TimeUnit.MINUTES)) {
+        LOG.warn("Pool did not await termination, shutting down now");
         pool.shutdownNow();
         if (!pool.awaitTermination(60, TimeUnit.SECONDS)) {
           LOG.error("Pool did not terminate");
         }
+      } else {
+        LOG.warn("Pool terminated");
       }
     } catch (final InterruptedException ie) {
       pool.shutdownNow();
@@ -159,13 +166,16 @@ public class KBConcurrencyTest {
     final long duration = endTimestamp - startTimestamp;
     final int count = numberOfTypes + numberOfTypes * numberOfEntitiesPerType + numberOfTypes
       * numberOfPropertiesPerType + numberOfTypes * numberOfPropertiesPerType * numberOfEntitiesPerType + 2;
-    final double throughput = ((double) count * 1000000) / duration;
-    LOG.info("Duration {}s", duration / 1000000);
+    final double throughput = ((double) count * 1000000000) / duration;
+    LOG.info("Duration {}s", duration / 1000000000);
     LOG.info("Number of records {}", count);
     LOG.info("Throughput was {} records/s", throughput);
 
     // VALIDATION
     final List<EntityType> listOfTypes = DAO.ENTITY_TYPE.query("", 0, numberOfTypes);
+    for (EntityType et : listOfTypes) {
+      System.out.println(et);
+    }
     // LOG.info("Types: {}", listOfTypes);
     Assert.assertEquals(numberOfTypes, listOfTypes.size());
 

@@ -87,14 +87,14 @@ public class PropertyValue extends RdfBean<PropertyValue> {
    * Value holder when type is {@link List<String>}.
    */
   @XmlElement(name = "value")
-  //@JsonProperty("stringListValue")
+  // @JsonProperty("stringListValue")
   @JsonIgnore
   private List<String> stringListValue = new ArrayList<String>();
   /**
    * Value holder when type is {@link List<DictionaryItem>}.
    */
   @XmlElement(name = "value")
-  //@JsonProperty("stringDictionaryValue")
+  // @JsonProperty("stringDictionaryValue")
   @JsonIgnore
   private List<DictionaryItem> stringDictionaryValue = new ArrayList<DictionaryItem>();
 
@@ -178,6 +178,11 @@ public class PropertyValue extends RdfBean<PropertyValue> {
 
   public String getId() {
     return id;
+  }
+  
+
+  public void setId(String id) {
+    this.id = id;
   }
 
   /**
@@ -352,7 +357,6 @@ public class PropertyValue extends RdfBean<PropertyValue> {
    */
   public void setEntity(final Entity entity) {
     this.entity = entity;
-
     this.updateId();
   }
 
@@ -368,7 +372,6 @@ public class PropertyValue extends RdfBean<PropertyValue> {
    */
   public void setProperty(final Property property) {
     this.property = property;
-
     this.updateId();
   }
 
@@ -505,11 +508,13 @@ public class PropertyValue extends RdfBean<PropertyValue> {
    * Update Id for new {@link Entity} or {@link Property} values.
    */
   private void updateId() {
-    if (this.entity != null && this.property != null) {
-      this.id = createId(this.entity.getName(), this.property.getName(), this.version);
-    } else {
-      this.id = null;
+    if (this.entity != null && this.entity.getType() != null && this.property != null) {
+      this.id = createId(this.entity.getType().getName(), this.entity.getName(), this.property.getName(), this.version);
     }
+    /** Allowing shalow loads to set ID */
+    // else {
+    // this.id = null;
+    // }
   }
 
   @Override
@@ -537,8 +542,10 @@ public class PropertyValue extends RdfBean<PropertyValue> {
    *          The version number of the property value.
    * @return The {@link PropertyValue} unique Id.
    */
-  public static String createId(final String entityId, final String propertyId, final int version) {
-    return KBUtils.encodeId(entityId + KBUtils.ID_SEPARATOR + propertyId + KBUtils.ID_SEPARATOR + version);
+  public static String createId(final String typeName, final String entityName, final String propertyName,
+    final int version) {
+    return KBUtils.encodeId(Entity.createId(typeName, entityName) + KBUtils.ID_SEPARATOR + propertyName
+      + KBUtils.ID_SEPARATOR + version);
   }
 
   @Override

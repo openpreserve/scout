@@ -3,6 +3,7 @@ package eu.scape_project.watch.model;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
@@ -26,6 +27,7 @@ import eu.scape_project.watch.dao.DOListener;
 import eu.scape_project.watch.dao.EntityDAO;
 import eu.scape_project.watch.dao.EntityTypeDAO;
 import eu.scape_project.watch.dao.PropertyDAO;
+import eu.scape_project.watch.dao.PropertyValueDAO;
 import eu.scape_project.watch.domain.AsyncRequest;
 import eu.scape_project.watch.domain.DataType;
 import eu.scape_project.watch.domain.DictionaryItem;
@@ -40,6 +42,7 @@ import eu.scape_project.watch.domain.Question;
 import eu.scape_project.watch.domain.RequestTarget;
 import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.domain.SourceAdaptor;
+import eu.scape_project.watch.domain.SourceAdaptorEvent;
 import eu.scape_project.watch.domain.Trigger;
 import eu.scape_project.watch.utils.JavaUtils;
 import eu.scape_project.watch.utils.KBUtils;
@@ -59,7 +62,9 @@ public class KBTest {
    */
   private static final Logger LOG = LoggerFactory.getLogger(KBTest.class);
 
-  private static final String STRANGE_CHARS = " âñüç!\"<>«»€#%";
+  // Removing '%' to reduce logs
+  // private static final String STRANGE_CHARS = " âñüç!\"<>«»€#%";
+  private static final String STRANGE_CHARS = " âñüç!\"<>«»€#";
 
   private static final String DATA_TYPE_NAME = "Entity type name" + STRANGE_CHARS;
   private static final String DATA_TYPE_DESC = "Entity type description" + STRANGE_CHARS;
@@ -714,6 +719,10 @@ public class KBTest {
     // COUNT AGAIN
     final int count2 = DAO.PROPERTY_VALUE.count("");
     Assert.assertEquals(0, count2);
+
+    // Check cascade delete of measurements
+    final int measurementsCount = DAO.MEASUREMENT.countByPropertyValue(pv);
+    Assert.assertEquals(0, measurementsCount);
   }
 
   /**
@@ -728,9 +737,7 @@ public class KBTest {
   @Test
   public void testPropertyValueListings() throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
     // CREATE
-    final EntityType type = new EntityType();
-    type.setName(DATA_TYPE_NAME);
-    type.setDescription(DATA_TYPE_DESC);
+    final EntityType type = new EntityType(DATA_TYPE_NAME, DATA_TYPE_DESC);
 
     final Entity entity = new Entity(type, DATA_ENTITY_NAME);
     final Property property = new Property(type, DATA_PROPERTY_NAME, DATA_PROPERTY_DESC);
@@ -767,6 +774,40 @@ public class KBTest {
     DAO.delete(source);
     DAO.delete(adaptor);
 
+  }
+
+  @Test
+  public void testPropertyValueOrphanListings() throws UnsupportedDataTypeException,
+    InvalidJavaClassForDataTypeException {
+    // CREATE
+    final EntityType type = new EntityType(DATA_TYPE_NAME, DATA_TYPE_DESC);
+
+    final Entity entity = new Entity(type, DATA_ENTITY_NAME);
+    final Property property = new Property(type, DATA_PROPERTY_NAME, DATA_PROPERTY_DESC);
+
+    final PropertyValue pv = new PropertyValue(entity, property, "123");
+
+    final Source source = new Source(DATA_SOURCE_NAME, DATA_SOURCE_DESCRIPTION);
+    final SourceAdaptor adaptor = new SourceAdaptor(DATA_PLUGIN_NAME, DATA_PLUGIN_VERSION,
+      DATA_SOURCE_ADAPTOR_INSTANCE, source, Arrays.asList(type), Arrays.asList(property), new HashMap<String, String>());
+
+    DAO.save(type);
+    DAO.save(entity);
+    DAO.save(property);
+    DAO.save(source);
+    DAO.save(adaptor);
+    DAO.PROPERTY_VALUE.save(adaptor, pv);
+    
+    // Make pv an orphan
+    final List<Measurement> measurements = DAO.MEASUREMENT.listByPropertyValue(pv, 0, 100);
+    for(Measurement measurement : measurements) {
+      measurement.delete();
+    }
+    
+    // Test
+    final int orphanCount = DAO.PROPERTY_VALUE.countMeasurementOrphan();
+    Assert.assertEquals(1, orphanCount);
+    
   }
 
   /**
@@ -1282,6 +1323,50 @@ public class KBTest {
     // DELETE
     DAO.delete(adaptor1, adaptor2);
     DAO.delete(source);
+
+  }
+
+  /**
+   * Test Source Adaptor delete.
+   * 
+   * @throws InvalidJavaClassForDataTypeException
+   * @throws UnsupportedDataTypeException
+   */
+  @Test
+  public void testSourceAdaptorCascadeDelete() throws UnsupportedDataTypeException,
+    InvalidJavaClassForDataTypeException {
+    final Source source = new Source(DATA_SOURCE_NAME, DATA_SOURCE_DESCRIPTION);
+    final SourceAdaptor adaptor = new SourceAdaptor(DATA_PLUGIN_NAME, DATA_PLUGIN_VERSION,
+      DATA_SOURCE_ADAPTOR_INSTANCE, source, null, null, null);
+
+    final EntityType type = new EntityType(DATA_TYPE_NAME, DATA_TYPE_DESC);
+    final Entity entity = new Entity(type, DATA_ENTITY_NAME);
+    final Property property = new Property(type, DATA_PROPERTY_NAME, DATA_PROPERTY_DESC);
+    final PropertyValue pv1 = new PropertyValue(entity, property, "123");
+    final PropertyValue pv2 = new PropertyValue(entity, property, "124");
+
+    final SourceAdaptorEvent event = new SourceAdaptorEvent("executed", true, "", new Date(), adaptor);
+
+    DAO.save(source);
+    DAO.save(adaptor);
+    DAO.PROPERTY_VALUE.save(adaptor, pv1, pv1, pv2);
+    DAO.save(event);
+
+    // cascade delete
+    DAO.delete(adaptor);
+
+    final int countAll = DAO.SOURCE_ADAPTOR.countAll();
+    Assert.assertEquals(0, countAll);
+
+    // check if related information was deleted
+    int measurementCount = DAO.MEASUREMENT.countByAdaptor(adaptor);
+    Assert.assertEquals(0, measurementCount);
+
+    final int orphanPropertiesCount = DAO.PROPERTY_VALUE.countMeasurementOrphan();
+    Assert.assertEquals(0, orphanPropertiesCount);
+
+    final int eventsCount = DAO.SOURCE_ADAPTOR_EVENT.countByAdaptor(adaptor);
+    Assert.assertEquals(0, eventsCount);
 
   }
 

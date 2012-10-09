@@ -58,6 +58,8 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
    * Find {@link PropertyValue} by the related {@link Entity} and
    * {@link Property}.
    * 
+   * @param typeName
+   *          The name of the related {@link EntityType}
    * @param entityName
    *          The name of the related {@link Entity}
    * @param propertyName
@@ -66,8 +68,8 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
    *          The version number of the required property value.
    * @return The {@link PropertyValue} or <code>null</code> if not found
    */
-  public PropertyValue find(final String entityName, final String propertyName, final int version) {
-    final String id = PropertyValue.createId(entityName, propertyName, version);
+  public PropertyValue find(final String typeName, final String entityName, final String propertyName, final int version) {
+    final String id = PropertyValue.createId(typeName, entityName, propertyName, version);
     return super.findById(id, PropertyValue.class);
   }
 
@@ -250,6 +252,16 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
     final String bindings = String.format("?s %1$s %2$s", PROPERTY_REL,
       PropertyDAO.getPropertyRDFId(entityType, propertyName));
     return this.query(bindings, start, max);
+  }
+
+  /**
+   * Count properties values that have no associated measurements.
+   * 
+   * @return The number of prorperty values with no associated measurements
+   */
+  public int countMeasurementOrphan() {
+    return count("{SELECT (count(?m) as ?cm) {?m rdf:type watch:" + Measurement.class.getSimpleName()
+      + " . ?m watch:propertyValue ?s}} FILTER(?cm=0)");
   }
 
   /**

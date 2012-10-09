@@ -171,4 +171,9 @@ public class Measurement extends RdfBean<Measurement> {
     return true;
   }
 
+  @Override
+  public String toString() {
+    return "Measurement [propertyValue=" + propertyValue + ", timestamp=" + timestamp + ", adaptor=" + adaptor + "]";
+  }
+
 }

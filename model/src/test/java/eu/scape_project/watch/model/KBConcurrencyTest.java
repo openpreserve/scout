@@ -67,7 +67,7 @@ public class KBConcurrencyTest {
    * 
    * @throws InterruptedException
    */
-   @After
+  @After
   public void after() {
     LOG.info("Deleting data folder at " + dataTempir);
     KBUtils.dbDisconnect();
@@ -78,15 +78,15 @@ public class KBConcurrencyTest {
    * Testing concurrent writes.
    */
   @Test
-  @Ignore
+  // @Ignore
   public void testConcurrentWrites() {
 
     final long startTimestamp = System.nanoTime();
     LOG.info("Starting concurrent execution");
-    final ExecutorService pool = Executors.newFixedThreadPool(10);
+    final ExecutorService pool = Executors.newFixedThreadPool(4);
 
-    final int numberOfTypes = 100;
-    final int numberOfEntitiesPerType = 100;
+    final int numberOfTypes = 10;
+    final int numberOfEntitiesPerType = 10;
     final int numberOfPropertiesPerType = 10;
 
     final Source source = new Source("Source 1", "");
@@ -123,7 +123,7 @@ public class KBConcurrencyTest {
           }
 
           LOG.trace("Task {} tried to insert {} entities.", runnableIndex, numberOfEntitiesPerType);
-          
+
           for (int k = 0; k < numberOfPropertiesPerType; k++) {
             for (int j = 0; j < numberOfEntitiesPerType; j++) {
               PropertyValue pv;
@@ -138,23 +138,25 @@ public class KBConcurrencyTest {
             }
           }
 
-          LOG.trace("Task {} tried to insert {} values.", runnableIndex, numberOfEntitiesPerType * numberOfPropertiesPerType);
+          LOG.trace("Task {} tried to insert {} values.", runnableIndex, numberOfEntitiesPerType
+            * numberOfPropertiesPerType);
         }
       });
-    } 
+    }
 
     // SHUTDOWN AND AWAIT TERMINATION
     pool.shutdown();
     try {
-      //increase timeout if test starts to fail due to closed channel...
-      if (!pool.awaitTermination(30, TimeUnit.MINUTES)) {
-        LOG.warn("Pool did not await termination, shutting down now");
+      // increase timeout if test starts to fail due to closed channel...
+      if (!pool.awaitTermination(1, TimeUnit.HOURS)) {
+        LOG.warn("Pool termination timeout, shutting down now");
         pool.shutdownNow();
         if (!pool.awaitTermination(60, TimeUnit.SECONDS)) {
           LOG.error("Pool did not terminate");
         }
+        Assert.fail("Timeout");
       } else {
-        LOG.warn("Pool terminated");
+        LOG.info("Pool terminated");
       }
     } catch (final InterruptedException ie) {
       pool.shutdownNow();
@@ -167,16 +169,12 @@ public class KBConcurrencyTest {
     final int count = numberOfTypes + numberOfTypes * numberOfEntitiesPerType + numberOfTypes
       * numberOfPropertiesPerType + numberOfTypes * numberOfPropertiesPerType * numberOfEntitiesPerType + 2;
     final double throughput = ((double) count * 1000000000) / duration;
-    LOG.info("Duration {}s", duration / 1000000000);
+    LOG.info("Duration {}s", Math.round((double) duration) / 1000000000);
     LOG.info("Number of records {}", count);
-    LOG.info("Throughput was {} records/s", throughput);
+    LOG.info("Throughput was {} records/s", Math.round(throughput));
 
     // VALIDATION
     final List<EntityType> listOfTypes = DAO.ENTITY_TYPE.query("", 0, numberOfTypes);
-    for (EntityType et : listOfTypes) {
-      System.out.println(et);
-    }
-    // LOG.info("Types: {}", listOfTypes);
     Assert.assertEquals(numberOfTypes, listOfTypes.size());
 
     final int typeCount = DAO.ENTITY_TYPE.count("");
@@ -188,9 +186,11 @@ public class KBConcurrencyTest {
     final int entityCount = DAO.ENTITY.count("");
     Assert.assertEquals(numberOfTypes * numberOfEntitiesPerType, entityCount);
 
+    final int valueCount = DAO.PROPERTY_VALUE.count("");
+    Assert.assertEquals(numberOfTypes * numberOfEntitiesPerType * numberOfPropertiesPerType, valueCount);
   }
 
-  @Test
+  // @Test
   public void testCountOpenIter() throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
     final Source source = new Source("Source 1", "");
     final SourceAdaptor adaptor = new SourceAdaptor("Plugin 1", "0.0.1", "default", source,

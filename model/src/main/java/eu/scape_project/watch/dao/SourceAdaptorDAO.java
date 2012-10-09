@@ -4,6 +4,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import eu.scape_project.watch.domain.Measurement;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.domain.Source;
@@ -29,6 +32,8 @@ public final class SourceAdaptorDAO extends AbstractDO<SourceAdaptor> {
   public static String getSourceAdaptorRDFId(final SourceAdaptor adaptor) {
     return KBUtils.getRdfId(SourceAdaptor.class, adaptor.getId());
   }
+
+  private final Logger log = LoggerFactory.getLogger(getClass());
 
   /**
    * No other instances other then in {@link DAO}.
@@ -185,7 +190,10 @@ public final class SourceAdaptorDAO extends AbstractDO<SourceAdaptor> {
     while (i < measurementCount) {
       final List<Measurement> measurements = DAO.MEASUREMENT.listByAdaptor(adaptor, i, 100);
       for (Measurement measurement : measurements) {
-        relatedProperties.add(measurement.getPropertyValue());
+        final PropertyValue propertyValue = measurement.getPropertyValue();
+        if (propertyValue != null) {
+          relatedProperties.add(propertyValue);
+        }
         DAO.MEASUREMENT.delete(measurement);
       }
       i += measurements.size();

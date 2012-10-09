@@ -89,7 +89,7 @@ public class ProductionProfileStrategy implements ProfileVersionReader {
   public Map<String, String> getDistribution(final String name) {
     final Element property = this.getPropertyElement(name);
     final Map<String, String> distribution = new HashMap<String, String>();
-    final List<?> items = property.selectNodes("//properties/property[@id='" + name + "']/*");
+    final List<?> items = property.elements();
 
     if (items.isEmpty()) {
       return null;
@@ -114,15 +114,16 @@ public class ProductionProfileStrategy implements ProfileVersionReader {
 
   private Element getPropertyElement(final String name) {
     final Element root = this.doc.getRootElement();
-    final List<?> nodes = root.selectNodes("//properties/property[@id='" + name + "']");
-
-    Element e = null;
-
-    if (nodes.size() == 1) {
-      e = (Element) nodes.get(0);
+    final List<?> nodes = root.element("partition").element("properties").elements();
+    
+    for (Object o : nodes) {
+      Element e = (Element) o;
+      if (e.attributeValue("id").equals(name)) {
+        return e;
+      }
     }
 
-    return e;
+    return null;
   }
 
   /**
@@ -135,7 +136,7 @@ public class ProductionProfileStrategy implements ProfileVersionReader {
     try {
       final SAXReader reader = new SAXReader();
       this.doc = reader.read(is);
-
+      
     } catch (final DocumentException e) {
       LOG.error("An error occurred while reading the profile: {}", e.getMessage());
       this.doc = null;

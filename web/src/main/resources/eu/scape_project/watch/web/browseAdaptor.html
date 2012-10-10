@@ -99,6 +99,7 @@
 	<table class="table table-hover table-striped">
 			<thead>
 				<tr>
+					<th>&nbsp;</th>
 					<th>Date</th>
 					<th>Event</th>
 					<th>Details</th>
@@ -107,6 +108,7 @@
 			<tbody>
 				{{#events}}
 				<tr class="{{#successful}}success{{/successful}}{{^successful}}error{{/successful}}">
+					<td>{{type}}</td>
 					<td style="white-space: nowrap;">{{timestamp}}</td>
 					<td>{{message}}</td>
 					<td>{{reason}}</td>

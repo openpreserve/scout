@@ -41,6 +41,11 @@ public class SourceAdaptorEvent extends RdfBean<SourceAdaptorEvent> {
   }
 
   /**
+   * The type of the event.
+   */
+  private SourceAdaptorEventType type;
+
+  /**
    * The event designation or message.
    */
   @XmlElement
@@ -81,7 +86,18 @@ public class SourceAdaptorEvent extends RdfBean<SourceAdaptorEvent> {
     this.timestamp = new Date();
   }
 
-  public SourceAdaptorEvent(String message) {
+  /**
+   * Convenient method for creating an event without bouding to the source
+   * adaptor. This should only be used when the source adaptor is later set, as
+   * in the SchedulerListenerInterface.
+   * 
+   * @param type
+   *          The type of the event.
+   * @param message
+   *          A description of the event.
+   */
+  public SourceAdaptorEvent(SourceAdaptorEventType type, String message) {
+    this.type = type;
     this.message = message;
     this.timestamp = new Date();
     this.successful = true;
@@ -90,6 +106,8 @@ public class SourceAdaptorEvent extends RdfBean<SourceAdaptorEvent> {
   /**
    * Create a new source adaptor event.
    * 
+   * @param type
+   *          The type of the event.
    * @param message
    *          A message describing the event.
    * @param successful
@@ -102,8 +120,9 @@ public class SourceAdaptorEvent extends RdfBean<SourceAdaptorEvent> {
    * @param adaptor
    *          The source adaptor that created the event.
    */
-  public SourceAdaptorEvent(final String message, final boolean successful, final String reason, final Date timestamp,
-    final SourceAdaptor adaptor) {
+  public SourceAdaptorEvent(final SourceAdaptorEventType type, final String message, final boolean successful,
+    final String reason, final Date timestamp, final SourceAdaptor adaptor) {
+    this.type = type;
     this.message = message;
     this.successful = successful;
     this.reason = reason;
@@ -119,6 +138,14 @@ public class SourceAdaptorEvent extends RdfBean<SourceAdaptorEvent> {
   @Id
   public String getId() {
     return createId(this.adaptor, this.timestamp);
+  }
+
+  public SourceAdaptorEventType getType() {
+    return type;
+  }
+
+  public void setType(SourceAdaptorEventType type) {
+    this.type = type;
   }
 
   public String getMessage() {
@@ -170,41 +197,63 @@ public class SourceAdaptorEvent extends RdfBean<SourceAdaptorEvent> {
     result = prime * result + ((reason == null) ? 0 : reason.hashCode());
     result = prime * result + (successful ? 1231 : 1237);
     result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
+    result = prime * result + ((type == null) ? 0 : type.hashCode());
     return result;
   }
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
+    if (this == obj) {
       return true;
-    if (obj == null)
+    }
+    if (obj == null) {
       return false;
-    if (getClass() != obj.getClass())
+    }
+    if (getClass() != obj.getClass()) {
       return false;
+    }
     SourceAdaptorEvent other = (SourceAdaptorEvent) obj;
     if (adaptor == null) {
-      if (other.adaptor != null)
+      if (other.adaptor != null) {
         return false;
-    } else if (!adaptor.equals(other.adaptor))
+      }
+    } else if (!adaptor.equals(other.adaptor)) {
       return false;
+    }
     if (message == null) {
-      if (other.message != null)
+      if (other.message != null) {
         return false;
-    } else if (!message.equals(other.message))
+      }
+    } else if (!message.equals(other.message)) {
       return false;
+    }
     if (reason == null) {
-      if (other.reason != null)
+      if (other.reason != null) {
         return false;
-    } else if (!reason.equals(other.reason))
+      }
+    } else if (!reason.equals(other.reason)) {
       return false;
-    if (successful != other.successful)
+    }
+    if (successful != other.successful) {
       return false;
+    }
     if (timestamp == null) {
-      if (other.timestamp != null)
+      if (other.timestamp != null) {
         return false;
-    } else if (!timestamp.equals(other.timestamp))
+      }
+    } else if (!timestamp.equals(other.timestamp)) {
       return false;
+    }
+    if (type != other.type) {
+      return false;
+    }
     return true;
+  }
+
+  @Override
+  public String toString() {
+    return "SourceAdaptorEvent [type=" + type + ", message=" + message + ", successful=" + successful + ", reason="
+      + reason + ", timestamp=" + timestamp + ", adaptor=" + adaptor + "]";
   }
 
 }

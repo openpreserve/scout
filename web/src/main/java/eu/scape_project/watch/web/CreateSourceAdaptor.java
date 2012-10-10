@@ -21,6 +21,7 @@ import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.domain.SourceAdaptorEvent;
+import eu.scape_project.watch.domain.SourceAdaptorEventType;
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
 import eu.scape_project.watch.interfaces.PluginType;
 import eu.scape_project.watch.interfaces.SchedulerInterface;
@@ -92,7 +93,7 @@ public class CreateSourceAdaptor extends Mustachelet {
 
       if (adaptor != null) {
         final AdaptorPluginInterface adaptorInstance = adaptorManager.getAdaptorInstance(adaptor.getInstance());
-        scheduler.start(adaptorInstance, new SourceAdaptorEvent("First run"));
+        scheduler.start(adaptorInstance, new SourceAdaptorEvent(SourceAdaptorEventType.STARTED, "First run"));
 
         response.sendRedirect(mustacheletPath + "/administration.html");
       } else {

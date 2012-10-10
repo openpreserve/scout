@@ -193,6 +193,11 @@ public final class KBUtils {
    * A source adaptor event.
    */
   public static final String SOURCE_ADAPTOR_EVENT = "sourceadaptorevent";
+  
+  /**
+   * A source adaptor event type.
+   */
+  public static final String SOURCE_ADAPTOR_EVENT_TYPE = "sourceadaptoreventtype";
 
   /**
    * A plug-in constant.

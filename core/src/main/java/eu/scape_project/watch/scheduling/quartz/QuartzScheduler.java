@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.scape_project.watch.domain.SourceAdaptorEvent;
+import eu.scape_project.watch.domain.SourceAdaptorEventType;
 import eu.scape_project.watch.interfaces.AdaptorListenerInterface;
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
 import eu.scape_project.watch.interfaces.SchedulerInterface;
@@ -95,6 +96,7 @@ public class QuartzScheduler implements SchedulerInterface {
 
     if (event == null) {
       event = new SourceAdaptorEvent();
+      event.setType(SourceAdaptorEventType.STARTED);
     }
 
     if (!cache.containsAdaptor(adaptor)) {
@@ -143,7 +145,7 @@ public class QuartzScheduler implements SchedulerInterface {
       event.setReason("Adaptor is already scheduled!");
     }
 
-    notifyStart(adaptor, event);
+    notifyEvent(adaptor, event);
 
   }
 
@@ -152,6 +154,7 @@ public class QuartzScheduler implements SchedulerInterface {
 
     if (event == null) {
       event = new SourceAdaptorEvent();
+      event.setType(SourceAdaptorEventType.STOPPED);
     }
 
     JobKey key = cache.getAdaptorJobKey(adaptor);
@@ -176,7 +179,7 @@ public class QuartzScheduler implements SchedulerInterface {
       event.setMessage(adaptor.getName() + " unknown adaptor to stop");
     }
 
-    notifyStop(adaptor, event);
+    notifyEvent(adaptor, event);
 
   }
 
@@ -185,6 +188,7 @@ public class QuartzScheduler implements SchedulerInterface {
 
     if (event == null) {
       event = new SourceAdaptorEvent();
+      event.setType(SourceAdaptorEventType.RESUMED);
     }
 
     JobKey key = cache.getAdaptorJobKey(adaptor);
@@ -207,7 +211,7 @@ public class QuartzScheduler implements SchedulerInterface {
       event.setReason("Adaptor " + adaptor.getName() + " is unknown");
     }
 
-    notifyResume(adaptor, event);
+    notifyEvent(adaptor, event);
 
   }
 
@@ -216,6 +220,7 @@ public class QuartzScheduler implements SchedulerInterface {
 
     if (event == null) {
       event = new SourceAdaptorEvent();
+      event.setType(SourceAdaptorEventType.DELETED);
     }
 
     JobKey key = cache.getAdaptorJobKey(adaptor);
@@ -239,7 +244,7 @@ public class QuartzScheduler implements SchedulerInterface {
       event.setReason("Adaptor " + adaptor.getName() + " is unknown");
     }
 
-    notifyDelete(adaptor, event);
+    notifyEvent(adaptor, event);
 
   }
 
@@ -248,6 +253,7 @@ public class QuartzScheduler implements SchedulerInterface {
 
     if (event == null) {
       event = new SourceAdaptorEvent();
+      event.setType(SourceAdaptorEventType.EXECUTED);
     }
 
     JobKey key = cache.getAdaptorJobKey(adaptor);
@@ -270,7 +276,7 @@ public class QuartzScheduler implements SchedulerInterface {
       event.setReason("Adaptor " + adaptor.getName() + " is unknown");
     }
 
-    notifyExecute(adaptor, event);
+    notifyEvent(adaptor, event);
 
   }
 
@@ -318,42 +324,18 @@ public class QuartzScheduler implements SchedulerInterface {
     return listenerManager;
   }
 
-  private void notifyStart(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
-    for (SchedulerListenerInterface sch : schedulerListeners) {
-      sch.adaptorPluginWasStarted(adaptor, event);
-    }
-  }
-
-  private void notifyStop(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
-    for (SchedulerListenerInterface sch : schedulerListeners) {
-      sch.adaptorPluginWasStopped(adaptor, event);
-    }
-  }
-
-  private void notifyDelete(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
-    for (SchedulerListenerInterface sch : schedulerListeners) {
-      sch.adaptorPluginWasDeleted(adaptor, event);
-    }
-  }
-
-  private void notifyResume(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
-    for (SchedulerListenerInterface sch : schedulerListeners) {
-      sch.adaptorPluginWasResumed(adaptor, event);
-    }
-  }
-
   /**
    * This method is public because execution event can happen outside of the
    * QuartzScheduler class.
    * 
    * @param adaptor
-   *          - adaptor to be notified
-   * @param details
-   *          - details to be send
+   *          The adaptor that produced the event.
+   * @param event
+   *          Details of the event.
    */
-  public void notifyExecute(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
+  public void notifyEvent(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
     for (SchedulerListenerInterface sch : schedulerListeners) {
-      sch.adaptorPluginWasExecuted(adaptor, event);
+      sch.onEvent(adaptor, event);
     }
   }
 

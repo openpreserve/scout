@@ -23,6 +23,7 @@ import eu.scape_project.watch.domain.RequestTarget;
 import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.domain.SourceAdaptorEvent;
+import eu.scape_project.watch.domain.SourceAdaptorEventType;
 import eu.scape_project.watch.domain.Trigger;
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
 import eu.scape_project.watch.interfaces.SchedulerInterface;
@@ -49,7 +50,7 @@ public class ApplicationListener implements ServletContextListener {
    * A default logger for this class.
    */
   private static final Logger LOG = LoggerFactory.getLogger(ApplicationListener.class);
-  
+
   private AdaptorManager manager = null;
   private SchedulerInterface scheduler = null;
 
@@ -94,7 +95,7 @@ public class ApplicationListener implements ServletContextListener {
     scheduler.addSchedulerListener(schedulerListener);
 
     for (AdaptorPluginInterface adaptor : activeAdaptors.values()) {
-      scheduler.start(adaptor, new SourceAdaptorEvent("Application startup"));
+      scheduler.start(adaptor, new SourceAdaptorEvent(SourceAdaptorEventType.STARTED, "Application startup"));
     }
 
     LOG.info("Setting adaptor manager and scheduler in context");
@@ -155,7 +156,7 @@ public class ApplicationListener implements ServletContextListener {
 
     final SourceAdaptor c3po = manager.createAdaptor("c3po", "0.0.4", "demo", config, source);
   }
-  
+
   @Override
   public void contextDestroyed(final ServletContextEvent sce) {
     LOG.info("Preparing Scout for shutdown.");

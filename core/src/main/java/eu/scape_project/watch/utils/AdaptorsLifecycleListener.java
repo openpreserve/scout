@@ -39,32 +39,7 @@ public class AdaptorsLifecycleListener implements SchedulerListenerInterface {
   }
 
   @Override
-  public void adaptorPluginWasStarted(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
-    registerEvent(adaptor, event);
-  }
-
-  @Override
-  public void adaptorPluginWasStopped(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
-    registerEvent(adaptor, event);
-  }
-
-  @Override
-  public void adaptorPluginWasResumed(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
-    registerEvent(adaptor, event);
-  }
-
-  @Override
-  public void adaptorPluginWasRescheduled(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
-    registerEvent(adaptor, event);
-  }
-
-  @Override
-  public void adaptorPluginWasDeleted(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
-    registerEvent(adaptor, event);
-  }
-
-  @Override
-  public void adaptorPluginWasExecuted(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
+  public void onEvent(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
     registerEvent(adaptor, event);
   }
 

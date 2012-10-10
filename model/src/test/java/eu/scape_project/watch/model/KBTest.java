@@ -43,6 +43,7 @@ import eu.scape_project.watch.domain.RequestTarget;
 import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.domain.SourceAdaptorEvent;
+import eu.scape_project.watch.domain.SourceAdaptorEventType;
 import eu.scape_project.watch.domain.Trigger;
 import eu.scape_project.watch.utils.JavaUtils;
 import eu.scape_project.watch.utils.KBUtils;
@@ -797,17 +798,17 @@ public class KBTest {
     DAO.save(source);
     DAO.save(adaptor);
     DAO.PROPERTY_VALUE.save(adaptor, pv);
-    
+
     // Make pv an orphan
     final List<Measurement> measurements = DAO.MEASUREMENT.listByPropertyValue(pv, 0, 100);
-    for(Measurement measurement : measurements) {
+    for (Measurement measurement : measurements) {
       measurement.delete();
     }
-    
+
     // Test
     final int orphanCount = DAO.PROPERTY_VALUE.countMeasurementOrphan();
     Assert.assertEquals(1, orphanCount);
-    
+
   }
 
   /**
@@ -1345,7 +1346,8 @@ public class KBTest {
     final PropertyValue pv1 = new PropertyValue(entity, property, "123");
     final PropertyValue pv2 = new PropertyValue(entity, property, "124");
 
-    final SourceAdaptorEvent event = new SourceAdaptorEvent("executed", true, "", new Date(), adaptor);
+    final SourceAdaptorEvent event = new SourceAdaptorEvent(SourceAdaptorEventType.EXECUTED, "scheduled execution",
+      true, "", new Date(), adaptor);
 
     DAO.save(source);
     DAO.save(adaptor);

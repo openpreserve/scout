@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.scape_project.watch.domain.SourceAdaptorEvent;
+import eu.scape_project.watch.domain.SourceAdaptorEventType;
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
 import eu.scape_project.watch.utils.exceptions.PluginException;
 
@@ -69,17 +70,19 @@ public class QuartzExecutionListener implements JobListener {
       failed.remove(adaptor);
       LOG.info(adaptor.getName() + " was successfully executed");
       SourceAdaptorEvent event = new SourceAdaptorEvent();
+      event.setType(SourceAdaptorEventType.EXECUTED);
       event.setSuccessful(true);
       event.setMessage(adaptor.getName() + " was successfully executed");
-      scheduler.notifyExecute(adaptor, event);
+      scheduler.notifyEvent(adaptor, event);
     } else {
       PluginException e = (PluginException) context.get("exception");
       LOG.warn(adaptor.getName() + " was not successfully executed. An exception happened: " + e);
       SourceAdaptorEvent event = new SourceAdaptorEvent();
+      event.setType(SourceAdaptorEventType.EXECUTED);
       event.setSuccessful(false);
       event.setMessage(adaptor.getName() + " was not successfully executed");
       event.setReason("An exception happened: " + e);
-      scheduler.notifyExecute(adaptor, event);
+      scheduler.notifyEvent(adaptor, event);
       int num;
       if (failed.containsKey(adaptor)) {
         Integer i = failed.get(adaptor);

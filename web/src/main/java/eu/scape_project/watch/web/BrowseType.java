@@ -16,12 +16,13 @@ import eu.scape_project.watch.web.annotations.TemplateSource;
 @TemplateSource("browseType")
 public class BrowseType extends TemplateContext {
 
-  public List<Entity> getEntities() {
-    return DAO.ENTITY.listWithType(getTypeName(), 0, PAGE_SIZE);
+  public int getEntityCount() {
+    return DAO.ENTITY.countWithType(getTypeName());
   }
+  
 
   public List<Property> getProperties() {
-    return DAO.PROPERTY.listWithType(getTypeName(), 0, PAGE_SIZE);
+    return DAO.PROPERTY.listWithType(getTypeName(), 0, getPageSize());
   }
 
   @Inject

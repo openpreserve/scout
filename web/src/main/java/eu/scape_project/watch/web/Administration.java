@@ -32,7 +32,7 @@ public class Administration extends TemplateContext {
 
 
   public List<SourceAdaptor> getSourceAdaptors() {
-    return DAO.SOURCE_ADAPTOR.queryAll(0, PAGE_SIZE);
+    return DAO.SOURCE_ADAPTOR.queryAll(0, getPageSize());
   }
 
   public List<PluginInfo> getPlugins() {

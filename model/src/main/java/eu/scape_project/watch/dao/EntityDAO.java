@@ -102,18 +102,7 @@ public final class EntityDAO extends AbstractDO<Entity> {
     return super.count(Entity.class, bindings);
   }
 
-  /**
-   * List {@link Entity} that have the defined type.
-   * 
-   * @param type
-   *          the {@link EntityType} related to the {@link Entity}
-   * @param start
-   *          the index of the first item to return
-   * @param max
-   *          the maximum number of items to return
-   * @return a list of {@link Entity} filtered by the defined constraints
-   */
-  public List<Entity> listWithType(final String type, final int start, final int max) {
+  private static String getBindingsWithType(final String type) {
     String bindings;
 
     if (StringUtils.isNotBlank(type)) {
@@ -121,7 +110,26 @@ public final class EntityDAO extends AbstractDO<Entity> {
     } else {
       bindings = "";
     }
-    return this.query(bindings, start, max);
+    return bindings;
+  }
+
+  /**
+   * List {@link Entity} that have the defined type.
+   * 
+   * @param typeName
+   *          the name of the {@link EntityType} related to the {@link Entity}
+   * @param start
+   *          the index of the first item to return
+   * @param max
+   *          the maximum number of items to return
+   * @return a list of {@link Entity} filtered by the defined constraints
+   */
+  public List<Entity> listWithType(final String typeName, final int start, final int max) {
+    return this.query(getBindingsWithType(typeName), start, max);
+  }
+
+  public int countWithType(String typeName) {
+    return this.count(getBindingsWithType(typeName));
   }
 
   /**

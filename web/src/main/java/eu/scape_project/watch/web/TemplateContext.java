@@ -5,7 +5,7 @@ import com.google.inject.name.Named;
 
 public abstract class TemplateContext {
 
-  public static final int PAGE_SIZE = 100;
+  private static final int PAGE_SIZE = 100;
 
   @Inject
   @Named("contextPath")
@@ -14,6 +14,10 @@ public abstract class TemplateContext {
   @Inject
   @Named("mustacheletPath")
   private String mustacheletPath;
+  
+  public int getPageSize() {
+    return PAGE_SIZE;
+  }
 
   public String getContextPath() {
     return contextPath;
@@ -22,5 +26,6 @@ public abstract class TemplateContext {
   public String getMustacheletPath() {
     return mustacheletPath;
   }
+  
 
 }

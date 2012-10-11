@@ -1,0 +1,47 @@
+{{#if entities}}
+<h2>Entities</h2>
+<ul class="pager">
+	<li
+		class="previous {{#if entities_index_previous_disabled}}disabled{{/if}}"><a
+		href="javascript:updateEntityList({{entities_index_previous}})">&larr;
+			Previous</a></li>
+	<li>{{entities_index_start}}-{{entities_index_end}} of
+		{{entities_count}}</li>
+	<li class="next {{#if entities_index_next_disabled}}disabled{{/if}}"><a
+		href="javascript:updateEntityList({{entities_index_next}})">Next
+			&rarr;</a></li>
+</ul>
+<table class="table table-hover table-striped">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th style="width: 10%">Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{#each entities}}
+		<tr>
+			<td>{{name}}</td>
+			<td><a class="btn btn-small btn-link"
+				href="{{../mustacheletPath}}/browse/entity/{{type.name}}/{{name}}"><i class=" icon-th-list"></i></a></td>
+		</tr>
+		{{/each}}
+	</tbody>
+</table>
+<ul class="pager">
+	<li
+		class="previous {{#if entities_index_previous_disabled}}disabled{{/if}}"><a
+		href="javascript:updateEntityList({{entities_index_previous}})">&larr;
+			Previous</a></li>
+	<li>{{entities_index_start}}-{{entities_index_end}} of
+		{{entities_count}}</li>
+	<li class="next {{#if entities_index_next_disabled}}disabled{{/if}}"><a
+		href="javascript:updateEntityList({{entities_index_next}})">Next
+			&rarr;</a></li>
+</ul>
+{{/if}} {{#unless entities}}
+<h2>Entities</h2>
+<div class="alert alert-warning">
+	<b>Empty!</b> There are no defined entities.
+</div>
+{{/unless}}

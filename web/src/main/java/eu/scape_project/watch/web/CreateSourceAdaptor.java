@@ -47,7 +47,7 @@ public class CreateSourceAdaptor extends TemplateContext {
   }
 
   public List<Source> getSources() {
-    return DAO.SOURCE.query("", 0, PAGE_SIZE);
+    return DAO.SOURCE.query("", 0, getPageSize());
   }
 
   @Inject

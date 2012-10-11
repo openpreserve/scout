@@ -13,16 +13,12 @@ import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.web.annotations.Controller;
 import eu.scape_project.watch.web.annotations.HttpMethod;
 import eu.scape_project.watch.web.annotations.Path;
-import eu.scape_project.watch.web.annotations.Template;
+import eu.scape_project.watch.web.annotations.TemplateSource;
 
 @Path("/source/new")
-@Template("createSource.html")
+@TemplateSource("createSource")
 @HttpMethod({HttpMethod.Type.GET, HttpMethod.Type.POST})
-public class CreateSource extends Mustachelet {
-
-  boolean page_administration() {
-    return true;
-  }
+public class CreateSource extends TemplateContext {
 
   @Inject
   private HttpServletResponse response;
@@ -40,7 +36,7 @@ public class CreateSource extends Mustachelet {
     final Source source = DAO.SOURCE.save(new Source(name, description));
 
     if (source != null) {
-      response.sendRedirect(mustacheletPath + redirect);
+      response.sendRedirect(getMustacheletPath() + redirect);
     } else {
       // TODO send error of source could not be created.
     }
@@ -48,7 +44,7 @@ public class CreateSource extends Mustachelet {
     return false;
   }
 
-  public String redirect() {
+  public String getRedirect() {
     // TODO get redirect from query string in GET.
     return "/adaptor/new";
   }

@@ -10,32 +10,28 @@ import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.web.annotations.Path;
-import eu.scape_project.watch.web.annotations.Template;
+import eu.scape_project.watch.web.annotations.TemplateSource;
 
 @Path("/browse/type/([^/]*)")
-@Template("browseType.html")
-public class BrowseType extends Mustachelet {
+@TemplateSource("browseType")
+public class BrowseType extends TemplateContext {
 
-  public boolean page_browse() {
-    return true;
+  public List<Entity> getEntities() {
+    return DAO.ENTITY.listWithType(getTypeName(), 0, PAGE_SIZE);
   }
 
-  public List<Entity> entity() {
-    return DAO.ENTITY.listWithType(typeName(), 0, PAGE_SIZE);
-  }
-
-  public List<Property> property() {
-    return DAO.PROPERTY.listWithType(typeName(), 0, PAGE_SIZE);
+  public List<Property> getProperties() {
+    return DAO.PROPERTY.listWithType(getTypeName(), 0, PAGE_SIZE);
   }
 
   @Inject
   Matcher m;
 
-  String typeName() {
+  public String getTypeName() {
     return m.group(1);
   }
 
-  EntityType entityType() {
-    return DAO.ENTITY_TYPE.findById(typeName());
+  public EntityType getEntityType() {
+    return DAO.ENTITY_TYPE.findById(getTypeName());
   }
 }

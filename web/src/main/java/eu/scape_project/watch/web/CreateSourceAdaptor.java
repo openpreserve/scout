@@ -31,26 +31,22 @@ import eu.scape_project.watch.plugin.PluginManager;
 import eu.scape_project.watch.web.annotations.Controller;
 import eu.scape_project.watch.web.annotations.HttpMethod;
 import eu.scape_project.watch.web.annotations.Path;
-import eu.scape_project.watch.web.annotations.Template;
+import eu.scape_project.watch.web.annotations.TemplateSource;
 
 @Path("/adaptor/new")
-@Template("createSourceAdaptor.html")
+@TemplateSource("createSourceAdaptor")
 @HttpMethod({HttpMethod.Type.GET, HttpMethod.Type.POST})
-public class CreateSourceAdaptor extends Mustachelet {
+public class CreateSourceAdaptor extends TemplateContext {
 
   private static final String CONFIG_PREFIX = "config.";
 
   private final Logger log = LoggerFactory.getLogger(getClass());
 
-  boolean page_administration() {
-    return true;
-  }
-
-  public List<PluginInfo> plugin() {
+  public List<PluginInfo> getPlugins() {
     return PluginManager.getDefaultPluginManager().getPluginInfo(PluginType.ADAPTOR);
   }
 
-  public List<Source> source() {
+  public List<Source> getSources() {
     return DAO.SOURCE.query("", 0, PAGE_SIZE);
   }
 
@@ -95,7 +91,7 @@ public class CreateSourceAdaptor extends Mustachelet {
         final AdaptorPluginInterface adaptorInstance = adaptorManager.getAdaptorInstance(adaptor.getInstance());
         scheduler.start(adaptorInstance, new SourceAdaptorEvent(SourceAdaptorEventType.STARTED, "First run"));
 
-        response.sendRedirect(mustacheletPath + "/administration.html");
+        response.sendRedirect(getMustacheletPath() + "/administration");
       } else {
         // TODO send error of plugin does not exist.
         response.sendError(404, "Plug-in does not exist: " + StringEscapeUtils.escapeHtml(pluginName) + "-"

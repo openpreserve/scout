@@ -52,18 +52,12 @@
 							<targetPath>bootstrap</targetPath>
 						</resource>
 						<resource>
-							<directory>mustache.js-v0.7.0</directory>
-							<includes>
-								<include>mustache.js</include>
-							</includes>
-							<targetPath>mustache</targetPath>
+							<directory>handlebars.js-v1.0.rc1</directory>
+							<targetPath>handlebars</targetPath>
 						</resource>
 						<resource>
-							<directory>icanhaz.js-v0.10</directory>
-							<includes>
-								<include>ICanHaz-no-mustache.min.js</include>
-							</includes>
-							<targetPath>icanhaz</targetPath>
+							<directory>compiled-templates/</directory>
+							<targetPath>templates</targetPath>
 						</resource>
 					</webResources>
 				</configuration>
@@ -166,19 +160,6 @@
 			<artifactId>scout-core</artifactId>
 			<version>0.0.2</version>
 		</dependency>
-
-		<!-- THIS SHOULD BE ON THE CLASS PATH BECAUSE OF THE ADAPTOR. -->
-		<!-- <dependency> <groupId>dom4j</groupId> <artifactId>dom4j</artifactId> 
-			<version>1.6.1</version> </dependency> <dependency> <groupId>jaxen</groupId> 
-			<artifactId>jaxen</artifactId> <version>1.1.3</version> <exclusions> <exclusion> 
-			<artifactId>maven-cobertura-plugin</artifactId> <groupId>maven-plugins</groupId> 
-			</exclusion> <exclusion> <artifactId>maven-findbugs-plugin</artifactId> <groupId>maven-plugins</groupId> 
-			</exclusion> </exclusions> </dependency> -->
-		<dependency>
-			<groupId>com.github.spullara.mustache.java</groupId>
-			<artifactId>compiler</artifactId>
-			<version>0.8.4</version>
-		</dependency>
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
@@ -189,6 +170,16 @@
 			<artifactId>servlet-api</artifactId>
 			<version>2.5</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.github.jknack</groupId>
+			<artifactId>handlebars</artifactId>
+			<version>0.5.5</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.jknack</groupId>
+			<artifactId>handlebars-humanize</artifactId>
+			<version>0.5.5</version>
 		</dependency>
 	</dependencies>
 	<scm>

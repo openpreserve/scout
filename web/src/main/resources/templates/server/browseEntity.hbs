@@ -1,0 +1,39 @@
+{{#partial "title"}}Scout - Browse - Entity{{/partial}}
+{{#partial "NavBrowseClass"}}active{{/partial}}
+{{#partial "content"}} 
+<div class="container">
+	{{#entity}}
+	<h1>Entity {{name}}</h1>
+	<table class="table table-hover table-striped">
+		<thead>
+			<tr>
+				<th>Property</th>
+				<th>Value</th>
+				<th>Provenance</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#values}}
+			<tr>
+				<td>{{#property}}{{name}} <i class="icon-info-sign"></i>{{/property}}
+				</td>
+				<td>{{value}}</td>
+				<td>TODO: source and source adaptor</td>
+			</tr>
+			{{/values}}
+		</tbody>
+	</table>
+	{{^values}}
+	<div class="alert alert-warning">
+		<b>Empty!</b> There are no defined property values for this entity.
+	</div>
+	{{/values}} 
+	{{/entity}} 
+	{{^entity}}
+	<div class="alert alert-error">
+		<b>Not found!</b> Could not find entity with name '{{entityName}}' from type '{{typeName}}'.
+	</div>
+	{{/entity}}
+</div>
+{{/partial}}
+{{>base}}

@@ -1,14 +1,11 @@
 package eu.scape_project.watch.web;
 
 import eu.scape_project.watch.web.annotations.Path;
-import eu.scape_project.watch.web.annotations.Template;
+import eu.scape_project.watch.web.annotations.TemplateSource;
 
 
-@Path("/(index.html)?")
-@Template("index.html")
-public class Index extends Mustachelet {
+@Path("/")
+@TemplateSource("index")
+public class Index extends TemplateContext {
 
-  boolean page_index() {
-    return true;
-  }
 }

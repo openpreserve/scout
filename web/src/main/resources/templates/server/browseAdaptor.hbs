@@ -1,0 +1,129 @@
+{{#partial "title"}}Scout - Browse - Source Adaptor{{/partial}}
+{{#partial "NavBrowseClass"}}active{{/partial}}
+{{#partial "content"}} 
+<div class="container">
+	{{#adaptor}}
+	<h1>Source Adaptor {{instance}}</h1>
+	<p>This adaptor is currently {{#active}}<i class="icon-ok"></i>active{{/active}}{{^active}}inactive{{/active}}.</p>
+
+	<div>
+		<h2>Plug-in</h2>
+		<p>Name: {{name}}</p>
+		<p>Version: {{version}}</p>
+		
+		<h2>Configuration</h2>
+		<table class="table table-hover table-striped">
+			<thead>
+				<tr>
+					<th>Parameter</th>
+					<th>Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#configuration}}
+				<tr>
+					<td>{{key}}</td>
+					<td>{{value}}</td>
+				</tr>
+				{{/configuration}}
+			</tbody>
+		</table>
+		{{^configuration}}
+		<div class="alert alert-warning">
+			<b>Empty!</b> No configuration defined.
+		</div>
+		{{/configuration}}
+
+		<h2>Entities</h2>
+		<table class="table table-hover table-striped">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th style="width: 10%">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#entities}}
+				<tr>
+					<td>{{name}}</td>
+					<td><a class="btn btn-info"
+						href="{{mustacheletPath}}/browse/entity/{{#type}}{{name}}{{/type}}/{{name}}">Browse</a></td>
+				</tr>
+				{{/entities}}
+			</tbody>
+		</table>
+		{{^entities}}
+		<div class="alert alert-warning">
+			<b>Empty!</b> There are no defined entities.
+		</div>
+		{{/entities}}
+	</div>
+
+	<div>
+		<h2>Properties</h2>
+		<table class="table table-hover table-striped">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Description</th>
+					<th>Data type</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#properties}}
+				<tr>
+					<td>{{name}}</td>
+					<td>{{name}}</td>
+					<td>{{datatype}}</td>
+				</tr>
+				{{/properties}}
+			</tbody>
+		</table>
+		{{^properties}}
+		<div class="alert alert-warning">
+			<b>Empty!</b> There are no defined properties.
+		</div>
+		{{/properties}}
+		<h2>Source</h2>
+		{{#source}}
+		<p>Name: {{name}}</p>
+		<p>Description: {{description}}</p>
+		{{/source}}
+	</div>
+	{{/adaptor}}
+	{{^adaptor}}
+	<div class="alert alert-error">
+		<b>Not found!</b> Could not find an adaptor with instance name
+		'{{instance}}'.
+	</div>
+	{{/adaptor}}
+	
+	<h2>Event history</h2>
+	<table class="table table-hover table-striped">
+			<thead>
+				<tr>
+					<th>&nbsp;</th>
+					<th>Date</th>
+					<th>Event</th>
+					<th>Details</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#events}}
+				<tr class="{{#if successful}}success{{/if}}{{#unless successful}}error{{/unless}}">
+					<td>{{type}}</td>
+					<td style="white-space: nowrap;">{{timestamp}}</td>
+					<td>{{message}}</td>
+					<td>{{reason}}</td>
+				</tr>
+				{{/events}}
+			</tbody>
+		</table>
+		{{^events}}
+		<div class="alert alert-warning">
+			<b>Empty!</b> There are no defined events.
+		</div>
+		{{/events}}
+</div>
+{{/partial}}
+{{>base}}

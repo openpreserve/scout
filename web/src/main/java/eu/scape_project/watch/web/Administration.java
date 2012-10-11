@@ -24,21 +24,18 @@ import eu.scape_project.watch.plugin.PluginManager;
 import eu.scape_project.watch.web.annotations.Controller;
 import eu.scape_project.watch.web.annotations.HttpMethod;
 import eu.scape_project.watch.web.annotations.Path;
-import eu.scape_project.watch.web.annotations.Template;
+import eu.scape_project.watch.web.annotations.TemplateSource;
 
-@Path("/administration.html")
-@Template("administration.html")
-public class Administration extends Mustachelet {
+@Path("/administration")
+@TemplateSource("administration")
+public class Administration extends TemplateContext {
 
-  boolean page_administration() {
-    return true;
-  }
 
-  public List<SourceAdaptor> sourceadaptor() {
+  public List<SourceAdaptor> getSourceAdaptors() {
     return DAO.SOURCE_ADAPTOR.queryAll(0, PAGE_SIZE);
   }
 
-  public List<PluginInfo> plugin() {
+  public List<PluginInfo> getPlugins() {
     return PluginManager.getDefaultPluginManager().getPluginInfo();
   }
 
@@ -65,7 +62,7 @@ public class Administration extends Mustachelet {
       if (adaptor != null) {
         DAO.delete(adaptor);
         adaptorManager.reloadKnownAdaptors();
-        response.sendRedirect(mustacheletPath + "/administration.html");
+        response.sendRedirect(getMustacheletPath() + "/administration");
       } else {
         response.sendError(404, "Source adaptor not found: " + StringEscapeUtils.escapeHtml(adaptorUID));
       }

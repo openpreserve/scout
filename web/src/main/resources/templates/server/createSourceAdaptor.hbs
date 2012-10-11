@@ -1,0 +1,54 @@
+{{#partial "title"}}Scout - Create Source Adaptor{{/partial}}
+{{#partial "content"}} 
+<form class="container" method="POST">
+	<legend>Create source adaptor</legend>
+
+	<label>Name</label>
+	<input name="instance" type="text"
+		placeholder="Unique identifying name">
+	<label>Plug-in</label>
+	<select name="plugin" id="plugin-select"> {{#plugins}}
+		<option value="{{name}}|{{version}}">{{name}} version
+			{{version}}</option>{{/plugins}}
+	</select>
+	<label>Configuration</label>
+	<div class="well" id="configuration"></div>
+
+	<label>Source</label> 
+	<select name="source"> 
+	{{#sources}}
+		<option value="{{name}}">{{name}}: {{description}}</option>{{/sources}}
+	</select>
+	<a class="btn btn-link" href="{{mustacheletPath}}/source/new">create
+		new source</a> <br /> <br />
+	<button type="submit" class="btn btn-primary">Create</button>
+
+</form>
+{{/partial}}
+{{#partial "scripts"}}
+<script>
+	function updateConfiguration() {
+		var pluginSelect = document.getElementById("plugin-select");
+		var pluginId = pluginSelect.options[pluginSelect.selectedIndex].value;
+		var pluginIdSplit = pluginId.split("|", 2);
+		var pluginName = pluginIdSplit[0];
+		var pluginVersion = pluginIdSplit[1];
+
+		$.getJSON('{{contextPath}}/api/plugin.json/' + pluginName + '/'
+				+ pluginVersion, function(plugin_data) {
+			var template = Handlebars.templates['plugin_configuration.hbs'];
+			var pluginHtml = template(plugin_data);
+			$('#configuration').html(pluginHtml);
+		});
+	}
+
+	$(document).ready(function() {
+		var pluginSelect = document.getElementById("plugin-select");
+		pluginSelect.onchange = updateConfiguration;
+		updateConfiguration();
+	});
+</script>
+{{/partial}}
+{{> base}}
+
+

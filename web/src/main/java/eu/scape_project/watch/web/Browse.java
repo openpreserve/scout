@@ -5,19 +5,13 @@ import java.util.List;
 import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.web.annotations.Path;
-import eu.scape_project.watch.web.annotations.Template;
+import eu.scape_project.watch.web.annotations.TemplateSource;
 
-@Path("/browse.html")
-@Template("browse.html")
-public class Browse extends Mustachelet {
+@Path("/browse")
+@TemplateSource("browse")
+public class Browse extends TemplateContext {
   
-  private static final int PAGE_SIZE = 100;
-  
-  public boolean page_browse() {
-    return true;
-  }
-
-  public List<EntityType> entitytype() {
+  public List<EntityType> getEntityTypes() {
     return DAO.ENTITY_TYPE.query("", 0, PAGE_SIZE);
   }
   

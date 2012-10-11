@@ -15,15 +15,11 @@ import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.domain.SourceAdaptorEvent;
 import eu.scape_project.watch.listener.ContextUtil;
 import eu.scape_project.watch.web.annotations.Path;
-import eu.scape_project.watch.web.annotations.Template;
+import eu.scape_project.watch.web.annotations.TemplateSource;
 
 @Path("/browse/adaptor/([^/]*)")
-@Template("browseAdaptor.html")
-public class BrowseAdaptor extends Mustachelet {
-
-  public boolean page_browse() {
-    return true;
-  }
+@TemplateSource("browseAdaptor")
+public class BrowseAdaptor extends TemplateContext {
 
   @Inject
   Matcher m;
@@ -38,14 +34,14 @@ public class BrowseAdaptor extends Mustachelet {
   @Inject
   private HttpServletRequest request;
 
-  public SourceAdaptor adaptor() {
+  public SourceAdaptor getAdaptor() {
     final ServletContext context = ContextUtil.getServletContext(request);
     final AdaptorManager adaptorManager = ContextUtil.getAdaptorManager(context);
     return adaptorManager.getSourceAdaptor(instance());
   }
 
-  public List<SourceAdaptorEvent> events() {
-    return DAO.SOURCE_ADAPTOR_EVENT.listByAdaptor(adaptor(), 0, PAGE_SIZE);
+  public List<SourceAdaptorEvent> getEvents() {
+    return DAO.SOURCE_ADAPTOR_EVENT.listByAdaptor(getAdaptor(), 0, PAGE_SIZE);
   }
 
 }

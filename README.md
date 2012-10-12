@@ -1,6 +1,6 @@
-Planning and Watch Repository
+Scout: a preservation watch system
 =============================
-This is the SCAPE repository for the PW sub-project.
+Scout is a preservation watch system being developed within the [SCAPE project](http://www.scape-project.eu). 
 
 Requirements
 -----------------------------
@@ -38,3 +38,9 @@ warnings.
 Watch Component
 ---------------
 TBD
+
+Acknowledgements
+----------------
+
+Part of this work was supported by the European Union in the 7th Framework Program, IST, through the SCAPE project, Contract 270137.
+

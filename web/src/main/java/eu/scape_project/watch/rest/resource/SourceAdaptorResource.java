@@ -65,7 +65,7 @@ public class SourceAdaptorResource extends JavaHelp {
   @Path("/{instance}")
   @ApiOperation(value = "Get a source adaptor based on the instance unique identifier", notes = "")
   @ApiErrors(value = {@ApiError(code = NotFoundException.CODE, reason = "Source adaptor not found")})
-  public Response getPluginByName(
+  public Response getSourceAdaptor(
     @ApiParam(value = "Source adaptor instance UID", required = true) @PathParam("instance") final String instance) {
 
     final AdaptorManager manager = ContextUtil.getAdaptorManager(context);

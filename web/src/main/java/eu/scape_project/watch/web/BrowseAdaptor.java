@@ -44,4 +44,8 @@ public class BrowseAdaptor extends TemplateContext {
     return DAO.SOURCE_ADAPTOR_EVENT.listByAdaptor(getAdaptor(), 0, getPageSize());
   }
 
+  public int getEventCount() {
+    return DAO.SOURCE_ADAPTOR_EVENT.countByAdaptor(getAdaptor());
+  }
+
 }

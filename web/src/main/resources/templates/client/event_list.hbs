@@ -1,0 +1,24 @@
+{{#partial "title"}}Event history{{/partial}}
+{{#partial "item_list"}}
+<table class="table table-hover table-striped">
+	<thead>
+		<tr>
+			<th>&nbsp;</th>
+			<th>Date</th>
+			<th>Event</th>
+			<th>Details</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{#items}}
+		<tr class="{{#if successful}}success{{/if}}{{#unless successful}}error{{/unless}}">
+			<td>{{type}}</td>
+			<td style="white-space: nowrap;">{{timestamp}}</td>
+			<td>{{message}}</td>
+			<td>{{reason}}</td>
+		</tr>
+		{{/items}}
+	</tbody>
+</table>
+{{/partial}}
+{{>base_paginated_list}}

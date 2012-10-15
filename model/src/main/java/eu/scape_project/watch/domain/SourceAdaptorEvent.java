@@ -24,9 +24,6 @@ import eu.scape_project.watch.utils.KBUtils;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SourceAdaptorEvent extends RdfBean<SourceAdaptorEvent> {
 
-  // private static final Logger LOG = LoggerFactory
-  // .getLogger(Measurement.class);
-
   /**
    * Get source adaptor event ID.
    * 
@@ -70,6 +67,7 @@ public class SourceAdaptorEvent extends RdfBean<SourceAdaptorEvent> {
    * The moment in time of the event.
    */
   @XmlElement
+  @JsonProperty
   private Date timestamp;
 
   /**

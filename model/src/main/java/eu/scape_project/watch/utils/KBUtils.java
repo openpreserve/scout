@@ -335,6 +335,8 @@ public final class KBUtils {
    */
   public static void dbDisconnect() {
     if (dataset != null) {
+      TDB.sync(dataset);
+      dataset.getDefaultModel().close();
       dataset.close();
       dataset = null;
     }

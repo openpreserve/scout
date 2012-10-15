@@ -1,16 +1,17 @@
 {{#partial "title"}}Scout - Browse - Source Adaptor{{/partial}}
-{{#partial "NavBrowseClass"}}active{{/partial}}
-{{#partial "content"}} 
+{{#partial "NavBrowseClass"}}active{{/partial}} {{#partial "content"}}
 <div class="container">
 	{{#adaptor}}
 	<h1>Source Adaptor {{instance}}</h1>
-	<p>This adaptor is currently {{#active}}<i class="icon-ok"></i>active{{/active}}{{^active}}inactive{{/active}}.</p>
+	<p>
+		This adaptor is currently {{#active}}<i class="icon-ok"></i>active{{/active}}{{^active}}inactive{{/active}}.
+	</p>
 
 	<div>
 		<h2>Plug-in</h2>
 		<p>Name: {{name}}</p>
 		<p>Version: {{version}}</p>
-		
+
 		<h2>Configuration</h2>
 		<table class="table table-hover table-striped">
 			<thead>
@@ -90,40 +91,18 @@
 		<p>Description: {{description}}</p>
 		{{/source}}
 	</div>
-	{{/adaptor}}
-	{{^adaptor}}
+	{{/adaptor}} {{^adaptor}}
 	<div class="alert alert-error">
 		<b>Not found!</b> Could not find an adaptor with instance name
 		'{{instance}}'.
 	</div>
 	{{/adaptor}}
-	
-	<h2>Event history</h2>
-	<table class="table table-hover table-striped">
-			<thead>
-				<tr>
-					<th>&nbsp;</th>
-					<th>Date</th>
-					<th>Event</th>
-					<th>Details</th>
-				</tr>
-			</thead>
-			<tbody>
-				{{#events}}
-				<tr class="{{#if successful}}success{{/if}}{{#unless successful}}error{{/unless}}">
-					<td>{{type}}</td>
-					<td style="white-space: nowrap;">{{timestamp}}</td>
-					<td>{{message}}</td>
-					<td>{{reason}}</td>
-				</tr>
-				{{/events}}
-			</tbody>
-		</table>
-		{{^events}}
-		<div class="alert alert-warning">
-			<b>Empty!</b> There are no defined events.
-		</div>
-		{{/events}}
+
+	<div id="eventList" class="content">Loading events...</div>
 </div>
-{{/partial}}
-{{>base}}
+{{/partial}} {{#partial "scripts"}}
+<script>
+	var paginator = Paginator({{eventCount}}, '/api/sourceadaptorevent.json/list?adaptor={{adaptor.instance}}', 20, 'event_list.hbs', '#eventList', '{{contextPath}}', '{{mustacheletPath}}');
+	paginator.init();
+</script>
+{{/partial}} {{>base}}

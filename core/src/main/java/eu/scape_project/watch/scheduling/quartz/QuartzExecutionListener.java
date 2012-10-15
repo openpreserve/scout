@@ -76,12 +76,12 @@ public class QuartzExecutionListener implements JobListener {
       scheduler.notifyEvent(adaptor, event);
     } else {
       PluginException e = (PluginException) context.get("exception");
-      LOG.warn(adaptor.getName() + " was not successfully executed. An exception happened: " + e);
+      LOG.warn(adaptor.getName() + " was not successfully executed. An exception happened: " + e.getStackTrace());
       SourceAdaptorEvent event = new SourceAdaptorEvent();
       event.setType(SourceAdaptorEventType.EXECUTED);
       event.setSuccessful(false);
       event.setMessage(adaptor.getName() + " was not successfully executed");
-      event.setReason("An exception happened: " + e);
+      event.setReason("An exception happened: " + e.getStackTrace());
       scheduler.notifyEvent(adaptor, event);
       int num;
       if (failed.containsKey(adaptor)) {

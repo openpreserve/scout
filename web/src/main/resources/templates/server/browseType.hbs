@@ -5,6 +5,7 @@
 	<h1>Category {{name}}</h1>
 	<p>{{description}}</p>
 
+	<h2>Entities</h2>
 	<div id="entityList" class="content">Loading entities...</div>
 
 	<div>
@@ -42,37 +43,7 @@
 {{/partial}} 
 {{#partial "scripts"}}
 <script>
-	function updateEntityList(start) {
-		var entityType = "{{#with entityType}}{{name}}{{/with}}";
-		var max = 30;
-		var count = {{entityCount}};
-		var end = start+max<count?start+max:count;
-		var next = end<count?end:start;
-		var previous = start-max<0?0:start-max;
-		$.getJSON('{{contextPath}}/api/entity.json/list?type=' + entityType
-				+ '&start=' + start + '&max=' + max, function(data) {
-			var template = Handlebars.templates['entities_list.hbs'];
-			var context = {
-					entities: data, 
-					entities_index_start: start+1,
-					entities_index_end: end,
-					entities_count: count,
-					entities_index_previous: previous,
-					entities_index_next: next,
-					entities_index_previous_disabled: start==0,
-					entities_index_next_disabled: end==count,
-					contextPath: "{{contextPath}}",
-					mustacheletPath: "{{mustacheletPath}}",
-					};
-			console.log(context);
-			var html = template(context);
-			$('#entityList').html(html);
-		});
-	}
-
-	$(document).ready(function() {
-		// TODO update on pagination
-		updateEntityList(0);
-	});
+var paginator = Paginator({{entityCount}}, '/api/entity.json/list?type={{entityType.name}}', 20, 'entity_list.hbs', '#entityList', '{{contextPath}}', '{{mustacheletPath}}');
+paginator.init();
 </script>
 {{/partial}} {{> base}}

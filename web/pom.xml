@@ -56,6 +56,10 @@
 							<targetPath>handlebars</targetPath>
 						</resource>
 						<resource>
+							<directory>jquery-bbq-v1.2.1</directory>
+							<targetPath>jquery-bbq</targetPath>
+						</resource>
+						<resource>
 							<directory>compiled-templates/</directory>
 							<targetPath>templates</targetPath>
 						</resource>

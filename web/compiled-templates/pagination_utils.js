@@ -42,13 +42,22 @@ Paginator.prototype = {
 			var html = template(context);
 			$(divID).html(html);
 		});
+		if (start > 0) {
+			document.location = $.param.fragment(window.location.href, 'start='
+					+ start);
+		}
+
 	},
 
 	init : function() {
 		var paginator = this;
 		$(document).ready(function() {
-			// TODO get start index from URL
-			paginator.updateList(0);
+			var params = $.deparam.fragment(true);
+			if (params && params.start && params.start > 0) {
+				paginator.updateList(params.start);
+			} else {
+				paginator.updateList(0);
+			}
 		});
 	}
 };

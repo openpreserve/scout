@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
@@ -33,12 +34,12 @@ public class ProductionProfileStrategy implements ProfileVersionReader {
 
   @Override
   public String getCollectionName() {
-    return this.doc.getRootElement().attributeValue("collection");
+    return this.getDoc().getRootElement().attributeValue("collection");
   }
 
   @Override
   public String getObjectsCount() {
-    return this.doc.getRootElement().element("partition").attributeValue("count");
+    return this.getDoc().getRootElement().element("partition").attributeValue("count");
   }
 
   @Override
@@ -113,7 +114,7 @@ public class ProductionProfileStrategy implements ProfileVersionReader {
   }
 
   private Element getPropertyElement(final String name) {
-    final Element root = this.doc.getRootElement();
+    final Element root = this.getDoc().getRootElement();
     final List<?> nodes = root.element("partition").element("properties").elements();
     
     for (Object o : nodes) {
@@ -147,6 +148,14 @@ public class ProductionProfileStrategy implements ProfileVersionReader {
     } catch (final IOException e) {
       LOG.error("An error occurred while closing the input stream: {}", e.getMessage());
     }
+  }
+  
+  private Document getDoc() {
+    if (this.doc == null) {
+      return DocumentHelper.createDocument();
+    }
+    
+    return doc;
   }
 
 }

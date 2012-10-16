@@ -12,13 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import eu.scape_project.watch.adaptor.c3po.common.C3POResponseParser;
-import eu.scape_project.watch.adaptor.c3po.common.ProductionProfileStrategy;
-import eu.scape_project.watch.adaptor.c3po.common.ProfileVersionReader;
-
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import eu.scape_project.watch.adaptor.c3po.common.C3POResponseParser;
+import eu.scape_project.watch.adaptor.c3po.common.ProductionProfileStrategy;
+import eu.scape_project.watch.adaptor.c3po.common.ProfileVersionReader;
+import eu.scape_project.watch.utils.exceptions.PluginException;
 
 /**
  * The c3po client connects to a c3po instance and fetches a profile for the
@@ -56,7 +57,7 @@ public class C3POClient implements C3POClientInterface {
    *          the endpoint to use in the client.
    */
   public C3POClient(final String url) {
-    this.setApiEndpoint(url);
+    this.apiEndpoint = url;
   }
 
   /**
@@ -68,28 +69,48 @@ public class C3POClient implements C3POClientInterface {
    * @param port
    *          the port where the service is running.
    */
-  public C3POClient(final String url, final int port) {
-    this(url + ":" + port);
-    this.setPort(port);
+  public C3POClient(final String url, final int port, final String endpoint) {
+    
+    this.apiEndpoint = url;
+    
+    if (port >= 0 && port <= 65535) {
+      this.port = port;
+      this.apiEndpoint = this.apiEndpoint + ":" + port;
+    }
+    
+    if (endpoint != null) {
+      if (endpoint.startsWith("/")) {
+        this.apiEndpoint = this.apiEndpoint + endpoint;
+      } else {
+        this.apiEndpoint = this.apiEndpoint + "/" + endpoint;
+      }
+    }
   }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public List<String> getCollectionIdentifiers() {
+  public List<String> getCollectionIdentifiers() throws PluginException {
     final List<String> result = new ArrayList<String>();
 
     try {
       final String response = this.submitRequest("/collections");
       final C3POResponseParser reader = new C3POResponseParser();
-      result.addAll(reader.getCollectionsFromResponse(IOUtils.toInputStream(response)));
+      final List<String> collections = reader.getCollectionsFromResponse(IOUtils.toInputStream(response));
+      
+      if (collections == null) {
+        throw new PluginException("Could not read response: " + response);
+      }
+      
+      result.addAll(collections);
     } catch (final ProtocolException e) {
-      e.printStackTrace();
       LOG.error("A protocol error occurred: {}", e.getMessage());
+      throw new PluginException("A protocol error occurred (check the url)", e);
+      
     } catch (final IOException e) {
-      e.printStackTrace();
       LOG.error("An io error occurred: {}", e.getMessage());
+      throw new PluginException("A io exception occurred (check the connection)", e);
     }
 
     return result;
@@ -99,17 +120,21 @@ public class C3POClient implements C3POClientInterface {
    * {@inheritDoc}
    */
   @Override
-  public InputStream getCollectionProfile(final String identifier, final Map<String, String> parameters) {
+  public InputStream getCollectionProfile(final String identifier, final Map<String, String> parameters) throws PluginException {
     try {
       final String response = this.submitRequest("/export/profile?collection=" + identifier);
+      
       if (response != null) {
-
         return IOUtils.toInputStream(response);
       }
+      
     } catch (final ProtocolException e) {
-      e.printStackTrace();
+      LOG.error("A protocol error occurred: {}", e.getMessage());
+      throw new PluginException("A protocol error occurred (check the url)", e);
+      
     } catch (final IOException e) {
-      e.printStackTrace();
+      LOG.error("An io error occurred: {}", e.getMessage());
+      throw new PluginException("A io exception occurred (check the connection)", e);
     }
     return null;
   }
@@ -201,7 +226,7 @@ public class C3POClient implements C3POClientInterface {
       }
 
       result = response.toString();
-      LOG.debug("Received response from c3po: {}", result);
+      LOG.debug("Received response from c3po: {}", result.substring(0, result.indexOf("\n")) + "... ");
 
     } catch (final IOException e) {
       LOG.error("An error occurred while reading the response");

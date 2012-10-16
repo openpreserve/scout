@@ -19,8 +19,8 @@ public class C3POClientTest {
    */
   @Ignore
   @Test
-  public void shouldTestRealRunningClient() {
-    final C3POClient client = new C3POClient("http://127.0.0.1", 8080);
+  public void shouldTestRealRunningClient() throws Exception {
+    final C3POClient client = new C3POClient("http://127.0.0.1", 9000, "c3po");
     final List<String> list = client.getCollectionIdentifiers();
     Assert.assertFalse(list.isEmpty());
 

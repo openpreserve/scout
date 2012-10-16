@@ -39,6 +39,10 @@ public class C3POResponseParser {
    */
   public List<String> getCollectionsFromResponse(final InputStream response) {
     this.getDocument(response);
+    if (this.doc == null) {
+      return null;
+    }
+    
     final List<?> nodes = this.doc.getRootElement().selectNodes("collection");
     final List<String> result = new ArrayList<String>();
 

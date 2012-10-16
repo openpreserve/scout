@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import eu.scape_project.watch.adaptor.c3po.common.ProfileVersionReader;
+import eu.scape_project.watch.utils.exceptions.PluginException;
 
 /**
  * A simple client interface to the c3po content profiler tool. It allows the
@@ -20,8 +21,9 @@ public interface C3POClientInterface {
    * instance.
    * 
    * @return a list of collection identifiers
+   * @throws PluginException if any error occurs.
    */
-  List<String> getCollectionIdentifiers();
+  List<String> getCollectionIdentifiers() throws PluginException;
 
   /**
    * A method that gets a collection profile for a given collection identifier
@@ -32,8 +34,9 @@ public interface C3POClientInterface {
    * @param parameters
    *          the parameters.
    * @return an InputStream of the collection profile or null.
+   * @throws PluginException if any error occurs.
    */
-  InputStream getCollectionProfile(String identifier, Map<String, String> parameters);
+  InputStream getCollectionProfile(String identifier, Map<String, String> parameters) throws PluginException;
 
   /**
    * Retrieves the correct {@link ProfileVersionReader} for this source.

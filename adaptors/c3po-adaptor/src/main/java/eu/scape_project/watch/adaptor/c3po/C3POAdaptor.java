@@ -1,11 +1,26 @@
 package eu.scape_project.watch.adaptor.c3po;
 
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_COLLECTION_SIZE;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_DESCRIPTION;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_DISTRIBUTION;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_NAME;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_AVG_SIZE;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_COUNT;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_MAX_SIZE;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_MIN_SIZE;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_CNF;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_DEFAULT;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_DESC;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import eu.scape_project.watch.adaptor.c3po.client.C3POClient;
 import eu.scape_project.watch.adaptor.c3po.client.C3POClientInterface;
@@ -30,26 +45,11 @@ import eu.scape_project.watch.utils.ConfigParameter;
 import eu.scape_project.watch.utils.exceptions.InvalidParameterException;
 import eu.scape_project.watch.utils.exceptions.PluginException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_NAME;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_DESCRIPTION;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_COLLECTION_SIZE;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_DISTRIBUTION;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_AVG_SIZE;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_COUNT;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_MAX_SIZE;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECTS_MIN_SIZE;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_CNF;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_DEFAULT;
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_DESC;
-
 /**
  * A watch conforming adaptor for a collection profile source called c3po.
  * 
  * @author Petar Petrov <me@petarpetrov.org>
- * @version 0.0.3
+ * @version 0.0.5
  */
 public class C3POAdaptor implements AdaptorPluginInterface {
 
@@ -61,7 +61,7 @@ public class C3POAdaptor implements AdaptorPluginInterface {
   /**
    * The current version of the adaptor.
    */
-  private static final String VERSION = "0.0.4";
+  private static final String VERSION = "0.0.5";
 
   /**
    * The current config of c3po.
@@ -234,6 +234,7 @@ public class C3POAdaptor implements AdaptorPluginInterface {
   }
 
   /**
+   * To be removed in version 0.1.0
    * Fetches all values of all collections in the pre-configured c3po instance.
    * This method should be used with caution as it might lead to a huge network
    * overhead, if the c3po instance has a great deal of collections.
@@ -245,12 +246,13 @@ public class C3POAdaptor implements AdaptorPluginInterface {
    *           network problems) occur.
    */
   @Override
+  @Deprecated
   public ResultInterface execute() throws PluginException {
     throw new PluginException("This operation is not supported anymore!");
   }
 
   /**
-   * Not yet implemented.
+   * To be removed in version 0.1.0
    * 
    * @param context
    *          a map containing the entities and the properties to fetch.
@@ -260,6 +262,7 @@ public class C3POAdaptor implements AdaptorPluginInterface {
    *           always.
    */
   @Override
+  @Deprecated
   public ResultInterface execute(final Map<Entity, List<Property>> context) throws PluginException {
     throw new PluginException("This operation is not supported anymore");
   }
@@ -302,8 +305,9 @@ public class C3POAdaptor implements AdaptorPluginInterface {
    * @param id
    *          the id of the collection.
    * @return an {@link InputStream} containing the file.
+   * @throws PluginException if an error occurrs.
    */
-  private InputStream getCollectionProfile(final String id) {
+  private InputStream getCollectionProfile(final String id) throws PluginException{
     final InputStream is = this.source.getCollectionProfile(id, null);
     return is;
   }
@@ -341,8 +345,9 @@ public class C3POAdaptor implements AdaptorPluginInterface {
    * @param id
    *          the id of the collection in the source.
    * @return a list of {@link PropertyValue} objects containing the results.
+   * @throws PluginException if an error occurrs.
    */
-  private List<PropertyValue> getPropertyValues(final String id) {
+  private List<PropertyValue> getPropertyValues(final String id) throws PluginException {
     final InputStream stream = this.getCollectionProfile(id);
     final List<PropertyValue> values = new ArrayList<PropertyValue>();
     final EntityType et = new EntityType(CP_NAME, CP_DESCRIPTION);

@@ -39,6 +39,7 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.name.Names;
 
+import eu.scape_project.watch.utils.ValueHelper;
 import eu.scape_project.watch.web.annotations.Controller;
 import eu.scape_project.watch.web.annotations.HttpMethod;
 import eu.scape_project.watch.web.annotations.Path;
@@ -259,6 +260,8 @@ public class TemplateService extends HttpServlet implements Filter {
 
       }
     }, new ConcurrentMapCache());
+    
+    compiler.registerHelper("value-render", new ValueHelper());
 
     for (Class<?> mustachelet : MUSTACHELETS) {
       final Path annotation = mustachelet.getAnnotation(Path.class);

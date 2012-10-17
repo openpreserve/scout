@@ -20,6 +20,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
@@ -70,8 +71,10 @@ public class EntityTypeResource extends JavaHelp {
   @GET
   @Path("/list")
   @ApiOperation(value = "List all entity types", notes = "")
-  public Response listEntityType() {
-    final Collection<EntityType> list = Jenabean.instance().reader().load(EntityType.class);
+  public Response listEntityType(
+    @ApiParam(value = "Index of first item to retrieve", required = true) @QueryParam("start") final int start,
+    @ApiParam(value = "Maximum number of items to retrieve", required = true) @QueryParam("max") final int max) {
+    final Collection<EntityType> list = DAO.ENTITY_TYPE.query("", start, max);
     return Response.ok().entity(new GenericEntity<Collection<EntityType>>(list) {
     }).build();
   }

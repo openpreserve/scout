@@ -18,12 +18,38 @@ function Paginator(resourceCount, resourceAPI, pageSize, templateName, divID,
 
 Paginator.prototype = {
 	updateList : function(start) {
+		if (start > 0) {
+			document.location = $.param.fragment(window.location.href, 'start='
+					+ start);
+		} else {
+			document.location = $.param.fragment(window.location.href, '');
+		}
+	},
+
+	init : function() {
+		var paginator = this;
+		$(window).bind('hashchange', function(e) {
+			var params = $.deparam.fragment(true);
+			if (params && params.start && params.start > 0) {
+				paginator.updateListImpl(params.start);
+			} else {
+				paginator.updateListImpl(0);
+			}
+		});
+		$(document).ready(function() {
+			$(window).trigger('hashchange');
+		});
+	},
+	updateListImpl : function(start) {
 		var end = start + pageSize < resourceCount ? start + pageSize
 				: resourceCount;
 		var next = end < resourceCount ? end : start;
 		var previous = start - pageSize < 0 ? 0 : start - pageSize;
-		$.getJSON(contextPath + resourceAPI + '&start=' + start + '&max='
-				+ pageSize, function(data) {
+
+		var apiRequest = jQuery.param.querystring(contextPath + resourceAPI,
+				'start=' + start + '&max=' + pageSize);
+
+		$.getJSON(apiRequest, function(data) {
 			var template = Handlebars.templates[templateName];
 			var context = {
 				items : data,
@@ -41,23 +67,6 @@ Paginator.prototype = {
 			Handlebars.registerPartial("base_paginated_list", baseTemplate);
 			var html = template(context);
 			$(divID).html(html);
-		});
-		if (start > 0) {
-			document.location = $.param.fragment(window.location.href, 'start='
-					+ start);
-		}
-
-	},
-
-	init : function() {
-		var paginator = this;
-		$(document).ready(function() {
-			var params = $.deparam.fragment(true);
-			if (params && params.start && params.start > 0) {
-				paginator.updateList(params.start);
-			} else {
-				paginator.updateList(0);
-			}
 		});
 	}
 };

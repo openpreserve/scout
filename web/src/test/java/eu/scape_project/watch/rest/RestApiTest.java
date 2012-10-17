@@ -183,7 +183,7 @@ public class RestApiTest extends JerseyTest {
     assertEquals(entitytype, entitytype3);
 
     // LIST
-    final List<EntityType> list = client.listEntityType();
+    final List<EntityType> list = client.listEntityType(0, 100);
     Assert.assertTrue(list.contains(entitytype));
 
     // TODO test update
@@ -197,7 +197,7 @@ public class RestApiTest extends JerseyTest {
     Assert.assertNull(entitytype5);
 
     // LIST
-    final List<EntityType> list2 = client.listEntityType();
+    final List<EntityType> list2 = client.listEntityType(0, 100);
     Assert.assertFalse(list2.contains(entitytype));
   }
 

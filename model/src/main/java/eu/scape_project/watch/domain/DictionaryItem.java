@@ -116,7 +116,7 @@ public class DictionaryItem extends RdfBean<DictionaryItem> {
 
   @Override
   public String toString() {
-    return this.key + " : " + this.value;
+    return "key: " + this.key + ", value: " + this.value;
   }
 
 }

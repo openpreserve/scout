@@ -320,8 +320,9 @@ public class WatchClient {
    * 
    * @return A complete list of entity types in the KB.
    */
-  public List<EntityType> listEntityType() {
+  public List<EntityType> listEntityType(int start, int max) {
     return (List<EntityType>) this.resource.path(KBUtils.ENTITY_TYPE + FS + this.format + AS + LIST)
+      .queryParam(START, Integer.toString(start)).queryParam(MAX, Integer.toString(max))
       .accept(this.format.getMediaType()).get(ENTITYTYPE_LIST_TYPE);
   }
 

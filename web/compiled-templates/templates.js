@@ -415,4 +415,58 @@ function program4(depth0,data) {
   if (!helpers.parameters) { stack1 = blockHelperMissing.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)}); }
   if(stack1 || stack1 === 0) { return stack1; }
   else { return ''; }});
+templates['type_list.hbs'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  helpers = helpers || Handlebars.helpers; partials = partials || Handlebars.partials;
+  var buffer = "", stack1, foundHelper, functionType="function", escapeExpression=this.escapeExpression, self=this, blockHelperMissing=helpers.blockHelperMissing, helperMissing=helpers.helperMissing;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1, foundHelper;
+  buffer += "\n<table class=\"table table-hover table-striped\">\n	<thead>\n		<tr>\n			<th>Name</th>\n			<th>Description</th>\n			<th style=\"width: 10%\">Action</th>\n		</tr>\n	</thead>\n	<tbody>\n		";
+  foundHelper = helpers.items;
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{},inverse:self.noop,fn:self.programWithDepth(program2, data, depth0)}); }
+  else { stack1 = depth0.items; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  if (!helpers.items) { stack1 = blockHelperMissing.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.programWithDepth(program2, data, depth0)}); }
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n	</tbody>\n</table>\n";
+  return buffer;}
+function program2(depth0,data,depth1) {
+  
+  var buffer = "", stack1, foundHelper;
+  buffer += "\n		<tr>\n			<td>";
+  foundHelper = helpers.name;
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
+  else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1) + "</td>\n			<td>";
+  foundHelper = helpers.description;
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
+  else { stack1 = depth0.description; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1) + "</td>\n			<td><a class=\"btn btn-small btn-link\"\n				href=\"";
+  stack1 = depth1.mustacheletPath;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "/browse/type/";
+  foundHelper = helpers.name;
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
+  else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1) + "\"><i class=\" icon-th-list\"></i></a></td>\n		</tr>\n		";
+  return buffer;}
+
+function program4(depth0,data) {
+  
+  
+  return "There are no defined categories.";}
+
+  foundHelper = helpers.partial;
+  stack1 = foundHelper ? foundHelper.call(depth0, "item_list", {hash:{},inverse:self.noop,fn:self.program(1, program1, data)}) : helperMissing.call(depth0, "partial", "item_list", {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += " ";
+  foundHelper = helpers.partial;
+  stack1 = foundHelper ? foundHelper.call(depth0, "empty_message", {hash:{},inverse:self.noop,fn:self.program(4, program4, data)}) : helperMissing.call(depth0, "partial", "empty_message", {hash:{},inverse:self.noop,fn:self.program(4, program4, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n";
+  stack1 = depth0;
+  stack1 = self.invokePartial(partials.base_paginated_list, 'base_paginated_list', stack1, helpers, partials);;
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n";
+  return buffer;});
 })();

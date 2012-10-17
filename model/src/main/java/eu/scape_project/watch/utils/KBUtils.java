@@ -149,6 +149,11 @@ public final class KBUtils {
    * A data type constant.
    */
   public static final String DATA_TYPE = "datatype";
+  
+  /**
+   * A rendering hint constant.
+   */
+  public static final String RENDERING_HINT = "renderinghint";
 
   /**
    * A data structure constant.

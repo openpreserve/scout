@@ -73,6 +73,13 @@ public class Property extends RdfBean<Property> {
   private DataType datatype;
 
   /**
+   * A rendering hint for the property value.
+   */
+  @XmlElement
+  @JsonProperty
+  private RenderingHint renderingHint;
+
+  /**
    * Create a new empty property of the type {@link DataType#STRING}.
    */
   public Property() {
@@ -178,6 +185,14 @@ public class Property extends RdfBean<Property> {
     this.datatype = datatype;
   }
 
+  public RenderingHint getRenderingHint() {
+    return renderingHint;
+  }
+
+  public void setRenderingHint(RenderingHint renderingHint) {
+    this.renderingHint = renderingHint;
+  }
+
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -187,6 +202,7 @@ public class Property extends RdfBean<Property> {
     result = prime * result + ((id == null) ? 0 : id.hashCode());
     result = prime * result + ((name == null) ? 0 : name.hashCode());
     result = prime * result + ((type == null) ? 0 : type.hashCode());
+    result = prime * result + ((renderingHint == null) ? 0 : renderingHint.hashCode());
     return result;
   }
 
@@ -203,6 +219,9 @@ public class Property extends RdfBean<Property> {
     }
     final Property other = (Property) obj;
     if (datatype != other.datatype) {
+      return false;
+    }
+    if (renderingHint != other.renderingHint) {
       return false;
     }
     if (description == null) {
@@ -251,8 +270,8 @@ public class Property extends RdfBean<Property> {
 
   @Override
   public String toString() {
-    return "Property [id=" + this.id + ", type=" + this.type + ", name=" + this.name + ", description="
-      + this.description + ", datatype=" + this.datatype + "]";
+    return "Property [id=" + id + ", type=" + type + ", name=" + name + ", description=" + description + ", datatype="
+      + datatype + ", renderingHint=" + renderingHint + "]";
   }
 
 }

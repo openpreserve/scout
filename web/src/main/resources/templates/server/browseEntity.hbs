@@ -1,6 +1,5 @@
-{{#partial "title"}}Scout - Browse - Entity{{/partial}}
-{{#partial "NavBrowseClass"}}active{{/partial}}
-{{#partial "content"}} 
+{{#partial "title"}}Scout - Browse - Entity{{/partial}} {{#partial
+"NavBrowseClass"}}active{{/partial}} {{#partial "content"}}
 <div class="container">
 	{{#entity}}
 	<h1>Entity {{name}}</h1>
@@ -8,17 +7,18 @@
 		<thead>
 			<tr>
 				<th>Property</th>
-				<th>Value</th>
-				<th>Provenance</th>
+				<th style="width: 100%">Value</th>
+				<th style="width: 10%">Action</th>
 			</tr>
 		</thead>
 		<tbody>
 			{{#values}}
 			<tr>
-				<td>{{#property}}{{name}} <i class="icon-info-sign"></i>{{/property}}
-				</td>
-				<td>{{value}}</td>
-				<td>TODO: source and source adaptor</td>
+				<td style="white-space: nowrap;">{{property.description}}</td>
+				<td>{{#value-render this}}{{/value-render}}</td>
+				<td><a class="btn btn-small btn-link"
+					href="{{../mustacheletPath}}/browse/value/{{entity.type.name}}/{{entity.name}}/{{property.name}}/{{version}}"><i
+						class=" icon-eye-open"></i></a></td>
 			</tr>
 			{{/values}}
 		</tbody>
@@ -27,13 +27,11 @@
 	<div class="alert alert-warning">
 		<b>Empty!</b> There are no defined property values for this entity.
 	</div>
-	{{/values}} 
-	{{/entity}} 
-	{{^entity}}
+	{{/values}} {{/entity}} {{^entity}}
 	<div class="alert alert-error">
-		<b>Not found!</b> Could not find entity with name '{{entityName}}' from type '{{typeName}}'.
+		<b>Not found!</b> Could not find entity with name '{{entityName}}'
+		from type '{{typeName}}'.
 	</div>
 	{{/entity}}
 </div>
-{{/partial}}
-{{>base}}
+{{/partial}} {{>base}}

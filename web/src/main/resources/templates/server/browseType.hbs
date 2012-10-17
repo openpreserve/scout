@@ -8,6 +8,7 @@
 	<h2>Entities</h2>
 	<div id="entityList" class="content">Loading entities...</div>
 
+<!-- 
 	<div>
 		<h2>Properties</h2>
 		<table class="table table-hover table-striped">
@@ -34,6 +35,7 @@
 		</div>
 		{{/properties}}
 	</div>
+	 -->
 	{{/entityType}} {{^entityType}}
 	<div class="alert alert-error">
 		<b>Not found!</b> Could not find a category with name '{{typeName}}'.
@@ -46,4 +48,5 @@
 var paginator = Paginator({{entityCount}}, '/api/entity.json/list?type={{entityType.name}}', 20, 'entity_list.hbs', '#entityList', '{{contextPath}}', '{{mustacheletPath}}');
 paginator.init();
 </script>
-{{/partial}} {{> base}}
+{{/partial}}
+{{> base}}

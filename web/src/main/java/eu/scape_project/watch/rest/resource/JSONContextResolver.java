@@ -4,12 +4,16 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.ext.Provider;
 
+import org.codehaus.jackson.Version;
 import org.codehaus.jackson.map.AnnotationIntrospector;
 import org.codehaus.jackson.map.DeserializationConfig.Feature;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.map.introspect.JacksonAnnotationIntrospector;
+import org.codehaus.jackson.map.module.SimpleModule;
 import org.codehaus.jackson.xc.JaxbAnnotationIntrospector;
+
+import eu.scape_project.watch.utils.LazyListSerializer;
 
 /**
  * Provider that configures Jackson to better detect methods and properties to
@@ -21,7 +25,7 @@ import org.codehaus.jackson.xc.JaxbAnnotationIntrospector;
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
 public class JSONContextResolver extends org.codehaus.jackson.jaxrs.JacksonJsonProvider {
-  
+
   /**
    * Instance holder.
    */
@@ -37,7 +41,7 @@ public class JSONContextResolver extends org.codehaus.jackson.jaxrs.JacksonJsonP
      * The instance.
      */
     public static final ObjectMapper COMMON_MAPPER = new ObjectMapper();
-    
+
     static {
       AnnotationIntrospector jackson = new JacksonAnnotationIntrospector();
       AnnotationIntrospector jaxb = new JaxbAnnotationIntrospector();
@@ -49,6 +53,11 @@ public class JSONContextResolver extends org.codehaus.jackson.jaxrs.JacksonJsonP
       COMMON_MAPPER.configure(SerializationConfig.Feature.WRITE_NULL_PROPERTIES, false);
       COMMON_MAPPER.configure(Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
       COMMON_MAPPER.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
+
+      final SimpleModule jenabeanModule = new SimpleModule("JenabeanModule", new Version(1, 0, 0, null));
+      jenabeanModule.addSerializer(new LazyListSerializer());
+      COMMON_MAPPER.registerModule(jenabeanModule);
+
     }
   }
 

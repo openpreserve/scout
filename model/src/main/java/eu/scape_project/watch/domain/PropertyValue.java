@@ -18,6 +18,7 @@ import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
 import org.apache.commons.collections.CollectionUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;

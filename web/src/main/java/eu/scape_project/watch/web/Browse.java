@@ -10,10 +10,13 @@ import eu.scape_project.watch.web.annotations.TemplateSource;
 @Path("/browse")
 @TemplateSource("browse")
 public class Browse extends TemplateContext {
-  
+
   public List<EntityType> getEntityTypes() {
     return DAO.ENTITY_TYPE.query("", 0, getPageSize());
   }
-  
-  
+
+  public int getEntityTypeCount() {
+    return DAO.ENTITY_TYPE.count("");
+  }
+
 }

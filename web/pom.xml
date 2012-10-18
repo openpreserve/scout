@@ -60,6 +60,14 @@
 							<targetPath>jquery-bbq</targetPath>
 						</resource>
 						<resource>
+							<directory>jquery-textfill-v0.1</directory>
+							<targetPath>jquery-textfill</targetPath>
+						</resource>
+						<resource>
+							<directory>moment.js-v1.7.2</directory>
+							<targetPath>moment</targetPath>
+						</resource>
+						<resource>
 							<directory>compiled-templates/</directory>
 							<targetPath>templates</targetPath>
 						</resource>

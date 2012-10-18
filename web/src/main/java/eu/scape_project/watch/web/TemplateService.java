@@ -64,7 +64,7 @@ public class TemplateService extends HttpServlet implements Filter {
    */
   private static final List<Class<? extends TemplateContext>> MUSTACHELETS = Arrays.asList(Index.class, Browse.class,
     BrowseType.class, BrowseEntity.class, Administration.class, CreateSourceAdaptor.class, CreateSource.class,
-    BrowseAdaptor.class);
+    BrowseAdaptor.class, BrowseValue.class);
 
   private static final boolean DISABLE_CACHE = Boolean.parseBoolean(System.getProperty(
     "mustache.servlet.cache.disable", "false"));

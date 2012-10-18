@@ -2,6 +2,7 @@ package eu.scape_project.watch.dao;
 
 import java.util.List;
 
+import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.utils.KBUtils;
 
@@ -80,5 +81,14 @@ public final class SourceDAO extends AbstractDO<Source> {
    */
   public Source save(final Source source) {
     return super.saveImpl(source);
+  }
+
+  private String getBindingsByPropertyValue(final PropertyValue propertyValue) {
+    return "?measurement watch:propertyValue " + PropertyValueDAO.getPropertyValueRDFId(propertyValue)
+      + ". ?measurement watch:adaptor ?adaptor . ?adaptor watch:source ?s";
+  }
+
+  public int countByPropertyValue(final PropertyValue propertyValue) {
+    return count(getBindingsByPropertyValue(propertyValue));
   }
 }

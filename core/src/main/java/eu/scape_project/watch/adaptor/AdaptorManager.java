@@ -2,8 +2,10 @@ package eu.scape_project.watch.adaptor;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +16,6 @@ import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
-import eu.scape_project.watch.interfaces.PluginInterface;
 import eu.scape_project.watch.interfaces.PluginType;
 import eu.scape_project.watch.plugin.PluginInfo;
 import eu.scape_project.watch.plugin.PluginManager;
@@ -299,7 +300,10 @@ public class AdaptorManager {
    */
   public void shutdownAll() {
     LOG.info("Shutting down all plugins");
-    for (final String id : this.cached.keySet()) {
+    
+    final Set<String> adaptorIds = new HashSet<String>(this.cached.keySet());
+    
+    for (final String id : adaptorIds) {
       final AdaptorPluginInterface plugin = this.cached.remove(id);
       this.reverseCached.remove(plugin);
       this.shutdown(plugin);

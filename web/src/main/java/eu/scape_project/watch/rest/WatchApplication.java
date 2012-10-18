@@ -11,6 +11,8 @@ import eu.scape_project.watch.rest.resource.EntityResourceJSON;
 import eu.scape_project.watch.rest.resource.EntityResourceXML;
 import eu.scape_project.watch.rest.resource.EntityTypeResourceJSON;
 import eu.scape_project.watch.rest.resource.EntityTypeResourceXML;
+import eu.scape_project.watch.rest.resource.MeasurementResourceJSON;
+import eu.scape_project.watch.rest.resource.MeasurementResourceXML;
 import eu.scape_project.watch.rest.resource.PluginResourceJSON;
 import eu.scape_project.watch.rest.resource.PluginResourceXML;
 import eu.scape_project.watch.rest.resource.PropertyResourceJSON;
@@ -57,6 +59,8 @@ public class WatchApplication extends Application {
     classes.add(SourceAdaptorResourceXML.class);
     classes.add(SourceResourceJSON.class);
     classes.add(SourceResourceXML.class);
+    classes.add(MeasurementResourceXML.class);
+    classes.add(MeasurementResourceJSON.class);
 
     return classes;
   }

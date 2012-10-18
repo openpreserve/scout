@@ -208,6 +208,12 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
     return this.query(bindings, start, max);
   }
 
+  private String getBindingsWithEntityAndProperty(final String entityType, final String entityName,
+    final String propertyName) {
+    return String.format("?s %1$s %2$s . ?s %3$s %4$s", ENTITY_REL, EntityDAO.getEntityRDFId(entityType, entityName),
+      PROPERTY_REL, PropertyDAO.getPropertyRDFId(entityType, propertyName));
+  }
+
   /**
    * List all property values of a specific {@link Entity} and {@link Property}.
    * 
@@ -226,10 +232,11 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
    */
   public Collection<PropertyValue> listWithEntityAndProperty(final String entityType, final String entityName,
     final String propertyName, final int start, final int max) {
-    final String bindings = String.format("?s %1$s %2$s . ?s %3$s %4$s", ENTITY_REL,
-      EntityDAO.getEntityRDFId(entityType, entityName), PROPERTY_REL,
-      PropertyDAO.getPropertyRDFId(entityType, propertyName));
-    return this.query(bindings, start, max);
+    return this.query(getBindingsWithEntityAndProperty(entityType, entityName, propertyName), start, max);
+  }
+
+  public int countWithEntityAndProperty(final String entityType, final String entityName, final String propertyName) {
+    return this.count(getBindingsWithEntityAndProperty(entityType, entityName, propertyName));
   }
 
   /**

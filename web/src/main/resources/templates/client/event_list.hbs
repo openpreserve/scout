@@ -12,7 +12,7 @@
 		{{#items}}
 		<tr class="{{#if successful}}success{{/if}}{{#unless successful}}error{{/unless}}">
 			<td>{{type}}</td>
-			<td style="white-space: nowrap;">{{timestamp}}</td>
+			<td style="white-space: nowrap;">{{dateFormat timestamp format="dddd, MMMM Do YYYY, h:mm:ss a"}}</td>
 			<td>{{message}}</td>
 			<td>{{reason}}</td>
 		</tr>

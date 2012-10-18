@@ -163,9 +163,9 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
     // http://jena.apache.org/documentation/query/manipulating_sparql_using_arq.html
 
     if (StringUtils.isNotBlank(bindings)) {
-      sparql.append(String.format("SELECT (count(?s) AS ?total) WHERE { ?s ?rel ?class . %1$s }", bindings));
+      sparql.append(String.format("SELECT (count(distinct ?s) AS ?total) WHERE { ?s ?rel ?class . %1$s }", bindings));
     } else {
-      sparql.append("SELECT (count(?s) AS ?total) WHERE { ?s ?rel ?class }");
+      sparql.append("SELECT (count(distinct ?s) AS ?total) WHERE { ?s ?rel ?class }");
     }
 
     LOG.trace("SPARQL:\n {}", sparql);

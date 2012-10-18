@@ -21,11 +21,11 @@ public enum DataType {
   /**
    * A {@link String}.
    */
-  STRING,
+  STRING("Plain text"),
   /**
    * A {@link Integer}.
    */
-  INTEGER,
+  INTEGER("Integer number"),
   /**
    * A {@link Long}.
    */
@@ -34,27 +34,37 @@ public enum DataType {
   /**
    * A {@link Float}.
    */
-  FLOAT,
+  FLOAT("Real number"),
   /**
    * A {@link Double}.
    */
-  DOUBLE,
+  DOUBLE("Real number (with extra precision)"),
   /**
    * A link to an external resource by {@link URI}.
    */
-  URI,
+  URI("Link to external resource"),
   /**
    * A {@link Date}.
    */
-  DATE,
+  DATE("Date"),
   /**
    * A {@link List} of {@link String}.
    */
-  STRING_LIST,
+  STRING_LIST("List of values in plain text"),
   /**
    * A map of {@link String}, implemented by a {@link List} of
    * {@link DictionaryItem}.
    */
-  STRING_DICTIONARY;
+  STRING_DICTIONARY("List of key-value pairs in plain text");
+  
+  private String description;
+  
+  private DataType(final String description) {
+    this.description = description;
+  }
 
+  public String getDescription() {
+    return description;
+  }
+  
 }

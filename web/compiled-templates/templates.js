@@ -182,7 +182,7 @@ function program4(depth0,data) {
   return buffer;});
 templates['event_list.hbs'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers; partials = partials || Handlebars.partials;
-  var buffer = "", stack1, foundHelper, self=this, functionType="function", escapeExpression=this.escapeExpression, blockHelperMissing=helpers.blockHelperMissing, helperMissing=helpers.helperMissing;
+  var buffer = "", stack1, foundHelper, self=this, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing, blockHelperMissing=helpers.blockHelperMissing;
 
 function program1(depth0,data) {
   
@@ -197,7 +197,7 @@ function program1(depth0,data) {
   return buffer;}
 function program2(depth0,data) {
   
-  var buffer = "", stack1, foundHelper;
+  var buffer = "", stack1, stack2, foundHelper;
   buffer += "\n		<tr class=\"";
   stack1 = depth0.successful;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(3, program3, data)});
@@ -210,9 +210,11 @@ function program2(depth0,data) {
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
   else { stack1 = depth0.type; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
   buffer += escapeExpression(stack1) + "</td>\n			<td style=\"white-space: nowrap;\">";
-  foundHelper = helpers.timestamp;
-  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
-  else { stack1 = depth0.timestamp; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  stack1 = depth0.timestamp;
+  stack2 = {};
+  stack2['format'] = "dddd, MMMM Do YYYY, h:mm:ss a";
+  foundHelper = helpers.dateFormat;
+  stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:stack2}) : helperMissing.call(depth0, "dateFormat", stack1, {hash:stack2});
   buffer += escapeExpression(stack1) + "</td>\n			<td>";
   foundHelper = helpers.message;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
@@ -468,5 +470,110 @@ function program4(depth0,data) {
   stack1 = self.invokePartial(partials.base_paginated_list, 'base_paginated_list', stack1, helpers, partials);;
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n";
+  return buffer;});
+templates['version_measurement_list.hbs'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  helpers = helpers || Handlebars.helpers; partials = partials || Handlebars.partials;
+  var buffer = "", stack1, foundHelper, functionType="function", escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n<table class=\"table table-hover table-striped\">\n	<thead>\n		<tr>\n			<th>Date</th>\n			<th>Source</th>\n			<th>Adaptor</th>\n		</tr>\n	</thead>\n	<tbody>\n		";
+  stack1 = depth0.items;
+  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.programWithDepth(program2, data, depth0)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n	</tbody>\n</table>\n";
+  return buffer;}
+function program2(depth0,data,depth1) {
+  
+  var buffer = "", stack1, stack2, foundHelper;
+  buffer += "\n		<tr>\n			<td style=\"white-space: nowrap;\">";
+  stack1 = depth0.timestamp;
+  stack2 = {};
+  stack2['format'] = "dddd, MMMM Do YYYY, h:mm:ss a";
+  foundHelper = helpers.dateFormat;
+  stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:stack2}) : helperMissing.call(depth0, "dateFormat", stack1, {hash:stack2});
+  buffer += escapeExpression(stack1) + "</td>\n			<td>";
+  stack1 = depth0.adaptor;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.source;
+  stack1 = helpers['with'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.programWithDepth(program3, data, depth1)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "</td>\n			<td>";
+  stack1 = depth0.adaptor;
+  stack1 = helpers['with'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.programWithDepth(program6, data, depth1)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "</td>\n		</tr>\n		";
+  return buffer;}
+function program3(depth0,data,depth2) {
+  
+  var buffer = "", stack1, foundHelper;
+  buffer += "<a href=\"";
+  stack1 = depth2.mustacheletPath;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "/browse/source/";
+  foundHelper = helpers.name;
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
+  else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1) + "\">";
+  foundHelper = helpers.name;
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
+  else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1);
+  stack1 = depth0.description;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(4, program4, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "</a>";
+  return buffer;}
+function program4(depth0,data) {
+  
+  var buffer = "", stack1, foundHelper;
+  buffer += ": ";
+  foundHelper = helpers.description;
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
+  else { stack1 = depth0.description; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1);
+  return buffer;}
+
+function program6(depth0,data,depth2) {
+  
+  var buffer = "", stack1, foundHelper;
+  buffer += "<a href=\"";
+  stack1 = depth2.mustacheletPath;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "/browse/adaptor/";
+  foundHelper = helpers.instance;
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
+  else { stack1 = depth0.instance; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1) + "\">";
+  foundHelper = helpers.instance;
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
+  else { stack1 = depth0.instance; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1) + " (";
+  foundHelper = helpers.name;
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
+  else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1) + "-v";
+  foundHelper = helpers.version;
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
+  else { stack1 = depth0.version; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1) + ")</a>";
+  return buffer;}
+
+function program8(depth0,data) {
+  
+  
+  return "No measurements found.";}
+
+  foundHelper = helpers.partial;
+  stack1 = foundHelper ? foundHelper.call(depth0, "item_list", {hash:{},inverse:self.noop,fn:self.program(1, program1, data)}) : helperMissing.call(depth0, "partial", "item_list", {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n";
+  foundHelper = helpers.partial;
+  stack1 = foundHelper ? foundHelper.call(depth0, "empty_message", {hash:{},inverse:self.noop,fn:self.program(8, program8, data)}) : helperMissing.call(depth0, "partial", "empty_message", {hash:{},inverse:self.noop,fn:self.program(8, program8, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n";
+  stack1 = depth0;
+  stack1 = self.invokePartial(partials.base_paginated_list, 'base_paginated_list', stack1, helpers, partials);;
+  if(stack1 || stack1 === 0) { buffer += stack1; }
   return buffer;});
 })();

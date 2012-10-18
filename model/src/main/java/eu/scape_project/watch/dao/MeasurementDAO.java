@@ -218,4 +218,27 @@ public final class MeasurementDAO extends AbstractDO<Measurement> {
   public int countByProperty(final Property property) {
     return count(getListByPropertyQueryString(property));
   }
+
+  /**
+   * Get the query string for getting all measurements related to a property.
+   * 
+   * @param property
+   *          The property which values are all related to the measurements.
+   * @return The query string.
+   */
+  private static String getBindingsByEntityAndProperty(final String typeName, final String entityName,
+    final String propertyName) {
+    return "?s watch:propertyValue ?value . ?value watch:property "
+      + PropertyDAO.getPropertyRDFId(typeName, propertyName) + " . ?value watch:entity "
+      + EntityDAO.getEntityRDFId(typeName, entityName);
+  }
+
+  public List<Measurement> listByEntityAndProperty(final String typeName, final String entityName,
+    final String propertyName, final int start, final int max) {
+    return query(getBindingsByEntityAndProperty(typeName, entityName, propertyName), start, max);
+  }
+
+  public int countByEntityAndProperty(final String typeName, final String entityName, final String propertyName) {
+    return count(getBindingsByEntityAndProperty(typeName, entityName, propertyName));
+  }
 }

@@ -18,12 +18,12 @@ function Paginator(resourceCount, resourceAPI, pageSize, templateName, divID,
 
 Paginator.prototype = {
 	updateList : function(start) {
-		if (start > 0) {
-			document.location = $.param.fragment(window.location.href, 'start='
-					+ start);
-		} else {
-			document.location = $.param.fragment(window.location.href, '');
+		if (start < 0) {
+			start = 0;
 		}
+		document.location = $.param.fragment(window.location.href, 'start='
+				+ start);
+
 	},
 
 	init : function() {

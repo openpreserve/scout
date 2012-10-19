@@ -10,7 +10,7 @@
 	<tbody>
 		{{#each items}}
 		<tr>
-			<td style="white-space: nowrap;">{{dateFormat timestamp format="dddd, MMMM Do YYYY, h:mm:ss a"}}</td>
+			<td style="white-space: nowrap;">{{dateFormat timestamp}}</td>
 			<td>{{#with adaptor.source}}<a href="{{../../mustacheletPath}}/browse/source/{{name}}">{{name}}{{#if description}}: {{description}}{{/if}}</a>{{/with}}</td>
 			<td>{{#with adaptor}}<a href="{{../../mustacheletPath}}/browse/adaptor/{{instance}}">{{instance}} ({{name}}-v{{version}})</a>{{/with}}</td>
 		</tr>

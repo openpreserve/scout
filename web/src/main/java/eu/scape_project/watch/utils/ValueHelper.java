@@ -4,10 +4,9 @@ import humanize.Humanize;
 
 import java.io.IOException;
 import java.net.URI;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
-
-import javax.swing.text.html.Option;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,47 +20,56 @@ import eu.scape_project.watch.domain.DataType;
 import eu.scape_project.watch.domain.DictionaryItem;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.domain.RenderingHint;
-import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeException;
-import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
 
+/**
+ * Template helper to better render property values.
+ * 
+ * @author Luis Faria <lfaria@keep.pt>
+ * 
+ */
 public class ValueHelper implements Helper<PropertyValue> {
 
+  /**
+   * Logger.
+   */
   private final Logger log = LoggerFactory.getLogger(getClass());
 
   @Override
-  public CharSequence apply(PropertyValue pv, Options options) throws IOException {
+  public CharSequence apply(final PropertyValue pv, final Options options) throws IOException {
 
     final Object value = pv.getValue();
     final DataType datatype = pv.getProperty().getDatatype();
     final RenderingHint renderingHint = pv.getProperty().getRenderingHint();
 
     log.info("value: " + value);
-    StringBuilder builder = new StringBuilder();
+    final StringBuilder builder = new StringBuilder();
     if (value instanceof URI) {
-      URI uriValue = (URI) value;
+      final URI uriValue = (URI) value;
       builder.append("<a href='");
       builder.append(uriValue);
       builder.append("'>");
       builder.append(uriValue);
       builder.append("</a>");
     } else if (value instanceof Integer) {
-      Integer integerValue = (Integer) value;
-      if(RenderingHint.STORAGE_VOLUME.equals(renderingHint)) {
+      final Integer integerValue = (Integer) value;
+      if (RenderingHint.STORAGE_VOLUME.equals(renderingHint)) {
         builder.append(Humanize.binaryPrefix(integerValue));
       } else {
         builder.append(integerValue);
       }
     } else if (value instanceof Date) {
-      Date dateValue = (Date) ((Date) value).clone();
-      builder.append(Humanize.naturalDay(dateValue));
+      final Date dateValue = (Date) ((Date) value).clone();
+      final DateFormat format = new SimpleDateFormat("EEEE, d MMMM yyyy, h:mm:ss a");
+//      builder.append(Humanize.naturalDay(dateValue));
+      builder.append(format.format(dateValue));
     } else if (value instanceof LazyList) {
-      LazyList listValue = (LazyList) value;
+      final LazyList listValue = (LazyList) value;
 
       if (datatype.equals(DataType.STRING_DICTIONARY)) {
         builder.append("<dl class=\"dl-horizontal\">");
         for (Object item : listValue) {
           if (item instanceof DictionaryItem) {
-            DictionaryItem dictionaryItem = (DictionaryItem) item;
+            final DictionaryItem dictionaryItem = (DictionaryItem) item;
             builder.append("<dt>");
             builder.append(dictionaryItem.getKey());
             builder.append("</dt>");

@@ -88,7 +88,7 @@ Handlebars.registerHelper("partial", function(name, options) {
 // usage: {{dateFormat creation_date format="MMMM YYYY"}}
 Handlebars.registerHelper('dateFormat', function(context, block) {
 	if (window.moment) {
-		var f = block.hash.format || "MMM Do, YYYY";
+		var f = block.hash.format || "dddd, D MMMM YYYY, h:mm:ss a";
 		return moment(Date(context)).format(f);
 	} else {
 		return context; // moment plugin not available. return data as is.

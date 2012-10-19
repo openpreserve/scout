@@ -197,7 +197,7 @@ function program1(depth0,data) {
   return buffer;}
 function program2(depth0,data) {
   
-  var buffer = "", stack1, stack2, foundHelper;
+  var buffer = "", stack1, foundHelper;
   buffer += "\n		<tr class=\"";
   stack1 = depth0.successful;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(3, program3, data)});
@@ -211,10 +211,8 @@ function program2(depth0,data) {
   else { stack1 = depth0.type; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
   buffer += escapeExpression(stack1) + "</td>\n			<td style=\"white-space: nowrap;\">";
   stack1 = depth0.timestamp;
-  stack2 = {};
-  stack2['format'] = "dddd, MMMM Do YYYY, h:mm:ss a";
   foundHelper = helpers.dateFormat;
-  stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:stack2}) : helperMissing.call(depth0, "dateFormat", stack1, {hash:stack2});
+  stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:{}}) : helperMissing.call(depth0, "dateFormat", stack1, {hash:{}});
   buffer += escapeExpression(stack1) + "</td>\n			<td>";
   foundHelper = helpers.message;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
@@ -486,13 +484,11 @@ function program1(depth0,data) {
   return buffer;}
 function program2(depth0,data,depth1) {
   
-  var buffer = "", stack1, stack2, foundHelper;
+  var buffer = "", stack1, foundHelper;
   buffer += "\n		<tr>\n			<td style=\"white-space: nowrap;\">";
   stack1 = depth0.timestamp;
-  stack2 = {};
-  stack2['format'] = "dddd, MMMM Do YYYY, h:mm:ss a";
   foundHelper = helpers.dateFormat;
-  stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:stack2}) : helperMissing.call(depth0, "dateFormat", stack1, {hash:stack2});
+  stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:{}}) : helperMissing.call(depth0, "dateFormat", stack1, {hash:{}});
   buffer += escapeExpression(stack1) + "</td>\n			<td>";
   stack1 = depth0.adaptor;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.source;

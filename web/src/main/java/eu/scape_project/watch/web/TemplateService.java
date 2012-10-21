@@ -62,7 +62,7 @@ public class TemplateService extends HttpServlet implements Filter {
   /**
    * DEFINE AVAILABLE TEMPLATELETS.
    */
-  private static final List<Class<? extends TemplateContext>> MUSTACHELETS = Arrays.asList(Index.class, Browse.class,
+  private static final List<Class<? extends TemplateContext>> MUSTACHELETS = Arrays.asList(Index.class, ErrorPage.class, Browse.class,
     BrowseType.class, BrowseEntity.class, Administration.class, CreateSourceAdaptor.class, CreateSource.class,
     BrowseAdaptor.class, BrowseValue.class);
 

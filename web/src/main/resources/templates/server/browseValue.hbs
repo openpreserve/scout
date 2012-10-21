@@ -29,6 +29,7 @@
 
 	<br />
 	<h2 id="history">Property history</h2>
+	<p>This property has changed in time as represented in the chart below. Click on the chart dots for more information.</p>
 	<div id="historyGraph">Loading property history...</div>
 
 	<h2 id="provenance">Value provenance</h2>
@@ -139,7 +140,7 @@ $(function () {
                                         y: this.pageY
                                     },
                                     headingText: this.name,
-                                    maincontentText: 'Taken at ' + Highcharts.dateFormat('%A, %b %e, %Y', this.x) +'<br/> '+
+                                    maincontentText: 'Taken at ' + moment(this.x).format('dddd, D MMMM YYYY, h:mm:ss a') +'<br/> '+
                                         'From source ???', 
                                 });
                             }
@@ -161,7 +162,6 @@ $(function () {
         	var apiRequest = api + "&start="+start+"&max="+max;
         	
         	$.getJSON(apiRequest, function(data) {
-        		if(data.length > 0) {
             	var measurements = [];
             	var myseries = {};
             	var datatype = '{{propertyValue.property.datatype}}';
@@ -213,8 +213,6 @@ $(function () {
                     }];
             	}
             	chart = new Highcharts.Chart(options);
-        		}
-            	
             });
         };
     	

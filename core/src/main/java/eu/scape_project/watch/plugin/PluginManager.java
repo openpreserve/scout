@@ -298,7 +298,7 @@ public final class PluginManager {
   /**
    * @return the pluginDirectory
    */
-  private File getPluginDirectory() {
+  public File getPluginDirectory() {
     return this.pluginsDirectory;
   }
 

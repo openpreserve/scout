@@ -38,6 +38,10 @@ public class Administration extends TemplateContext {
   public List<PluginInfo> getPlugins() {
     return PluginManager.getDefaultPluginManager().getPluginInfo();
   }
+  
+  public String getPluginDirectory() {
+    return PluginManager.getDefaultPluginManager().getPluginDirectory().getAbsolutePath();
+  }
 
   @Inject
   private HttpServletResponse response;

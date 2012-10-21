@@ -46,7 +46,7 @@ public class PluginInfo {
    * The description of the plugin.
    */
   @XmlElement
-  private String desc;
+  private String description;
 
   /**
    * The fully qualified class name of the plugin.
@@ -68,25 +68,32 @@ public class PluginInfo {
   /**
    * Initializes the plugin info.
    * 
-   * @param n
+   * @param name
    *          the name.
-   * @param v
+   * @param version
    *          the version.
    * @param type
    *          the plugin type.
-   * @param d
+   * @param description
    *          the description.
-   * @param c
+   * @param className
    *          the classname.
    */
-  public PluginInfo(final String n, final String v, final PluginType type, final String d, final String c) {
-    this.name = n;
-    this.version = v;
+  public PluginInfo(final String name, final String version, final PluginType type, final String description,
+    final String className) {
+    this.name = name;
+    this.version = version;
     this.type = type;
-    this.desc = d;
-    this.className = c;
+    this.description = description;
+    this.className = className;
   }
 
+  /**
+   * Convinient constructor to create a plugin info from a plugin interface.
+   * 
+   * @param plugin
+   *          The plugin interface where to get all information from.
+   */
   public PluginInfo(final PluginInterface plugin) {
     this(plugin.getName(), plugin.getVersion(), plugin.getPluginType(), plugin.getDescription(), plugin.getClass()
       .getName());
@@ -106,7 +113,7 @@ public class PluginInfo {
   }
 
   public String getDescription() {
-    return this.desc;
+    return this.description;
   }
 
   public String getClassName() {
@@ -117,7 +124,7 @@ public class PluginInfo {
     return parameters;
   }
 
-  public void setParameters(List<ConfigParameter> parameters) {
+  public void setParameters(final List<ConfigParameter> parameters) {
     this.parameters = parameters;
   }
 

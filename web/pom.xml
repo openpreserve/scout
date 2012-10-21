@@ -68,6 +68,10 @@
 							<targetPath>moment</targetPath>
 						</resource>
 						<resource>
+							<directory>highcharts-v2.3.3/js</directory>
+							<targetPath>highcharts</targetPath>
+						</resource>
+						<resource>
 							<directory>compiled-templates/</directory>
 							<targetPath>templates</targetPath>
 						</resource>

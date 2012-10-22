@@ -19,7 +19,7 @@
 				<td style="white-space: nowrap;">{{property.description}}</td>
 				<td>{{#value-render this}}{{/value-render}}</td>
 				<td><a class="btn btn-small btn-link"
-					href="{{../mustacheletPath}}/browse/value/{{entity.type.name}}/{{entity.name}}/{{property.name}}/{{version}}"><i
+					href="{{../mustacheletPath}}/browse/value/{{#encodeId entity.type.name}}{{/encodeId}}/{{#encodeId entity.name}}{{/encodeId}}/{{#encodeId property.name}}{{/encodeId}}/{{version}}"><i
 						class=" icon-eye-open"></i></a></td>
 			</tr>
 			{{/values}}

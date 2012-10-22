@@ -1,0 +1,81 @@
+{{#partial "title"}}Scout - Advanced query{{/partial}} {{#partial
+"NavQueryClass"}}active{{/partial}} {{#partial "content"}}
+<div class="container">
+	<div class="page-header">
+		<h1>Advanced query</h1>
+	</div>
+
+	<div class="row-fluid">
+		<div class="span12">
+			<p>Use SPARQL to make your own query</p>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="well span3">
+			<p>
+				<strong>Target</strong>
+			</p>
+			<label class="radio"> <input type=radio name="target"
+				value="entity_type" checked="true"> Category
+			</label> <label class="radio"> <input type=radio name="target"
+				value="property"> Property
+			</label> <label class="radio"> <input type=radio name="target"
+				value="entity"> Entity
+			</label> <label class="radio"> <input type=radio name="target"
+				value="property_value"> Value
+			</label> <br />
+			<p>
+				<strong>Snippets</strong>
+			</p>
+			<div class="btn-group btn-group-vertical">
+				<button class="btn">Relations</button>
+				<button class="btn">Class declarations</button>
+				<button class="btn">Resource identifiers</button>
+			</div>
+		</div>
+
+		<div class="well span9">
+			<div class="pull-right">
+				<a href="#">Help</a>
+			</div>
+			<p>
+				<strong>SPARQL</strong>
+			</p>
+			<pre style="margin: 0;">{{RdfPrefixes}}
+SELECT ?s WHERE { <span id="sparql-class-declaration"></span> .
+<textarea rows="4" class="span12"></textarea>}</pre>
+
+		</div>
+	</div>
+	<div class="row-fluid">
+		<button type="button" class="btn btn-large btn-primary pull-right">
+			<i class="icon-search icon-white"></i> Search</button>
+	</div>
+
+</div>
+{{/partial}} {{#partial "scripts"}}
+<script>
+
+	$(document).ready(function() {
+		
+		var updateSparqlDeclaration = function() {
+			var value = $("input[name='target']:checked").val();
+			if (value == 'entity_type') {
+				$('#sparql-class-declaration').html("?s rdf:type watch:EntityType");
+			} else if (value == 'property') {
+				$('#sparql-class-declaration').html("?s rdf:type watch:Property");
+			} else if (value == 'entity') {
+				$('#sparql-class-declaration').html("?s rdf:type watch:Entity");
+			} else if (value == 'property_value') {
+				$('#sparql-class-declaration').html("?s rdf:type watch:PropertyValue");
+			}
+		};
+		
+		$("input[name='target']").change(function() {
+			updateSparqlDeclaration();
+		});
+		
+		updateSparqlDeclaration();
+	});
+</script>
+{{/partial}} {{> base}}

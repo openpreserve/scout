@@ -34,7 +34,7 @@
 		var pluginName = pluginIdSplit[0];
 		var pluginVersion = pluginIdSplit[1];
 
-		$.getJSON('{{contextPath}}/api/plugin.json/' + pluginName + '/'
+		$.getJSON('{{contextPath}}/api/plugin.json/' + encodeURIComponent(pluginName) + '/'
 				+ pluginVersion, function(plugin_data) {
 			var template = Handlebars.templates['plugin_configuration.hbs'];
 			var pluginHtml = template(plugin_data);

@@ -24,7 +24,7 @@
 				<td>{{instance}}</td>
 				<td>{{name}}</td>
 				<td>{{version}}</td>
-				<td>{{#source}}<a href="/browse/source/{{name}}">{{name}}</a>{{/source}}
+				<td>{{#source}}<a href="/browse/source/{{#encodeId name}}{{/encodeId}}">{{name}}</a>{{/source}}
 				</td>
 				<td>{{#active}}<i class="icon-ok"></i>{{/active}}
 				</td>
@@ -34,12 +34,12 @@
 							href="#"> <i class="icon-wrench"></i> <!-- <span class="caret"></span> -->
 						</a>
 						<ul class="dropdown-menu">
-							<li><a href="{{mustacheletPath}}/browse/adaptor/{{instance}}">Browse</a></li>
+							<li><a href="{{mustacheletPath}}/browse/adaptor/{{#encodeId instance}}{{/encodeId}}">Browse</a></li>
 							<li class="divider"></li>
-							<li><a href="#edit/{{instance}}">Edit</a></li> 
-							{{#active}}<li><a href="?operation=deactivateAdaptor&adaptor={{instance}}">Deactivate</a></li>{{/active}}
-							{{^active}}<li><a href="?operation=activateAdaptor&adaptor={{instance}}">Activate</a></li>{{/active}}
-							<li><a href="?operation=removeAdaptor&adaptor={{instance}}">Remove</a></li>
+							<li><a href="#edit/{{#encodeId instance}}{{/encodeId}}">Edit</a></li> 
+							{{#active}}<li><a href="?operation=deactivateAdaptor&adaptor={{#encodeId instance}}{{/encodeId}}">Deactivate</a></li>{{/active}}
+							{{^active}}<li><a href="?operation=activateAdaptor&adaptor={{#encodeId instance}}{{/encodeId}}">Activate</a></li>{{/active}}
+							<li><a href="?operation=removeAdaptor&adaptor={{#encodeId instance}}{{/encodeId}}">Remove</a></li>
 						</ul>
 					</div>
 				</td>

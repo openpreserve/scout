@@ -95,3 +95,7 @@ Handlebars.registerHelper('dateFormat', function(context, block) {
 	}
 	;
 });
+
+Handlebars.registerHelper('encodeId', function(context, block) {
+	return encodeURIComponent(context);
+});

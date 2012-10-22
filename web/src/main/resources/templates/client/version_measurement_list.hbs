@@ -11,8 +11,8 @@
 		{{#each items}}
 		<tr>
 			<td style="white-space: nowrap;">{{dateFormat timestamp}}</td>
-			<td>{{#with adaptor.source}}<a href="{{../../mustacheletPath}}/browse/source/{{name}}">{{name}}{{#if description}}: {{description}}{{/if}}</a>{{/with}}</td>
-			<td>{{#with adaptor}}<a href="{{../../mustacheletPath}}/browse/adaptor/{{instance}}">{{instance}} ({{name}}-v{{version}})</a>{{/with}}</td>
+			<td>{{#with adaptor.source}}<a href="{{../../mustacheletPath}}/browse/source/{{#encodeId name}}{{/encodeId}}">{{name}}{{#if description}}: {{description}}{{/if}}</a>{{/with}}</td>
+			<td>{{#with adaptor}}<a href="{{../../mustacheletPath}}/browse/adaptor/{{#encodeId instance}}{{/encodeId}}">{{instance}} ({{name}}-v{{version}})</a>{{/with}}</td>
 		</tr>
 		{{/each}}
 	</tbody>

@@ -1,0 +1,22 @@
+PREFIX pronom: <http://reference.data.gov.uk/technical-registry/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT ?name ?version ?mime ?uti ?developedBy ?maxByteSequenceOffset ?supportedBy ?xpuid ?lossiness ?waveguid ?compressionDocumentation ?mediaFormat ?note WHERE {
+ 
+ ?s rdfs:label ?name .
+
+ OPTIONAL {?s pronom:version ?version .}
+ OPTIONAL {?s pronom:MIMETYPE ?mime .}
+ OPTIONAL {?s pronom:UTI ?uti .}
+ OPTIONAL {?s pronom:developedBy ?developedBy .}
+ OPTIONAL {?s pronom:maxByteSequenceOffset ?maxByteSequenceOffset .}
+ OPTIONAL {?s pronom:supportedBy ?supportedBy .}
+ OPTIONAL {?s pronom:XPUID ?xpuid .}
+ OPTIONAL {?s pronom:lossiness ?lossiness .}
+ OPTIONAL {?s pronom:WAVE_Format_GUID ?waveguid .}
+ OPTIONAL {?s pronom:compressionDocumentation ?compressionDocumentation .}
+ OPTIONAL {?s pronom:mediaFormat ?mediaFormat .}
+ OPTIONAL {?s skos:note ?note .}
+
+}

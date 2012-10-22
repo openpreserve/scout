@@ -1,8 +1,5 @@
 package eu.scape_project.watch.domain;
 
-import eu.scape_project.watch.dao.DAO;
-import eu.scape_project.watch.utils.KBUtils;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -10,9 +7,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
+
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
+import eu.scape_project.watch.dao.DAO;
+import eu.scape_project.watch.utils.KBUtils;
 
 /**
  * An entity is a concrete instance of some EntityType. E.g. 'ImageMagick v1.0'
@@ -25,7 +25,7 @@ import thewebsemantic.binding.RdfBean;
 @XmlRootElement(name = KBUtils.ENTITY)
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Entity extends RdfBean<Entity> {
-
+  
   /**
    * Get the property id based on the entity type and entity name.
    * 

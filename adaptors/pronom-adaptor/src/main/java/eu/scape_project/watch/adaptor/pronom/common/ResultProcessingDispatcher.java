@@ -61,7 +61,7 @@ public class ResultProcessingDispatcher {
    * @return true if it wasn't known, and false otherwise.
    */
   public boolean process(String result) {
-    LOG.debug("Checking if partial result is known");
+    LOG.trace("Checking if partial result is known");
 
     final String checksum = this.getMD5Checksum(result);
     return !this.doesHashExist(checksum);

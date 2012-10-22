@@ -55,15 +55,18 @@ public class JSONResultParser {
     final JSONObject head = obj.getJSONObject("head");
     final JSONArray vars = head.getJSONArray("vars");
     final JSONArray bindings = obj.getJSONObject("results").getJSONArray("bindings");
-    final EntityType formattype = new EntityType("format", "represents a format");
+    final EntityType formattype = new EntityType("format", "Represents a file format");
 
     for (int i = 0; i < bindings.size(); i++) {
       final JSONObject binding = bindings.getJSONObject(i);
       final boolean process = this.processDispatcher.process(binding.toString());
 
       if (process) {
-        final Entity format = new Entity(formattype, binding.getJSONObject(vars.getString(0)).getString("value"));
-        LOG.debug("parsing values for format: '{}'", format.getName());
+        String entityName = binding.getJSONObject(vars.getString(0)).getString("value");
+        String mime = null;
+        String version = null;
+        LOG.debug("parsing values for format: '{}'", entityName);
+        final Entity format = new Entity(formattype, entityName);
 
         for (int j = 1; j < vars.size(); j++) {
           final String name = vars.getString(j);
@@ -73,12 +76,45 @@ public class JSONResultParser {
                 value.getValue());
             value.setEntity(format);
             result.add(value);
+
+            if (value.getProperty().getName().equals("mime")) {
+              mime = (String) value.getValue();
+            }
+
+            if (value.getProperty().getName().equals("version")) {
+              version = (String) value.getValue();
+            }
           }
         }
+
+        this.updateEntityName(format, mime, version);
       }
     }
 
     return result;
+  }
+
+  private void updateEntityName(Entity format, String mime, String version) {
+    String name = format.getName();
+
+    if (mime == null && version == null) {
+      return;
+    }
+    
+    if (mime != null && version == null) {
+      name += "[" + mime + "]";
+    }
+
+    if (mime == null && version != null) {
+      name += "[version=" + version + "]";
+    }
+
+    if (mime != null && version != null) {
+      name += "[" + mime + ";version=" + version + "]";
+    }
+
+    format.setName(name);
+
   }
 
   /**

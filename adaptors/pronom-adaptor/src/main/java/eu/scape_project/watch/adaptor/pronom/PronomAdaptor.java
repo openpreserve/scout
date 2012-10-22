@@ -78,17 +78,17 @@ public class PronomAdaptor implements AdaptorPluginInterface {
   private static final String CNF_CACHE_FILE_PATH = "pronom.cache.file.path";
 
   /**
-   * The default path of the cache file. Currently a file called cache.txt
-   * in hidden scout folder in the home directory.
+   * The default path of the cache file. Currently a file called cache.txt in
+   * hidden scout folder in the home directory.
    */
   private static final String CNF_CACHE_FILE_PATH_DEFAULT = System.getProperty("user.home") + File.separator + ".scout"
-    + File.separator + "pronom" + File.separator + "cache.txt";
+      + File.separator + "pronom" + File.separator + "cache.txt";
 
   /**
    * The description of the file cache property.
    */
   private static final String CNF_CACHE_FILE_PATH_DESCRIPTION = "The default path to a file used by "
-    + "this adaptor for partial result caching. The default is /user_dir/.scout/pronomcache.txt";
+      + "this adaptor for partial result caching. The default is /user_dir/.scout/pronomcache.txt";
 
   /**
    * The current version of this plugin.
@@ -120,11 +120,38 @@ public class PronomAdaptor implements AdaptorPluginInterface {
    */
   private Map<String, String> config;
 
+  /**
+   * The property values of the current batch response.
+   */
   private List<PropertyValue> currentBatch;
 
+  /**
+   * The current offset of the source.
+   */
   private int offset;
 
-  private String query;
+  /**
+   * The first part of the query. Due to a bug in the source, the query was
+   * divided into two.
+   */
+  private String query1;
+
+  /**
+   * The second part of the query. Due to a bug in the source, the query was
+   * divided into two.
+   */
+  private String query2;
+
+  /**
+   * A helper object that checks if a result is known and dispatches the data
+   * for further processing.
+   */
+  private ResultProcessingDispatcher dispatcher;
+
+  /**
+   * A helper parser to parse the data.
+   */
+  private JSONResultParser parser;
 
   /**
    * Inits the default config and the config, as well as the client.
@@ -215,14 +242,20 @@ public class PronomAdaptor implements AdaptorPluginInterface {
 
   }
 
+  /*
+   * There is a starvation BUG once the whole registry is crawled.
+   * The problem lies in the fact, that the first batch of the second crawl
+   * returns an empty collection. This is due to the fact, that all the hashes
+   * are already cached. This results in a new reset and so on. 
+   */
   @Override
   public boolean hasNext() throws PluginException {
     if (this.currentBatch.isEmpty()) {
       this.currentBatch = this.getNextBatch();
     }
-    
+
     final boolean hasNext = !this.currentBatch.isEmpty();
-    
+
     if (!hasNext) {
       this.reset();
     }
@@ -250,28 +283,41 @@ public class PronomAdaptor implements AdaptorPluginInterface {
   public ResultInterface execute() throws PluginException {
     throw new PluginException("This method is not supported anymore!");
   }
-  
+
   /**
-   * Resets the offset. This method should be called after
-   * all the data has been retrieved and iterated.
+   * Resets the offset. This method should be called after all the data has been
+   * retrieved and iterated.
    */
   private void reset() {
     this.offset = 0;
   }
 
-  // TODO cache the dispatcher and the parser.
   private List<PropertyValue> getNextBatch() throws PluginException {
     final int limit = this.getBatchSizeFromConfig();
     final String cache = this.getCacheFileFromConfig();
-    final ResultProcessingDispatcher dispatcher = new ResultProcessingDispatcher(cache);
-    final JSONResultParser parser = new JSONResultParser(dispatcher);
+
+    if (this.dispatcher == null) {
+      this.dispatcher = new ResultProcessingDispatcher(cache);
+    }
+
+    if (this.parser == null) {
+      this.parser = new JSONResultParser(this.dispatcher);
+    }
 
     // fetch data
     try {
       LOG.info("Getting next batch of '{}' with offset '{}'", limit, this.offset);
-      final String response = this.client.query(this.query, OutputFormat.JSON, limit, this.offset);
+      final String response1 = this.client.query(this.query1, OutputFormat.JSON, limit, this.offset);
+      final String response2 = this.client.query(this.query2, OutputFormat.JSON, limit, this.offset);
+      
       this.offset += limit;
-      return parser.parse(response);
+
+      final List<PropertyValue> firstBatch = this.parser.parse(response1);
+      final List<PropertyValue> secondBatch = this.parser.parse(response2);
+      
+      firstBatch.addAll(secondBatch);
+
+      return firstBatch;
 
     } catch (CommunicationException e) {
       LOG.error("A communication exception occurred while querying the pronom service '{}'", e.getMessage());
@@ -322,7 +368,8 @@ public class PronomAdaptor implements AdaptorPluginInterface {
    */
   private void initializePreparedQuery() throws PluginException {
     try {
-      this.query = IOUtils.toString(getClass().getResourceAsStream("/query.txt"));
+      this.query1 = IOUtils.toString(getClass().getResourceAsStream("/query1.txt"));
+      this.query2 = IOUtils.toString(getClass().getResourceAsStream("/query2.txt"));
 
     } catch (FileNotFoundException e) {
       LOG.error("Could not read the query '{}'", e.getMessage());
@@ -339,9 +386,9 @@ public class PronomAdaptor implements AdaptorPluginInterface {
    */
   private void initializeConfiguration() {
     final ConfigParameter batch = new ConfigParameter(CNF_PRONOM_BATCH, CNF_PRONOM_BATCH_DEFAULT,
-      CNF_PRONOM_BATCH_DESCRIPTION, false);
+        CNF_PRONOM_BATCH_DESCRIPTION, false);
     final ConfigParameter cache = new ConfigParameter(CNF_CACHE_FILE_PATH, CNF_CACHE_FILE_PATH_DEFAULT,
-      CNF_CACHE_FILE_PATH_DESCRIPTION, true);
+        CNF_CACHE_FILE_PATH_DESCRIPTION, true);
 
     this.defaultConfig = Arrays.asList(batch, cache);
     this.config = new HashMap<String, String>();

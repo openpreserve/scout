@@ -3,9 +3,6 @@ package eu.scape_project.watch.web;
 import java.util.List;
 import java.util.regex.Matcher;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.inject.Inject;
 
 import eu.scape_project.watch.dao.DAO;

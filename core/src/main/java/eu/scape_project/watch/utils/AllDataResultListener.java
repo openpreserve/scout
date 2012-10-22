@@ -57,7 +57,7 @@ public class AllDataResultListener implements AdaptorListenerInterface {
    */
   @Override
   public void notify(AdaptorPluginInterface adaptor, ResultInterface result) {
-    LOG.info("Received results from adaptor [{}-{}]", adaptor.getName(), adaptor.getVersion());
+    LOG.trace("Received results from adaptor [{}-{}]", adaptor.getName(), adaptor.getVersion());
     Map<String, AdaptorPluginInterface> activePlugins = this.manager.getActiveAdaptorPlugins();
 
     String instance = "";

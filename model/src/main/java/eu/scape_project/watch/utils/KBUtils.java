@@ -3,9 +3,6 @@ package eu.scape_project.watch.utils;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.http.client.utils.URIUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -149,7 +145,7 @@ public final class KBUtils {
    * A data type constant.
    */
   public static final String DATA_TYPE = "datatype";
-  
+
   /**
    * A rendering hint constant.
    */
@@ -198,7 +194,7 @@ public final class KBUtils {
    * A source adaptor event.
    */
   public static final String SOURCE_ADAPTOR_EVENT = "sourceadaptorevent";
-  
+
   /**
    * A source adaptor event type.
    */
@@ -364,9 +360,9 @@ public final class KBUtils {
     final Property toolVersion = new Property(tools, "version", "Tool version");
     final Property inputFormats = new Property(tools, "input_format", "Supported input format", DataType.STRING_LIST);
     final Property outputFormats = new Property(tools, "output_format", "Supported output formats",
-      DataType.STRING_LIST);
+        DataType.STRING_LIST);
     final Property formatDistribution = new Property(profile, "format_distribution",
-      "The format distribution of the content", DataType.STRING_DICTIONARY);
+        "The format distribution of the content", DataType.STRING_DICTIONARY);
 
     DAO.save(formats, tools, profile);
     DAO.save(formatPUID, formatMimetype, toolVersion, inputFormats, outputFormats, formatDistribution);
@@ -392,8 +388,8 @@ public final class KBUtils {
     config.put("c3po.endpoint", "dummy");
     final Source source = new Source("c3podummy", "A c3po dummy test source");
     final SourceAdaptor adaptor = new SourceAdaptor("c3po", "0.0.4", "c3po-0.0.4", source, Arrays.asList(tools,
-      formats, profile), Arrays.asList(formatPUID, formatMimetype, toolVersion, inputFormats, outputFormats,
-      formatDistribution), config);
+        formats, profile), Arrays.asList(formatPUID, formatMimetype, toolVersion, inputFormats, outputFormats,
+        formatDistribution), config);
     DAO.save(source);
     DAO.save(adaptor);
 
@@ -416,7 +412,7 @@ public final class KBUtils {
       final PropertyValue docPUID = new PropertyValue(doc, formatPUID, "fmt/40");
       final PropertyValue docMime = new PropertyValue(doc, formatMimetype, "application/msword");
       final PropertyValue docxMime = new PropertyValue(docx, formatMimetype,
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
       final String bmpPUIDValue = "fmt/119";
       final PropertyValue bmpPUID = new PropertyValue(bmp, formatPUID, bmpPUIDValue);
       final PropertyValue bmpMime = new PropertyValue(bmp, formatMimetype, "image/bmp");
@@ -425,7 +421,7 @@ public final class KBUtils {
       final PropertyValue gifMime = new PropertyValue(gif, formatMimetype, "image/gif");
 
       final List<String> values = new ArrayList<String>(Arrays.asList(tiffPUIDValue, jpegPUIDValue, bmpPUIDValue,
-        gifPUIDValue));
+          gifPUIDValue));
       final PropertyValue ifr = new PropertyValue(imageMagickTool, inputFormats, values);
       final PropertyValue ofr = new PropertyValue(imageMagickTool, outputFormats, values);
 
@@ -448,8 +444,8 @@ public final class KBUtils {
 
       // save property values
       DAO.PROPERTY_VALUE.save(adaptor, imageMagickVersion, pdfPUID, pdfMime, tiffPUID, tiffMime, jpeg2000PUID,
-        jpeg2000Mime, jpegPUID, jpegMime, pngPUID, pngMime, docPUID, docMime, docxMime, bmpPUID, bmpMime, gifPUID,
-        gifMime, ifr, ofr, ifr1, ifr2, ifr3, ifr4, ofr1, ofr2, ofr3, ofr4, distribution);
+          jpeg2000Mime, jpegPUID, jpegMime, pngPUID, pngMime, docPUID, docMime, docxMime, bmpPUID, bmpMime, gifPUID,
+          gifMime, ifr, ofr, ifr1, ifr2, ifr3, ifr4, ofr1, ofr2, ofr3, ofr4, distribution);
     } catch (final UnsupportedDataTypeException e) {
       LOG.error("Unsupported data type: " + e.getMessage());
     } catch (final InvalidJavaClassForDataTypeException e) {
@@ -457,7 +453,7 @@ public final class KBUtils {
     }
 
     final Question question1 = new Question("?s watch:type watch-EntityType:tools", RequestTarget.ENTITY,
-      Arrays.asList(tools), Arrays.asList(toolVersion), Arrays.asList(imageMagickTool), 60);
+        Arrays.asList(tools), Arrays.asList(toolVersion), Arrays.asList(imageMagickTool), 60);
     final Map<String, String> not1config = new HashMap<String, String>();
     not1config.put("to", "lfaria@keep.pt");
     not1config.put("subject", "New tools");
@@ -542,9 +538,26 @@ public final class KBUtils {
 
   }
 
+  /**
+   * Encodes the id of an entity to an url. Note that the slash is escaped by a
+   * white space percent encoding and not by %2F, which is the correct slash
+   * percent encoding. This is also the case in the myhelper.js handlebars
+   * helper
+   * 
+   * @param id
+   *          the id to encode
+   * @return the url encoded id.
+   */
   public static String encodeId(String id) {
     String uriRef = URIref.encode(id);
     uriRef = uriRef.replace("#", "%23");
+    uriRef = uriRef.replace("/", "%20"); // because of browsers
+    uriRef = uriRef.replace("[", "%5B");
+    uriRef = uriRef.replace("]", "%5D");
+    uriRef = uriRef.replace("?", "%3F");
+    uriRef = uriRef.replace(";", "%3B");
+    uriRef = uriRef.replace("=", "%3D");
+
     return uriRef;
   }
 

@@ -167,6 +167,12 @@ public class ResultProcessingDispatcher {
       try {
         LOG.info("Cache file for PRONOM results does not exist, creating one at: {}", this.cacheFilePath);
 
+        final File parent = file.getParentFile();
+        if (!parent.exists()) {
+          LOG.debug("Creating parent directories: {}", parent.getAbsolutePath());
+          parent.mkdirs();
+        }
+
         file.createNewFile();
         return;
         // no need to proceed.

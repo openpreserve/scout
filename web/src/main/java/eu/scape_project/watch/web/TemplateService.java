@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -62,14 +63,14 @@ public class TemplateService extends HttpServlet implements Filter {
   /**
    * DEFINE AVAILABLE TEMPLATELETS.
    */
-  private static final List<Class<? extends TemplateContext>> MUSTACHELETS = Arrays.asList(Index.class, ErrorPage.class, Browse.class,
-    BrowseType.class, BrowseEntity.class, Administration.class, CreateSourceAdaptor.class, CreateSource.class,
-    BrowseAdaptor.class, BrowseValue.class);
+  private static final List<Class<? extends TemplateContext>> MUSTACHELETS = Arrays.asList(Index.class,
+    ErrorPage.class, Browse.class, BrowseType.class, BrowseEntity.class, Administration.class,
+    CreateSourceAdaptor.class, CreateSource.class, BrowseAdaptor.class, BrowseValue.class);
 
   private static final boolean DISABLE_CACHE = Boolean.parseBoolean(System.getProperty(
     "mustache.servlet.cache.disable", "false"));
 
-  private static final String DEFAULT_RESOURCE_ROOT = "/templates/server/";
+  private static final String DEFAULT_RESOURCE_ROOT = "/templates/server";
 
   /**
    * To log messages.
@@ -150,6 +151,11 @@ public class TemplateService extends HttpServlet implements Filter {
     logger.info("Mustachelet path: {}", mustacheletPath);
     logger.info("Path info: {}", pathInfo);
 
+    if (pathInfo.startsWith("/error/404")) {
+      String originalUri = (String) req.getAttribute(RequestDispatcher.FORWARD_REQUEST_URI);
+      logger.info("Original URI: {}", originalUri);
+    }
+
     for (Map.Entry<Pattern, Map<HttpMethod.Type, Class<?>>> entry : pathMap.entrySet()) {
       final Matcher matcher = entry.getKey().matcher(pathInfo);
       if (matcher.matches()) {
@@ -205,8 +211,9 @@ public class TemplateService extends HttpServlet implements Filter {
             return true;
           }
           final Template template = templateMap.get(templateContext);
-//          final Context context = Context.newBuilder(o).combine("contextPath", contextPath)
-//            .combine("mustacheletPath", mustacheletPath).build();
+          // final Context context =
+          // Context.newBuilder(o).combine("contextPath", contextPath)
+          // .combine("mustacheletPath", mustacheletPath).build();
           final Context context = Context.newBuilder(o).combine("contextPath", contextPath)
             .combine("mustacheletPath", mustacheletPath).build();
 
@@ -253,14 +260,15 @@ public class TemplateService extends HttpServlet implements Filter {
       protected Reader read(String templateName) throws IOException {
         final InputStream stream = getClass().getResourceAsStream(DEFAULT_RESOURCE_ROOT + templateName);
         if (stream != null) {
+          logger.info("Loaded template {}", DEFAULT_RESOURCE_ROOT + templateName);
           return new InputStreamReader(stream);
         } else {
-          throw new IOException("Cannot find template " + templateName);
+          throw new IOException("Cannot find template " + DEFAULT_RESOURCE_ROOT + templateName);
         }
 
       }
     }, new ConcurrentMapCache());
-    
+
     compiler.registerHelper("value-render", new ValueHelper());
 
     for (Class<?> mustachelet : MUSTACHELETS) {

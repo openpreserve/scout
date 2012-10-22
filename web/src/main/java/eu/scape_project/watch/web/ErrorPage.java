@@ -28,6 +28,6 @@ public class ErrorPage extends TemplateContext {
   private HttpServletRequest request;
   
   public String getOriginalUri() {
-    return (String) request.getAttribute(RequestDispatcher.FORWARD_REQUEST_URI);
+    return (String) request.getAttribute("javax.servlet.error.request_uri");
   }
 }

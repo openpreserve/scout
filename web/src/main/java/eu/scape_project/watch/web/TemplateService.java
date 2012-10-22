@@ -152,7 +152,7 @@ public class TemplateService extends HttpServlet implements Filter {
     logger.info("Path info: {}", pathInfo);
 
     if (pathInfo.startsWith("/error/404")) {
-      String originalUri = (String) req.getAttribute(RequestDispatcher.FORWARD_REQUEST_URI);
+      String originalUri = (String) req.getAttribute("javax.servlet.error.request_uri");
       logger.info("Original URI: {}", originalUri);
     }
 

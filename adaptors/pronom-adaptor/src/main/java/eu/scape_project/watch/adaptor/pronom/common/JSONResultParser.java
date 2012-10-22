@@ -49,6 +49,7 @@ public class JSONResultParser {
    * @return the list of property values containing the formats.
    */
   public List<PropertyValue> parse(final String json) {
+    LOG.trace("Parsing json: {}", json);
     final List<PropertyValue> result = new ArrayList<PropertyValue>();
     final JSONObject obj = (JSONObject) JSONSerializer.toJSON(json);
     final JSONObject head = obj.getJSONObject("head");
@@ -161,6 +162,8 @@ public class JSONResultParser {
         pv.setValue(new URI(v), URI.class);
         break;
       default:
+        pv.setValue(v, String.class);
+        break;
     }
   }
 
@@ -177,6 +180,8 @@ public class JSONResultParser {
 
     if (type.equals("literal")) {
       return DataType.STRING;
+    } else if (type.equals("uri")) {
+      return DataType.URI;
     }
 
     if (type.equals("typed-literal")) {

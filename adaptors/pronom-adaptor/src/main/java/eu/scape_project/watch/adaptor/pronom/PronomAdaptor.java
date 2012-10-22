@@ -1,7 +1,6 @@
 package eu.scape_project.watch.adaptor.pronom;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -11,6 +10,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import eu.scape_project.watch.adaptor.pronom.client.PronomClient;
 import eu.scape_project.watch.adaptor.pronom.client.PronomServiceCommunicator;
@@ -28,10 +31,6 @@ import eu.scape_project.watch.interfaces.ResultInterface;
 import eu.scape_project.watch.utils.ConfigParameter;
 import eu.scape_project.watch.utils.exceptions.InvalidParameterException;
 import eu.scape_project.watch.utils.exceptions.PluginException;
-
-import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * The Pronom Adaptor queries a PRONOM registry and parses the formats and their
@@ -79,11 +78,11 @@ public class PronomAdaptor implements AdaptorPluginInterface {
   private static final String CNF_CACHE_FILE_PATH = "pronom.cache.file.path";
 
   /**
-   * The default path of the cache file. Currently a file called pronomcache.txt
+   * The default path of the cache file. Currently a file called cache.txt
    * in hidden scout folder in the home directory.
    */
   private static final String CNF_CACHE_FILE_PATH_DEFAULT = System.getProperty("user.home") + File.separator + ".scout"
-    + File.separator + "pronomcache.txt";
+    + File.separator + "pronom" + File.separator + "cache.txt";
 
   /**
    * The description of the file cache property.
@@ -94,7 +93,7 @@ public class PronomAdaptor implements AdaptorPluginInterface {
   /**
    * The current version of this plugin.
    */
-  private static final String VERSION = "0.0.4";
+  private static final String VERSION = "0.0.5";
 
   /**
    * The name of this plugin.

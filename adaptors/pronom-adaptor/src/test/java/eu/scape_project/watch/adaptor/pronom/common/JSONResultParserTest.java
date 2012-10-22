@@ -3,6 +3,8 @@ package eu.scape_project.watch.adaptor.pronom.common;
 import java.io.FileInputStream;
 import java.util.List;
 
+import javax.xml.crypto.Data;
+
 import junit.framework.Assert;
 import net.sf.json.JSONException;
 
@@ -11,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import eu.scape_project.watch.domain.DataType;
 import eu.scape_project.watch.domain.PropertyValue;
 
 /**
@@ -59,6 +62,33 @@ public class JSONResultParserTest {
     this.parser.parse(response);
 
     Assert.fail("This code should not have been reached");
+  }
+
+  /**
+   * Tests that the parser correctly recognizes dates and uris.
+   * 
+   * @throws Exception
+   */
+  @Test
+  public void shouldParseCorrectDatatypeForValue() throws Exception {
+    final String response = this.getResponse(true);
+
+    final List<PropertyValue> parse = this.parser.parse(response);
+    boolean atLeastOneDate = false;
+    boolean atLeastOneUri = false;
+    for (PropertyValue pv : parse) {
+
+      if (pv.getProperty().getDatatype().equals(DataType.DATE)) {
+        atLeastOneDate = true;
+      }
+
+      if (pv.getProperty().getDatatype().equals(DataType.URI)) {
+        atLeastOneUri = true;
+      }
+    }
+
+    Assert.assertTrue(atLeastOneDate);
+    Assert.assertTrue(atLeastOneUri);
   }
 
   /**

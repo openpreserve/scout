@@ -75,7 +75,7 @@ public class PronomAdaptorTest {
    * 
    * @throws Exception
    */
-  @Ignore @Test
+  @Test
   public void onExecute() throws Exception {
     final boolean hasNext = this.adaptor.hasNext();
     Assert.assertTrue(hasNext);

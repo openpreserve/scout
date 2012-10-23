@@ -20,6 +20,7 @@ import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
+import eu.scape_project.watch.domain.RenderingHint;
 import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeException;
 import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
 
@@ -170,6 +171,10 @@ public class JSONResultParser {
         final PropertyValue v = new PropertyValue();
         final Property p = new Property(et, name, name, dt);
         v.setProperty(p);
+        
+        if (dt == DataType.DATE) {
+          p.setRenderingHint(RenderingHint.DATE_DAY);
+        }
 
         this.setValue(value, v, dt);
 

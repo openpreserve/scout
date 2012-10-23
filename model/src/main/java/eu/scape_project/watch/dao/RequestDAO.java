@@ -1,14 +1,14 @@
 package eu.scape_project.watch.dao;
 
-import eu.scape_project.watch.domain.Entity;
-import eu.scape_project.watch.domain.EntityType;
-import eu.scape_project.watch.domain.Property;
-import eu.scape_project.watch.domain.PropertyValue;
-import eu.scape_project.watch.domain.RequestTarget;
-
 import java.util.List;
 
 import thewebsemantic.binding.RdfBean;
+import eu.scape_project.watch.domain.Entity;
+import eu.scape_project.watch.domain.EntityType;
+import eu.scape_project.watch.domain.Measurement;
+import eu.scape_project.watch.domain.Property;
+import eu.scape_project.watch.domain.PropertyValue;
+import eu.scape_project.watch.domain.RequestTarget;
 
 /**
  * 
@@ -57,6 +57,9 @@ public final class RequestDAO extends AbstractDO {
       case PROPERTY_VALUE:
         ret = super.query(PropertyValue.class, query, start, max);
         break;
+      case MEASUREMENT:
+        ret = super.query(Measurement.class, query, start, max);
+        break;
       default:
         ret = null;
         break;
@@ -89,6 +92,9 @@ public final class RequestDAO extends AbstractDO {
         break;
       case PROPERTY_VALUE:
         ret = super.count(PropertyValue.class, query);
+        break;
+      case MEASUREMENT:
+        ret = super.count(Measurement.class, query);
         break;
       default:
         ret = -1;

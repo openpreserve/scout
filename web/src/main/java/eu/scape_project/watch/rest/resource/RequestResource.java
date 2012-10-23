@@ -27,10 +27,10 @@ import com.wordnik.swagger.core.JavaHelp;
 import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.EntityType;
+import eu.scape_project.watch.domain.Measurement;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.domain.RequestTarget;
-import eu.scape_project.watch.utils.exception.NotFoundException;
 
 /**
  * REST API for Synchronous Requests.
@@ -92,6 +92,10 @@ public class RequestResource extends JavaHelp {
         break;
       case PROPERTY_VALUE:
         ret = Response.ok().entity(new GenericEntity<List<PropertyValue>>((List<PropertyValue>) list) {
+        }).build();
+        break;
+      case MEASUREMENT:
+        ret = Response.ok().entity(new GenericEntity<List<Measurement>>((List<Measurement>) list) {
         }).build();
         break;
       default:

@@ -1,0 +1,31 @@
+{{#partial "item_list"}}
+<table class="table table-hover table-striped">
+	<thead>
+		<tr>
+			<th>Category</th>
+			<th>Entity</th>
+			<th>Property</th>
+			<th>Value</th>
+			<th>Date</th>
+			<th>Adaptor</th>
+			<th style="width: 5%">Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{#each items}}
+		<tr>
+			<td>{{#with propertyValue.entity.type}}<a href="{{../../mustacheletPath}}/browse/type/{{#encodeId name}}{{/encodeId}}">{{name}}</a>{{/with}}</td>
+			<td>{{#with propertyValue.entity}}<a href="{{../../mustacheletPath}}/browse/entity/{{#encodeId type.name}}{{/encodeId}}/{{#encodeId name}}{{/encodeId}}">{{name}}</a>{{/with}}</td>
+			<td>{{#with propertyValue.property}}<a href="{{../../mustacheletPath}}/browse/property/{{#encodeId type.name}}{{/encodeId}}/{{#encodeId name}}{{/encodeId}}">{{name}}</a>{{/with}}</td>
+			<td>{{#with propertyValue}}<a href="{{../../mustacheletPath}}/browse/value/{{#encodeId entity.type.name}}{{/encodeId}}/{{#encodeId entity.name}}{{/encodeId}}/{{#encodeId property.name}}{{/encodeId}}/{{version}}">{{#value-render this}}{{/value-render}}</a>{{/with}}</td>
+			<td style="white-space: nowrap;">{{dateFormat timestamp}}</td>
+			<td>{{#with adaptor}}<a href="{{../../mustacheletPath}}/browse/adaptor/{{#encodeId instance}}{{/encodeId}}">{{instance}}</a>{{/with}}</td>
+			<td><a class="btn btn-small btn-link"
+				href="{{../mustacheletPath}}/browse/measurement/{{#encodeId propertyValue.entity.type.name}}{{/encodeId}}/{{#encodeId propertyValue.entity.name}}{{/encodeId}}/{{#encodeId propertyValue.property.name}}{{/encodeId}}/{{propertyValue.version}}/{{timestamp}}"><i class=" icon-th-list"></i></a></td>
+		</tr>
+		{{/each}}
+	</tbody>
+</table>
+{{/partial}}
+{{#partial "empty_message"}}No measurements found.{{/partial}}
+{{>base_paginated_list}}

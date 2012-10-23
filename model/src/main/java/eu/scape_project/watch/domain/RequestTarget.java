@@ -31,7 +31,12 @@ public enum RequestTarget {
   /**
    * Target class is {@link PropertyValue}.
    */
-  PROPERTY_VALUE;
+  PROPERTY_VALUE,
+  
+  /**
+   * Target class is {@link Measurement}.
+   */
+  MEASUREMENT;
 
   /**
    * Get request target based on the target class it refers to.
@@ -50,6 +55,8 @@ public enum RequestTarget {
       ret = ENTITY;
     } else if (targetClass == PropertyValue.class) {
       ret = PROPERTY_VALUE;
+    } else if (targetClass == Measurement.class) {
+      ret = MEASUREMENT;
     }
 
     return ret;
@@ -76,6 +83,9 @@ public enum RequestTarget {
         break;
       case PROPERTY_VALUE:
         ret = PropertyValue.class;
+        break;
+      case MEASUREMENT:
+        ret = Measurement.class;
         break;
       default:
         ret = null;

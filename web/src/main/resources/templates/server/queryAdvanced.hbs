@@ -23,6 +23,9 @@
 				value="entity"> Entity
 			</label> <label class="radio"> <input type=radio name="target"
 				value="property_value"> Value
+			</label> 
+			<label class="radio"> <input type=radio name="target"
+				value="measurement"> Measurement
 			</label> <br />
 			<p>
 				<strong>Snippets</strong>
@@ -42,7 +45,7 @@
 			</p>
 			<pre style="margin: 0;">SELECT ?s WHERE { <span
 					id="sparql-class-declaration"></span> .
-<textarea id="query" rows="6" class="span12"></textarea>}</pre>
+<textarea id="query" rows="8" class="span12" style="margin:0;"></textarea>}</pre>
 
 		</div>
 	</div>
@@ -73,6 +76,8 @@
 				$('#sparql-class-declaration').html("?s rdf:type watch:Entity");
 			} else if (value == 'property_value') {
 				$('#sparql-class-declaration').html("?s rdf:type watch:PropertyValue");
+			} else if (value == 'measurement') {
+				$('#sparql-class-declaration').html("?s rdf:type watch:Measurement");
 			}
 		};
 		
@@ -84,43 +89,47 @@
 	});
 </script>
 <script type="text/javascript">
+var paginator;
+var search = function() {
+	var btn = $(this);
+	btn.button('loading');
+
+	var target = $("input[name='target']:checked").val();
+	var query = document.getElementById('query').value;
+	
+	
+	var apiCountRequest = '{{contextPath}}/api/request.json/count/?target='+target+'&query='+encodeURIComponent(query);
+	var jqxhr = $.getJSON(apiCountRequest, function(count) {
+		var apiListRequest = '{{contextPath}}/api/request.json/list/?target='+target+'&query='+encodeURIComponent(query);
+		var template;
+		
+		if (target == 'entity_type') {
+			template = 'type_list.hbs';
+		} else if (target == 'property') {
+			template = 'property_list_for_query.hbs';
+		} else if (target == 'entity') {
+			template = 'entity_list_for_query.hbs';
+		} else if (target == 'property_value') {
+			template = 'value_list_for_query.hbs';
+		} else if (target == 'measurement') {
+			template = 'measurement_list_for_query.hbs';
+		}
+
+		paginator = Paginator(count, apiListRequest, 20, template, '#resultList', '{{contextPath}}', '{{mustacheletPath}}');
+		paginator.init();
+		btn.button('reset');
+	});
+
+	jqxhr.error(function() {
+		$('#resultList').html("<div class='alert alert-error'>Error parsing SPARQL query</div>");
+		btn.button('reset');
+	});
+};
+
 $(document).ready(function(){
 	$('.btn').button();
 	var button = document.getElementById('searchButton');
-	button.onclick  = function() {
-		console.log('search clicked!');
-		var btn = $(this);
-		btn.button('loading');
-
-		var target = $("input[name='target']:checked").val();
-		var query = document.getElementById('query').value;
-		
-		
-		var apiCountRequest = '{{contextPath}}/api/request.json/count/?target='+target+'&query='+encodeURIComponent(query);
-		var jqxhr = $.getJSON(apiCountRequest, function(count) {
-			var apiListRequest = '{{contextPath}}/api/request.json/list/?target='+target+'&query='+encodeURIComponent(query);
-			var template;
-			
-			if (target == 'entity_type') {
-				template = 'type_list.hbs';
-			} else if (target == 'property') {
-				template = 'property_list.hbs';
-			} else if (target == 'entity') {
-				template = 'entity_list.hbs';
-			} else if (target == 'property_value') {
-				template = 'value_list.hbs';
-			}
-
-			var paginator = Paginator(count, apiListRequest, 20, template, '#resultList', '{{contextPath}}', '{{mustacheletPath}}');
-			paginator.init();
-			btn.button('reset');
-		});
-
-		jqxhr.error(function() {
-			$('#resultList').html("<div class='alert alert-error'>Error parsing SPARQL query</div>");
-			btn.button('reset');
-		});
-	};
+	button.onclick  = search;
 });
 </script>
 {{/partial}} {{> base}}

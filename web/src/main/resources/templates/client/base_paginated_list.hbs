@@ -1,4 +1,3 @@
-{{#if items}}
 <ul class="pager">
 	<li
 		class="previous {{#if index_previous_disabled}}disabled{{/if}}"><a
@@ -7,19 +6,21 @@
 	<li class="next {{#if index_next_disabled}}disabled{{/if}}"><a
 		href="javascript:paginator.updateList({{index_next}})">Next &rarr;</a></li>
 </ul>
+{{#if items}}
 {{#block "item_list"}}
 {{/block}}
-<ul class="pager">
-	<li
-		class="previous {{#if index_previous_disabled}}disabled{{/if}}"><a
-		href="javascript:paginator.updateList({{index_previous}})">&larr; Previous</a></li>
-	<li>{{index_start}}-{{index_end}} of {{count}}</li>
-	<li class="next {{#if index_next_disabled}}disabled{{/if}}"><a
-		href="javascript:paginator.updateList({{index_next}})">Next &rarr;</a></li>
-</ul>
 {{/if}}
 {{#unless items}}
 <div class="alert alert-warning">
 	<b>Empty!</b> {{#block "empty_message"}}{{/block}}.
 </div>
 {{/unless}}
+<ul class="pager">
+	<li
+		class="previous {{#if index_previous_disabled}}disabled{{/if}}"><a
+		href="javascript:paginator.updateList({{index_previous}})">&larr; Previous</a></li>
+	<li>{{index_start}}-{{index_end}} of {{count}}</li>
+	<li class="next {{#if index_next_disabled}}disabled{{/if}}"><a
+		href="javascript:paginator.updateList({{index_next}})">Next &rarr;</a></li>
+</ul>
+

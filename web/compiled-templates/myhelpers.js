@@ -96,10 +96,38 @@ Handlebars.registerHelper('dateFormat', function(context, block) {
 	;
 });
 
-//encodes the name of the entity/property to a url
+// encodes the name of the entity/property to a url
 // note that the slashes are replaced by an empty space
 // by convention. Take a look at KBUtils#encodeId()
 Handlebars.registerHelper('encodeId', function(context, block) {
 	context = context.replace(/\//g, '%20');
 	return encodeURIComponent(context);
+});
+
+Handlebars.registerHelper('value-render', function(pv, block) {
+	var value = pv.value;
+	var datatype = pv.property.datatype;
+	var renderingHint = pv.property.renderingHint;
+
+	var ret;
+
+	if (datatype == 'URI') {
+		ret = "<a href='" + value + "'>" + value + "</a>";
+	} else if (datatype == 'INTEGER' && renderingHint == 'STORAGE_VOLUME') {
+		ret = value + 'B';
+		// TODO humanize storage volume
+	} else if (datatype == 'DATE') {
+		ret = moment(Date(value)).format("dddd, D MMMM YYYY, h:mm:ss a");
+	} else if (datatype == "STRING_DICTIONARY") {
+		ret = "<dl class=\"dl-horizontal\">";
+		for ( var index in value) {
+			ret += "<dt>" + value[index].key + "</dt>";
+			ret += "<dd>" + value[index].value + "</dd>";
+		}
+		ret += "</dl>";
+	} else {
+		ret = value;
+	}
+
+	return ret;
 });

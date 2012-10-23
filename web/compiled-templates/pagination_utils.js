@@ -18,9 +18,6 @@ function Paginator(resourceCount, resourceAPI, pageSize, templateName, divID,
 
 Paginator.prototype = {
 	updateList : function(start) {
-		if (start < 0) {
-			start = 0;
-		}
 		document.location = $.param.fragment(window.location.href, 'start='
 				+ start);
 
@@ -41,6 +38,13 @@ Paginator.prototype = {
 		});
 	},
 	updateListImpl : function(start) {
+		if(start >= resourceCount) {
+			start = resourceCount - pageSize;
+		}
+		if (start < 0) {
+			start = 0;
+		}
+		
 		var end = start + pageSize < resourceCount ? start + pageSize
 				: resourceCount;
 		var next = end < resourceCount ? end : start;

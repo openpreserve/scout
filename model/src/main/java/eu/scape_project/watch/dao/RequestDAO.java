@@ -64,4 +64,36 @@ public final class RequestDAO extends AbstractDO {
     return ret;
   }
 
+  /**
+   * Make a synchronous request count to the KB.
+   * 
+   * @param target
+   *          The request target
+   * @param query
+   *          The request query
+   * @return The number of items of the list of resources, of the type defined
+   *         in the target, filtered by the above constraints
+   */
+  @SuppressWarnings("unchecked")
+  public int count(final RequestTarget target, final String query) {
+    int ret;
+    switch (target) {
+      case ENTITY_TYPE:
+        ret = super.count(EntityType.class, query);
+        break;
+      case PROPERTY:
+        ret = super.count(Property.class, query);
+        break;
+      case ENTITY:
+        ret = super.count(Entity.class, query);
+        break;
+      case PROPERTY_VALUE:
+        ret = super.count(PropertyValue.class, query);
+        break;
+      default:
+        ret = -1;
+        break;
+    }
+    return ret;
+  }
 }

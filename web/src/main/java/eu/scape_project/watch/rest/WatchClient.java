@@ -82,6 +82,11 @@ public class WatchClient {
   private static final String QUERY = "query";
 
   /**
+   * Query key to define a listing filtered by target.
+   */
+  private static final String TARGET = "target";
+
+  /**
    * Jersey web resource connection.
    */
   private final WebResource resource;
@@ -510,9 +515,9 @@ public class WatchClient {
 
     final RequestTarget target = RequestTarget.getTargetByClass(targetClass);
 
-    final Builder builder = this.resource.path(KBUtils.SYNC_REQUEST + FS + this.format + AS + target)
-      .queryParam(QUERY, query).queryParam(START, Integer.toString(start)).queryParam(MAX, Integer.toString(max))
-      .accept(this.format.getMediaType());
+    final Builder builder = this.resource.path(KBUtils.SYNC_REQUEST + FS + this.format + AS + LIST)
+      .queryParam(TARGET, target.toString()).queryParam(QUERY, query).queryParam(START, Integer.toString(start))
+      .queryParam(MAX, Integer.toString(max)).accept(this.format.getMediaType());
 
     List<? extends RdfBean<?>> ret;
     switch (target) {

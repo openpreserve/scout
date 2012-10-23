@@ -2,7 +2,6 @@ package eu.scape_project.watch.scheduling.quartz;
 
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,9 +10,10 @@ import eu.scape_project.watch.interfaces.ResultInterface;
 import eu.scape_project.watch.utils.exceptions.PluginException;
 
 /**
- * Quartz Adaptor Job class which wraps up an adaptor. 
+ * Quartz Adaptor Job class which wraps up an adaptor.
+ * 
  * @author Kresimir Duretec <duretec@ifs.tuwien.ac.at>
- *
+ * 
  */
 public class QuartzAdaptorJob implements Job {
 
@@ -57,19 +57,28 @@ public class QuartzAdaptorJob implements Job {
   public void execute(final JobExecutionContext jec) {
 
     adaptor = scheduler.getAdaptorPluginInterface(adaptorId);
-    try {
-      while (adaptor.hasNext()) {
-        ResultInterface result = adaptor.next();
-        lManager.notify(adaptor, result);
+    if (!scheduler.isAdaptorPluginBlocked(adaptor)) {
+      scheduler.blockAdaptorPlugin(adaptor);
+      jec.put("skip", new Boolean(false));
+      try {
+        while (adaptor.hasNext()) {
+          ResultInterface result = adaptor.next();
+          lManager.notify(adaptor, result);
+        }
+        LOG.info(adaptor.getName() + " has nothing to give");
+        jec.setResult(new Boolean(true));
+        scheduler.unblockAdaptorPlugin(adaptor);
+        return;
+      } catch (PluginException e) {
+        LOG.warn("An exception occured in Adaptor");
+        jec.put("exception", e);
+        jec.setResult(new Boolean(false));
+        scheduler.unblockAdaptorPlugin(adaptor);
+        return;
       }
-      LOG.info(adaptor.getName()+" has nothing to give");
-      jec.setResult(new Boolean(true));
-      return;
-    } catch (PluginException e) {
-      LOG.warn("An exception occured in Adaptor");
-      jec.put("exception", e);
-      jec.setResult(new Boolean(false));
-      return;
+    }else {
+      jec.put("skip", new Boolean(true));
+      LOG.warn("Skipping execution of " + adaptor.getName() + " - it is still running!");
     }
   }
 

@@ -319,6 +319,18 @@ public class QuartzScheduler implements SchedulerInterface {
     AdaptorPluginInterface tmp = cache.getAdaptorPluginInterface(id);
     return tmp;
   }
+  
+  public void blockAdaptorPlugin(AdaptorPluginInterface adaptor) {
+    cache.blockAdaptorPlugin(adaptor);
+  }
+  
+  public void unblockAdaptorPlugin(AdaptorPluginInterface adaptor) {
+    cache.unblockAdaptorPlugin(adaptor);
+  }
+  
+  public boolean isAdaptorPluginBlocked(AdaptorPluginInterface adaptor) {
+    return cache.isAdaptorPluginBlocked(adaptor);
+  }
 
   public QuartzListenerManager getQuartzListenerManager() {
     return listenerManager;

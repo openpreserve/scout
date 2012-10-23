@@ -12,11 +12,12 @@ import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
 
 /**
  * This class is used by QuartzScheduler
+ * 
  * @author Kresimir Duretec <duretec@ifs.tuwien.ac.at>
- *
+ * 
  */
 public class QuartzCache {
-  
+
   private static final Logger LOG = LoggerFactory.getLogger(QuartzCache.class);
 
   private Map<AdaptorPluginInterface, AdaptorState> aStates;
@@ -28,10 +29,11 @@ public class QuartzCache {
     adaptors = new HashMap<String, AdaptorPluginInterface>();
   }
 
+  
   public AdaptorPluginInterface getAdaptorPluginInterface(String id) {
     AdaptorPluginInterface tmp = adaptors.get(id);
-    // TODO case where tmp==null
-    return tmp;
+    return tmp;  
+    // TODO if tmp == null ? 
   }
 
   public JobKey getAdaptorJobKey(AdaptorPluginInterface adaptor) {
@@ -80,5 +82,26 @@ public class QuartzCache {
 
   public boolean containsAdaptorId(String id) {
     return adaptors.containsKey(id);
+  }
+
+  public void blockAdaptorPlugin(AdaptorPluginInterface adaptor) {
+    // TODO check this methods
+    AdaptorState as = aStates.get(adaptor);
+    as.setRunning(true);
+  }
+
+  public void unblockAdaptorPlugin(AdaptorPluginInterface adaptor) {
+    // TODO check this methods
+    AdaptorState as = aStates.get(adaptor);
+    as.setRunning(false);
+  }
+
+  public boolean isAdaptorPluginBlocked(AdaptorPluginInterface adaptor) {
+    AdaptorState as = aStates.get(adaptor);
+    if (as != null) {
+      return as.isRunning();
+    }else {
+      return false; 
+    }
   }
 }

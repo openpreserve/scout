@@ -63,48 +63,55 @@ public class QuartzExecutionListener implements JobListener {
 
   @Override
   public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
-    QuartzAdaptorJob job = (QuartzAdaptorJob) context.getJobInstance();
-    AdaptorPluginInterface adaptor = job.getAdaptorPlugin();
-    Boolean result = (Boolean) context.getResult();
-    if (result != null && result.booleanValue()) {
-      failed.remove(adaptor);
-      LOG.info(adaptor.getName() + " was successfully executed");
-      SourceAdaptorEvent event = new SourceAdaptorEvent();
-      event.setType(SourceAdaptorEventType.EXECUTED);
-      event.setSuccessful(true);
-      event.setMessage(adaptor.getName() + " was successfully executed");
-      scheduler.notifyEvent(adaptor, event);
-    } else {
-      PluginException e = (PluginException) context.get("exception");
-      LOG.warn(adaptor.getName() + " was not successfully executed. An exception happened: " + e.getStackTrace());
-      SourceAdaptorEvent event = new SourceAdaptorEvent();
-      event.setType(SourceAdaptorEventType.EXECUTED);
-      event.setSuccessful(false);
-      event.setMessage(adaptor.getName() + " was not successfully executed");
-      event.setReason("An exception happened: " + e.getStackTrace());
-      scheduler.notifyEvent(adaptor, event);
-      int num;
-      if (failed.containsKey(adaptor)) {
-        Integer i = failed.get(adaptor);
-        i = i + 1;
-        num = i.intValue();
-        failed.put(adaptor, i);
-      } else {
-        failed.put(adaptor, Integer.valueOf(1));
-        num = 1;
-      }
-      if (num > REPEAT) {
-        LOG.warn("Unscheduling adaptor: " + adaptor.getName());
-        SourceAdaptorEvent event2 = new SourceAdaptorEvent();
-        event2.setReason("Adaptor failed 5 times in a row");
-        scheduler.stop(adaptor, event2);
+
+    Boolean skip = (Boolean) context.get("skip");
+
+    if (!skip.booleanValue()) {
+      QuartzAdaptorJob job = (QuartzAdaptorJob) context.getJobInstance();
+      AdaptorPluginInterface adaptor = job.getAdaptorPlugin();
+      Boolean result = (Boolean) context.getResult();
+      if (result != null && result.booleanValue()) {
         failed.remove(adaptor);
+        LOG.info(adaptor.getName() + " was successfully executed");
+        SourceAdaptorEvent event = new SourceAdaptorEvent();
+        event.setType(SourceAdaptorEventType.EXECUTED);
+        event.setSuccessful(true);
+        event.setMessage(adaptor.getName() + " was successfully executed");
+        scheduler.notifyEvent(adaptor, event);
       } else {
-        LOG.warn("Refiring adaptor: " + adaptor.getName());
-        SourceAdaptorEvent event3 = new SourceAdaptorEvent();
-        event3.setReason("Adaptor failed to execute so it will be reexecuted immediately");
-        scheduler.execute(adaptor, event3);
+        PluginException e = (PluginException) context.get("exception");
+        LOG.warn(adaptor.getName() + " was not successfully executed. An exception happened: " + e.getStackTrace());
+        SourceAdaptorEvent event = new SourceAdaptorEvent();
+        event.setType(SourceAdaptorEventType.EXECUTED);
+        event.setSuccessful(false);
+        event.setMessage(adaptor.getName() + " was not successfully executed");
+        event.setReason("An exception happened: " + e.getStackTrace());
+        scheduler.notifyEvent(adaptor, event);
+        int num;
+        if (failed.containsKey(adaptor)) {
+          Integer i = failed.get(adaptor);
+          i = i + 1;
+          num = i.intValue();
+          failed.put(adaptor, i);
+        } else {
+          failed.put(adaptor, Integer.valueOf(1));
+          num = 1;
+        }
+        if (num > REPEAT) {
+          LOG.warn("Unscheduling adaptor: " + adaptor.getName());
+          SourceAdaptorEvent event2 = new SourceAdaptorEvent();
+          event2.setReason("Adaptor failed 5 times in a row");
+          scheduler.stop(adaptor, event2);
+          failed.remove(adaptor);
+        } else {
+          LOG.warn("Refiring adaptor: " + adaptor.getName());
+          SourceAdaptorEvent event3 = new SourceAdaptorEvent();
+          event3.setReason("Adaptor failed to execute so it will be reexecuted immediately");
+          scheduler.execute(adaptor, event3);
+        }
       }
+    } else {
+      LOG.warn("Nothing to do , Adaptor execution was skipped");
     }
 
   }

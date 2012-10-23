@@ -114,10 +114,13 @@ Handlebars.registerHelper('value-render', function(pv, block) {
 	if (datatype == 'URI') {
 		ret = "<a href='" + value + "'>" + value + "</a>";
 	} else if (datatype == 'INTEGER' && renderingHint == 'STORAGE_VOLUME') {
-		ret = value + 'B';
-		// TODO humanize storage volume
+		ret = humanize.filesize(value);
 	} else if (datatype == 'DATE') {
-		ret = moment(Date(value)).format("dddd, D MMMM YYYY, h:mm:ss a");
+		if(renderingHint == 'DATE_DAY') {
+			ret = moment(Date(value)).format("dddd, D MMMM YYYY");
+		} else {
+			ret = moment(Date(value)).format("dddd, D MMMM YYYY, h:mm:ss a");
+		}
 	} else if (datatype == "STRING_DICTIONARY") {
 		ret = "<dl class=\"dl-horizontal\">";
 		for ( var index in value) {

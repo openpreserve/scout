@@ -72,6 +72,10 @@
 							<targetPath>highcharts</targetPath>
 						</resource>
 						<resource>
+							<directory>humanize.js-v0.0.1</directory>
+							<targetPath>humanize</targetPath>
+						</resource>
+						<resource>
 							<directory>compiled-templates/</directory>
 							<targetPath>templates</targetPath>
 						</resource>

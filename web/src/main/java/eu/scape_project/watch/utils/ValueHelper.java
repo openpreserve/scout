@@ -58,10 +58,16 @@ public class ValueHelper implements Helper<PropertyValue> {
         builder.append(integerValue);
       }
     } else if (value instanceof Date) {
-      final Date dateValue = (Date) ((Date) value).clone();
-      final DateFormat format = new SimpleDateFormat("EEEE, d MMMM yyyy, h:mm:ss a");
-//      builder.append(Humanize.naturalDay(dateValue));
-      builder.append(format.format(dateValue));
+      if (RenderingHint.DATE_DAY.equals(renderingHint)) {
+        final Date dateValue = (Date) ((Date) value).clone();
+        final DateFormat format = new SimpleDateFormat("EEEE, d MMMM yyyy");
+        builder.append(format.format(dateValue));
+      } else {
+        final Date dateValue = (Date) ((Date) value).clone();
+        final DateFormat format = new SimpleDateFormat("EEEE, d MMMM yyyy, h:mm:ss a");
+        builder.append(format.format(dateValue));
+      }
+
     } else if (value instanceof LazyList) {
       final LazyList listValue = (LazyList) value;
 

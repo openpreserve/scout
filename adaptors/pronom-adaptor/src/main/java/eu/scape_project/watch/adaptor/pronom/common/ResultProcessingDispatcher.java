@@ -37,7 +37,7 @@ public class ResultProcessingDispatcher {
    * The path to the file cache.
    */
   private String cacheFilePath;
-
+  
   /**
    * Creates a dispatcher with a cache file pointing to the given path. The
    * constructor initializes the hash list and reads the old values.

@@ -65,7 +65,7 @@ public class PronomAdaptor implements AdaptorPluginInterface {
   /**
    * The default batch.
    */
-  private static final String CNF_PRONOM_BATCH_DEFAULT = "100";
+  private static final String CNF_PRONOM_BATCH_DEFAULT = "200";
 
   /**
    * The description of the default batch property.
@@ -152,6 +152,8 @@ public class PronomAdaptor implements AdaptorPluginInterface {
    * A helper parser to parse the data.
    */
   private JSONResultParser parser;
+
+  private boolean shouldReset;
 
   /**
    * Inits the default config and the config, as well as the client.
@@ -242,21 +244,15 @@ public class PronomAdaptor implements AdaptorPluginInterface {
 
   }
 
-  /*
-   * There is a starvation BUG once the whole registry is crawled.
-   * The problem lies in the fact, that the first batch of the second crawl
-   * returns an empty collection. This is due to the fact, that all the hashes
-   * are already cached. This results in a new reset and so on. 
-   */
   @Override
   public boolean hasNext() throws PluginException {
-    if (this.currentBatch.isEmpty()) {
+    while (this.currentBatch.isEmpty() && !this.shouldReset) {
       this.currentBatch = this.getNextBatch();
     }
 
     final boolean hasNext = !this.currentBatch.isEmpty();
 
-    if (!hasNext) {
+    if (this.shouldReset) {
       this.reset();
     }
 
@@ -290,8 +286,17 @@ public class PronomAdaptor implements AdaptorPluginInterface {
    */
   private void reset() {
     this.offset = 0;
+    this.shouldReset = false;
   }
 
+  /**
+   * Gets the next batch out of PRONOM and manages the current offset as well as
+   * the flag whether the offset should be reset or not.
+   * 
+   * @return the list of values if there were some unprocessed values.
+   * @throws PluginException
+   *           if something goes wrong during querying.
+   */
   private List<PropertyValue> getNextBatch() throws PluginException {
     final int limit = this.getBatchSizeFromConfig();
     final String cache = this.getCacheFileFromConfig();
@@ -309,12 +314,16 @@ public class PronomAdaptor implements AdaptorPluginInterface {
       LOG.info("Getting next batch of '{}' with offset '{}'", limit, this.offset);
       final String response1 = this.client.query(this.query1, OutputFormat.JSON, limit, this.offset);
       final String response2 = this.client.query(this.query2, OutputFormat.JSON, limit, this.offset);
-      
+
       this.offset += limit;
 
+      this.shouldReset = false;
       final List<PropertyValue> firstBatch = this.parser.parse(response1);
+      this.shouldReset = this.shouldReset || !this.parser.shouldContinueCrawl();
+
       final List<PropertyValue> secondBatch = this.parser.parse(response2);
-      
+      this.shouldReset = this.shouldReset && !this.parser.shouldContinueCrawl();
+
       firstBatch.addAll(secondBatch);
 
       return firstBatch;
@@ -394,6 +403,7 @@ public class PronomAdaptor implements AdaptorPluginInterface {
     this.config = new HashMap<String, String>();
     this.currentBatch = new ArrayList<PropertyValue>();
     this.offset = 0;
+    this.shouldReset = false;
   }
 
   /**

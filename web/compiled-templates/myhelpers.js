@@ -100,6 +100,6 @@ Handlebars.registerHelper('dateFormat', function(context, block) {
 // note that the slashes are replaced by an empty space
 // by convention. Take a look at KBUtils#encodeId()
 Handlebars.registerHelper('encodeId', function(context, block) {
-	context = context.replace('/', '%20');
+	context = context.replace(/\//g, '%20');
 	return encodeURIComponent(context);
 });

@@ -35,9 +35,12 @@ public class JSONResultParser {
   private static final Logger LOG = LoggerFactory.getLogger(JSONResultParser.class);
 
   private ResultProcessingDispatcher processDispatcher;
-
+  
+  private boolean valuesExisted;
+  
   public JSONResultParser(final ResultProcessingDispatcher dispatcher) {
     this.processDispatcher = dispatcher;
+    this.valuesExisted = false;
   }
 
   /**
@@ -57,15 +60,26 @@ public class JSONResultParser {
     final JSONArray bindings = obj.getJSONObject("results").getJSONArray("bindings");
     final EntityType formattype = new EntityType("format", "Represents a file format");
 
+    if (bindings.size() == 0) {
+      this.valuesExisted = false;
+    } else {
+      this.valuesExisted = true;
+    }
+    
+    int newFormats = 0;
+    
     for (int i = 0; i < bindings.size(); i++) {
       final JSONObject binding = bindings.getJSONObject(i);
       final boolean process = this.processDispatcher.process(binding.toString());
+      
 
       if (process) {
         String entityName = binding.getJSONObject(vars.getString(0)).getString("value");
         String mime = null;
         String version = null;
-        LOG.debug("parsing values for format: '{}'", entityName);
+        newFormats++;
+        
+        LOG.trace("parsing values for format: '{}'", entityName);
         final Entity format = new Entity(formattype, entityName);
 
         for (int j = 1; j < vars.size(); j++) {
@@ -90,8 +104,14 @@ public class JSONResultParser {
         this.updateEntityName(format, mime, version);
       }
     }
+    
+    LOG.debug("Processed {} new json bindings", newFormats);
 
     return result;
+  }
+  
+  public boolean shouldContinueCrawl() {
+    return this.valuesExisted;
   }
 
   private void updateEntityName(Entity format, String mime, String version) {
@@ -100,7 +120,7 @@ public class JSONResultParser {
     if (mime == null && version == null) {
       return;
     }
-    
+
     if (mime != null && version == null) {
       name += "[" + mime + "]";
     }
@@ -110,7 +130,12 @@ public class JSONResultParser {
     }
 
     if (mime != null && version != null) {
-      name += "[" + mime + ";version=" + version + "]";
+      String vers = "; version=" + version;
+      if (mime.contains(vers)) {
+        name += "[" + mime + "]";
+      } else {
+        name += "[" + mime + vers + "]";
+      }
     }
 
     format.setName(name);

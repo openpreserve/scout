@@ -59,13 +59,13 @@ public class QuartzAdaptorJob implements Job {
     adaptor = scheduler.getAdaptorPluginInterface(adaptorId);
     if (!scheduler.isAdaptorPluginBlocked(adaptor)) {
       scheduler.blockAdaptorPlugin(adaptor);
-      jec.put("skip", new Boolean(false));
       try {
         while (adaptor.hasNext()) {
           ResultInterface result = adaptor.next();
           lManager.notify(adaptor, result);
         }
         LOG.info(adaptor.getName() + " has nothing to give");
+        jec.put("skip", new Boolean(false));
         jec.setResult(new Boolean(true));
         scheduler.unblockAdaptorPlugin(adaptor);
         return;
@@ -75,6 +75,10 @@ public class QuartzAdaptorJob implements Job {
         jec.setResult(new Boolean(false));
         scheduler.unblockAdaptorPlugin(adaptor);
         return;
+      } catch (Throwable e) {
+        LOG.warn("An unknown exception occured!");
+        scheduler.unblockAdaptorPlugin(adaptor);
+        jec.put("skip", new Boolean(true));
       }
     }else {
       jec.put("skip", new Boolean(true));

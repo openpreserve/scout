@@ -72,23 +72,28 @@ public class ValueHelper implements Helper<PropertyValue> {
       final LazyList listValue = (LazyList) value;
 
       if (datatype.equals(DataType.STRING_DICTIONARY)) {
-        builder.append("<dl class=\"dl-horizontal\">");
+        builder.append("<table class='table table-bordered table-condensed' style='margin:0'>");
+        builder.append("<thead><th>Key</th><th>Value</th></thead>");
         for (Object item : listValue) {
           if (item instanceof DictionaryItem) {
             final DictionaryItem dictionaryItem = (DictionaryItem) item;
-            builder.append("<dt>");
+            builder.append("<tr>");
+            builder.append("<td>");
             builder.append(dictionaryItem.getKey());
-            builder.append("</dt>");
-            builder.append("<dd>");
+            builder.append("</td>");
+            builder.append("<td>");
             builder.append(dictionaryItem.getValue());
-            builder.append("</dd>");
+            builder.append("</td>");
+            builder.append("</tr>");
           } else {
-            builder.append("<dd>");
+            builder.append("<tr>");
+            builder.append("<td>");
             builder.append(item);
-            builder.append("</dd>");
+            builder.append("</td>");
+            builder.append("</tr>");
           }
         }
-        builder.append("</dl>");
+        builder.append("</table>");
       } else {
         builder.append("<ul>");
         for (Object item : listValue) {
@@ -102,5 +107,4 @@ public class ValueHelper implements Helper<PropertyValue> {
 
     return builder.toString();
   }
-
 }

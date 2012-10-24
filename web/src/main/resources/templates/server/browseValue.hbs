@@ -14,7 +14,7 @@
 			this}}{{/value-render}}</span>
 	</div>
 	<p>
-		<strong>Data type:</strong> {{property.datatype.description}}.
+		<strong>Data type:</strong> {{property.datatype.description}}{{#if property.renderingHint}} <small>({{property.renderingHint.description}})</small>{{/if}}.
 	</p>
 	<p>
 		<strong>Property history:</strong> There are <a href="#history">{{propertyValueVersionCount}}
@@ -29,7 +29,8 @@
 
 	<br />
 	<h2 id="history">Property history</h2>
-	<p>This property has changed in time as represented in the chart below. Click on the chart dots for more information.</p>
+	<p>This property has changed in time as represented in the chart
+		below. Click on the chart dots for more information.</p>
 	<div id="historyGraph">Loading property history...</div>
 
 	<h2 id="provenance">Value provenance</h2>
@@ -51,7 +52,7 @@
 <script>
 	$('.jtextfill').textfill({maxFontPixels: 100});
 	
-	var api = "/api/measurement.json/list?type={{#encodeId typeName}}{{/encodeId}}&entity={{#encodeId entityName}}{{/encodeId}}&property={{#encodeId propertyName}}{{/encodeId}}&version={{version}}&significant=true"
+	var api = "/api/measurement.json/list?type={{#encodeId typeName}}{{/encodeId}}&entity={{#encodeId entityName}}{{/encodeId}}&property={{#encodeId propertyName}}{{/encodeId}}&version={{version}}"
 	var paginator = Paginator({{versionMeasurementCount}}, api, 20, 'version_measurement_list.hbs', '#versionMeasurementList', '{{contextPath}}', '{{mustacheletPath}}');
 	paginator.init();
 </script>
@@ -153,7 +154,7 @@ $(function () {
             },
         };
     
-        var api = "{{contextPath}}/api/measurement.json/list?type={{#encodeId typeName}}{{/encodeId}}&entity={{#encodeId entityName}}{{/encodeId}}&property={{#encodeId propertyName}}{{/encodeId}}";
+        var api = "{{contextPath}}/api/measurement.json/list?type={{#encodeId typeName}}{{/encodeId}}&entity={{#encodeId entityName}}{{/encodeId}}&property={{#encodeId propertyName}}{{/encodeId}}&significant=true";
         
         var getMeasurements = function(api, start, max) {
         	var apiRequest = api + "&start="+start+"&max="+max;
@@ -176,10 +177,19 @@ $(function () {
             	    			myseries[value[j].key] = keySeries;
             	    		}
             	    		var realValue = value[j].value;
-            	    		keySeries.measurements.push({name: realValue, x: date, y: realValue});
+            	    		var intValue = parseInt(realValue);
+            	    		if(intValue == NaN) {
+            	    			keySeries.measurements.push({name: realValue, x: date, y: version});
+            	    		} else {
+            	    			keySeries.measurements.push({name: realValue, x: date, y: intValue});
+            	    		}
+            	    		
             	    	}
             	    } else if(datatype == 'INTEGER' || datatype == 'FLOAT' || datatype == 'DOUBLE') {
             	    	measurements.push({name: value, x: date, y: value});	
+            	    } else if(datatype == 'DATE') {
+            	    	var dateValue = new Date(value);
+            	    	measurements.push({name: value, x: date, y: dateValue});	
             	    } else {
             	    	measurements.push({name: value, x: date, y: version});
             	    }

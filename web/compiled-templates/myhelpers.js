@@ -116,18 +116,21 @@ Handlebars.registerHelper('value-render', function(pv, block) {
 	} else if (datatype == 'LONG' && renderingHint == 'STORAGE_VOLUME') {
 		ret = humanize.filesize(value);
 	} else if (datatype == 'DATE') {
-		if(renderingHint == 'DATE_DAY') {
+		if (renderingHint == 'DATE_DAY') {
 			ret = moment(Date(value)).format("dddd, D MMMM YYYY");
 		} else {
 			ret = moment(Date(value)).format("dddd, D MMMM YYYY, h:mm:ss a");
 		}
 	} else if (datatype == "STRING_DICTIONARY") {
-		ret = "<dl class=\"dl-horizontal\">";
+		ret = "<table class='table table-bordered table-condensed' style='margin:0'>";
+		ret += "<thead><th>Key</th><th>Value</th></thead>";
 		for ( var index in value) {
-			ret += "<dt>" + value[index].key + "</dt>";
-			ret += "<dd>" + value[index].value + "</dd>";
+			ret += "<tr>";
+			ret += "<td>" + value[index].key + "</td>";
+			ret += "<td>" + value[index].value + "</td>";
+			ret += "</tr>";
 		}
-		ret += "</dl>";
+		ret += "</table>";
 	} else {
 		ret = value;
 	}

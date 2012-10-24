@@ -52,12 +52,24 @@ public class Measurement extends RdfBean<Measurement> {
    */
   @XmlElement
   private Date timestamp;
-  
+
   /**
    * Flag measurement as significant.
    */
   @XmlElement
   private boolean significant;
+
+  /**
+   * Flag measurement as the last measurement.
+   */
+  @XmlElement
+  private boolean last;
+
+  /**
+   * Flag measurement as a limit measurement.
+   */
+  @XmlElement
+  private boolean limit;
 
   /**
    * The source adaptor that made the measurement.
@@ -86,8 +98,11 @@ public class Measurement extends RdfBean<Measurement> {
   public Measurement(final PropertyValue pv, final Date timestamp, final SourceAdaptor adaptor) {
     this.propertyValue = pv;
     this.timestamp = (Date) timestamp.clone();
-    this.significant = false;
+    this.last = false;
+    this.limit = false;
     this.adaptor = adaptor;
+
+    updateSignificant();
   }
 
   /**
@@ -127,9 +142,31 @@ public class Measurement extends RdfBean<Measurement> {
   public boolean isSignificant() {
     return significant;
   }
-
+  
   public void setSignificant(boolean significant) {
     this.significant = significant;
+  }
+
+  private void updateSignificant() {
+    this.significant = last || limit;
+  }
+
+  public boolean isLast() {
+    return last;
+  }
+
+  public void setLast(boolean last) {
+    this.last = last;
+    updateSignificant();
+  }
+
+  public boolean isLimit() {
+    return limit;
+  }
+
+  public void setLimit(boolean limit) {
+    this.limit = limit;
+    updateSignificant();
   }
 
   public SourceAdaptor getAdaptor() {
@@ -145,6 +182,8 @@ public class Measurement extends RdfBean<Measurement> {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((adaptor == null) ? 0 : adaptor.hashCode());
+    result = prime * result + (last ? 1231 : 1237);
+    result = prime * result + (limit ? 1231 : 1237);
     result = prime * result + ((propertyValue == null) ? 0 : propertyValue.hashCode());
     result = prime * result + (significant ? 1231 : 1237);
     result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
@@ -152,7 +191,7 @@ public class Measurement extends RdfBean<Measurement> {
   }
 
   @Override
-  public boolean equals(final Object obj) {
+  public boolean equals(Object obj) {
     if (this == obj) {
       return true;
     }
@@ -162,12 +201,18 @@ public class Measurement extends RdfBean<Measurement> {
     if (!(obj instanceof Measurement)) {
       return false;
     }
-    final Measurement other = (Measurement) obj;
+    Measurement other = (Measurement) obj;
     if (adaptor == null) {
       if (other.adaptor != null) {
         return false;
       }
     } else if (!adaptor.equals(other.adaptor)) {
+      return false;
+    }
+    if (last != other.last) {
+      return false;
+    }
+    if (limit != other.limit) {
       return false;
     }
     if (propertyValue == null) {
@@ -192,8 +237,8 @@ public class Measurement extends RdfBean<Measurement> {
 
   @Override
   public String toString() {
-    return String.format("Measurement [propertyValue=%s, timestamp=%s, significant=%s, adaptor=%s]", propertyValue,
-      timestamp, significant, adaptor);
+    return String.format("Measurement [propertyValue=%s, timestamp=%s, significant=%s, last=%s, limit=%s, adaptor=%s]",
+      propertyValue, timestamp, significant, last, limit, adaptor);
   }
-    
+
 }

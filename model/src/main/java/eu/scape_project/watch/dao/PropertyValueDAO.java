@@ -6,6 +6,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.hp.hpl.jena.datatypes.xsd.XSDDateTime;
 
 import eu.scape_project.watch.domain.DataType;
@@ -34,6 +37,8 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
    * The name of the relationship to {@link Property} in {@link PropertyValue} .
    */
   private static final String PROPERTY_REL = KBUtils.WATCH_PREFIX + "property";
+
+  private final Logger logger = LoggerFactory.getLogger(getClass());
 
   /**
    * Get the complete Property Value RDF Id to use in SPARQL.
@@ -323,6 +328,8 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
    * @return The final {@link PropertyValue}
    */
   public synchronized PropertyValue save(final SourceAdaptor adaptor, final Date asOfDate, final PropertyValue pv) {
+    PropertyValue ret;
+
     // check if exists a property value with that value
     final Entity entity = pv.getEntity();
     final Property property = pv.getProperty();
@@ -331,32 +338,48 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
     final List<PropertyValue> existingPVs = query("?s watch:entity " + EntityDAO.getEntityRDFId(entity)
       + " . ?s watch:property " + PropertyDAO.getPropertyRDFId(property) + " . " + valueBinding, 0, 1);
 
+    final Measurement previousMeasurement = DAO.MEASUREMENT.findLastMeasurement(pv.getEntity().getType().getName(), pv
+      .getEntity().getName(), pv.getProperty().getName());
+
     if (existingPVs.isEmpty()) {
       // create new property value with a new version.
       final int version = getNextVersionNumber(entity, property);
       pv.setVersion(version);
 
-      // Set previous measurement significant
-      final Measurement previousMeasurement = DAO.MEASUREMENT.findLastMeasurement(pv.getEntity().getType().getName(),
-        pv.getEntity().getName(), pv.getProperty().getName());
+      // Set previous measurement limit
       if (previousMeasurement != null) {
-        previousMeasurement.setSignificant(true);
+        previousMeasurement.setLimit(true);
+        previousMeasurement.setLast(false);
         previousMeasurement.save();
       }
 
       // Save current measurement
       final Measurement measurement = new Measurement(pv, asOfDate, adaptor);
-      measurement.setSignificant(true);
+      measurement.setLimit(true);
+      measurement.setLast(true);
       measurement.save();
+
+      ret = super.saveImpl(pv);
 
     } else {
       // tag existing property value with a new measurement.
       final PropertyValue existingPV = existingPVs.get(0);
+
+      // Set previous measurement NOT the last measurement
+      if (previousMeasurement != null) {
+        previousMeasurement.setLast(false);
+        previousMeasurement.save();
+      }
+
+      // Save new measurement and set it significant
       final Measurement measurement = new Measurement(existingPV, asOfDate, adaptor);
+      measurement.setLast(true);
       measurement.save();
+
+      ret = existingPV;
     }
 
-    return super.saveImpl(pv);
+    return ret;
   }
 
   /**

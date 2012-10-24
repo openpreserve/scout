@@ -401,12 +401,13 @@ public class RestApiTest extends JerseyTest {
     final Source source = client.createSource(new Source("test", "test source"));
     final SourceAdaptor sourceAdaptor = client.createSourceAdaptor("TestAdaptor", "0.1", "default", source.getName());
 
-    final PropertyValue propertyValue = client.createPropertyValue(sourceAdaptor.getInstance(), new PropertyValue(
-      entity, property, value));
+    final PropertyValue pv = new PropertyValue(entity, property, value);
+    LOG.debug("Creating Property Value {}", pv);
+    final PropertyValue propertyValue = client.createPropertyValue(sourceAdaptor.getInstance(), pv);
     Assert.assertNotNull(propertyValue);
-    Assert.assertEquals(propertyValue.getEntity(), entity);
-    Assert.assertEquals(propertyValue.getProperty(), property);
-    Assert.assertEquals(propertyValue.getValue(), value);
+    Assert.assertEquals(entity, propertyValue.getEntity());
+    Assert.assertEquals(property, propertyValue.getProperty());
+    Assert.assertEquals(value, propertyValue.getValue());
 
     // GET
     Property property2 = client.getProperty(typeName, propertyName);

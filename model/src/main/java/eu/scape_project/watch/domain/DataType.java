@@ -29,8 +29,7 @@ public enum DataType {
   /**
    * A {@link Long}.
    */
-  // Jena or Jenabean do not seam to support Long
-  // LONG,
+  LONG("Very big integer number"),
   /**
    * A {@link Float}.
    */
@@ -38,7 +37,7 @@ public enum DataType {
   /**
    * A {@link Double}.
    */
-  DOUBLE("Real number (with extra precision)"),
+  DOUBLE("Real number with extra precision"),
   /**
    * A link to an external resource by {@link URI}.
    */

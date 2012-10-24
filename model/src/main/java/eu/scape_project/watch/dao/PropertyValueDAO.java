@@ -412,6 +412,10 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
         predicate = "watch:integerValue";
         rdfDataType = "xsd:integer";
         break;
+      case LONG:
+        predicate = "watch:longValue";
+        rdfDataType = "xsd:long";
+        break;
       case FLOAT:
         predicate = "watch:floatValue";
         rdfDataType = "xsd:float";

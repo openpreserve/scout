@@ -113,7 +113,7 @@ Handlebars.registerHelper('value-render', function(pv, block) {
 
 	if (datatype == 'URI') {
 		ret = "<a href='" + value + "'>" + value + "</a>";
-	} else if (datatype == 'INTEGER' && renderingHint == 'STORAGE_VOLUME') {
+	} else if (datatype == 'LONG' && renderingHint == 'STORAGE_VOLUME') {
 		ret = humanize.filesize(value);
 	} else if (datatype == 'DATE') {
 		if(renderingHint == 'DATE_DAY') {

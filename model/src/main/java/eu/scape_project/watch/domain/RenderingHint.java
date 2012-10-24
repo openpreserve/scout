@@ -14,6 +14,15 @@ import eu.scape_project.watch.utils.KBUtils;
 @XmlType(name = KBUtils.RENDERING_HINT)
 @XmlEnum
 public enum RenderingHint {
-  STORAGE_VOLUME, DATE_DAY;
+  STORAGE_VOLUME("File or storage size"), DATE_DAY("Date with day precision");
 
+  private String description;
+
+  private RenderingHint(final String description) {
+    this.description = description;
+  }
+
+  public String getDescription() {
+    return description;
+  }
 }

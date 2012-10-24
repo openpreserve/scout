@@ -50,12 +50,12 @@ public class ValueHelper implements Helper<PropertyValue> {
       builder.append("'>");
       builder.append(uriValue);
       builder.append("</a>");
-    } else if (value instanceof Integer) {
-      final Integer integerValue = (Integer) value;
+    } else if (value instanceof Long) {
+      final Long longValue = (Long) value;
       if (RenderingHint.STORAGE_VOLUME.equals(renderingHint)) {
-        builder.append(Humanize.binaryPrefix(integerValue));
+        builder.append(Humanize.binaryPrefix(longValue));
       } else {
-        builder.append(integerValue);
+        builder.append(longValue);
       }
     } else if (value instanceof Date) {
       if (RenderingHint.DATE_DAY.equals(renderingHint)) {

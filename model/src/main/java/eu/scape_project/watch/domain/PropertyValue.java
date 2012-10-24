@@ -58,6 +58,13 @@ public class PropertyValue extends RdfBean<PropertyValue> {
   private Integer integerValue;
 
   /**
+   * Value holder when type is {@link Long}.
+   */
+  // @XmlElement(name = "value")
+  @JsonProperty("longValue")
+  private long longValue;
+
+  /**
    * Value holder when type is {@link Float}.
    */
   @XmlElement(name = "value")
@@ -180,7 +187,6 @@ public class PropertyValue extends RdfBean<PropertyValue> {
   public String getId() {
     return id;
   }
-  
 
   public void setId(String id) {
     this.id = id;
@@ -215,6 +221,10 @@ public class PropertyValue extends RdfBean<PropertyValue> {
       value = stringListValue;
     } else if (stringDictionaryValue != null && !stringDictionaryValue.isEmpty()) {
       value = stringDictionaryValue;
+    } else {
+      // Should be a long, as it is a primitive data type can't equal to null.
+      // XXX Jenabean does not support Long class.
+      value = longValue;
     }
 
     return value;
@@ -271,6 +281,13 @@ public class PropertyValue extends RdfBean<PropertyValue> {
       case INTEGER:
         if (value instanceof Integer) {
           integerValue = (Integer) value;
+        } else {
+          throw new InvalidJavaClassForDataTypeException(value, datatype);
+        }
+        break;
+      case LONG:
+        if (value instanceof Long) {
+          longValue = (Long) value;
         } else {
           throw new InvalidJavaClassForDataTypeException(value, datatype);
         }
@@ -399,8 +416,8 @@ public class PropertyValue extends RdfBean<PropertyValue> {
     result = prime * result + ((doubleValue == null) ? 0 : doubleValue.hashCode());
     result = prime * result + ((entity == null) ? 0 : entity.hashCode());
     result = prime * result + ((floatValue == null) ? 0 : floatValue.hashCode());
-    result = prime * result + ((id == null) ? 0 : id.hashCode());
     result = prime * result + ((integerValue == null) ? 0 : integerValue.hashCode());
+    result = prime * result + (int) (longValue ^ (longValue >>> 32));
     result = prime * result + ((property == null) ? 0 : property.hashCode());
     result = prime * result + ((stringDictionaryValue == null) ? 0 : stringDictionaryValue.hashCode());
     result = prime * result + ((stringListValue == null) ? 0 : stringListValue.hashCode());
@@ -411,17 +428,17 @@ public class PropertyValue extends RdfBean<PropertyValue> {
   }
 
   @Override
-  public boolean equals(final Object obj) {
+  public boolean equals(Object obj) {
     if (this == obj) {
       return true;
     }
     if (obj == null) {
       return false;
     }
-    if (getClass() != obj.getClass()) {
+    if (!(obj instanceof PropertyValue)) {
       return false;
     }
-    final PropertyValue other = (PropertyValue) obj;
+    PropertyValue other = (PropertyValue) obj;
     if (dateValue == null) {
       if (other.dateValue != null) {
         return false;
@@ -450,18 +467,14 @@ public class PropertyValue extends RdfBean<PropertyValue> {
     } else if (!floatValue.equals(other.floatValue)) {
       return false;
     }
-    if (id == null) {
-      if (other.id != null) {
-        return false;
-      }
-    } else if (!id.equals(other.id)) {
-      return false;
-    }
     if (integerValue == null) {
       if (other.integerValue != null) {
         return false;
       }
     } else if (!integerValue.equals(other.integerValue)) {
+      return false;
+    }
+    if (longValue != other.longValue) {
       return false;
     }
     if (property == null) {
@@ -475,14 +488,14 @@ public class PropertyValue extends RdfBean<PropertyValue> {
       if (other.stringDictionaryValue != null) {
         return false;
       }
-    } else if (!CollectionUtils.isEqualCollection(stringDictionaryValue, other.stringDictionaryValue)) {
+    } else if (!stringDictionaryValue.equals(other.stringDictionaryValue)) {
       return false;
     }
     if (stringListValue == null) {
       if (other.stringListValue != null) {
         return false;
       }
-    } else if (!CollectionUtils.isEqualCollection(stringListValue, other.stringListValue)) {
+    } else if (!stringListValue.equals(other.stringListValue)) {
       return false;
     }
     if (stringValue == null) {

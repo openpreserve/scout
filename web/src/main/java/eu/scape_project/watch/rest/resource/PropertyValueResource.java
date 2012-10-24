@@ -126,6 +126,8 @@ public class PropertyValueResource extends JavaHelp {
     @ApiParam(value = "Source adaptor instance (must exist)", required = true) @QueryParam("sourceAdaptor") final String sourceAdaptorInstance,
     @ApiParam(value = "New property value", required = true) final PropertyValue pv) {
 
+    LOG.info("Creating property value {}", pv);
+
     // check if referred entity and property exist
     final Entity entity = DAO.ENTITY.findById(pv.getEntity().getType().getName(), pv.getEntity().getName());
 

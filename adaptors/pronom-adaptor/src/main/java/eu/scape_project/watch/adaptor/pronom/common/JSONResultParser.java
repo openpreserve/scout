@@ -36,9 +36,9 @@ public class JSONResultParser {
   private static final Logger LOG = LoggerFactory.getLogger(JSONResultParser.class);
 
   private ResultProcessingDispatcher processDispatcher;
-  
+
   private boolean valuesExisted;
-  
+
   public JSONResultParser(final ResultProcessingDispatcher dispatcher) {
     this.processDispatcher = dispatcher;
     this.valuesExisted = false;
@@ -55,6 +55,7 @@ public class JSONResultParser {
   public List<PropertyValue> parse(final String json) {
     LOG.trace("Parsing json: {}", json);
     final List<PropertyValue> result = new ArrayList<PropertyValue>();
+    final List<PropertyValue> tmp = new ArrayList<PropertyValue>();
     final JSONObject obj = (JSONObject) JSONSerializer.toJSON(json);
     final JSONObject head = obj.getJSONObject("head");
     final JSONArray vars = head.getJSONArray("vars");
@@ -66,20 +67,19 @@ public class JSONResultParser {
     } else {
       this.valuesExisted = true;
     }
-    
+
     int newFormats = 0;
-    
+
     for (int i = 0; i < bindings.size(); i++) {
       final JSONObject binding = bindings.getJSONObject(i);
       final boolean process = this.processDispatcher.process(binding.toString());
-      
 
       if (process) {
         String entityName = binding.getJSONObject(vars.getString(0)).getString("value");
         String mime = null;
         String version = null;
         newFormats++;
-        
+
         LOG.trace("parsing values for format: '{}'", entityName);
         final Entity format = new Entity(formattype, entityName);
 
@@ -87,10 +87,9 @@ public class JSONResultParser {
           final String name = vars.getString(j);
           final PropertyValue value = this.getPropertyValue(binding, name, formattype);
           if (value != null) {
-            LOG.trace("value for property '{}' parsed successfully: '{}'", value.getProperty().getName(),
-                value.getValue());
+            LOG.trace("parsed value for property '{}': '{}'", value.getProperty().getName(), value.getValue());
             value.setEntity(format);
-            result.add(value);
+            tmp.add(value);
 
             if (value.getProperty().getName().equals("mime")) {
               mime = (String) value.getValue();
@@ -101,18 +100,44 @@ public class JSONResultParser {
             }
           }
         }
-
         this.updateEntityName(format, mime, version);
+        for (PropertyValue pv : tmp) {
+          this.addResult(result, pv);
+        }
+        tmp.clear();
       }
     }
-    
+
     LOG.debug("Processed {} new json bindings", newFormats);
 
     return result;
   }
-  
+
   public boolean shouldContinueCrawl() {
     return this.valuesExisted;
+  }
+
+  /**
+   * Adds the result to the list if the result property value does not already
+   * exists for that entity and property.
+   * 
+   * @param resultList
+   *          the list to add the value to
+   * @param result
+   *          the value to add.
+   */
+  private void addResult(final List<PropertyValue> resultList, final PropertyValue result) {
+    final String propId = result.getProperty().getId();
+    final String eId = result.getEntity().getId();
+    final Object value = result.getValue();
+
+    for (PropertyValue pv : resultList) {
+      if (pv.getEntity().getId().equals(eId) && pv.getProperty().getId().equals(propId) && pv.getValue().equals(value)) {
+        return;
+      }
+    }
+
+    resultList.add(result);
   }
 
   private void updateEntityName(Entity format, String mime, String version) {
@@ -171,7 +196,7 @@ public class JSONResultParser {
         final PropertyValue v = new PropertyValue();
         final Property p = new Property(et, name, name, dt);
         v.setProperty(p);
-        
+
         if (dt == DataType.DATE) {
           p.setRenderingHint(RenderingHint.DATE_DAY);
         }

@@ -87,7 +87,7 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
    * @return The last set value for that property up to the given date, or null
    *         if no value was defined previous to the given date.
    */
-  public PropertyValue find(final String entityName, final String entityType, final String propertyName,
+  public PropertyValue find(final String typeName, final String entityName, final String propertyName,
     final Date asOfDate) {
 
     // find all PropertyValue related to the entity and property, ordered by
@@ -95,9 +95,9 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
 
     final StringBuilder query = new StringBuilder();
 
-    query.append("?s watch:entity " + EntityDAO.getEntityRDFId(entityType, entityName));
+    query.append("?s watch:entity " + EntityDAO.getEntityRDFId(typeName, entityName));
     query.append(" . ");
-    query.append("?s watch:property " + PropertyDAO.getPropertyRDFId(entityType, propertyName));
+    query.append("?s watch:property " + PropertyDAO.getPropertyRDFId(typeName, propertyName));
     query.append(" . ");
     query.append("?measurement watch:propertyValue ?s");
     if (asOfDate != null) {
@@ -123,17 +123,17 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
   /**
    * Find a property value, as last set on current date.
    * 
+   * @param typeName
+   *          The entity type related to the property.
    * @param entityName
    *          The entity related to the property.
-   * @param entityType
-   *          The entity type related to the property.
    * @param propertyName
    *          The property name.
    * @return The last set value for that property up to the current date, or
    *         null if no value was defined up till now.
    */
-  public PropertyValue find(final String entityName, final String entityType, final String propertyName) {
-    return find(entityName, entityType, propertyName, null);
+  public PropertyValue find(final String typeName, final String entityName, final String propertyName) {
+    return find(typeName, entityName, propertyName, null);
   }
 
   /**
@@ -335,8 +335,20 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
       // create new property value with a new version.
       final int version = getNextVersionNumber(entity, property);
       pv.setVersion(version);
+
+      // Set previous measurement significant
+      final Measurement previousMeasurement = DAO.MEASUREMENT.findLastMeasurement(pv.getEntity().getType().getName(),
+        pv.getEntity().getName(), pv.getProperty().getName());
+      if (previousMeasurement != null) {
+        previousMeasurement.setSignificant(true);
+        previousMeasurement.save();
+      }
+
+      // Save current measurement
       final Measurement measurement = new Measurement(pv, asOfDate, adaptor);
+      measurement.setSignificant(true);
       measurement.save();
+
     } else {
       // tag existing property value with a new measurement.
       final PropertyValue existingPV = existingPVs.get(0);

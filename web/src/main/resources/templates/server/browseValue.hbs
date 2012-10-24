@@ -51,7 +51,7 @@
 <script>
 	$('.jtextfill').textfill({maxFontPixels: 100});
 	
-	var api = "/api/measurement.json/list?type={{#encodeId typeName}}{{/encodeId}}&entity={{#encodeId entityName}}{{/encodeId}}&property={{#encodeId propertyName}}{{/encodeId}}&version={{version}}"
+	var api = "/api/measurement.json/list?type={{#encodeId typeName}}{{/encodeId}}&entity={{#encodeId entityName}}{{/encodeId}}&property={{#encodeId propertyName}}{{/encodeId}}&version={{version}}&significant=true"
 	var paginator = Paginator({{versionMeasurementCount}}, api, 20, 'version_measurement_list.hbs', '#versionMeasurementList', '{{contextPath}}', '{{mustacheletPath}}');
 	paginator.init();
 </script>

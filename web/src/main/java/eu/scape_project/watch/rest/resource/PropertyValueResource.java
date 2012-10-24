@@ -83,7 +83,7 @@ public class PropertyValueResource extends JavaHelp {
     @ApiParam(value = "Name of the entity type", required = true) @PathParam("type") final String typeName,
     @ApiParam(value = "Name of the entity name", required = true) @PathParam("entity") final String entityName,
     @ApiParam(value = "Name of the property", required = true) @PathParam("property") final String propertyName) {
-    final PropertyValue propertyValue = DAO.PROPERTY_VALUE.find(entityName, typeName, propertyName);
+    final PropertyValue propertyValue = DAO.PROPERTY_VALUE.find(typeName, entityName, propertyName);
 
     if (propertyValue != null) {
       return Response.ok().entity(propertyValue).build();
@@ -174,7 +174,7 @@ public class PropertyValueResource extends JavaHelp {
     @ApiParam(value = "Name of the entity type", required = true) @PathParam("type") final String typeName,
     @ApiParam(value = "Entity related with the property value", required = true) @PathParam("entity") final String entityName,
     @ApiParam(value = "Property related with the property value", required = true) @PathParam("property") final String propertyName) {
-    final PropertyValue propertyValue = DAO.PROPERTY_VALUE.find(entityName, typeName, propertyName);
+    final PropertyValue propertyValue = DAO.PROPERTY_VALUE.find(typeName, entityName, propertyName);
 
     if (propertyValue != null) {
       DAO.delete(propertyValue);

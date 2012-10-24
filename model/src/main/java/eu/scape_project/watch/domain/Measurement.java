@@ -52,6 +52,12 @@ public class Measurement extends RdfBean<Measurement> {
    */
   @XmlElement
   private Date timestamp;
+  
+  /**
+   * Flag measurement as significant.
+   */
+  @XmlElement
+  private boolean significant;
 
   /**
    * The source adaptor that made the measurement.
@@ -80,6 +86,7 @@ public class Measurement extends RdfBean<Measurement> {
   public Measurement(final PropertyValue pv, final Date timestamp, final SourceAdaptor adaptor) {
     this.propertyValue = pv;
     this.timestamp = (Date) timestamp.clone();
+    this.significant = false;
     this.adaptor = adaptor;
   }
 
@@ -117,6 +124,14 @@ public class Measurement extends RdfBean<Measurement> {
     this.timestamp = (Date) timestamp.clone();
   }
 
+  public boolean isSignificant() {
+    return significant;
+  }
+
+  public void setSignificant(boolean significant) {
+    this.significant = significant;
+  }
+
   public SourceAdaptor getAdaptor() {
     return adaptor;
   }
@@ -131,6 +146,7 @@ public class Measurement extends RdfBean<Measurement> {
     int result = 1;
     result = prime * result + ((adaptor == null) ? 0 : adaptor.hashCode());
     result = prime * result + ((propertyValue == null) ? 0 : propertyValue.hashCode());
+    result = prime * result + (significant ? 1231 : 1237);
     result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
     return result;
   }
@@ -143,7 +159,7 @@ public class Measurement extends RdfBean<Measurement> {
     if (obj == null) {
       return false;
     }
-    if (getClass() != obj.getClass()) {
+    if (!(obj instanceof Measurement)) {
       return false;
     }
     final Measurement other = (Measurement) obj;
@@ -161,6 +177,9 @@ public class Measurement extends RdfBean<Measurement> {
     } else if (!propertyValue.equals(other.propertyValue)) {
       return false;
     }
+    if (significant != other.significant) {
+      return false;
+    }
     if (timestamp == null) {
       if (other.timestamp != null) {
         return false;
@@ -173,7 +192,8 @@ public class Measurement extends RdfBean<Measurement> {
 
   @Override
   public String toString() {
-    return "Measurement [propertyValue=" + propertyValue + ", timestamp=" + timestamp + ", adaptor=" + adaptor + "]";
+    return String.format("Measurement [propertyValue=%s, timestamp=%s, significant=%s, adaptor=%s]", propertyValue,
+      timestamp, significant, adaptor);
   }
-
+    
 }

@@ -62,6 +62,7 @@ public class MeasurementResource extends JavaHelp {
     @ApiParam(value = "Entity name", required = true) @QueryParam("entity") final String entityName,
     @ApiParam(value = "Property name", required = true) @QueryParam("property") final String propertyName,
     @ApiParam(value = "Property value version", required = false) @QueryParam("version") final String versionString,
+    @ApiParam(value = "Only show significant measurements", required = false) @QueryParam("significant") final boolean showSignificantOnly,
     @ApiParam(value = "Index of first item to retrieve", required = true) @QueryParam("start") final int start,
     @ApiParam(value = "Maximum number of items to retrieve", required = true) @QueryParam("max") final int max) {
 
@@ -71,13 +72,13 @@ public class MeasurementResource extends JavaHelp {
         int version = Integer.parseInt(versionString);
         final PropertyValue propertyValue = DAO.PROPERTY_VALUE.find(typeName, entityName, propertyName, version);
         if (propertyValue != null) {
-          list = DAO.MEASUREMENT.listByPropertyValue(propertyValue, start, max);
+          list = DAO.MEASUREMENT.listByPropertyValue(propertyValue, showSignificantOnly, start, max);
         } else {
           throw new NotFoundException("Property value not found type=" + typeName + " entity=" + entityName
             + " property=" + propertyName + " version=" + version);
         }
       } else {
-        list = DAO.MEASUREMENT.listByEntityAndProperty(typeName, entityName, propertyName, start, max);
+        list = DAO.MEASUREMENT.listByEntityAndProperty(typeName, entityName, propertyName, showSignificantOnly, start, max);
       }
       return Response.ok().entity(new GenericEntity<Collection<Measurement>>(list) {
       }).build();

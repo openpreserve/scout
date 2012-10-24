@@ -55,6 +55,26 @@ public final class MeasurementDAO extends AbstractDO<Measurement> {
   }
 
   /**
+   * Query for {@link Measurement}.
+   * 
+   * @see #query(Class, String, int, int)
+   * 
+   * @param bindings
+   *          The query bindings, see
+   *          {@link AbstractDO#query(Class, String, int, int)}
+   * @param start
+   *          The index of the first item to retrieve
+   * @param max
+   *          The maximum number of items to retrieve
+   * @param orderBy
+   *          Set order of results using SPARQL syntax.
+   * @return A list of {@link Measurement} filtered by the above constraints
+   */
+  public List<Measurement> query(final String bindings, final int start, final int max, final String orderBy) {
+    return super.query(Measurement.class, bindings, start, max, orderBy);
+  }
+
+  /**
    * Count the results of a query for {@link Measurement}.
    * 
    * @param bindings
@@ -71,10 +91,39 @@ public final class MeasurementDAO extends AbstractDO<Measurement> {
    * 
    * @param value
    *          The property value to which all measurements are related.
+   * @param showSignificantOnly
    * @return The query string.
    */
-  private static String getListByPropertyValueQueryString(final PropertyValue value) {
-    return "?s watch:propertyValue " + PropertyValueDAO.getPropertyValueRDFId(value);
+  private static String getListByPropertyValueQueryString(final PropertyValue value, final boolean showSignificantOnly) {
+    String bindings;
+    if (showSignificantOnly) {
+      bindings = "?s watch:propertyValue " + PropertyValueDAO.getPropertyValueRDFId(value)
+        + " . ?s watch:significant true";
+    } else {
+      bindings = "?s watch:propertyValue " + PropertyValueDAO.getPropertyValueRDFId(value);
+    }
+
+    return bindings;
+  }
+
+  /**
+   * Get all measurements related to a property value.
+   * 
+   * @param value
+   *          The property value from which we want all related measurements.
+   * @param showSignificantOnly
+   *          If <code>true</code> only show significant measurements, otherwise
+   *          show all.
+   * @param start
+   *          The start index from which the return list should start.
+   * @param max
+   *          The maximum number of items to return.
+   * @return A list of the measurements of this property, filtered by above
+   *         constraints.
+   */
+  public List<Measurement> listByPropertyValue(final PropertyValue value, final boolean showSignificantOnly,
+    final int start, final int max) {
+    return query(getListByPropertyValueQueryString(value, showSignificantOnly), start, max);
   }
 
   /**
@@ -90,7 +139,21 @@ public final class MeasurementDAO extends AbstractDO<Measurement> {
    *         constraints.
    */
   public List<Measurement> listByPropertyValue(final PropertyValue value, final int start, final int max) {
-    return query(getListByPropertyValueQueryString(value), start, max);
+    return listByPropertyValue(value, false, start, max);
+  }
+
+  /**
+   * Count the number of measurements related to a property value.
+   * 
+   * @param value
+   *          The related property value.
+   * @param showSignificantOnly
+   *          If <code>true</code> only show significant measurements, otherwise
+   *          show all.
+   * @return The number of measurements that refer to the given property value.
+   */
+  public int countByPropertyValue(final PropertyValue value, final boolean showSignificantOnly) {
+    return count(getListByPropertyValueQueryString(value, showSignificantOnly));
   }
 
   /**
@@ -101,7 +164,7 @@ public final class MeasurementDAO extends AbstractDO<Measurement> {
    * @return The number of measurements that refer to the given property value.
    */
   public int countByPropertyValue(final PropertyValue value) {
-    return count(getListByPropertyValueQueryString(value));
+    return countByPropertyValue(value, false);
   }
 
   /**
@@ -222,23 +285,45 @@ public final class MeasurementDAO extends AbstractDO<Measurement> {
   /**
    * Get the query string for getting all measurements related to a property.
    * 
+   * @param showSignificantOnly
+   * 
    * @param property
    *          The property which values are all related to the measurements.
    * @return The query string.
    */
   private static String getBindingsByEntityAndProperty(final String typeName, final String entityName,
-    final String propertyName) {
-    return "?s watch:propertyValue ?value . ?value watch:property "
+    final String propertyName, final boolean showSignificantOnly) {
+    String bindings = "?s watch:propertyValue ?value . ?value watch:property "
       + PropertyDAO.getPropertyRDFId(typeName, propertyName) + " . ?value watch:entity "
       + EntityDAO.getEntityRDFId(typeName, entityName);
+    if (showSignificantOnly) {
+      bindings += ". ?s watch:significant true";
+    }
+    return bindings;
   }
 
   public List<Measurement> listByEntityAndProperty(final String typeName, final String entityName,
-    final String propertyName, final int start, final int max) {
-    return query(getBindingsByEntityAndProperty(typeName, entityName, propertyName), start, max);
+    final String propertyName, final boolean showSignificantOnly, final int start, final int max) {
+    return query(getBindingsByEntityAndProperty(typeName, entityName, propertyName, showSignificantOnly), start, max);
   }
 
-  public int countByEntityAndProperty(final String typeName, final String entityName, final String propertyName) {
-    return count(getBindingsByEntityAndProperty(typeName, entityName, propertyName));
+  public int countByEntityAndProperty(final String typeName, final String entityName, final String propertyName,
+    final boolean showSignificantOnly) {
+    return count(getBindingsByEntityAndProperty(typeName, entityName, propertyName, showSignificantOnly));
+  }
+
+  public Measurement findLastMeasurement(final String typeName, final String entityName, final String propertyName) {
+    Measurement ret = null;
+
+    final String sparql = "?s watch:timestamp ?timestamp . ?s watch:propertyValue ?value . ?value watch:property "
+      + PropertyDAO.getPropertyRDFId(typeName, propertyName) + " . ?value watch:entity "
+      + EntityDAO.getEntityRDFId(typeName, entityName);
+
+    final List<Measurement> list = query(sparql, 0, 1, "DESC(?timestamp)");
+    if (list.size() > 0) {
+      ret = list.get(0);
+    }
+
+    return ret;
   }
 }

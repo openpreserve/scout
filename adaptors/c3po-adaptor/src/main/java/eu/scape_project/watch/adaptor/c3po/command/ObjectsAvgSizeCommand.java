@@ -1,6 +1,8 @@
 package eu.scape_project.watch.adaptor.c3po.command;
 
+import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
+import eu.scape_project.watch.domain.RenderingHint;
 import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeException;
 import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
 
@@ -36,7 +38,9 @@ public class ObjectsAvgSizeCommand extends Command {
   public PropertyValue execute() {
     final PropertyValue pv = new PropertyValue();
     try {
-      pv.setProperty(this.getProperty(CP_OBJECTS_AVG_SIZE, "The average size of objects in the collection (in bytes)"));
+      final Property property = this.getProperty(CP_OBJECTS_AVG_SIZE, "The average size of objects");
+      property.setRenderingHint(RenderingHint.STORAGE_VOLUME);
+      pv.setProperty(property);
       pv.setValue(this.getReader().getObjectsAvgSize(), String.class);
 
     } catch (final UnsupportedDataTypeException e) {

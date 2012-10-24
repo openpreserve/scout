@@ -62,7 +62,7 @@ public class DistributionCommand extends Command {
   public PropertyValue execute() {
     final PropertyValue pv = new PropertyValue();
     final Property property = this.getProperty(String.format(CP_DISTRIBUTION, this.name),
-      String.format("The %s distribution of the objects in the collection", this.name));
+      String.format("The %s distribution of the objects", this.name));
 
     final Map<String, String> distribution = this.getReader().getDistribution(this.name);
     final List<DictionaryItem> values = new ArrayList<DictionaryItem>();

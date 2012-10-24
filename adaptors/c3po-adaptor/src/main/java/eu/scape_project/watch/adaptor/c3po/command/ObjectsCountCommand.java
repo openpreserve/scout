@@ -36,7 +36,7 @@ public class ObjectsCountCommand extends Command {
   public PropertyValue execute() {
     final PropertyValue pv = new PropertyValue();
     try {
-      pv.setProperty(this.getProperty(CP_OBJECTS_COUNT, "The overall number of objects in the collection"));
+      pv.setProperty(this.getProperty(CP_OBJECTS_COUNT, "The overall number of objects"));
       pv.setValue(this.getReader().getObjectsCount(), String.class);
 
     } catch (final UnsupportedDataTypeException e) {

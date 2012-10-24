@@ -1,13 +1,15 @@
 package eu.scape_project.watch.adaptor.c3po.command;
 
-import eu.scape_project.watch.domain.PropertyValue;
-import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeException;
-import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_COLLECTION_SIZE;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_COLLECTION_SIZE;
+import eu.scape_project.watch.domain.Property;
+import eu.scape_project.watch.domain.PropertyValue;
+import eu.scape_project.watch.domain.RenderingHint;
+import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeException;
+import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
 
 /**
  * A command that fetches the overall collection size of a profile.
@@ -37,7 +39,10 @@ public class CollectionSizeCommand extends Command {
   public PropertyValue execute() {
     final PropertyValue pv = new PropertyValue();
     try {
-      pv.setProperty(this.getProperty(CP_COLLECTION_SIZE, "The overall size of the collection (in bytes)"));
+      final Property property = this.getProperty(CP_COLLECTION_SIZE, "The overall size");
+      property.setRenderingHint(RenderingHint.STORAGE_VOLUME);
+      
+      pv.setProperty(property);
       pv.setValue(this.getReader().getCollectionSize(), String.class);
       
     } catch (final UnsupportedDataTypeException e) {

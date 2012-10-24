@@ -98,8 +98,8 @@ public class ProductionProfileStrategy implements ProfileVersionReader {
 
     for (Object o : items) {
       final Element e = (Element) o;
-      final String key = e.attributeValue("value");
-      final String value = e.attributeValue("count");
+      final String key = e.attributeValue("id");
+      final String value = e.attributeValue("value");
       distribution.put(key, value);
     }
 

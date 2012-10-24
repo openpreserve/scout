@@ -214,7 +214,7 @@ public class C3POAdaptor implements AdaptorPluginInterface {
       final String id = this.identifiers.get(this.pointer++);
       this.currentBatch = this.getPropertyValues(id);
     }
-
+    
     final boolean hasNext = !this.currentBatch.isEmpty();
     
     //reset for next call of this method

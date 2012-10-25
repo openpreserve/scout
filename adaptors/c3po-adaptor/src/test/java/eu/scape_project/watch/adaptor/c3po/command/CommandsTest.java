@@ -1,7 +1,7 @@
 package eu.scape_project.watch.adaptor.c3po.command;
 
-import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -94,7 +94,7 @@ public class CommandsTest {
 
     assertNotNull(pv);
     assertNotNull(pv.getProperty());
-    assertEquals(VALUE, pv.getValue(String.class));
+    assertTrue(Long.parseLong(VALUE) == pv.getValue(Long.class));
 
   }
 
@@ -114,7 +114,7 @@ public class CommandsTest {
 
     assertNotNull(pv);
     assertNotNull(pv.getProperty());
-    assertEquals(VALUE, pv.getValue());
+    assertTrue(Double.parseDouble(VALUE) == pv.getValue(Double.class));
   }
 
   /**
@@ -132,7 +132,7 @@ public class CommandsTest {
 
     assertNotNull(pv);
     assertNotNull(pv.getProperty());
-    assertEquals(VALUE, pv.getValue());
+    assertTrue(Long.parseLong(VALUE) == pv.getValue(Long.class));
   }
 
   /**
@@ -150,7 +150,7 @@ public class CommandsTest {
 
     assertNotNull(pv);
     assertNotNull(pv.getProperty());
-    assertEquals(VALUE, pv.getValue());
+    assertTrue(Long.parseLong(VALUE) == pv.getValue(Long.class));
   }
 
   /**
@@ -168,7 +168,7 @@ public class CommandsTest {
 
     assertNotNull(pv);
     assertNotNull(pv.getProperty());
-    assertEquals(VALUE, pv.getValue());
+    assertTrue(Long.parseLong(VALUE) == pv.getValue(Long.class));
   }
 
   /**

@@ -227,6 +227,7 @@ public class C3POClient implements C3POClientInterface {
 
       result = response.toString();
       LOG.debug("Received response from c3po: {}", result.substring(0, result.indexOf("\n")) + "... ");
+      LOG.trace(result);
 
     } catch (final IOException e) {
       LOG.error("An error occurred while reading the response");

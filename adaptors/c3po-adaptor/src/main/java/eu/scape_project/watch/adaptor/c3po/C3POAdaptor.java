@@ -106,7 +106,7 @@ public class C3POAdaptor implements AdaptorPluginInterface {
   public void init() {
     this.initConfigs();
 
-    final String formatDistr = "format";
+    final String formatDistr = "Format";
 
     this.commands = new HashMap<String, Command>();
     this.commands.put(CP_COLLECTION_SIZE, new CollectionSizeCommand());

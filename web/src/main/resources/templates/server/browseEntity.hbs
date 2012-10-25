@@ -16,7 +16,7 @@
 		<tbody>
 			{{#values}}
 			<tr>
-				<td style="white-space: nowrap;">{{property.description}}</td>
+				<td style="white-space: nowrap;">{{property.name}}</td>
 				<td>{{#value-render this}}{{/value-render}}</td>
 				<td><a class="btn btn-small btn-link"
 					href="{{../mustacheletPath}}/browse/value/{{#encodeId entity.type.name}}{{/encodeId}}/{{#encodeId entity.name}}{{/encodeId}}/{{#encodeId property.name}}{{/encodeId}}/{{version}}"><i

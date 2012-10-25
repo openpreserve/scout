@@ -114,7 +114,7 @@ public class C3POProfileReader {
    * @return the distribution.
    */
   public Map<String, String> getDistribution(final String name) {
-    return this.reader.getDistribution(name);
+    return this.reader.getDistribution(name.toLowerCase());
   }
 
 }

@@ -1,5 +1,7 @@
 package eu.scape_project.watch.adaptor.c3po.command;
 
+import eu.scape_project.watch.domain.DataType;
+import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeException;
 import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
@@ -36,9 +38,14 @@ public class ObjectsCountCommand extends Command {
   public PropertyValue execute() {
     final PropertyValue pv = new PropertyValue();
     try {
-      pv.setProperty(this.getProperty(CP_OBJECTS_COUNT, "The overall number of objects"));
-      pv.setValue(this.getReader().getObjectsCount(), String.class);
+      final Property property = this.getProperty(CP_OBJECTS_COUNT, "The overall number of objects");
+      property.setDatatype(DataType.LONG);
+      
+      pv.setProperty(property);
+      pv.setValue(Long.parseLong(this.getReader().getObjectsCount()), Long.class);
 
+    } catch (final NumberFormatException e) {
+      LOG.error("Could not parse objects count from profile", e);
     } catch (final UnsupportedDataTypeException e) {
       LOG.error("Data type is not supported. Could not set property value", e);
     } catch (final InvalidJavaClassForDataTypeException e) {

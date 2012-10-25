@@ -32,47 +32,47 @@ public final class C3POConstants {
   /**
    * The collection name identifier property.
    */
-  public static final String CP_COLLECTION_IDENTIFIER = "cp.collection.name";
+  public static final String CP_COLLECTION_IDENTIFIER = "Collection name";
 
   /**
    * The collection overall size property.
    */
-  public static final String CP_COLLECTION_SIZE = "cp.collection.size";
+  public static final String CP_COLLECTION_SIZE = "Collection size";
 
   /**
    * The count of the objects property.
    */
-  public static final String CP_OBJECTS_COUNT = "cp.objects.count";
+  public static final String CP_OBJECTS_COUNT = "Objects count";
 
   /**
    * The avg size of an object within the collection property.
    */
-  public static final String CP_OBJECTS_AVG_SIZE = "cp.objects.size.avg";
+  public static final String CP_OBJECTS_AVG_SIZE = "Objects avg size";
 
   /**
    * The size of the smallest object property (in bytes).
    */
-  public static final String CP_OBJECTS_MIN_SIZE = "cp.objects.size.min";
+  public static final String CP_OBJECTS_MIN_SIZE = "Objects min size";
 
   /**
    * The size of the largest object property (in bytes).
    */
-  public static final String CP_OBJECTS_MAX_SIZE = "cp.objects.size.max";
+  public static final String CP_OBJECTS_MAX_SIZE = "Objects max size";
 
   /**
    * The standard deviation of the size of objects property (in bytes).
    */
-  public static final String CP_OBJECTS_SD_SIZE = "cp.objects.size.sd";
+  public static final String CP_OBJECTS_SD_SIZE = "Objects sd size";
 
   /**
    * The statistical mode of the formats within the collection property.
    */
-  public static final String CP_FORMAT_MODE = "cp.format.mode";
+  public static final String CP_FORMAT_MODE = "Format mode";
 
   /**
    * The format distribution property.
    */
-  public static final String CP_DISTRIBUTION = "cp.%s.distribution";
+  public static final String CP_DISTRIBUTION = "%s distribution";
 
   /**
    * The statistical mode of the PRONOM identifiers within the collection
@@ -100,12 +100,12 @@ public final class C3POConstants {
   /**
    * The name of the collection profile Entity.
    */
-  public static final String CP_NAME = "collection_profile";
+  public static final String CP_NAME = "content_profile";
   
   /**
    * The human readable description of the collection profile Entity.
    */
-  public static final String CP_DESCRIPTION = "A simple collection profile";
+  public static final String CP_DESCRIPTION = "Represents a content profile";
 
   /**
    * Utility classes have only hidden constructors.

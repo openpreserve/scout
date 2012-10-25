@@ -5,6 +5,7 @@ import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_COLLEC
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import eu.scape_project.watch.domain.DataType;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.domain.RenderingHint;
@@ -39,12 +40,18 @@ public class CollectionSizeCommand extends Command {
   public PropertyValue execute() {
     final PropertyValue pv = new PropertyValue();
     try {
+      final double dSize = Double.parseDouble(this.getReader().getCollectionSize());
+      final long size = Math.round(dSize);
+      
       final Property property = this.getProperty(CP_COLLECTION_SIZE, "The overall size");
       property.setRenderingHint(RenderingHint.STORAGE_VOLUME);
+      property.setDatatype(DataType.LONG);
       
       pv.setProperty(property);
-      pv.setValue(this.getReader().getCollectionSize(), String.class);
+      pv.setValue(size, Long.class);
       
+    } catch (final NumberFormatException e) {
+      LOG.error("Could not parse collection size from profile", e);
     } catch (final UnsupportedDataTypeException e) {
       LOG.error("Data type is not supported. Could not set property value", e);
     } catch (final InvalidJavaClassForDataTypeException e) {

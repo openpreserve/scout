@@ -1,5 +1,6 @@
 package eu.scape_project.watch.adaptor.c3po.command;
 
+import eu.scape_project.watch.domain.DataType;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.domain.RenderingHint;
@@ -38,11 +39,17 @@ public class ObjectsAvgSizeCommand extends Command {
   public PropertyValue execute() {
     final PropertyValue pv = new PropertyValue();
     try {
+      final double size = Double.parseDouble(this.getReader().getObjectsAvgSize());
+      
       final Property property = this.getProperty(CP_OBJECTS_AVG_SIZE, "The average size of objects");
       property.setRenderingHint(RenderingHint.STORAGE_VOLUME);
+      property.setDatatype(DataType.DOUBLE);
+      
       pv.setProperty(property);
-      pv.setValue(this.getReader().getObjectsAvgSize(), String.class);
-
+      pv.setValue(size, Double.class);
+      
+    } catch (final NumberFormatException e) {
+      LOG.error("Could not parse avg size from profile", e);
     } catch (final UnsupportedDataTypeException e) {
       LOG.error("Data type is not supported. Could not set property value", e);
     } catch (final InvalidJavaClassForDataTypeException e) {

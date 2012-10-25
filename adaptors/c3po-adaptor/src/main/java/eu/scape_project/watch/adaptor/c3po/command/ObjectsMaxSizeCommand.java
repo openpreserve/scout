@@ -1,5 +1,6 @@
 package eu.scape_project.watch.adaptor.c3po.command;
 
+import eu.scape_project.watch.domain.DataType;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.domain.RenderingHint;
@@ -38,11 +39,18 @@ public class ObjectsMaxSizeCommand extends Command {
   public PropertyValue execute() {
     final PropertyValue pv = new PropertyValue();
     try {
+      final double dSize = Double.parseDouble(this.getReader().getObjectsMaxSize());
+      final long size = Math.round(dSize);
+
       final Property property = this.getProperty(CP_OBJECTS_MAX_SIZE, "The size of the largest object");
       property.setRenderingHint(RenderingHint.STORAGE_VOLUME);
+      property.setDatatype(DataType.LONG);
+      
       pv.setProperty(property);
-      pv.setValue(this.getReader().getObjectsMaxSize());
+      pv.setValue(size, Long.class);
 
+    } catch (final NumberFormatException e) {
+      LOG.error("Could not parse max size from profile", e);
     } catch (final UnsupportedDataTypeException e) {
       LOG.error("Data type is not supported. Could not set property value", e);
     } catch (final InvalidJavaClassForDataTypeException e) {

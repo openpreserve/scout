@@ -185,8 +185,8 @@ $(function () {
             	    		}
             	    		
             	    	}
-            	    } else if(datatype == 'INTEGER' || datatype == 'FLOAT' || datatype == 'DOUBLE') {
-            	    	measurements.push({name: value, x: date, y: value});	
+            	    } else if(datatype == 'INTEGER' || datatype == 'LONG' ||datatype == 'FLOAT' || datatype == 'DOUBLE') {
+            	    	measurements.push({name: ValueRenderer.render(measurement.propertyValue), x: date, y: value});	
             	    } else if(datatype == 'DATE') {
             	    	var dateValue = new Date(value);
             	    	measurements.push({name: value, x: date, y: dateValue});	

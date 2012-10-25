@@ -104,36 +104,42 @@ Handlebars.registerHelper('encodeId', function(context, block) {
 	return encodeURIComponent(context);
 });
 
+var ValueRenderer = {
+		render: function(pv) {
+			var value = pv.value;
+			var datatype = pv.property.datatype;
+			var renderingHint = pv.property.renderingHint;
+
+			var ret;
+
+			if (datatype == 'URI') {
+				ret = "<a href='" + value + "'>" + value + "</a>";
+			} else if (datatype == 'LONG' && renderingHint == 'STORAGE_VOLUME') {
+				ret = humanize.filesize(value);
+			} else if (datatype == 'DATE') {
+				if (renderingHint == 'DATE_DAY') {
+					ret = moment(Date(value)).format("dddd, D MMMM YYYY");
+				} else {
+					ret = moment(Date(value)).format("dddd, D MMMM YYYY, h:mm:ss a");
+				}
+			} else if (datatype == "STRING_DICTIONARY") {
+				ret = "<table class='table table-bordered table-condensed' style='margin:0'>";
+				ret += "<thead><th>Key</th><th>Value</th></thead>";
+				for ( var index in value) {
+					ret += "<tr>";
+					ret += "<td>" + value[index].key + "</td>";
+					ret += "<td>" + value[index].value + "</td>";
+					ret += "</tr>";
+				}
+				ret += "</table>";
+			} else {
+				ret = value;
+			}
+
+			return ret;
+		},
+};
+
 Handlebars.registerHelper('value-render', function(pv, block) {
-	var value = pv.value;
-	var datatype = pv.property.datatype;
-	var renderingHint = pv.property.renderingHint;
-
-	var ret;
-
-	if (datatype == 'URI') {
-		ret = "<a href='" + value + "'>" + value + "</a>";
-	} else if (datatype == 'LONG' && renderingHint == 'STORAGE_VOLUME') {
-		ret = humanize.filesize(value);
-	} else if (datatype == 'DATE') {
-		if (renderingHint == 'DATE_DAY') {
-			ret = moment(Date(value)).format("dddd, D MMMM YYYY");
-		} else {
-			ret = moment(Date(value)).format("dddd, D MMMM YYYY, h:mm:ss a");
-		}
-	} else if (datatype == "STRING_DICTIONARY") {
-		ret = "<table class='table table-bordered table-condensed' style='margin:0'>";
-		ret += "<thead><th>Key</th><th>Value</th></thead>";
-		for ( var index in value) {
-			ret += "<tr>";
-			ret += "<td>" + value[index].key + "</td>";
-			ret += "<td>" + value[index].value + "</td>";
-			ret += "</tr>";
-		}
-		ret += "</table>";
-	} else {
-		ret = value;
-	}
-
-	return ret;
+	return ValueRenderer.render(pv);
 });

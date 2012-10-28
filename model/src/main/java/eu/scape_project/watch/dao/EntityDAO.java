@@ -54,6 +54,17 @@ public final class EntityDAO extends AbstractDO<Entity> {
   }
 
   /**
+   * Get Entity RDF ID.
+   * 
+   * @param entityId
+   *          The entity from which to get the RDF Id.
+   * @return Get the RDF ID.
+   */
+  public static String getEntityRDFId(final String entityId) {
+    return KBUtils.getRdfId(Entity.class, entityId);
+  }
+
+  /**
    * No other instances other then in {@link DAO}.
    */
   protected EntityDAO() {
@@ -71,6 +82,17 @@ public final class EntityDAO extends AbstractDO<Entity> {
    */
   public Entity findById(final String typeName, final String entityName) {
     return super.findById(Entity.createId(typeName, entityName), Entity.class);
+  }
+
+  /**
+   * Find {@link Entity} by id.
+   * 
+   * @param id
+   *          the entity id
+   * @return the {@link Entity} or <code>null</code> if not found
+   */
+  public Entity findById(final String id) {
+    return super.findById(id, Entity.class);
   }
 
   /**
@@ -102,11 +124,11 @@ public final class EntityDAO extends AbstractDO<Entity> {
     return super.count(Entity.class, bindings);
   }
 
-  private static String getBindingsWithType(final String type) {
+  private static String getBindingsWithType(final String typeId) {
     String bindings;
 
-    if (StringUtils.isNotBlank(type)) {
-      bindings = String.format("?s %1$s %2$s", ENTITY_TYPE_REL, EntityTypeDAO.getEntityTypeRDFId(type));
+    if (StringUtils.isNotBlank(typeId)) {
+      bindings = String.format("?s %1$s %2$s", ENTITY_TYPE_REL, EntityTypeDAO.getEntityTypeRDFId(typeId));
     } else {
       bindings = "";
     }
@@ -128,8 +150,8 @@ public final class EntityDAO extends AbstractDO<Entity> {
     return this.query(getBindingsWithType(typeName), start, max);
   }
 
-  public int countWithType(String typeName) {
-    return this.count(getBindingsWithType(typeName));
+  public int countWithType(String typeId) {
+    return this.count(getBindingsWithType(typeId));
   }
 
   /**

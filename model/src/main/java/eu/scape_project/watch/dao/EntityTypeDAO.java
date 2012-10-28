@@ -16,12 +16,12 @@ public final class EntityTypeDAO extends AbstractDO<EntityType> {
   /**
    * Get the {@link EntityType} complete RDF Id to use in SPARQL query.
    * 
-   * @param entityTypeName
-   *          The entity type name
+   * @param entityTypeId
+   *          The entity type id
    * @return the complete RDF Id, using namespace prefix.
    */
-  public static String getEntityTypeRDFId(final String entityTypeName) {
-    return KBUtils.getRdfId(EntityType.class, entityTypeName);
+  public static String getEntityTypeRDFId(final String entityTypeId) {
+    return KBUtils.getRdfId(EntityType.class, entityTypeId);
   }
 
   /**
@@ -32,7 +32,7 @@ public final class EntityTypeDAO extends AbstractDO<EntityType> {
    * @return the complete RDF Id, using namespace prefix.
    */
   public static String getEntityTypeRDFId(final EntityType type) {
-    return getEntityTypeRDFId(type.getName());
+    return getEntityTypeRDFId(type.getId());
   }
 
   /**
@@ -45,12 +45,12 @@ public final class EntityTypeDAO extends AbstractDO<EntityType> {
   /**
    * Get {@link EntityType} by its name.
    * 
-   * @param entityTypeName
-   *          the unique entity type name
+   * @param id
+   *          the entity type id
    * @return The {@link EntityType} or <code>null</code> if not found
    */
-  public EntityType findById(final String entityTypeName) {
-    return super.findById(entityTypeName, EntityType.class);
+  public EntityType findById(final String id) {
+    return super.findById(id, EntityType.class);
   }
 
   /**

@@ -57,6 +57,13 @@ public class ValueHelper implements Helper<PropertyValue> {
       } else {
         builder.append(longValue);
       }
+    }else if (value instanceof Double) {
+      final Double doubleValue = (Double) value;
+      if (RenderingHint.STORAGE_VOLUME.equals(renderingHint)) {
+        builder.append(Humanize.binaryPrefix(doubleValue));
+      } else {
+        builder.append(doubleValue);
+      }
     } else if (value instanceof Date) {
       if (RenderingHint.DATE_DAY.equals(renderingHint)) {
         final Date dateValue = (Date) ((Date) value).clone();

@@ -52,7 +52,7 @@
 <script>
 	$('.jtextfill').textfill({maxFontPixels: 100});
 	
-	var api = "/api/measurement.json/list?type={{#encodeId typeName}}{{/encodeId}}&entity={{#encodeId entityName}}{{/encodeId}}&property={{#encodeId propertyName}}{{/encodeId}}&version={{version}}"
+	var api = "/api/measurement.json/list?value={{id}}"
 	var paginator = Paginator({{versionMeasurementCount}}, api, 20, 'version_measurement_list.hbs', '#versionMeasurementList', '{{contextPath}}', '{{mustacheletPath}}');
 	paginator.init();
 </script>
@@ -154,7 +154,7 @@ $(function () {
             },
         };
     
-        var api = "{{contextPath}}/api/measurement.json/list?type={{#encodeId typeName}}{{/encodeId}}&entity={{#encodeId entityName}}{{/encodeId}}&property={{#encodeId propertyName}}{{/encodeId}}&significant=true";
+        var api = "{{contextPath}}/api/measurement.json/list?entity={{propertyValue.entity.id}}&property={{propertyValue.property.id}}&significant=true";
         
         var getMeasurements = function(api, start, max) {
         	var apiRequest = api + "&start="+start+"&max="+max;

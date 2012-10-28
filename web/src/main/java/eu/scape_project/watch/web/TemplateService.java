@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -40,7 +39,6 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.name.Names;
 
-import eu.scape_project.watch.utils.EncodeIdHelper;
 import eu.scape_project.watch.utils.ValueHelper;
 import eu.scape_project.watch.web.annotations.Controller;
 import eu.scape_project.watch.web.annotations.HttpMethod;
@@ -271,7 +269,6 @@ public class TemplateService extends HttpServlet implements Filter {
     }, new ConcurrentMapCache());
 
     compiler.registerHelper("value-render", new ValueHelper());
-    compiler.registerHelper("encodeId", new EncodeIdHelper());
 
     for (Class<?> mustachelet : MUSTACHELETS) {
       final Path annotation = mustachelet.getAnnotation(Path.class);

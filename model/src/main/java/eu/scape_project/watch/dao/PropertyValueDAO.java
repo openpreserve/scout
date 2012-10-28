@@ -81,28 +81,25 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
   /**
    * Find a property value, as last set on a determined date.
    * 
-   * @param entityName
-   *          The entity related to the property.
-   * @param entityType
-   *          The entity type related to the property.
-   * @param propertyName
-   *          The property name.
+   * @param entityId
+   *          The entity related to the value.
+   * @param propertyId
+   *          The property related to the value.
    * @param asOfDate
    *          The date before which to search of the defined property value.
    * @return The last set value for that property up to the given date, or null
    *         if no value was defined previous to the given date.
    */
-  public PropertyValue find(final String typeName, final String entityName, final String propertyName,
-    final Date asOfDate) {
+  public PropertyValue find(final String entityId, final String propertyId, final Date asOfDate) {
 
     // find all PropertyValue related to the entity and property, ordered by
     // measured date, and return the most recent one.
 
     final StringBuilder query = new StringBuilder();
 
-    query.append("?s watch:entity " + EntityDAO.getEntityRDFId(typeName, entityName));
+    query.append("?s watch:entity " + EntityDAO.getEntityRDFId(entityId));
     query.append(" . ");
-    query.append("?s watch:property " + PropertyDAO.getPropertyRDFId(typeName, propertyName));
+    query.append("?s watch:property " + PropertyDAO.getPropertyRDFId(propertyId));
     query.append(" . ");
     query.append("?measurement watch:propertyValue ?s");
     if (asOfDate != null) {
@@ -114,7 +111,7 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
       query.append(String.format("FILTER(?timestamp <= \"%1$s\"^^xsd:dateTime)", new XSDDateTime(asOfCalendar)));
     }
 
-    final List<PropertyValue> pvs = query(query.toString(), 0, 1, "DESC(?measurement)");
+    final List<PropertyValue> pvs = query(query.toString(), 0, 1, "DESC(?timestamp)");
 
     PropertyValue ret = null;
 
@@ -128,17 +125,19 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
   /**
    * Find a property value, as last set on current date.
    * 
-   * @param typeName
-   *          The entity type related to the property.
-   * @param entityName
-   *          The entity related to the property.
-   * @param propertyName
-   *          The property name.
+   * @param entityId
+   *          The entity related to the property value.
+   * @param propertyId
+   *          The property related to the value..
    * @return The last set value for that property up to the current date, or
    *         null if no value was defined up till now.
    */
-  public PropertyValue find(final String typeName, final String entityName, final String propertyName) {
-    return find(typeName, entityName, propertyName, null);
+  public PropertyValue find(final String entityId, final String propertyId) {
+    return find(entityId, propertyId, null);
+  }
+
+  public PropertyValue findById(final String valueId) {
+    return findById(valueId, PropertyValue.class);
   }
 
   /**
@@ -213,35 +212,31 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
     return this.query(bindings, start, max);
   }
 
-  private String getBindingsWithEntityAndProperty(final String entityType, final String entityName,
-    final String propertyName) {
-    return String.format("?s %1$s %2$s . ?s %3$s %4$s", ENTITY_REL, EntityDAO.getEntityRDFId(entityType, entityName),
-      PROPERTY_REL, PropertyDAO.getPropertyRDFId(entityType, propertyName));
+  private String getBindingsWithEntityAndProperty(final String entityId, final String propertyId) {
+    return String.format("?s %1$s %2$s . ?s %3$s %4$s", ENTITY_REL, EntityDAO.getEntityRDFId(entityId), PROPERTY_REL,
+      PropertyDAO.getPropertyRDFId(propertyId));
   }
 
   /**
    * List all property values of a specific {@link Entity} and {@link Property}.
    * 
-   * @param entityName
-   *          The name of the {@link Entity}.
-   * @param entityType
-   *          The name of the {@link EntityType} to which the {@link Property}
-   *          belongs to
-   * @param propertyName
-   *          The name of the {@link Property}.
+   * @param entityId
+   *          The id of the {@link Entity}.
+   * @param propertyId
+   *          The id of the {@link Property}.
    * @param start
    *          The index of the first item to retrieve
    * @param max
    *          The maximum number of items to retrieve
    * @return The list of {@link PropertyValue} filtered by the above constraints
    */
-  public Collection<PropertyValue> listWithEntityAndProperty(final String entityType, final String entityName,
-    final String propertyName, final int start, final int max) {
-    return this.query(getBindingsWithEntityAndProperty(entityType, entityName, propertyName), start, max);
+  public Collection<PropertyValue> listWithEntityAndProperty(final String entityId, final String propertyId,
+    final int start, final int max) {
+    return this.query(getBindingsWithEntityAndProperty(entityId, propertyId), start, max);
   }
 
-  public int countWithEntityAndProperty(final String entityType, final String entityName, final String propertyName) {
-    return this.count(getBindingsWithEntityAndProperty(entityType, entityName, propertyName));
+  public int countWithEntityAndProperty(final String entityId, final String propertyId) {
+    return this.count(getBindingsWithEntityAndProperty(entityId, propertyId));
   }
 
   /**
@@ -338,8 +333,7 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
     final List<PropertyValue> existingPVs = query("?s watch:entity " + EntityDAO.getEntityRDFId(entity)
       + " . ?s watch:property " + PropertyDAO.getPropertyRDFId(property) + " . " + valueBinding, 0, 1);
 
-    final Measurement previousMeasurement = DAO.MEASUREMENT.findLastMeasurement(pv.getEntity().getType().getName(), pv
-      .getEntity().getName(), pv.getProperty().getName());
+    final Measurement previousMeasurement = DAO.MEASUREMENT.findLastMeasurement(pv);
 
     if (existingPVs.isEmpty()) {
       // create new property value with a new version.

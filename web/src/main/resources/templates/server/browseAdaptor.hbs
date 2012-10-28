@@ -48,7 +48,7 @@
 				<tr>
 					<td>{{name}}</td>
 					<td><a class="btn btn-info"
-						href="{{mustacheletPath}}/browse/entity/{{#encodeId type.name}}{{/encodeId}}/{{#encodeId name}}{{/encodeId}}">Browse</a></td>
+						href="{{mustacheletPath}}/browse/entity/{{id}}">Browse</a></td>
 				</tr>
 				{{/entities}}
 			</tbody>
@@ -102,7 +102,7 @@
 </div>
 {{/partial}} {{#partial "scripts"}}
 <script>
-	var paginator = Paginator({{eventCount}}, '/api/sourceadaptorevent.json/list?adaptor={{#encodeId adaptor.instance}}{{/encodeId}}', 20, 'event_list.hbs', '#eventList', '{{contextPath}}', '{{mustacheletPath}}');
+	var paginator = Paginator({{eventCount}}, '/api/sourceadaptorevent.json/list?adaptor={{adaptor.id}}', 20, 'event_list.hbs', '#eventList', '{{contextPath}}', '{{mustacheletPath}}');
 	paginator.init();
 </script>
 {{/partial}} {{>base}}

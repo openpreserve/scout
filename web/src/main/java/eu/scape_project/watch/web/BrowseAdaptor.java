@@ -24,7 +24,7 @@ public class BrowseAdaptor extends TemplateContext {
   @Inject
   Matcher m;
 
-  String instance() {
+  String getId() {
     return m.group(1);
   }
 
@@ -35,9 +35,11 @@ public class BrowseAdaptor extends TemplateContext {
   private HttpServletRequest request;
 
   public SourceAdaptor getAdaptor() {
-    final ServletContext context = ContextUtil.getServletContext(request);
-    final AdaptorManager adaptorManager = ContextUtil.getAdaptorManager(context);
-    return adaptorManager.getSourceAdaptor(instance());
+    // final ServletContext context = ContextUtil.getServletContext(request);
+    // final AdaptorManager adaptorManager =
+    // ContextUtil.getAdaptorManager(context);
+    // return adaptorManager.getSourceAdaptor(instance());
+    return DAO.SOURCE_ADAPTOR.findById(getId());
   }
 
   public List<SourceAdaptorEvent> getEvents() {

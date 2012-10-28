@@ -25,7 +25,7 @@ import eu.scape_project.watch.utils.KBUtils;
 @XmlRootElement(name = KBUtils.ENTITY)
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Entity extends RdfBean<Entity> {
-  
+
   /**
    * Get the property id based on the entity type and entity name.
    * 
@@ -36,14 +36,14 @@ public class Entity extends RdfBean<Entity> {
    * @return The identifier
    */
   public static String createId(final String entityTypeName, final String entityName) {
-    return KBUtils.encodeId(entityTypeName + KBUtils.ID_SEPARATOR + entityName);
+    return KBUtils.hashId(entityTypeName, entityName);
   }
 
   /**
    * The unique Id.
    */
   @Id
-  @JsonIgnore
+  @XmlElement(required = true)
   private String id;
 
   /**
@@ -77,7 +77,7 @@ public class Entity extends RdfBean<Entity> {
   public Entity(final EntityType et, final String n) {
     this.type = et;
     this.name = n;
-    
+
     updateId();
   }
 
@@ -90,7 +90,7 @@ public class Entity extends RdfBean<Entity> {
       this.id = createId(this.type.getName(), this.name);
     }
   }
-  
+
   public String getId() {
     return id;
   }
@@ -101,7 +101,7 @@ public class Entity extends RdfBean<Entity> {
 
   public void setName(final String name) {
     this.name = name;
-    
+
     updateId();
   }
 
@@ -111,7 +111,7 @@ public class Entity extends RdfBean<Entity> {
 
   public void setType(final EntityType type) {
     this.type = type;
-    
+
     updateId();
   }
 
@@ -168,6 +168,6 @@ public class Entity extends RdfBean<Entity> {
 
   @Override
   public String toString() {
-    return "Entity(name=" + this.name + ", type=" + this.type + ")";
+    return String.format("Entity [id=%s, name=%s, type=%s]", id, name, type);
   }
 }

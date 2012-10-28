@@ -58,6 +58,17 @@ public final class SourceAdaptorDAO extends AbstractDO<SourceAdaptor> {
   }
 
   /**
+   * Get {@link SourceAdaptor} by its name and version.
+   * 
+   * @param id
+   *          the source adaptor id
+   * @return The {@link SourceAdaptor} or <code>null</code> if not found
+   */
+  public SourceAdaptor findById(final String id) {
+    return super.findById(id, SourceAdaptor.class);
+  }
+
+  /**
    * Query for {@link SourceAdaptor}.
    * 
    * @see #query(Class, String, int, int)

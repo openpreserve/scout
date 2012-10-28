@@ -22,7 +22,7 @@ public final class SourceDAO extends AbstractDO<Source> {
    * @return The complete Source RDF Id using namescape prefix
    */
   public static String getSourceRDFId(final Source source) {
-    return KBUtils.getRdfId(Source.class, source.getName());
+    return KBUtils.getRdfId(Source.class, source.getId());
   }
 
   /**
@@ -40,7 +40,7 @@ public final class SourceDAO extends AbstractDO<Source> {
    * @return The {@link Source} or <code>null</code> if not found
    */
   public Source findById(final String sourceName) {
-    return super.findById(KBUtils.encodeId(sourceName), Source.class);
+    return super.findById(KBUtils.hashId(sourceName), Source.class);
   }
 
   /**

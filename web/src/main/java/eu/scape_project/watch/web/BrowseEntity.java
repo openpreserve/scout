@@ -12,7 +12,7 @@ import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.web.annotations.Path;
 import eu.scape_project.watch.web.annotations.TemplateSource;
 
-@Path("/browse/entity/([^/]*)/([^/]*)")
+@Path("/browse/entity/([^/]+)")
 @TemplateSource("browseEntity")
 public class BrowseEntity extends TemplateContext {
 
@@ -27,15 +27,11 @@ public class BrowseEntity extends TemplateContext {
   @Inject
   private Matcher m;
 
-  public String getTypeName() {
+  public String getId() {
     return m.group(1);
   }
 
-  public String getEntityName() {
-    return m.group(2);
-  }
-
   public Entity getEntity() {
-    return DAO.ENTITY.findById(getTypeName(), getEntityName());
+    return DAO.ENTITY.findById(getId());
   }
 }

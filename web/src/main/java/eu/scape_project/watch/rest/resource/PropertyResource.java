@@ -118,23 +118,17 @@ public class PropertyResource extends JavaHelp {
    *         the {@link EntityType} is not found.
    */
   @POST
-  @Path("/{type}/{name}")
+  @Path("/new")
   @ApiOperation(value = "Create Entity Type", notes = "This can only be done by an admin user (TODO)")
   @ApiErrors(value = {@ApiError(code = NotFoundException.CODE, reason = "Entity type does not exist")})
-  public Response createProperty(
-    @ApiParam(value = "Entity type name (must exist)", required = true) @PathParam("type") final String type,
-    @ApiParam(value = "Property name (must be unique)", required = true) @PathParam("name") final String name,
-    @ApiParam(value = "Property description", required = false) final String description) {
-    // TODO support data type
-    LOG.debug("Create property name=" + name + " description=" + description + " in type=" + type);
-    final EntityType entityType = DAO.ENTITY_TYPE.findById(type);
+  public Response createProperty(@ApiParam(value = "Property", required = true) final Property property) {
+    final EntityType entityType = DAO.ENTITY_TYPE.findById(property.getType().getId());
 
     if (entityType != null) {
-      final Property property = new Property(entityType, name, description);
-      property.save();
-      return Response.ok().entity(property).build();
+      final Property commitedProperty = DAO.PROPERTY.save(property);
+      return Response.ok().entity(commitedProperty).build();
     } else {
-      throw new NotFoundException("Entity type not found: " + type);
+      throw new NotFoundException("Entity type not found: " + property.getType());
     }
 
   }

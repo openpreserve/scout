@@ -51,7 +51,7 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
    * @return The unique Id in the format 'example-v1.0.0'
    */
   public static String createId(final String name, final String version, final String instance) {
-    return KBUtils.encodeId(name + "-v" + version + "-" + instance);
+    return KBUtils.hashId(name, version, instance);
   }
 
   /**

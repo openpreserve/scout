@@ -96,8 +96,7 @@ public class MeasurementSignificantFlagTest {
     final PropertyValue pv5 = DAO.PROPERTY_VALUE.save(adaptor, new PropertyValue(entity, property, "124"));
     final PropertyValue pv6 = DAO.PROPERTY_VALUE.save(adaptor, new PropertyValue(entity, property, "124"));
 
-    final int versionCount = DAO.PROPERTY_VALUE.countWithEntityAndProperty(type.getName(), entity.getName(),
-      property.getName());
+    final int versionCount = DAO.PROPERTY_VALUE.countWithEntityAndProperty(entity.getId(), property.getId());
     Assert.assertEquals(2, versionCount);
 
     final int pv1MeasurementCount = DAO.MEASUREMENT.countByPropertyValue(pv1, false);
@@ -106,12 +105,10 @@ public class MeasurementSignificantFlagTest {
     final int pv1SignificantMeasurementCount = DAO.MEASUREMENT.countByPropertyValue(pv1, true);
     Assert.assertEquals(2, pv1SignificantMeasurementCount);
 
-    int countAllMeasurements = DAO.MEASUREMENT.countByEntityAndProperty(type.getName(), entity.getName(),
-      property.getName(), false);
+    int countAllMeasurements = DAO.MEASUREMENT.countByEntityAndProperty(entity.getId(), property.getId(), false);
     Assert.assertEquals(6, countAllMeasurements);
 
-    int countSignificantMeasurements = DAO.MEASUREMENT.countByEntityAndProperty(type.getName(), entity.getName(),
-      property.getName(), true);
+    int countSignificantMeasurements = DAO.MEASUREMENT.countByEntityAndProperty(entity.getId(), property.getId(), true);
     Assert.assertEquals(4, countSignificantMeasurements);
   }
 

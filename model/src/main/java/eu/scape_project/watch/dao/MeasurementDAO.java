@@ -291,33 +291,31 @@ public final class MeasurementDAO extends AbstractDO<Measurement> {
    *          The property which values are all related to the measurements.
    * @return The query string.
    */
-  private static String getBindingsByEntityAndProperty(final String typeName, final String entityName,
-    final String propertyName, final boolean showSignificantOnly) {
+  private static String getBindingsByEntityAndProperty(final String entityId, final String propertyId,
+    final boolean showSignificantOnly) {
     String bindings = "?s watch:propertyValue ?value . ?value watch:property "
-      + PropertyDAO.getPropertyRDFId(typeName, propertyName) + " . ?value watch:entity "
-      + EntityDAO.getEntityRDFId(typeName, entityName);
+      + PropertyDAO.getPropertyRDFId(propertyId) + " . ?value watch:entity " + EntityDAO.getEntityRDFId(entityId);
     if (showSignificantOnly) {
       bindings += ". ?s watch:significant true";
     }
     return bindings;
   }
 
-  public List<Measurement> listByEntityAndProperty(final String typeName, final String entityName,
-    final String propertyName, final boolean showSignificantOnly, final int start, final int max) {
-    return query(getBindingsByEntityAndProperty(typeName, entityName, propertyName, showSignificantOnly), start, max);
+  public List<Measurement> listByEntityAndProperty(final String entityId, final String propertyId,
+    final boolean showSignificantOnly, final int start, final int max) {
+    return query(getBindingsByEntityAndProperty(entityId, propertyId, showSignificantOnly), start, max);
   }
 
-  public int countByEntityAndProperty(final String typeName, final String entityName, final String propertyName,
-    final boolean showSignificantOnly) {
-    return count(getBindingsByEntityAndProperty(typeName, entityName, propertyName, showSignificantOnly));
+  public int countByEntityAndProperty(final String entityId, final String propertyId, final boolean showSignificantOnly) {
+    return count(getBindingsByEntityAndProperty(entityId, propertyId, showSignificantOnly));
   }
 
-  public Measurement findLastMeasurement(final String typeName, final String entityName, final String propertyName) {
+  public Measurement findLastMeasurement(final PropertyValue pv) {
     Measurement ret = null;
 
     final String sparql = "?s watch:timestamp ?timestamp . ?s watch:propertyValue ?value . ?value watch:property "
-      + PropertyDAO.getPropertyRDFId(typeName, propertyName) + " . ?value watch:entity "
-      + EntityDAO.getEntityRDFId(typeName, entityName);
+      + PropertyDAO.getPropertyRDFId(pv.getProperty()) + " . ?value watch:entity "
+      + EntityDAO.getEntityRDFId(pv.getEntity());
 
     final List<Measurement> list = query(sparql, 0, 1, "DESC(?timestamp)");
     if (list.size() > 0) {

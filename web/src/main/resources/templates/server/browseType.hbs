@@ -46,7 +46,7 @@
 {{/partial}} 
 {{#partial "scripts"}}
 <script>
-var paginator = Paginator({{entityCount}}, '/api/entity.json/list?type={{#encodeId entityType.name}}{{/encodeId}}', 20, 'entity_list.hbs', '#entityList', '{{contextPath}}', '{{mustacheletPath}}');
+var paginator = Paginator({{entityCount}}, '/api/entity.json/list?type={{entityType.id}}', 20, 'entity_list.hbs', '#entityList', '{{contextPath}}', '{{mustacheletPath}}');
 paginator.init();
 </script>
 {{/partial}}

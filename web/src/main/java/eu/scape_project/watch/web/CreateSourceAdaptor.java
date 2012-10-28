@@ -62,7 +62,7 @@ public class CreateSourceAdaptor extends TemplateContext {
     final String plugin = request.getParameter("plugin");
     final String pluginName = plugin.substring(0, plugin.indexOf('|'));
     final String pluginVersion = plugin.substring(plugin.indexOf('|') + 1);
-    final String sourceName = request.getParameter("source");
+    final String sourceId = request.getParameter("source");
 
     // Get configuration parameters
     final Map<String, String> configuration = new HashMap<String, String>();
@@ -77,7 +77,7 @@ public class CreateSourceAdaptor extends TemplateContext {
       }
     }
 
-    final Source source = DAO.SOURCE.findById(sourceName);
+    final Source source = DAO.SOURCE.findById(sourceId);
 
     if (source != null) {
       final ServletContext context = ContextUtil.getServletContext(request);
@@ -99,7 +99,7 @@ public class CreateSourceAdaptor extends TemplateContext {
       }
     } else {
       // TODO send error source does not exist.
-      response.sendError(404, "Source does not exist: " + StringEscapeUtils.escapeHtml(sourceName));
+      response.sendError(404, "Source does not exist: " + StringEscapeUtils.escapeHtml(sourceId));
     }
 
     return false;

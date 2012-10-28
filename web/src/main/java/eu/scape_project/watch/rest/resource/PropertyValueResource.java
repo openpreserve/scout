@@ -76,19 +76,18 @@ public class PropertyValueResource extends JavaHelp {
    *         not found.
    */
   @GET
-  @Path("/{type}/{entity}/{property}")
+  @Path("/{entityId}/{propertyId}")
   @ApiOperation(value = "Find property value by entity and property", notes = "")
   @ApiErrors(value = {@ApiError(code = NotFoundException.CODE, reason = "Property value not found")})
   public Response getPropertyValueByName(
-    @ApiParam(value = "Name of the entity type", required = true) @PathParam("type") final String typeName,
-    @ApiParam(value = "Name of the entity name", required = true) @PathParam("entity") final String entityName,
-    @ApiParam(value = "Name of the property", required = true) @PathParam("property") final String propertyName) {
-    final PropertyValue propertyValue = DAO.PROPERTY_VALUE.find(typeName, entityName, propertyName);
+    @ApiParam(value = "Id of the entity", required = true) @PathParam("entityId") final String entityId,
+    @ApiParam(value = "Id of the property", required = true) @PathParam("propertyId") final String propertyId) {
+    final PropertyValue propertyValue = DAO.PROPERTY_VALUE.find(entityId, propertyId);
 
     if (propertyValue != null) {
       return Response.ok().entity(propertyValue).build();
     } else {
-      throw new NotFoundException("Property value not found, entity=" + entityName + ", property=" + propertyName);
+      throw new NotFoundException("Property value not found, entity=" + entityId + ", property=" + propertyId);
     }
   }
 
@@ -167,21 +166,19 @@ public class PropertyValueResource extends JavaHelp {
    *         {@link NotFoundException} if not found.
    */
   @DELETE
-  @Path("/{type}/{entity}/{property}")
+  @Path("/{valueId}")
   @ApiOperation(value = "Delete property value", notes = "This can only be done by an admin user (TODO)")
   @ApiErrors(value = {@ApiError(code = NotFoundException.CODE, reason = "Property value not found")})
   public Response deletePropertyValue(
-    @ApiParam(value = "Name of the entity type", required = true) @PathParam("type") final String typeName,
-    @ApiParam(value = "Entity related with the property value", required = true) @PathParam("entity") final String entityName,
-    @ApiParam(value = "Property related with the property value", required = true) @PathParam("property") final String propertyName) {
-    final PropertyValue propertyValue = DAO.PROPERTY_VALUE.find(typeName, entityName, propertyName);
+    @ApiParam(value = "Id of the value", required = true) @PathParam("valueId") final String valueId) {
+    final PropertyValue propertyValue = DAO.PROPERTY_VALUE.findById(valueId);
 
     if (propertyValue != null) {
       DAO.delete(propertyValue);
       propertyValue.delete();
       return Response.ok().entity(propertyValue).build();
     } else {
-      throw new NotFoundException("Property value not found entity=" + entityName + ", property=" + propertyName);
+      throw new NotFoundException("Property value not found: " + valueId);
     }
   }
 }

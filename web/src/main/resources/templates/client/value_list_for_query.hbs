@@ -12,16 +12,22 @@
 	<tbody>
 		{{#each items}}
 		<tr>
-			<td>{{#with entity.type}}<a href="{{../../mustacheletPath}}/browse/type/{{#encodeId name}}{{/encodeId}}">{{name}}</a>{{/with}}</td>
-			<td>{{#with entity}}<a href="{{../../mustacheletPath}}/browse/entity/{{#encodeId type.name}}{{/encodeId}}/{{#encodeId name}}{{/encodeId}}">{{name}}</a>{{/with}}</td>
-			<td>{{#with property}}<a href="{{../../mustacheletPath}}/browse/property/{{#encodeId type.name}}{{/encodeId}}/{{#encodeId name}}{{/encodeId}}">{{name}}</a>{{/with}}</td>
+			<td>{{#with entity.type}}<a
+				href="{{../../mustacheletPath}}/browse/type/{{id}}">{{name}}</a>{{/with}}
+			</td>
+			<td>{{#with entity}}<a
+				href="{{../../mustacheletPath}}/browse/entity/{{id}}">{{name}}</a>{{/with}}
+			</td>
+			<td>{{#with property}}<a
+				href="{{../../mustacheletPath}}/browse/property/{{id}}">{{name}}</a>{{/with}}
+			</td>
 			<td>{{#value-render this}}{{/value-render}}</td>
 			<td><a class="btn btn-small btn-link"
-				href="{{../../mustacheletPath}}/browse/value/{{#encodeId entity.type.name}}{{/encodeId}}/{{#encodeId entity.name}}{{/encodeId}}/{{#encodeId property.name}}{{/encodeId}}/{{version}}"><i class=" icon-th-list"></i></a></td>
+				href="{{../../mustacheletPath}}/browse/value/{{id}}"><i
+					class=" icon-th-list"></i></a></td>
 		</tr>
 		{{/each}}
 	</tbody>
 </table>
-{{/partial}}
-{{#partial "empty_message"}}No values found.{{/partial}}
+{{/partial}} {{#partial "empty_message"}}No values found.{{/partial}}
 {{>base_paginated_list}}

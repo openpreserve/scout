@@ -203,8 +203,7 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
    * @return The created or updated object, the same as the input.
    */
   protected T saveImpl(final T object) {
-    object.save();
-    return object;
+    return object.save();
   }
 
   /**

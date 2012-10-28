@@ -558,8 +558,7 @@ public class PropertyValue extends RdfBean<PropertyValue> {
    */
   public static String createId(final String typeName, final String entityName, final String propertyName,
     final int version) {
-    return KBUtils.encodeId(Entity.createId(typeName, entityName) + KBUtils.ID_SEPARATOR + propertyName
-      + KBUtils.ID_SEPARATOR + version);
+    return KBUtils.hashId(typeName, entityName, propertyName, version);
   }
 
   @Override

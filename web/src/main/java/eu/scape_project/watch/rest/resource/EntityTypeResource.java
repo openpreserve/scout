@@ -89,15 +89,12 @@ public class EntityTypeResource extends JavaHelp {
    * @return The created entity type.
    */
   @POST
-  @Path("/{name}")
+  @Path("/new")
   @ApiOperation(value = "Create Entity Type", notes = "This can only be done by an admin user (TODO)")
   public Response createEntityType(
-    @ApiParam(value = "Entity type name (must be unique)", required = true) @PathParam("name") final String name,
-    @ApiParam(value = "Entity type description", required = false) final String description) {
-    LOG.info("creating entity name: " + name);
-    final EntityType entitytype = new EntityType(name, description);
-    DAO.save(entitytype);
-    return Response.ok().entity(entitytype).build();
+    @ApiParam(value = "Entity type", required = true) final EntityType entityType) {
+    final EntityType commitedEntityType = DAO.ENTITY_TYPE.save(entityType);
+    return Response.ok().entity(commitedEntityType).build();
 
   }
 

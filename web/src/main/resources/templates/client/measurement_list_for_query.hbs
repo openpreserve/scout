@@ -14,14 +14,14 @@
 	<tbody>
 		{{#each items}}
 		<tr>
-			<td>{{#with propertyValue.entity.type}}<a href="{{../../mustacheletPath}}/browse/type/{{#encodeId name}}{{/encodeId}}">{{name}}</a>{{/with}}</td>
-			<td>{{#with propertyValue.entity}}<a href="{{../../mustacheletPath}}/browse/entity/{{#encodeId type.name}}{{/encodeId}}/{{#encodeId name}}{{/encodeId}}">{{name}}</a>{{/with}}</td>
-			<td>{{#with propertyValue.property}}<a href="{{../../mustacheletPath}}/browse/property/{{#encodeId type.name}}{{/encodeId}}/{{#encodeId name}}{{/encodeId}}">{{name}}</a>{{/with}}</td>
-			<td>{{#with propertyValue}}<a href="{{../../mustacheletPath}}/browse/value/{{#encodeId entity.type.name}}{{/encodeId}}/{{#encodeId entity.name}}{{/encodeId}}/{{#encodeId property.name}}{{/encodeId}}/{{version}}">{{#value-render this}}{{/value-render}}</a>{{/with}}</td>
+			<td>{{#with propertyValue.entity.type}}<a href="{{../../mustacheletPath}}/browse/type/{{id}}">{{name}}</a>{{/with}}</td>
+			<td>{{#with propertyValue.entity}}<a href="{{../../mustacheletPath}}/browse/entity/{{id}}">{{name}}</a>{{/with}}</td>
+			<td>{{#with propertyValue.property}}<a href="{{../../mustacheletPath}}/browse/property/{{id}}">{{name}}</a>{{/with}}</td>
+			<td>{{#with propertyValue}}<a href="{{../../mustacheletPath}}/browse/value/{{id}}">{{#value-render this}}{{/value-render}}</a>{{/with}}</td>
 			<td style="white-space: nowrap;">{{dateFormat timestamp}}</td>
-			<td>{{#with adaptor}}<a href="{{../../mustacheletPath}}/browse/adaptor/{{#encodeId instance}}{{/encodeId}}">{{instance}}</a>{{/with}}</td>
+			<td>{{#with adaptor}}<a href="{{../../mustacheletPath}}/browse/adaptor/{{id}}">{{instance}}</a>{{/with}}</td>
 			<td><a class="btn btn-small btn-link"
-				href="{{../mustacheletPath}}/browse/measurement/{{#encodeId propertyValue.entity.type.name}}{{/encodeId}}/{{#encodeId propertyValue.entity.name}}{{/encodeId}}/{{#encodeId propertyValue.property.name}}{{/encodeId}}/{{propertyValue.version}}/{{timestamp}}"><i class=" icon-th-list"></i></a></td>
+				href="{{../mustacheletPath}}/browse/measurement/{{id}}"><i class=" icon-th-list"></i></a></td>
 		</tr>
 		{{/each}}
 	</tbody>

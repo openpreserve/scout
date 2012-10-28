@@ -54,7 +54,7 @@ public class Plan extends RdfBean<Plan> {
   
   @Id
   public String getId() {
-    return KBUtils.encodeId(getPlanId());
+    return KBUtils.hashId(getPlanId());
   }
 
   public String getPlanId() {

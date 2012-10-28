@@ -198,9 +198,10 @@ public class WatchClient {
    *          the name of the entity type
    * @return the created entity
    */
-  public Entity createEntity(final String name, final String type) {
-    return this.resource.path(KBUtils.ENTITY + FS + this.format + AS + name).accept(this.format.getMediaType())
-      .post(Entity.class, type);
+  public Entity createEntity(final EntityType type, final String name) {
+    final Entity entity = new Entity(type, name);
+    return this.resource.path(KBUtils.ENTITY + FS + this.format + AS + NEW).accept(this.format.getMediaType())
+      .post(Entity.class, entity);
   }
 
   /**
@@ -281,8 +282,9 @@ public class WatchClient {
    * @return the newly created entity type
    */
   public EntityType createEntityType(final String name, final String description) {
-    return this.resource.path(KBUtils.ENTITY_TYPE + FS + this.format + AS + name).accept(this.format.getMediaType())
-      .post(EntityType.class, description);
+    final EntityType type = new EntityType(name, description);
+    return this.resource.path(KBUtils.ENTITY_TYPE + FS + this.format + AS + NEW).accept(this.format.getMediaType())
+      .post(EntityType.class, type);
   }
 
   /**
@@ -294,7 +296,8 @@ public class WatchClient {
    */
   public EntityType getEntityType(final String name) {
     try {
-      return this.resource.path(KBUtils.ENTITY_TYPE + FS + this.format + AS + name).accept(this.format.getMediaType())
+      final String id = KBUtils.hashId(name);
+      return this.resource.path(KBUtils.ENTITY_TYPE + FS + this.format + AS + id).accept(this.format.getMediaType())
         .get(EntityType.class);
     } catch (final UniformInterfaceException e) {
       final ClientResponse resp = e.getResponse();
@@ -339,7 +342,8 @@ public class WatchClient {
    * @return the deleted entity type
    */
   public EntityType deleteEntityType(final String name) {
-    return this.resource.path(KBUtils.ENTITY_TYPE + FS + this.format + AS + name).accept(this.format.getMediaType())
+    final String id = KBUtils.hashId(name);
+    return this.resource.path(KBUtils.ENTITY_TYPE + FS + this.format + AS + id).accept(this.format.getMediaType())
       .delete(EntityType.class);
   }
 
@@ -354,9 +358,10 @@ public class WatchClient {
    *          the property description
    * @return the newly created property
    */
-  public Property createProperty(final String type, final String name, final String description) {
-    return this.resource.path(KBUtils.PROPERTY + FS + this.format + AS + type + AS + name)
-      .accept(this.format.getMediaType()).post(Property.class, description);
+  public Property createProperty(final EntityType type, final String name, final String description) {
+    final Property property = new Property(type, name, description);
+    return this.resource.path(KBUtils.PROPERTY + FS + this.format + AS + NEW).accept(this.format.getMediaType())
+      .post(Property.class, property);
   }
 
   /**
@@ -451,8 +456,10 @@ public class WatchClient {
    */
   public PropertyValue getPropertyValue(final String entityType, final String entity, final String property) {
     try {
-      return this.resource
-        .path(KBUtils.PROPERTY_VALUE + FS + this.format + AS + entityType + AS + entity + AS + property)
+      final String entityId = Entity.createId(entityType, entity);
+      final String propertyId = Property.createId(entityType, property);
+
+      return this.resource.path(KBUtils.PROPERTY_VALUE + FS + this.format + AS + entityId + AS + propertyId)
         .accept(this.format.getMediaType()).get(PropertyValue.class);
     } catch (final UniformInterfaceException e) {
       final ClientResponse resp = e.getResponse();
@@ -477,17 +484,12 @@ public class WatchClient {
   /**
    * Delete an existing property value.
    * 
-   * @param entityType
-   *          The {@link EntityType} related to this property value
-   * @param entity
-   *          The {@link Entity} related to this property value
-   * @param property
-   *          the {@link Property} related to this property value
+   * @param valueId
+   *          The Id of the value.
    * @return the deleted property value.
    */
-  public PropertyValue deletePropertyValue(final String entityType, final String entity, final String property) {
-    return this.resource
-      .path(KBUtils.PROPERTY_VALUE + FS + this.format + AS + entityType + AS + entity + AS + property)
+  public PropertyValue deletePropertyValue(final String valueId) {
+    return this.resource.path(KBUtils.PROPERTY_VALUE + FS + this.format + AS + valueId)
       .accept(this.format.getMediaType()).delete(PropertyValue.class);
     // TODO treat the not found exception
   }

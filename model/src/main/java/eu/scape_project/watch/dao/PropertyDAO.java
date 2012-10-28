@@ -47,7 +47,19 @@ public final class PropertyDAO extends AbstractDO<Property> {
    * @return The complete Property RDF Id using namescape prefix
    */
   public static String getPropertyRDFId(final Property property) {
-    return getPropertyRDFId(property.getType().getName(), property.getName());
+    return KBUtils.getRdfId(Property.class, property.getId());
+  }
+
+  /**
+   * Get the complete Property RDF Id to use in SPARQL.
+   * 
+   * @param propertyId
+   *          The property from which go get the RDF id.
+   * 
+   * @return The complete Property RDF Id using namescape prefix
+   */
+  public static String getPropertyRDFId(final String propertyId) {
+    return KBUtils.getRdfId(Property.class, propertyId);
   }
 
   /**
@@ -111,8 +123,8 @@ public final class PropertyDAO extends AbstractDO<Property> {
    *          the maximum number of items to retrieve
    * @return The list of properties filtered by the above constraints
    */
-  public List<Property> listWithType(final String type, final int start, final int max) {
-    final String bindings = String.format("?s %1$s %2$s", ENTITY_TYPE_REL, EntityTypeDAO.getEntityTypeRDFId(type));
+  public List<Property> listWithType(final String typeId, final int start, final int max) {
+    final String bindings = String.format("?s %1$s %2$s", ENTITY_TYPE_REL, EntityTypeDAO.getEntityTypeRDFId(typeId));
     return this.query(bindings, start, max);
   }
 

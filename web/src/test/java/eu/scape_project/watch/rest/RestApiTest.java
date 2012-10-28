@@ -237,7 +237,7 @@ public class RestApiTest extends JerseyTest {
     final EntityType entitytype = client.createEntityType(typeName, typeDescription);
 
     final String name = "test01";
-    final Entity entity = client.createEntity(name, typeName);
+    final Entity entity = client.createEntity(entitytype, name);
     Assert.assertNotNull(entity);
     Assert.assertEquals(entity.getName(), name);
     Assert.assertNotNull(entity.getType());
@@ -309,7 +309,7 @@ public class RestApiTest extends JerseyTest {
 
     final String name = "property01";
     final String description = "The property 01";
-    final Property property = client.createProperty(typeName, name, description);
+    final Property property = client.createProperty(entitytype, name, description);
     Assert.assertNotNull(property);
     Assert.assertEquals(property.getName(), name);
     Assert.assertEquals(property.getDescription(), description);
@@ -390,11 +390,11 @@ public class RestApiTest extends JerseyTest {
     final EntityType entitytype = client.createEntityType(typeName, typeDescription);
 
     final String entityName = "test01";
-    final Entity entity = client.createEntity(entityName, typeName);
+    final Entity entity = client.createEntity(entitytype, entityName);
 
     final String propertyName = "property01";
     final String propertyDescription = "The property 01";
-    final Property property = client.createProperty(typeName, propertyName, propertyDescription);
+    final Property property = client.createProperty(entitytype, propertyName, propertyDescription);
 
     final String value = "99999";
 
@@ -423,7 +423,7 @@ public class RestApiTest extends JerseyTest {
     // TODO test update
 
     // DELETE
-    final PropertyValue propertyValue3 = client.deletePropertyValue(typeName, entityName, propertyName);
+    final PropertyValue propertyValue3 = client.deletePropertyValue(propertyValue.getId());
     Assert.assertEquals(propertyValue3, propertyValue);
 
     final Entity entity2 = client.deleteEntity(typeName, entityName);
@@ -486,11 +486,11 @@ public class RestApiTest extends JerseyTest {
     final EntityType entitytype = client.createEntityType(typeName, typeDescription);
 
     final String entityName = "test01";
-    final Entity entity = client.createEntity(entityName, typeName);
+    final Entity entity = client.createEntity(entitytype, entityName);
 
     final String propertyName = "property01";
     final String propertyDescription = "The property 01";
-    final Property property = client.createProperty(typeName, propertyName, propertyDescription);
+    final Property property = client.createProperty(entitytype, propertyName, propertyDescription);
 
     final String value = "99999";
 
@@ -553,11 +553,11 @@ public class RestApiTest extends JerseyTest {
     final EntityType entitytype = client.createEntityType(typeName, typeDescription);
 
     final String entityName = "test01";
-    final Entity entity = client.createEntity(entityName, typeName);
+    final Entity entity = client.createEntity(entitytype, entityName);
 
     final String propertyName = "property01";
     final String propertyDescription = "The property 01";
-    final Property property = client.createProperty(typeName, propertyName, propertyDescription);
+    final Property property = client.createProperty(entitytype, propertyName, propertyDescription);
 
     final String value = "99999";
 

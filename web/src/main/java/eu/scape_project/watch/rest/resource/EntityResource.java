@@ -102,21 +102,18 @@ public class EntityResource extends JavaHelp {
    *         is not found.
    */
   @POST
-  @Path("/{name}")
+  @Path("/new")
   @ApiOperation(value = "Create Entity", notes = "This can only be done by a logged user (TODO)")
   @ApiErrors(value = {@ApiError(code = NotFoundException.CODE, reason = "Entity type not found")})
-  public Response createEntity(
-    @ApiParam(value = "Entity name (must be unique)", required = true) @PathParam("name") final String name,
-    @ApiParam(value = "Entity Type (must exist)", required = true) final String type) {
+  public Response createEntity(@ApiParam(value = "Entity", required = true) final Entity entity) {
 
-    final EntityType entitytype = DAO.ENTITY_TYPE.findById(type);
+    final EntityType entitytype = DAO.ENTITY_TYPE.findById(entity.getType().getId());
 
     if (entitytype != null) {
-      final Entity entity = new Entity(entitytype, name);
-      entity.save();
-      return Response.ok().entity(entity).build();
+      final Entity commitedEntity = DAO.ENTITY.save(entity);
+      return Response.ok().entity(commitedEntity).build();
     } else {
-      throw new NotFoundException("Entity type not found: " + type);
+      throw new NotFoundException("Entity type not found: " + entity.getType());
     }
 
   }

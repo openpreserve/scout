@@ -8,6 +8,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import thewebsemantic.Id;
 import thewebsemantic.Namespace;
 import thewebsemantic.binding.RdfBean;
@@ -43,7 +45,16 @@ public class EntityType extends RdfBean<EntityType> {
     super();
     this.name = name;
     this.description = description;
+
+    updateId();
   }
+
+  /**
+   * The unique id generated as an hash of the name.
+   */
+  @Id
+  @XmlElement
+  private String id;
 
   /**
    * Unique name that identifies the entity type.
@@ -57,17 +68,40 @@ public class EntityType extends RdfBean<EntityType> {
   @XmlElement
   private String description;
 
-  @Id
+  /**
+   * Update the id by hashing the name.
+   */
+  private void updateId() {
+    this.id = KBUtils.hashId(getName());
+  }
+
   public String getId() {
-    return KBUtils.encodeId(getName());
+    return id;
+  }
+
+  /**
+   * Set the id method for use in serialization.
+   * 
+   * @param id
+   *          The value of ID.
+   */
+  public void setId(final String id) {
+    this.id = id;
   }
 
   public String getName() {
     return name;
   }
 
+  /**
+   * Set the name and update the id.
+   * 
+   * @param name
+   *          The entity type name.
+   */
   public void setName(final String name) {
     this.name = name;
+    updateId();
   }
 
   public String getDescription() {
@@ -76,44 +110,6 @@ public class EntityType extends RdfBean<EntityType> {
 
   public void setDescription(final String description) {
     this.description = description;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
-    result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final EntityType other = (EntityType) obj;
-    if (this.description == null) {
-      if (other.description != null) {
-        return false;
-      }
-    } else if (!this.description.equals(other.description)) {
-      return false;
-    }
-    if (this.name == null) {
-      if (other.name != null) {
-        return false;
-      }
-    } else if (!this.name.equals(other.name)) {
-      return false;
-    }
-    return true;
   }
 
   @Override
@@ -130,8 +126,54 @@ public class EntityType extends RdfBean<EntityType> {
   }
 
   @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((description == null) ? 0 : description.hashCode());
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
+    result = prime * result + ((name == null) ? 0 : name.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (!(obj instanceof EntityType)) {
+      return false;
+    }
+    final EntityType other = (EntityType) obj;
+    if (description == null) {
+      if (other.description != null) {
+        return false;
+      }
+    } else if (!description.equals(other.description)) {
+      return false;
+    }
+    if (id == null) {
+      if (other.id != null) {
+        return false;
+      }
+    } else if (!id.equals(other.id)) {
+      return false;
+    }
+    if (name == null) {
+      if (other.name != null) {
+        return false;
+      }
+    } else if (!name.equals(other.name)) {
+      return false;
+    }
+    return true;
+  }
+
+  @Override
   public String toString() {
-    return "EntityType(name=" + this.name + ", description=" + this.description + ")";
+    return String.format("EntityType [id=%s, name=%s, description=%s]", id, name, description);
   }
 
 }

@@ -14,7 +14,8 @@
 			this}}{{/value-render}}</span>
 	</div>
 	<p>
-		<strong>Data type:</strong> {{property.datatype.description}}{{#if property.renderingHint}} <small>({{property.renderingHint.description}})</small>{{/if}}.
+		<strong>Data type:</strong> {{property.datatype.description}}{{#if
+		property.renderingHint}} <small>({{property.renderingHint.description}})</small>{{/if}}.
 	</p>
 	<p>
 		<strong>Property history:</strong> There are <a href="#history">{{propertyValueVersionCount}}
@@ -73,7 +74,25 @@
 $(function () {
     var chart;
     $(document).ready(function() {
-    
+    	// static variables
+    	var datatype = "{{propertyValue.property.datatype}}";
+    	var renderingHint =  "{{propertyValue.property.renderingHint}}";
+    	
+    	var yFormatter = function(value) {
+    		var ret;
+    		 if(datatype == 'STRING_DICTIONARY') {
+     	    	ret = value;
+     	    } else if(datatype == 'INTEGER' || datatype == 'LONG' ||datatype == 'FLOAT' || datatype == 'DOUBLE') {
+     	    	ret = ValueRenderer.render(this.value, datatype, renderingHint);
+     	    } else if(datatype == 'DATE') {
+     	    	ret = ValueRenderer.render(this.value, datatype, renderingHint);	
+     	    } else {
+     	    	// value is version
+     	    	ret = "version "+value;
+     	    }
+    		 return ret;
+    	};
+    	
         // define the options
         var options = {
     
@@ -102,7 +121,7 @@ $(function () {
                     x: 3,
                     y: 16,
                     formatter: function() {
-                        return this.value;
+                        return yFormatter(this.value);
                     }
                 },
                 showFirstLabel: false
@@ -118,7 +137,7 @@ $(function () {
                     x: -3,
                     y: 16,
                     formatter: function() {
-                        return this.value;
+                    	return yFormatter(this.value);
                     }
                 },
                 showFirstLabel: false
@@ -186,12 +205,12 @@ $(function () {
             	    		
             	    	}
             	    } else if(datatype == 'INTEGER' || datatype == 'LONG' ||datatype == 'FLOAT' || datatype == 'DOUBLE') {
-            	    	measurements.push({name: ValueRenderer.render(measurement.propertyValue), x: date, y: value});	
+            	    	measurements.push({name: ValueRenderer.renderValue(measurement.propertyValue), x: date, y: value});	
             	    } else if(datatype == 'DATE') {
             	    	var dateValue = new Date(value);
-            	    	measurements.push({name: value, x: date, y: dateValue});	
+            	    	measurements.push({name: ValueRenderer.renderValue(measurement.propertyValue), x: date, y: dateValue});	
             	    } else {
-            	    	measurements.push({name: value, x: date, y: version});
+            	    	measurements.push({name: ValueRenderer.renderValue(measurement.propertyValue), x: date, y: version});
             	    }
             	    
             	}

@@ -58,9 +58,7 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
    * Update Id for new name or version.
    */
   private void updateId() {
-    if (this.name != null && this.version != null) {
-      id = createId(this.name, this.version, this.instance);
-    }
+    this.id = createId(this.name, this.version, this.instance);
   }
 
   /**
@@ -181,6 +179,10 @@ public class SourceAdaptor extends RdfBean<SourceAdaptor> {
 
   public String getId() {
     return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 
   public String getVersion() {

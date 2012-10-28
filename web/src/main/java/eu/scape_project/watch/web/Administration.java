@@ -57,18 +57,19 @@ public class Administration extends TemplateContext {
     if (operation == null || operation.length() == 0) {
       continueChain = true;
     } else if (operation.equals("removeAdaptor")) {
-      final String adaptorUID = request.getParameter("adaptor");
-
+      final String adaptorId = request.getParameter("adaptor");
+      
+      final SourceAdaptor adaptor = DAO.SOURCE_ADAPTOR.findById(adaptorId);
+      
       final ServletContext context = ContextUtil.getServletContext(request);
       final AdaptorManager adaptorManager = ContextUtil.getAdaptorManager(context);
-      final SourceAdaptor adaptor = adaptorManager.getSourceAdaptor(adaptorUID);
-
+      
       if (adaptor != null) {
         DAO.delete(adaptor);
         adaptorManager.reloadKnownAdaptors();
         response.sendRedirect(getMustacheletPath() + "/administration");
       } else {
-        response.sendError(404, "Source adaptor not found: " + StringEscapeUtils.escapeHtml(adaptorUID));
+        response.sendError(404, "Source adaptor not found: " + StringEscapeUtils.escapeHtml(adaptorId));
       }
       continueChain = false;
 

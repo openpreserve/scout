@@ -40,7 +40,6 @@ public class PropertyValue extends RdfBean<PropertyValue> {
    * A unique identifier.
    */
   @Id
-  @JsonIgnore
   private String id;
 
   /**
@@ -188,7 +187,7 @@ public class PropertyValue extends RdfBean<PropertyValue> {
     return id;
   }
 
-  public void setId(String id) {
+  public void setId(final String id) {
     this.id = id;
   }
 

@@ -41,6 +41,12 @@ public class Measurement extends RdfBean<Measurement> {
   }
 
   /**
+   * Auto-generated id.
+   */
+  @Id
+  private String id;
+
+  /**
    * The measured property value.
    */
   @XmlElement
@@ -102,16 +108,14 @@ public class Measurement extends RdfBean<Measurement> {
     this.limit = false;
     this.adaptor = adaptor;
 
+    updateId();
     updateSignificant();
   }
 
   /**
-   * The unique identifier of the measurement.
-   * 
-   * @return The related property value name concatenated with the timestamp
+   * Update unique identifier of the measurement.
    */
-  @Id
-  public String getId() {
+  private void updateId() {
     String propertyName;
 
     if (this.propertyValue != null && this.propertyValue.getProperty() != null) {
@@ -120,7 +124,7 @@ public class Measurement extends RdfBean<Measurement> {
       propertyName = "unknown";
     }
 
-    return createId(propertyName, this.timestamp);
+    this.id = createId(propertyName, this.timestamp);
   }
 
   public PropertyValue getPropertyValue() {
@@ -129,6 +133,16 @@ public class Measurement extends RdfBean<Measurement> {
 
   public void setPropertyValue(final PropertyValue propertyValue) {
     this.propertyValue = propertyValue;
+    updateId();
+
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 
   public Date getTimestamp() {
@@ -137,13 +151,14 @@ public class Measurement extends RdfBean<Measurement> {
 
   public void setTimestamp(final Date timestamp) {
     this.timestamp = (Date) timestamp.clone();
+    updateId();
   }
 
   public boolean isSignificant() {
     return significant;
   }
-  
-  public void setSignificant(boolean significant) {
+
+  public void setSignificant(final boolean significant) {
     this.significant = significant;
   }
 
@@ -182,6 +197,7 @@ public class Measurement extends RdfBean<Measurement> {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((adaptor == null) ? 0 : adaptor.hashCode());
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
     result = prime * result + (last ? 1231 : 1237);
     result = prime * result + (limit ? 1231 : 1237);
     result = prime * result + ((propertyValue == null) ? 0 : propertyValue.hashCode());
@@ -191,7 +207,7 @@ public class Measurement extends RdfBean<Measurement> {
   }
 
   @Override
-  public boolean equals(Object obj) {
+  public boolean equals(final Object obj) {
     if (this == obj) {
       return true;
     }
@@ -201,12 +217,19 @@ public class Measurement extends RdfBean<Measurement> {
     if (!(obj instanceof Measurement)) {
       return false;
     }
-    Measurement other = (Measurement) obj;
+    final Measurement other = (Measurement) obj;
     if (adaptor == null) {
       if (other.adaptor != null) {
         return false;
       }
     } else if (!adaptor.equals(other.adaptor)) {
+      return false;
+    }
+    if (id == null) {
+      if (other.id != null) {
+        return false;
+      }
+    } else if (!id.equals(other.id)) {
       return false;
     }
     if (last != other.last) {
@@ -237,7 +260,8 @@ public class Measurement extends RdfBean<Measurement> {
 
   @Override
   public String toString() {
-    return String.format("Measurement [propertyValue=%s, timestamp=%s, significant=%s, last=%s, limit=%s, adaptor=%s]",
+    return String.format(
+      "Measurement [id=%s, propertyValue=%s, timestamp=%s, significant=%s, last=%s, limit=%s, adaptor=%s]", id,
       propertyValue, timestamp, significant, last, limit, adaptor);
   }
 

@@ -97,11 +97,7 @@ Handlebars.registerHelper('dateFormat', function(context, block) {
 });
 
 var ValueRenderer = {
-	render : function(pv) {
-		var value = pv.value;
-		var datatype = pv.property.datatype;
-		var renderingHint = pv.property.renderingHint;
-
+	render : function(value, datatype, renderingHint) {
 		var ret;
 
 		if (datatype == 'URI') {
@@ -132,8 +128,15 @@ var ValueRenderer = {
 
 		return ret;
 	},
+	renderValue : function(pv) {
+		var value = pv.value;
+		var datatype = pv.property.datatype;
+		var renderingHint = pv.property.renderingHint;
+
+		return this.render(value, datatype, renderingHint);
+	}
 };
 
 Handlebars.registerHelper('value-render', function(pv, block) {
-	return ValueRenderer.render(pv);
+	return ValueRenderer.renderValue(pv);
 });

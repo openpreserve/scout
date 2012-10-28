@@ -43,7 +43,6 @@ public class Property extends RdfBean<Property> {
    * The unique Id.
    */
   @Id
-  @JsonIgnore
   private String id;
 
   /**
@@ -137,6 +136,10 @@ public class Property extends RdfBean<Property> {
 
   public String getId() {
     return id;
+  }
+  
+  public void setId(String id) {
+    this.id = id;
   }
 
   public EntityType getType() {

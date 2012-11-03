@@ -104,27 +104,27 @@ public class SourceAdaptorEventResource extends JavaHelp {
   @ApiOperation(value = "List all source adaptor events", notes = "")
   @ApiErrors(value = {@ApiError(code = NotFoundException.CODE, reason = "Source adaptor not found")})
   public Response listSourceAdaptorEvent(
-    @ApiParam(value = "Source adaptor", required = false) @QueryParam("adaptor") final String instance,
+    @ApiParam(value = "Source adaptor", required = false) @QueryParam("adaptor") final String id,
     @ApiParam(value = "Index offset of the list to return", required = false) @QueryParam("start") final int start,
     @ApiParam(value = "Max number of items of the list to return", required = false) @QueryParam("max") final int max) {
 
     List<SourceAdaptorEvent> events;
 
-    if (StringUtils.isBlank(instance)) {
+    if (StringUtils.isBlank(id)) {
       // no adaptor filter
       events = DAO.SOURCE_ADAPTOR_EVENT.query("", start, max);
       return Response.ok().entity(new GenericEntity<Collection<SourceAdaptorEvent>>(events) {
       }).build();
     } else {
-      final AdaptorManager manager = ContextUtil.getAdaptorManager(context);
-      final SourceAdaptor adaptor = manager.getSourceAdaptor(instance);
+
+      final SourceAdaptor adaptor = DAO.SOURCE_ADAPTOR.findById(id);
 
       if (adaptor != null) {
         events = DAO.SOURCE_ADAPTOR_EVENT.listByAdaptor(adaptor, start, max);
         return Response.ok().entity(new GenericEntity<Collection<SourceAdaptorEvent>>(events) {
         }).build();
       } else {
-        throw new NotFoundException("Source adaptor not found: " + instance);
+        throw new NotFoundException("Source adaptor not found: " + id);
       }
     }
 

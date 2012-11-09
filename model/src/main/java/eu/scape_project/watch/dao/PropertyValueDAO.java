@@ -1,15 +1,24 @@
 package eu.scape_project.watch.dao;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import thewebsemantic.binding.Jenabean;
+
 import com.hp.hpl.jena.datatypes.xsd.XSDDateTime;
+import com.hp.hpl.jena.query.QuerySolutionMap;
+import com.hp.hpl.jena.rdf.model.Literal;
+import com.hp.hpl.jena.rdf.model.Model;
 
 import eu.scape_project.watch.domain.DataType;
 import eu.scape_project.watch.domain.Entity;
@@ -18,6 +27,7 @@ import eu.scape_project.watch.domain.Measurement;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.domain.SourceAdaptor;
+import eu.scape_project.watch.utils.JavaUtils;
 import eu.scape_project.watch.utils.KBUtils;
 
 /**
@@ -176,7 +186,12 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
    * @return A list of {@link PropertyValue} filtered by the above constraints
    */
   public List<PropertyValue> query(final String bindings, final int start, final int max, final String orderBy) {
-    return super.query(PropertyValue.class, bindings, start, max, orderBy);
+    return super.query(PropertyValue.class, bindings, new QuerySolutionMap(), start, max, orderBy);
+  }
+
+  public List<PropertyValue> query(final String bindings, final QuerySolutionMap variableBindings, final int start,
+    final int max) {
+    return super.query(PropertyValue.class, bindings, variableBindings, start, max);
   }
 
   /**
@@ -328,10 +343,22 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
     // check if exists a property value with that value
     final Entity entity = pv.getEntity();
     final Property property = pv.getProperty();
-    final String valueBinding = createValueBinding(pv.getValue(), property.getDatatype());
+
+    final String valuePredicate = getValuePredicate(property.getDatatype());
+    final Literal valueLiteral = createValueLiteral(pv.getValue(), property.getDatatype());
+
+    final QuerySolutionMap variableBinding = new QuerySolutionMap();
+    if (valueLiteral != null) {
+      variableBinding.add("value", valueLiteral);
+    }
+
+    String valueBinding = "";
+    if (valuePredicate != null) {
+      valueBinding = " . ?s " + valuePredicate + " ?value";
+    }
 
     final List<PropertyValue> existingPVs = query("?s watch:entity " + EntityDAO.getEntityRDFId(entity)
-      + " . ?s watch:property " + PropertyDAO.getPropertyRDFId(property) + " . " + valueBinding, 0, 1);
+      + " . ?s watch:property " + PropertyDAO.getPropertyRDFId(property) + valueBinding, variableBinding, 0, 1);
 
     final Measurement previousMeasurement = DAO.MEASUREMENT.findLastMeasurement(pv);
 
@@ -424,55 +451,87 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
    * @return The query binding, using ?s as subject, which should be the id of
    *         the PropertValue.
    */
-  private String createValueBinding(final Object value, final DataType datatype) {
-    final StringBuilder ret = new StringBuilder();
-
-    String predicate;
-    String rdfDataType;
-
+  private Literal createValueLiteral(final Object value, final DataType datatype) {
     // TODO support StringList and StringDictionary
+
+    Literal literal;
+    final Model model = Jenabean.instance().model();
 
     switch (datatype) {
       case STRING:
+        final String stringValue = (String) value;
+        literal = model.createTypedLiteral(stringValue);
+        break;
+      case INTEGER:
+        final int intValue = (Integer) value;
+        literal = model.createTypedLiteral(intValue);
+        break;
+      case LONG:
+        final long longValue = (Long) value;
+        literal = model.createTypedLiteral(longValue);
+        break;
+      case FLOAT:
+        final float floatValue = (Float) value;
+        literal = model.createTypedLiteral(floatValue);
+        break;
+      case DOUBLE:
+        final double doubleValue = (Double) value;
+        literal = model.createTypedLiteral(doubleValue);
+        break;
+      case DATE:
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime((Date) value);
+        
+        literal = model.createTypedLiteral(calendar);
+        break;
+      case URI:
+        URI uriValue = (URI) value;
+        literal = model.createTypedLiteral(uriValue);
+        break;
+      default:
+        literal = model.createTypedLiteral(value);
+    }
+    return literal;
+  }
+
+  private String getValuePredicate(final DataType datatype) {
+    String predicate;
+    switch (datatype) {
+      case STRING:
         predicate = "watch:stringValue";
-        rdfDataType = "xsd:string";
         break;
       case INTEGER:
         predicate = "watch:integerValue";
-        rdfDataType = "xsd:integer";
         break;
       case LONG:
         predicate = "watch:longValue";
-        rdfDataType = "xsd:long";
         break;
       case FLOAT:
         predicate = "watch:floatValue";
-        rdfDataType = "xsd:float";
         break;
       case DOUBLE:
         predicate = "watch:doubleValue";
-        rdfDataType = "xsd:double";
         break;
       case DATE:
         predicate = "watch:dateValue";
-        rdfDataType = "xsd:date";
         break;
       case URI:
         predicate = "watch:uriValue";
-        rdfDataType = "xsd:uri";
         break;
       default:
-        return "";
+        return null;
     }
+    return predicate;
+  }
 
-    ret.append("?s ");
-    ret.append(predicate);
-    ret.append(" '");
-    ret.append(value);
-    ret.append("'^^");
-    ret.append(rdfDataType);
-
-    return ret.toString();
+  public static void main(String[] args) throws IOException {
+    File dataTempir = JavaUtils.createTempDirectory();
+    KBUtils.dbConnect(dataTempir.getPath(), false);
+    String test = "ME (Millenium Edition)\\\n.9)";
+    PropertyValueDAO dao = new PropertyValueDAO();
+    System.out.println("binding: " + dao.createValueLiteral(test, DataType.STRING));
+    KBUtils.dbDisconnect();
+    FileUtils.deleteQuietly(dataTempir);
   }
 
   // TODO list all property values by adaptor

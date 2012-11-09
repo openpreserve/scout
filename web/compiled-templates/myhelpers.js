@@ -89,7 +89,8 @@ Handlebars.registerHelper("partial", function(name, options) {
 Handlebars.registerHelper('dateFormat', function(context, block) {
 	if (window.moment) {
 		var f = block.hash.format || "dddd, D MMMM YYYY, h:mm:ss a";
-		return moment(Date(context)).format(f);
+		var date = new Date(context);
+		return moment(date).format(f);
 	} else {
 		return context; // moment plugin not available. return data as is.
 	}
@@ -106,11 +107,11 @@ var ValueRenderer = {
 				&& renderingHint == 'STORAGE_VOLUME') {
 			ret = humanize.filesize(value);
 		} else if (datatype == 'DATE') {
+			var date = new Date(value);
 			if (renderingHint == 'DATE_DAY') {
-				ret = moment(Date(value)).format("dddd, D MMMM YYYY");
+				ret = moment(date).format("dddd, D MMMM YYYY");
 			} else {
-				ret = moment(Date(value))
-						.format("dddd, D MMMM YYYY, h:mm:ss a");
+				ret = moment(date).format("dddd, D MMMM YYYY, h:mm:ss a");
 			}
 		} else if (datatype == "STRING_DICTIONARY") {
 			ret = "<table class='table table-bordered table-condensed' style='margin:0'>";

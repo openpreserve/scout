@@ -3,6 +3,8 @@ package eu.scape_project.watch.dao;
 import java.util.Date;
 import java.util.List;
 
+import com.hp.hpl.jena.query.QuerySolutionMap;
+
 import eu.scape_project.watch.domain.Measurement;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
@@ -71,7 +73,7 @@ public final class MeasurementDAO extends AbstractDO<Measurement> {
    * @return A list of {@link Measurement} filtered by the above constraints
    */
   public List<Measurement> query(final String bindings, final int start, final int max, final String orderBy) {
-    return super.query(Measurement.class, bindings, start, max, orderBy);
+    return super.query(Measurement.class, bindings, new QuerySolutionMap(), start, max, orderBy);
   }
 
   /**

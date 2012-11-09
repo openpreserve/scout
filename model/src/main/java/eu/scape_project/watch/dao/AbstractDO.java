@@ -22,8 +22,6 @@ import com.hp.hpl.jena.query.QuerySolutionMap;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.shared.Lock;
 
 import eu.scape_project.watch.utils.KBUtils;
@@ -80,8 +78,8 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
    *          ORDER BY clause is added.
    * @return The list of the requested type filtered by the constraints above.
    */
-  protected List<T> query(final Class<T> typeClass, final String bindings, final int start, final int max,
-    final String orderBy) {
+  protected List<T> query(final Class<T> typeClass, final String bindings, final QuerySolutionMap variableBindings,
+    final int start, final int max, final String orderBy) {
 
     final String classType = KBUtils.WATCH_NS + typeClass.getSimpleName();
 
@@ -104,6 +102,7 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
     final QuerySolutionMap initialBinding = new QuerySolutionMap();
     initialBinding.add("rel", model.createProperty(KBUtils.RDF_TYPE_REL));
     initialBinding.add("class", model.createResource(classType));
+    initialBinding.addAll(variableBindings);
 
     LinkedList<T> results;
 
@@ -116,6 +115,11 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
     }
 
     return results;
+  }
+
+  protected List<T> query(final Class<T> typeClass, final String bindings, final QuerySolutionMap variableBindings,
+    final int start, final int max) {
+    return query(typeClass, bindings, variableBindings, start, max, null);
   }
 
   /**
@@ -135,7 +139,7 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
    * @return The list of the requested type filtered by the constraints above.
    */
   protected List<T> query(final Class<T> typeClass, final String bindings, final int start, final int max) {
-    return query(typeClass, bindings, start, max, null);
+    return query(typeClass, bindings, new QuerySolutionMap(), start, max, null);
   }
 
   /**

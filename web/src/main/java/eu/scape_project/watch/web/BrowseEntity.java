@@ -1,5 +1,6 @@
 package eu.scape_project.watch.web;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 
@@ -21,7 +22,20 @@ public class BrowseEntity extends TemplateContext {
   }
 
   public List<PropertyValue> getValues() {
-    return DAO.PROPERTY_VALUE.listWithEntity(getEntity(), 0, 100);
+
+    // TODO optimize
+    final Entity entity = getEntity();
+    final List<Property> properties = DAO.PROPERTY.listWithType(entity.getType().getId(), 0, 1000);
+
+    final List<PropertyValue> ret = new ArrayList<PropertyValue>();
+
+    for (final Property property : properties) {
+      final PropertyValue pv = DAO.PROPERTY_VALUE.find(entity.getId(), property.getId());
+      ret.add(pv);
+    }
+
+    // return DAO.PROPERTY_VALUE.listWithEntity(getEntity(), 0, 100);
+    return ret;
   }
 
   @Inject

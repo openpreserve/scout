@@ -79,17 +79,17 @@ $(function () {
     	var renderingHint =  "{{propertyValue.property.renderingHint}}";
     	
     	var yFormatter = function(value) {
+    		console.log("value: "+value);
     		var ret;
     		 if(datatype == 'STRING_DICTIONARY') {
      	    	ret = value;
-     	    } else if(datatype == 'INTEGER' || datatype == 'LONG' ||datatype == 'FLOAT' || datatype == 'DOUBLE') {
-     	    	ret = ValueRenderer.render(this.value, datatype, renderingHint);
-     	    } else if(datatype == 'DATE') {
-     	    	ret = ValueRenderer.render(this.value, datatype, renderingHint);	
+     	    } else if(datatype == 'INTEGER' || datatype == 'LONG' ||datatype == 'FLOAT' || datatype == 'DOUBLE' || datatype == 'DATE') {
+     	    	ret = ValueRenderer.render(value, datatype, renderingHint);
      	    } else {
      	    	// value is version
      	    	ret = "version "+value;
      	    }
+    		 console.log("formatted: "+ret);
     		 return ret;
     	};
     	

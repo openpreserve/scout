@@ -39,7 +39,7 @@ public class QuartzScheduler implements SchedulerInterface {
    * 
    * TODO this should be defined in external configuration or per adaptor.
    */
-  private static final int SCHEDULE_INTERVAL_IN_SECONDS = 60;
+  private static final int SCHEDULE_INTERVAL_IN_SECONDS = 3600; // 1 hour
 
   /**
    * Quartz Scheduler interface

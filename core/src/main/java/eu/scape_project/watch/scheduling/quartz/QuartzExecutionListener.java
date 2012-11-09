@@ -80,12 +80,12 @@ public class QuartzExecutionListener implements JobListener {
         scheduler.notifyEvent(adaptor, event);
       } else {
         PluginException e = (PluginException) context.get("exception");
-        LOG.warn(adaptor.getName() + " was not successfully executed. An exception happened: " + e.getStackTrace());
+        LOG.warn(adaptor.getName() + " was not successfully executed. An exception happened: " + e.getMessage());
         SourceAdaptorEvent event = new SourceAdaptorEvent();
         event.setType(SourceAdaptorEventType.EXECUTED);
         event.setSuccessful(false);
         event.setMessage(adaptor.getName() + " was not successfully executed");
-        event.setReason("An exception happened: " + e.getStackTrace());
+        event.setReason("An exception happened: " + printException(e));
         scheduler.notifyEvent(adaptor, event);
         int num;
         if (failed.containsKey(adaptor)) {
@@ -114,6 +114,22 @@ public class QuartzExecutionListener implements JobListener {
       LOG.warn("Nothing to do , Adaptor execution was skipped");
     }
 
+  }
+
+  private String printException(PluginException e) {
+    final StringBuilder ret = new StringBuilder();
+    if (e != null) {
+      ret.append(e.getMessage());
+      Throwable cause = e.getCause();
+      while (cause != null) {
+        ret.append(" cause: [");
+        ret.append(e.getCause().getClass());
+        ret.append("] ");
+        ret.append(e.getCause().getMessage());
+        cause = cause.getCause();
+      }
+    }
+    return ret.toString();
   }
 
 }

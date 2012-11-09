@@ -214,15 +214,15 @@ public class C3POAdaptor implements AdaptorPluginInterface {
       final String id = this.identifiers.get(this.pointer++);
       this.currentBatch = this.getPropertyValues(id);
     }
-    
+
     final boolean hasNext = !this.currentBatch.isEmpty();
-    
-    //reset for next call of this method
+
+    // reset for next call of this method
     if (!hasNext) {
       this.reset();
     }
-    
-    return hasNext; 
+
+    return hasNext;
   }
 
   @Override
@@ -234,10 +234,10 @@ public class C3POAdaptor implements AdaptorPluginInterface {
   }
 
   /**
-   * To be removed in version 0.1.0
-   * Fetches all values of all collections in the pre-configured c3po instance.
-   * This method should be used with caution as it might lead to a huge network
-   * overhead, if the c3po instance has a great deal of collections.
+   * To be removed in version 0.1.0 Fetches all values of all collections in the
+   * pre-configured c3po instance. This method should be used with caution as it
+   * might lead to a huge network overhead, if the c3po instance has a great
+   * deal of collections.
    * 
    * @return a {@link ProfileResult} result.
    * 
@@ -270,16 +270,16 @@ public class C3POAdaptor implements AdaptorPluginInterface {
   // ### private methods.
 
   /**
-   * As soon as the hasNext method returns false, this adaptor
-   * will be put to sleep until it is scheduled again and thus
-   * a reset for the next run has to be done.
+   * As soon as the hasNext method returns false, this adaptor will be put to
+   * sleep until it is scheduled again and thus a reset for the next run has to
+   * be done.
    */
   private void reset() {
     this.identifiers = null;
     this.pointer = 0;
-    
+
   }
-  
+
   /**
    * Initializes the default configuration of the adaptor. Currently it starts a
    * dummy adaptor.
@@ -305,11 +305,11 @@ public class C3POAdaptor implements AdaptorPluginInterface {
    * @param id
    *          the id of the collection.
    * @return an {@link InputStream} containing the file.
-   * @throws PluginException if an error occurrs.
+   * @throws PluginException
+   *           if an error occurrs.
    */
-  private InputStream getCollectionProfile(final String id) throws PluginException{
-    final InputStream is = this.source.getCollectionProfile(id, null);
-    return is;
+  private InputStream getCollectionProfile(final String id) throws PluginException {
+    return this.source.getCollectionProfile(id, null);
   }
 
   /**
@@ -345,7 +345,8 @@ public class C3POAdaptor implements AdaptorPluginInterface {
    * @param id
    *          the id of the collection in the source.
    * @return a list of {@link PropertyValue} objects containing the results.
-   * @throws PluginException if an error occurrs.
+   * @throws PluginException
+   *           if an error occurs.
    */
   private List<PropertyValue> getPropertyValues(final String id) throws PluginException {
     final InputStream stream = this.getCollectionProfile(id);

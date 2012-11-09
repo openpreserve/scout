@@ -36,9 +36,23 @@ public class C3POClient implements C3POClientInterface {
   private static final Logger LOG = LoggerFactory.getLogger(C3POClient.class);
 
   /**
-   * A default timeout interval for the service.
+   * A short timeout interval for the requests. Amounts to 30 seconds.
    */
-  private static final int TIMEOUT_INTERVAL = 1000 * 60;
+  private static final int SHORT_TIMEOUT_INTERVAL = 1000 * 30;
+
+  /*
+   * This 10 minute read timeout is used for the getProfile requests. It works
+   * for now as the collections are of reasonable size and 10 minutes are
+   * sufficient to generate the profile (if this is the first generation
+   * request). Even if it occurs, the profile still gets generated and cached on
+   * the server, so it will be obtained on the next request. A better solution
+   * is of course to support polling on the server side and ask for the status
+   * of the generation as initially planned.
+   */
+  /**
+   * A longer timeout interval for the requests. Amounts to 10 minutes.
+   */
+  private static final int LONG_TIMEOUT_INTERVAL = 1000 * 60 * 10;
 
   /**
    * The endpoint of the c3po service.
@@ -70,14 +84,14 @@ public class C3POClient implements C3POClientInterface {
    *          the port where the service is running.
    */
   public C3POClient(final String url, final int port, final String endpoint) {
-    
+
     this.apiEndpoint = url;
-    
+
     if (port >= 0 && port <= 65535) {
       this.port = port;
       this.apiEndpoint = this.apiEndpoint + ":" + port;
     }
-    
+
     if (endpoint != null) {
       if (endpoint.startsWith("/")) {
         this.apiEndpoint = this.apiEndpoint + endpoint;
@@ -98,16 +112,16 @@ public class C3POClient implements C3POClientInterface {
       final String response = this.submitRequest("/collections");
       final C3POResponseParser reader = new C3POResponseParser();
       final List<String> collections = reader.getCollectionsFromResponse(IOUtils.toInputStream(response));
-      
+
       if (collections == null) {
         throw new PluginException("Could not read response: " + response);
       }
-      
+
       result.addAll(collections);
     } catch (final ProtocolException e) {
       LOG.error("A protocol error occurred: {}", e.getMessage());
       throw new PluginException("A protocol error occurred (check the url)", e);
-      
+
     } catch (final IOException e) {
       LOG.error("An io error occurred: {}", e.getMessage());
       throw new PluginException("A io exception occurred (check the connection)", e);
@@ -120,23 +134,25 @@ public class C3POClient implements C3POClientInterface {
    * {@inheritDoc}
    */
   @Override
-  public InputStream getCollectionProfile(final String identifier, final Map<String, String> parameters) throws PluginException {
+  public InputStream getCollectionProfile(final String identifier, final Map<String, String> parameters)
+      throws PluginException {
     try {
-      final String response = this.submitRequest("/export/profile?collection=" + identifier);
-      
-      if (response != null) {
+      final String response = this.submitRequest("/export/profile?collection=" + identifier, LONG_TIMEOUT_INTERVAL);
+
+      if (response == null || response.equals("")) {
+        throw new PluginException("Bad response from server [" + this.apiEndpoint + "]. Check the logs and retry");
+      } else {
         return IOUtils.toInputStream(response);
       }
-      
+
     } catch (final ProtocolException e) {
       LOG.error("A protocol error occurred: {}", e.getMessage());
       throw new PluginException("A protocol error occurred (check the url)", e);
-      
+
     } catch (final IOException e) {
       LOG.error("An io error occurred: {}", e.getMessage());
       throw new PluginException("A io exception occurred (check the connection)", e);
     }
-    return null;
   }
 
   @Override
@@ -183,15 +199,28 @@ public class C3POClient implements C3POClientInterface {
   }
 
   /**
-   * Submits a c3po request.
+   * Submits a c3po request with a short read timeout.
    * 
    * @param request
    *          the request to submit.
    * @return the response as a string.
    * @throws IOException
-   *           if an error occurrs.
+   *           if an error occurs.
    */
   private String submitRequest(final String request) throws IOException {
+    return this.submitRequest(request, SHORT_TIMEOUT_INTERVAL);
+  }
+
+  /**
+   * Submits a c3po request with the given read timeout.
+   * 
+   * @param request
+   *          the request to submit.
+   * @return the response as a string.
+   * @throws IOException
+   *           if an error occurs.
+   */
+  private String submitRequest(final String request, final int readTimeOut) throws IOException {
     LOG.debug("Submitting request to c3po: {}", request);
 
     final URL location = new URL(this.apiEndpoint + request);
@@ -200,8 +229,8 @@ public class C3POClient implements C3POClientInterface {
     connection.setDoInput(true);
     connection.setRequestMethod("GET");
     connection.setRequestProperty("Accept", "application/xml");
-    connection.setConnectTimeout(TIMEOUT_INTERVAL);
-    connection.setReadTimeout(TIMEOUT_INTERVAL);
+    connection.setConnectTimeout(SHORT_TIMEOUT_INTERVAL);
+    connection.setReadTimeout(readTimeOut);
 
     return this.readResponse(connection);
   }
@@ -230,7 +259,8 @@ public class C3POClient implements C3POClientInterface {
       LOG.trace(result);
 
     } catch (final IOException e) {
-      LOG.error("An error occurred while reading the response");
+      LOG.error("An error occurred while reading the response", e);
+
     } finally {
       try {
         if (in != null) {

@@ -54,7 +54,7 @@ public class SourceResource extends JavaHelp {
   @ApiErrors(value = {@ApiError(code = NotFoundException.CODE, reason = "Source not found")})
   public Response getSourceByName(
     @ApiParam(value = "Name of the source", required = true) @PathParam("name") final String name) {
-    final Source source = DAO.SOURCE.findById(name);
+    final Source source = DAO.SOURCE.findByName(name);
 
     if (source != null) {
       return Response.ok().entity(source).build();
@@ -106,7 +106,7 @@ public class SourceResource extends JavaHelp {
   @ApiOperation(value = "Update source", notes = "This can only be done by an admin user (TODO)")
   @ApiErrors(value = {@ApiError(code = NotFoundException.CODE, reason = "Source not found")})
   public Response updateEntityType(@ApiParam(value = "Updated Source", required = true) final Source source) {
-    final Source original = DAO.SOURCE.findById(source.getName());
+    final Source original = DAO.SOURCE.findByName(source.getName());
     if (original != null) {
       DAO.SOURCE.save(source);
       return Response.ok().entity(source).build();
@@ -129,7 +129,7 @@ public class SourceResource extends JavaHelp {
   @ApiErrors(value = {@ApiError(code = NotFoundException.CODE, reason = "Source not found")})
   public Response deleteEntityType(
     @ApiParam(value = "The source name", required = true) @PathParam("name") final String name) {
-    final Source source = DAO.SOURCE.findById(name);
+    final Source source = DAO.SOURCE.findByName(name);
     if (source != null) {
       DAO.delete(source);
       return Response.ok().entity(source).build();

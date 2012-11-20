@@ -10,7 +10,6 @@ import com.google.inject.Inject;
 
 import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.domain.Source;
-import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.web.annotations.Controller;
 import eu.scape_project.watch.web.annotations.HttpMethod;
 import eu.scape_project.watch.web.annotations.Path;

@@ -1177,7 +1177,7 @@ public class KBTest {
     DAO.save(source);
 
     // FIND
-    final Source source2 = DAO.SOURCE.findById(DATA_SOURCE_NAME);
+    final Source source2 = DAO.SOURCE.findByName(DATA_SOURCE_NAME);
     Assert.assertEquals(source, source2);
 
     // QUERY

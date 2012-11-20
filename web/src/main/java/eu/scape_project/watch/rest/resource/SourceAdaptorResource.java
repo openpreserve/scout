@@ -133,7 +133,7 @@ public class SourceAdaptorResource extends JavaHelp {
     @ApiParam(value = "Related source name", required = true) @QueryParam("source") final String sourceName) {
 
     final AdaptorManager manager = ContextUtil.getAdaptorManager(context);
-    final Source source = DAO.SOURCE.findById(sourceName);
+    final Source source = DAO.SOURCE.findByName(sourceName);
 
     // TODO catch exception related to plug-in not found and instance already
     // exists to send correct service exceptions.

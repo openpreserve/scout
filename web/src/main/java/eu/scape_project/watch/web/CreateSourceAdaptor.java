@@ -28,6 +28,7 @@ import eu.scape_project.watch.interfaces.SchedulerInterface;
 import eu.scape_project.watch.listener.ContextUtil;
 import eu.scape_project.watch.plugin.PluginInfo;
 import eu.scape_project.watch.plugin.PluginManager;
+import eu.scape_project.watch.utils.KBUtils;
 import eu.scape_project.watch.web.annotations.Controller;
 import eu.scape_project.watch.web.annotations.HttpMethod;
 import eu.scape_project.watch.web.annotations.Path;
@@ -77,7 +78,8 @@ public class CreateSourceAdaptor extends TemplateContext {
       }
     }
 
-    final Source source = DAO.SOURCE.findById(sourceId);
+    final String id = KBUtils.hashId(sourceId);
+    final Source source = DAO.SOURCE.findById(id);
 
     if (source != null) {
       final ServletContext context = ContextUtil.getServletContext(request);

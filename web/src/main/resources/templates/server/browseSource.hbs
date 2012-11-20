@@ -1,0 +1,16 @@
+{{#partial "title"}}Scout - Browse - Source{{/partial}} {{#partial
+"NavBrowseClass"}}active{{/partial}} {{#partial "content"}}
+<div class="container">
+	{{#source}}
+	<div class="page-header">
+		<h1>
+			{{name}} <small>source</small>
+		</h1>
+	</div>
+	{{/source}} {{^source}}
+  <div class="alert alert-error">
+    <b>Not found!</b> An error occurred. Could not find source.
+  </div>
+  {{/source}}
+</div>
+{{/partial}} {{>base}}

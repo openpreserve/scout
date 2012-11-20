@@ -35,12 +35,12 @@ public final class SourceDAO extends AbstractDO<Source> {
   /**
    * Get {@link Source} by its name.
    * 
-   * @param sourceName
-   *          the unique source name
+   * @param id
+   *          the id of the source
    * @return The {@link Source} or <code>null</code> if not found
    */
-  public Source findById(final String sourceName) {
-    return super.findById(KBUtils.hashId(sourceName), Source.class);
+  public Source findById(final String id) {
+    return super.findById(id, Source.class);
   }
 
   /**

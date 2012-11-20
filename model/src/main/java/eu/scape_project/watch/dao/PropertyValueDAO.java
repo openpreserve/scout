@@ -21,6 +21,7 @@ import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 
 import eu.scape_project.watch.domain.DataType;
+import eu.scape_project.watch.domain.DictionaryItem;
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.domain.Measurement;
@@ -346,14 +347,15 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
 
     final String valuePredicate = getValuePredicate(property.getDatatype());
     final Literal valueLiteral = createValueLiteral(pv.getValue(), property.getDatatype());
+    final boolean canBindValue = valuePredicate != null && valueLiteral != null;
 
     final QuerySolutionMap variableBinding = new QuerySolutionMap();
-    if (valueLiteral != null) {
+    if (canBindValue) {
       variableBinding.add("value", valueLiteral);
     }
 
     String valueBinding = "";
-    if (valuePredicate != null) {
+    if (canBindValue) {
       valueBinding = " . ?s " + valuePredicate + " ?value";
     }
 
@@ -362,7 +364,36 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
 
     final Measurement previousMeasurement = DAO.MEASUREMENT.findLastMeasurement(pv);
 
-    if (existingPVs.isEmpty()) {
+    boolean createNewVersion;
+
+    if (canBindValue) {
+      createNewVersion = existingPVs.isEmpty();
+    } else {
+      if (property.getDatatype().equals(DataType.STRING_DICTIONARY)) {
+        List<DictionaryItem> currentValue = (List) pv.getValue();
+        if (!existingPVs.isEmpty()) {
+          List<DictionaryItem> previousValue = (List) existingPVs.get(0).getValue();
+          createNewVersion = !currentValue.equals(previousValue);
+        } else {
+          createNewVersion = true;
+        }
+
+      } else if (property.getDatatype().equals(DataType.STRING_LIST)) {
+        List<String> currentValue = (List) pv.getValue();
+        if (!existingPVs.isEmpty()) {
+          List<String> previousValue = (List) existingPVs.get(0).getValue();
+          createNewVersion = !currentValue.equals(previousValue);
+        } else {
+          createNewVersion = true;
+        }
+      } else {
+        createNewVersion = true;
+      }
+    }
+
+    if (createNewVersion) {
+      logger.info("Creating new PV");
+
       // create new property value with a new version.
       final int version = getNextVersionNumber(entity, property);
       pv.setVersion(version);
@@ -383,6 +414,8 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
       ret = super.saveImpl(pv);
 
     } else {
+      logger.info("Adding measurement to existing PV");
+
       // tag existing property value with a new measurement.
       final PropertyValue existingPV = existingPVs.get(0);
 
@@ -481,7 +514,7 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
       case DATE:
         Calendar calendar = Calendar.getInstance();
         calendar.setTime((Date) value);
-        
+
         literal = model.createTypedLiteral(calendar);
         break;
       case URI:

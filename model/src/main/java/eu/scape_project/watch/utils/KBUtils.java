@@ -604,7 +604,11 @@ public final class KBUtils {
     }
 
     final byte[] finalDigest = md.digest(composedDigest);
-    return Base64.encodeBase64URLSafeString(finalDigest);
+    final String base64Hash = Base64.encodeBase64URLSafeString(finalDigest);
+    
+    LOG.trace("Generated Hash for {} is {}", Arrays.deepToString(ids), base64Hash);
+    
+    return base64Hash; 
   }
 
   /**

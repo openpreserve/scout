@@ -5838,3 +5838,10 @@ button.close {
     overflow: visible !important;
   }
 }
+
+/******************************************************************
+ *                            OWN STYLES                          * 
+ * These have to be included in the minified bootstrap css or     *
+ * in an own css file.                                            *
+ ******************************************************************/
+.push-right{float:right;}

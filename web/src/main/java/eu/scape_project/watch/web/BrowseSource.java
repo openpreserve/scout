@@ -13,10 +13,6 @@ import eu.scape_project.watch.web.annotations.TemplateSource;
 @TemplateSource("browseSource")
 public class BrowseSource extends TemplateContext {
 
-  public BrowseSource() {
-    System.out.println("HMM THIS GET CALLED");
-  }
-
   @Inject
   private Matcher m;
 

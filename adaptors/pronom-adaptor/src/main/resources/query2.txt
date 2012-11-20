@@ -5,6 +5,7 @@ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 SELECT ?name ?version ?mime ?uti ?developedBy ?maxByteSequenceOffset ?supportedBy ?xpuid ?lossiness ?waveguid ?compressionDocumentation ?mediaFormat ?note WHERE {
  
  ?s rdfs:label ?name .
+ ?s rdf:type pronom:file-format .
 
  OPTIONAL {?s pronom:version ?version .}
  OPTIONAL {?s pronom:MIMETYPE ?mime .}

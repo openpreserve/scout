@@ -93,7 +93,7 @@ public class PronomAdaptor implements AdaptorPluginInterface {
   /**
    * The current version of this plugin.
    */
-  private static final String VERSION = "0.0.5";
+  private static final String VERSION = "0.0.6";
 
   /**
    * The name of this plugin.

@@ -21,7 +21,7 @@ public class BrowseObjective extends TemplateContext {
   private HttpServletRequest request;
 
   public List<Objective> getObjectives() {
-    final ServletContext context = this.request.getServletContext();
+    final ServletContext context = this.request.getSession().getServletContext();
     final PolicyModel policyModel = ContextUtil.getPolicyModel(context);
 
     return policyModel.listAllObjectives();

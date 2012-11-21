@@ -9,7 +9,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
@@ -56,7 +55,7 @@ public class UploadObjective extends TemplateContext {
     }
 
     final JSONArray response = new JSONArray();
-    final ServletContext context = this.request.getServletContext();
+    final ServletContext context = this.request.getSession().getServletContext();
     final PolicyModel policyModel = ContextUtil.getPolicyModel(context);
     final ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
     final PrintWriter writer = this.response.getWriter();
@@ -99,15 +98,4 @@ public class UploadObjective extends TemplateContext {
   public String getRedirect() {
     return "/web";
   }
-
-  private String getFileName(final Part part) {
-    final String partHeader = part.getHeader("content-disposition");
-    for (String content : part.getHeader("content-disposition").split(";")) {
-      if (content.trim().startsWith("filename")) {
-        return content.substring(content.indexOf('=') + 1).trim().replace("\"", "");
-      }
-    }
-    return null;
-  }
-
 }

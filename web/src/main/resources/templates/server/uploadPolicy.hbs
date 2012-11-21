@@ -1,0 +1,10 @@
+{{#partial "title"}}Scout - Create Source{{/partial}}
+{{#partial "content"}} 
+<form class="container" method="POST" enctype="multipart/form-data">
+	<legend>Upload your policies</legend>
+	<input type="hidden" name="redirect" value="{{redirect}}"/>
+	<br /> <br />
+	<button type="submit" class="btn btn-primary">Create</button>
+</form>
+{{/partial}}
+{{> base}}

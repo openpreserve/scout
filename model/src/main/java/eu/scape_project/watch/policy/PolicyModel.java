@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -13,9 +15,13 @@ import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
+import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.Resource;
 
+import eu.scape_project.watch.domain.Objective;
 import eu.scape_project.watch.utils.KBUtils;
 
 public class PolicyModel {
@@ -38,6 +44,74 @@ public class PolicyModel {
     }
   }
 
+  public boolean loadPolicies(String file) {
+    boolean loaded = false;
+
+    if (file == null) {
+      LOG.warn("Cannot load policies. Provided file does not exist");
+      return loaded;
+    }
+
+    final File policies = new File(file);
+
+    if (policies.exists() && policies.isFile() && (file.endsWith(".rdf") || file.endsWith(".xml"))) {
+      try {
+        this.readModel(new FileInputStream(file));
+        loaded = true;
+      } catch (FileNotFoundException e) {
+        LOG.error("An error occurred while loading the policies file {}: {}", file, e.getMessage());
+      }
+    } else {
+      LOG.warn("The provided file either does not exist or is not a valid rdf/xml file: {}", file);
+    }
+
+    return loaded;
+  }
+
+  public List<Objective> listAllObjectives() {
+    final List<Objective> result = new ArrayList<Objective>();
+    final String query = this.getQuery("/queries/query_all_objectives.txt");
+    final QueryExecution qe = QueryExecutionFactory.create(query, this.getModel()); // getBaseModel?
+    final ResultSet set = qe.execSelect();
+
+    while (set.hasNext()) {
+      final QuerySolution next = set.nextSolution();
+      final Resource obj = next.getResource("objective");
+      final Literal name = next.getLiteral("name");
+      final Literal desc = next.getLiteral("desc");
+      final Resource mod = next.getResource("modality");
+      final Literal val = next.getLiteral("value");
+      final Resource q = next.getResource("qualifier");
+
+      Objective tmp = new Objective();
+      tmp.setUrl(obj.toString());
+
+      if (name != null) {
+        tmp.setMeasure(name.getString());
+      }
+
+      if (q != null) {
+        tmp.setQualifier(q.getLocalName());
+      }
+
+      if (desc != null) {
+        tmp.setMeasureDescription(desc.getString());
+      }
+
+      if (mod != null) {
+        tmp.setModality(mod.getLocalName());
+      }
+
+      if (val != null) {
+        tmp.setValue(val.getString());
+      }
+
+      result.add(tmp);
+    }
+
+    return result;
+  }
+
   private boolean loadFromClasspath() {
     boolean loaded = isModelLoaded();
 
@@ -45,10 +119,20 @@ public class PolicyModel {
       LOG.debug("Loading policy model from classpath");
 
       final String policyModelFile = "/model/policy_model.rdf";
-      final String attributes = "/model/attributes_measures.rdf";
+      final String controlPolicyFile = "/model/control-policy.rdf";
+      final String modalitiesFile = "/model/modalities.rdf";
+      final String qualifiersFile = "/model/qualifiers.rdf";
+      final String scalesFile = "/model/scales.rdf";
+      final String scopesFile = "/model/scopes.rdf";
+      final String attributesFile = "/model/attributes_measures.rdf";
 
       this.readModel(getClass().getResourceAsStream(policyModelFile));
-      this.readModel(getClass().getResourceAsStream(attributes));
+      this.readModel(getClass().getResourceAsStream(controlPolicyFile));
+      this.readModel(getClass().getResourceAsStream(modalitiesFile));
+      this.readModel(getClass().getResourceAsStream(qualifiersFile));
+      this.readModel(getClass().getResourceAsStream(scalesFile));
+      this.readModel(getClass().getResourceAsStream(scopesFile));
+      this.readModel(getClass().getResourceAsStream(attributesFile));
 
       loaded = true;
 
@@ -60,8 +144,8 @@ public class PolicyModel {
   }
 
   private boolean loadFromFileSystem() {
-
     boolean loaded = isModelLoaded();
+
     if (!loaded) {
       LOG.debug("Loading policy model from file system");
       final File modelDir = this.getModelDir();
@@ -74,7 +158,6 @@ public class PolicyModel {
       });
 
       for (String file : files) {
-        
         try {
           this.readModel(new FileInputStream(new File(MODEL_PATH + File.separator + file)));
         } catch (FileNotFoundException e) {
@@ -95,7 +178,7 @@ public class PolicyModel {
 
   private void readModel(InputStream file) {
     Model model = getModel();
-    model.read(file, BASE_URI);
+    model.read(file, BASE_URI, "RDF/XML");
   }
 
   private Model getModel() {

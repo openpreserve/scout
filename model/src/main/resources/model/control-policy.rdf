@@ -1,0 +1,182 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+
+<rdf:RDF xmlns="http://scape-project.eu/pw/vocab/control-policy#"
+     xml:base="http://scape-project.eu/pw/vocab/control-policy"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <owl:Ontology rdf:about="http://scape-project.eu/pw/vocab/control-policy"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Datatypes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://scape-project.eu/pw/vocab/control-policy#content -->
+
+    <owl:ObjectProperty rdf:about="http://scape-project.eu/pw/vocab/control-policy#content">
+        <rdfs:comment>Relates a scenario to a content set</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://scape-project.eu/pw/vocab/control-policy#modality -->
+
+    <owl:ObjectProperty rdf:about="http://scape-project.eu/pw/vocab/control-policy#modality">
+        <rdfs:comment>Relates an Objective to the modality (e.g. MUST, SHOULD etc) that applies to the objective.</rdfs:comment>
+        <rdfs:domain rdf:resource="http://scape-project.eu/pw/vocab/control-policy#Objective"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://scape-project.eu/pw/vocab/control-policy#objective -->
+
+    <owl:ObjectProperty rdf:about="http://scape-project.eu/pw/vocab/control-policy#objective">
+        <rdfs:comment>Relates a scenario to an objective</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://scape-project.eu/pw/vocab/control-policy#property -->
+
+    <owl:ObjectProperty rdf:about="http://scape-project.eu/pw/vocab/control-policy#property">
+        <rdfs:comment>Relates an Objective to the property that the objective pertains to.</rdfs:comment>
+        <rdfs:domain rdf:resource="http://scape-project.eu/pw/vocab/control-policy#Objective"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://scape-project.eu/pw/vocab/control-policy#qualifier -->
+
+    <owl:ObjectProperty rdf:about="http://scape-project.eu/pw/vocab/control-policy#qualifier">
+        <rdfs:comment>Relates an Objective to the qualifer (e.g. EQ, GE, etc) that applies to the objective.</rdfs:comment>
+        <rdfs:domain rdf:resource="http://scape-project.eu/pw/vocab/control-policy#Objective"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://scape-project.eu/pw/vocab/control-policy#value -->
+
+    <owl:DatatypeProperty rdf:about="http://scape-project.eu/pw/vocab/control-policy#value">
+        <rdfs:comment>Relates an Objective to the value that the property pertains to. This may be a value that is required to be present (in the case of a MUST), or a value that is required to be absent (in the case of a MUST NOT).</rdfs:comment>
+        <rdfs:domain rdf:resource="http://scape-project.eu/pw/vocab/control-policy#Objective"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://scape-project.eu/pw/vocab/control-policy#AccessObjective -->
+
+    <owl:Class rdf:about="http://scape-project.eu/pw/vocab/control-policy#AccessObjective">
+        <rdfs:subClassOf rdf:resource="http://scape-project.eu/pw/vocab/control-policy#Objective"/>
+        <rdfs:comment>Expresses a requirement that content is provided in representations that can be accessed by the user community. Involves information about technology available to users (browsers etc), formats that the objects are provided in and the capabilities of that technology. </rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://scape-project.eu/pw/vocab/control-policy#ActionObjective -->
+
+    <owl:Class rdf:about="http://scape-project.eu/pw/vocab/control-policy#ActionObjective">
+        <rdfs:subClassOf rdf:resource="http://scape-project.eu/pw/vocab/control-policy#Objective"/>
+        <rdfs:comment>Expresses a constraint on the characteristics of a software component</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://scape-project.eu/pw/vocab/control-policy#AuthenticityObjective -->
+
+    <owl:Class rdf:about="http://scape-project.eu/pw/vocab/control-policy#AuthenticityObjective">
+        <rdfs:subClassOf rdf:resource="http://scape-project.eu/pw/vocab/control-policy#Objective"/>
+        <rdfs:comment>Requirement that certain properties of content/fidelity requirements must be preserved across preservation operations. </rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://scape-project.eu/pw/vocab/control-policy#FormatObjective -->
+
+    <owl:Class rdf:about="http://scape-project.eu/pw/vocab/control-policy#FormatObjective">
+        <rdfs:subClassOf rdf:resource="http://scape-project.eu/pw/vocab/control-policy#Objective"/>
+        <rdfs:comment>Expresses a constraint on the characteristics of a format</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://scape-project.eu/pw/vocab/control-policy#Objective -->
+
+    <owl:Class rdf:about="http://scape-project.eu/pw/vocab/control-policy#Objective"/>
+    
+
+
+    <!-- http://scape-project.eu/pw/vocab/control-policy#RepresentationInstanceObjective -->
+
+    <owl:Class rdf:about="http://scape-project.eu/pw/vocab/control-policy#RepresentationInstanceObjective">
+        <rdfs:subClassOf rdf:resource="http://scape-project.eu/pw/vocab/control-policy#Objective"/>
+        <rdfs:comment>Expresses a requirement on the characteristics of a particular representation.</rdfs:comment>
+    </owl:Class>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.2.3.1824) http://owlapi.sourceforge.net -->
+

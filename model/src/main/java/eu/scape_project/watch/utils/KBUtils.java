@@ -329,7 +329,7 @@ public final class KBUtils {
       LOG.error("Data folder {} could not be created", e.getMessage());
     }
   }
-
+  
   /**
    * Cleanly shutdown from the database, flushing the cache and closing the
    * model.
@@ -343,7 +343,15 @@ public final class KBUtils {
     }
     TDB.closedown();
   }
-
+  
+  public static Model getNamedModel(String name) {
+    if (dataset != null) {
+      return dataset.getNamedModel(name);
+    }
+    
+    return null;
+  }
+  
   /**
    * Creates some initial data.
    */

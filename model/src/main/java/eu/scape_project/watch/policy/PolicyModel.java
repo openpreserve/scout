@@ -30,9 +30,9 @@ public class PolicyModel {
 
   private static final String HOME_PATH = System.getProperty("user.home");
 
-  private static final String POLICIES_PATH = ".scout" + File.separator + "policies" + File.separator + "model";
+  private static final String POLICIES_PATH = HOME_PATH + File.separator + ".scout" + File.separator + "policies";
 
-  private static final String MODEL_PATH = HOME_PATH + File.separator + POLICIES_PATH;
+  private static final String MODEL_PATH = POLICIES_PATH + File.separator + "model";
 
   private static final String MODEL_NAME = "policymodel";
 
@@ -42,6 +42,8 @@ public class PolicyModel {
     if (!loadFromFileSystem()) {
       loadFromClasspath();
     }
+
+    loadUploadedPolicies();
   }
 
   public boolean loadPolicies(String file) {
@@ -173,6 +175,27 @@ public class PolicyModel {
     }
 
     return loaded;
+
+  }
+
+  private void loadUploadedPolicies() {
+    LOG.debug("Loading previously uploaded policies from file system");
+    final File uploadDir = new File(POLICIES_PATH);
+    final String[] files = uploadDir.list(new FilenameFilter() {
+
+      @Override
+      public boolean accept(File dir, String file) {
+        return (file.endsWith(".rdf") || file.endsWith(".xml")) ? true : false;
+      }
+    });
+
+    for (String file : files) {
+      try {
+        this.readModel(new FileInputStream(new File(POLICIES_PATH + File.separator + file)));
+      } catch (FileNotFoundException e) {
+        LOG.error("An error occurred, while loading the previously uploaded policies: {}", e.getMessage());
+      }
+    }
 
   }
 

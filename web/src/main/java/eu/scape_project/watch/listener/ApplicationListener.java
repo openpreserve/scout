@@ -30,6 +30,7 @@ import eu.scape_project.watch.interfaces.SchedulerInterface;
 import eu.scape_project.watch.linking.DataLinker;
 import eu.scape_project.watch.merging.DataMerger;
 import eu.scape_project.watch.plugin.PluginManager;
+import eu.scape_project.watch.policy.PolicyModel;
 import eu.scape_project.watch.scheduling.quartz.QuartzScheduler;
 import eu.scape_project.watch.utils.AdaptorsLifecycleListener;
 import eu.scape_project.watch.utils.AllDataResultListener;
@@ -74,6 +75,9 @@ public class ApplicationListener implements ServletContextListener {
      * }
      */
 
+    // the policy model of scout.
+    final PolicyModel model = new PolicyModel();
+
     // create data merger and add it as a listener.
     final DataMerger merger = new DataMerger();
 
@@ -98,13 +102,13 @@ public class ApplicationListener implements ServletContextListener {
       scheduler.start(adaptor, new SourceAdaptorEvent(SourceAdaptorEventType.STARTED, "Application startup"));
     }
 
-    LOG.info("Setting adaptor manager and scheduler in context");
+    LOG.info("Setting up the servlet context.");
     final ServletContext context = sce.getServletContext();
     ContextUtil.setAdaptorManager(manager, context);
     ContextUtil.setDataMerger(merger, context);
     ContextUtil.setDataLinker(linker, context);
     ContextUtil.setScheduler(scheduler, context);
-
+    ContextUtil.setPolicyModel(model, context);
   }
 
   /**
@@ -133,9 +137,9 @@ public class ApplicationListener implements ServletContextListener {
     DAO.save(ent);
 
     final Question question1 = new Question("?s watch:property ?x . "
-      + "?x watch:name \"cp.collection.size\"^^xsd:string . "
-      + "?s watch:value ?y  FILTER(xsd:integer(?y) > 10000000) ", RequestTarget.PROPERTY_VALUE, Arrays.asList(et),
-      Arrays.asList(prop), Arrays.asList(ent), 60);
+        + "?x watch:name \"cp.collection.size\"^^xsd:string . "
+        + "?s watch:value ?y  FILTER(xsd:integer(?y) > 10000000) ", RequestTarget.PROPERTY_VALUE, Arrays.asList(et),
+        Arrays.asList(prop), Arrays.asList(ent), 60);
     final Map<String, String> not1config = new HashMap<String, String>();
     not1config.put("to", "lfaria@keep.pt");
     not1config.put("subject", "SCOUT - WARNING : Collection is over 10 000 000 ");

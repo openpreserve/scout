@@ -7,18 +7,16 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.google.inject.Inject;
 
-import eu.scape_project.watch.dao.DAO;
-import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.domain.Objective;
 import eu.scape_project.watch.listener.ContextUtil;
 import eu.scape_project.watch.policy.PolicyModel;
 import eu.scape_project.watch.web.annotations.Path;
 import eu.scape_project.watch.web.annotations.TemplateSource;
 
-@Path("/browse")
-@TemplateSource("browse")
-public class Browse extends TemplateContext {
-  
+@Path("/browse/policy")
+@TemplateSource("browseObjective")
+public class BrowseObjective extends TemplateContext {
+
   @Inject
   private HttpServletRequest request;
 
@@ -28,13 +26,4 @@ public class Browse extends TemplateContext {
 
     return policyModel.listAllObjectives();
   }
-
-  public List<EntityType> getEntityTypes() {
-    return DAO.ENTITY_TYPE.query("", 0, getPageSize());
-  }
-
-  public int getEntityTypeCount() {
-    return DAO.ENTITY_TYPE.count("");
-  }
-
 }

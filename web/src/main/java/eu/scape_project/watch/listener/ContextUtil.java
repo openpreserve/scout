@@ -7,6 +7,7 @@ import eu.scape_project.watch.adaptor.AdaptorManager;
 import eu.scape_project.watch.interfaces.SchedulerInterface;
 import eu.scape_project.watch.linking.DataLinker;
 import eu.scape_project.watch.merging.DataMerger;
+import eu.scape_project.watch.policy.PolicyModel;
 
 /**
  * Utility class to manage object instances kept in servlet context.
@@ -35,6 +36,11 @@ public final class ContextUtil {
    * The data linker identifier within the servlet context.
    */
   private static final String SCOUT_DATA_LINKER = "scout.core.datalinker";
+
+  /**
+   * The policy model identifier within the servlet context.
+   */
+  private static final String SCOUT_POLICY_MODEL = "scout.model.policymodel";
 
   /**
    * No instances of this utility class should exist.
@@ -146,6 +152,29 @@ public final class ContextUtil {
   }
 
   /**
+   * Get the policy model.
+   * 
+   * @param context
+   *          the servlet context.
+   * @return the {@link PolicyModel}
+   */
+  public static PolicyModel getPolicyModel(final ServletContext context) {
+    return (PolicyModel) context.getAttribute(SCOUT_POLICY_MODEL);
+  }
+
+  /**
+   * Sets the policy model in the servlet context.
+   * 
+   * @param model
+   *          the {@link PolicyModel} to set.
+   * @param context
+   *          the servlet context to use.
+   */
+  public static void setPolicyModel(final PolicyModel model, final ServletContext context) {
+    context.setAttribute(SCOUT_POLICY_MODEL, model);
+  }
+
+  /**
    * Get servlet context from request.
    * 
    * @param request
@@ -155,5 +184,4 @@ public final class ContextUtil {
   public static ServletContext getServletContext(final HttpServletRequest request) {
     return request.getSession().getServletContext();
   }
-
 }

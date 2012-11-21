@@ -63,6 +63,10 @@
 							<directory>jquery-textfill-v0.1</directory>
 							<targetPath>jquery-textfill</targetPath>
 						</resource>
+                        <resource>
+                            <directory>jquery-fileuploader</directory>
+                            <targetPath>jquery-fileuploader</targetPath>
+                        </resource>
 						<resource>
 							<directory>moment.js-v1.7.2</directory>
 							<targetPath>moment</targetPath>
@@ -196,6 +200,16 @@
 			<artifactId>humanize-icu</artifactId>
 			<version>0.1.4</version>
 		</dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20090211</version>
+        </dependency>
 	</dependencies>
 	<scm>
 		<connection>scm:git:git://github.com/openplanets/scape-pw.git</connection>

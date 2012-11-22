@@ -472,7 +472,7 @@ public final class KBUtils {
 
     final Trigger trigger1 = new Trigger(question1, Arrays.asList(notification1), null);
 
-    final AsyncRequest request = new AsyncRequest(Arrays.asList(trigger1));
+    final AsyncRequest request = new AsyncRequest("test", Arrays.asList(trigger1));
 
     // save request
     DAO.save(request);

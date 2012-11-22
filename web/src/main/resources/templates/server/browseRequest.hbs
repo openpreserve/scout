@@ -1,0 +1,117 @@
+{{#partial "title"}}Scout - Browse - Request{{/partial}} {{#partial
+"NavBrowseClass"}}active{{/partial}} {{#partial "content"}}
+<div class="container">
+	{{#request}}
+	<div class="page-header">
+		<h1>Request</h1>
+		<p>{{description}}</p>
+	</div>
+
+	{{#triggers}}
+	<h2>
+		Trigger <small>{{id}}</small>
+	</h2>
+
+	{{#if question}}
+	<h3>Question</h3>
+	{{#with question}}
+	<p>
+		<strong>Target: </strong> {{target}}
+	</p>
+	<div>
+		<span> <strong>SPARQL</strong>
+		</span>
+		<pre style="margin: 0;">SELECT ?s WHERE { <span
+				id="sparql-class-declaration"></span> {{#if sparql}}.
+					{{sparql}}{{/if}}}</pre>
+	</div>
+	<p>
+		<strong>Preferred assessment period: </strong> {{period}}
+	</p>
+	<div>
+		<strong>Categories</strong> {{#if types}}
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Description</th>
+					<th style="width: 10%">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each types}}
+				<tr>
+					<td>{{name}}</td>
+					<td>{{description}}</td>
+					<td><a class="btn btn-small btn-link"
+						href="{{../mustacheletPath}}/browse/type/{{id}}"><i
+							class=" icon-th-list"></i></a></td>
+				</tr>
+				{{/each}}
+			</tbody>
+		</table>
+		{{/if}} {{#unless types}}
+		<p>None</p>
+		{{/unless}}
+	</div>
+	<div>
+		<strong>Entities</strong> {{#if entities}} TODO {{/if}} {{#unless
+		entities}}
+		<p>None</p>
+		{{/unless}}
+	</div>
+	<div>
+		<strong>Properties</strong> {{#if properties}} TODO {{/if}} {{#unless
+		properties}}
+		<p>None</p>
+		{{/unless}}
+	</div>
+	{{/with}} {{/if}} {{#if plan}}
+	<h3>Preservation Plan</h3>
+	{{#with plan}}
+	<p>
+		<strong>Plan id:</strong> {{planId}}
+	</p>
+	{{/with}} {{/if}}
+
+	<h3>Notifications</h3>
+	<p>List of notification actions that will be executed when the
+		question or plan assessement finds a significant event.</p>
+
+	{{#if notifications}}
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Type</th>
+				<th>Parameters</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#each notifications}}
+			<tr>
+				<td>{{type}}</td>
+				<td>{{#each parameters}}
+					<ul class="unstyled">
+						<li><strong>{{key}}:</strong> {{value}}</li>
+					</ul> {{/each}}
+				</td>
+			</tr>
+			{{/each}}
+		</tbody>
+	</table>
+
+	{{/if}} {{#unless notifications}}
+	<div class="alert alert-warning">
+		<b>Empty!</b> There are no defined notifications for this trigger.
+	</div>
+	{{/unless}} {{/triggers}} {{^triggers}}
+	<div class="alert alert-warning">
+		<b>Empty!</b> There are no defined triggers for this request.
+	</div>
+	{{/triggers}} {{/request}} {{^request}}
+	<div class="alert alert-error">
+		<b>Not found!</b> Could not find request {{id}}.
+	</div>
+	{{/request}}
+</div>
+{{/partial}} {{>base}}

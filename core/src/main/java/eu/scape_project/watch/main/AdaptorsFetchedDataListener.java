@@ -1,4 +1,4 @@
-package eu.scape_project.watch.utils;
+package eu.scape_project.watch.main;
 
 import java.util.Map;
 
@@ -19,12 +19,12 @@ import eu.scape_project.watch.merging.DataMerger;
  * @author Petar Petrov <me@petarpetrov.org>
  * 
  */
-public class AllDataResultListener implements AdaptorListenerInterface {
+public class AdaptorsFetchedDataListener implements AdaptorListenerInterface {
 
   /**
    * Default logger.
    */
-  private static final Logger LOG = LoggerFactory.getLogger(AllDataResultListener.class);
+  private static final Logger LOG = LoggerFactory.getLogger(AdaptorsFetchedDataListener.class);
 
   /**
    * A reference to the adaptor manager, in order to get the source adaptor
@@ -45,7 +45,7 @@ public class AllDataResultListener implements AdaptorListenerInterface {
    * @param merger
    *          the data merger instance.
    */
-  public AllDataResultListener(final AdaptorManager manager, final DataMerger merger) {
+  public AdaptorsFetchedDataListener(final AdaptorManager manager, final DataMerger merger) {
     this.manager = manager;
     this.merger = merger;
   }

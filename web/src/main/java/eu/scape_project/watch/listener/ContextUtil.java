@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import eu.scape_project.watch.adaptor.AdaptorManager;
 import eu.scape_project.watch.interfaces.SchedulerInterface;
 import eu.scape_project.watch.linking.DataLinker;
+import eu.scape_project.watch.main.ScoutManager;
 import eu.scape_project.watch.merging.DataMerger;
 import eu.scape_project.watch.policy.PolicyModel;
 
@@ -149,6 +150,14 @@ public final class ContextUtil {
    */
   public static void setScheduler(final SchedulerInterface scheduler, final ServletContext context) {
     context.setAttribute(SCOUT_SCHEDULER, scheduler);
+  }
+
+  public static void setScoutManager(final ScoutManager scoutManager, final ServletContext context) {
+    setAdaptorManager(scoutManager.getAdaptorManager(), context);
+    setDataMerger(scoutManager.getDataMerger(), context);
+    setDataLinker(scoutManager.getDataLinker(), context);
+    setScheduler(scoutManager.getScheduler(), context);
+    setPolicyModel(scoutManager.getPolicyModel(), context);
   }
 
   /**

@@ -117,7 +117,7 @@ public class AsyncRequestListenerTest {
     final Trigger trigger = new Trigger(question, notifications, plan);
     final List<Trigger> triggers = Arrays.asList(trigger);
 
-    final AsyncRequest arequest = new AsyncRequest(triggers);
+    final AsyncRequest arequest = new AsyncRequest("test", triggers);
 
     // CASCADE SAVE
     DAO.save(arequest);

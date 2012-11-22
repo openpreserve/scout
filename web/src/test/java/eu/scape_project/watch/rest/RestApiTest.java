@@ -577,7 +577,7 @@ public class RestApiTest extends JerseyTest {
     final Notification n = new Notification("log", Arrays.asList(new DictionaryItem("recepients",
       "test@scape-project.eu")));
     final Trigger trigger = new Trigger(q, Arrays.asList(n), null);
-    final AsyncRequest areq = new AsyncRequest(Arrays.asList(trigger));
+    final AsyncRequest areq = new AsyncRequest("test", Arrays.asList(trigger));
     final AsyncRequest areq2 = client.createAsyncRequest(areq);
     Assert.assertEquals(areq, areq2);
 

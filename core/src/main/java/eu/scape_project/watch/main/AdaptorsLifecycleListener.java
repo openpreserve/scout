@@ -1,4 +1,4 @@
-package eu.scape_project.watch.utils;
+package eu.scape_project.watch.main;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

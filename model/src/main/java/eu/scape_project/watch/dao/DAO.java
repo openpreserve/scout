@@ -89,8 +89,6 @@ public final class DAO {
   /**
    * Add a listeners to data object events.
    * 
-   * @param <T>
-   *          The generic type of the resource class.
    * 
    * @param classTolisten
    *          The class for which the listener will be registered to.
@@ -98,7 +96,8 @@ public final class DAO {
    * @param listener
    *          The listener handler.
    */
-  public static <T extends RdfBean<T>> void addDOListener(final Class<T> classTolisten, final DOListener<T> listener) {
+  public static void addDOListener(final Class<? extends RdfBean<?>> classTolisten,
+    final DOListener<? extends RdfBean<?>> listener) {
     List<DOListener<? extends RdfBean<?>>> classListeners = LISTENERS.get(classTolisten);
     if (classListeners != null) {
       classListeners.add(listener);
@@ -112,8 +111,6 @@ public final class DAO {
   /**
    * Remove existing listener of data object events.
    * 
-   * @param <T>
-   *          The generic type of the resource class.
    * 
    * @param classTolisten
    *          The class for which the listener will be registered to.
@@ -121,7 +118,8 @@ public final class DAO {
    * @param listener
    *          The listener to remove.
    */
-  public static <T extends RdfBean<T>> void removeDOListener(final Class<T> classTolisten, final DOListener<T> listener) {
+  public static void removeDOListener(final Class<? extends RdfBean<?>> classTolisten,
+    final DOListener<? extends RdfBean<?>> listener) {
     final List<DOListener<? extends RdfBean<?>>> classListeners = LISTENERS.get(classTolisten);
 
     if (classListeners != null) {
@@ -219,7 +217,7 @@ public final class DAO {
       SOURCE.save(Source.class.cast(object));
     } else if (SourceAdaptor.class.isInstance(object)) {
       SOURCE_ADAPTOR.save(SourceAdaptor.class.cast(object));
-    }else if (SourceAdaptorEvent.class.isInstance(object)) {
+    } else if (SourceAdaptorEvent.class.isInstance(object)) {
       SOURCE_ADAPTOR_EVENT.save(SourceAdaptorEvent.class.cast(object));
     } else {
       throw new IllegalArgumentException(object.getClass().getSimpleName());

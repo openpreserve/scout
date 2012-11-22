@@ -39,6 +39,12 @@ public class AsyncRequest extends RdfBean<AsyncRequest> {
   private String id;
 
   /**
+   * A descriptive label for this request
+   */
+  @XmlElement
+  private String description;
+
+  /**
    * The list of {@link Trigger} associated with the request.
    */
   @XmlElement
@@ -49,7 +55,7 @@ public class AsyncRequest extends RdfBean<AsyncRequest> {
    * Create a new empty request with a generated Id.
    */
   public AsyncRequest() {
-    this(new ArrayList<Trigger>());
+    this("", new ArrayList<Trigger>());
   }
 
   /**
@@ -59,8 +65,9 @@ public class AsyncRequest extends RdfBean<AsyncRequest> {
    *          The list of triggers to be installed on this request
    * 
    */
-  public AsyncRequest(final List<Trigger> triggers) {
+  public AsyncRequest(final String description, final List<Trigger> triggers) {
     this.id = UUID.randomUUID().toString();
+    this.description = description;
     this.triggers = triggers;
   }
 
@@ -81,6 +88,14 @@ public class AsyncRequest extends RdfBean<AsyncRequest> {
    */
   public void setId(final String id) {
     this.id = id;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   /**
@@ -112,60 +127,50 @@ public class AsyncRequest extends RdfBean<AsyncRequest> {
     this.triggers.add(t);
   }
 
-  /**
-   * Get the list of all questions from all triggers.
-   * 
-   * @return The complete list of questions
-   */
-  public List<Question> getQuestion() {
-    final List<Question> ret = new ArrayList<Question>();
-    for (final Trigger t : this.triggers) {
-      ret.add(t.getQuestion());
-    }
-    return ret;
-  }
-
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
-    result = prime * result + ((this.triggers == null) ? 0 : this.triggers.hashCode());
+    result = prime * result + ((description == null) ? 0 : description.hashCode());
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
+    result = prime * result + ((triggers == null) ? 0 : triggers.hashCode());
     return result;
   }
 
   @Override
-  public boolean equals(final Object obj) {
+  public boolean equals(Object obj) {
     if (this == obj) {
       return true;
     }
     if (obj == null) {
       return false;
     }
-    if (getClass() != obj.getClass()) {
+    if (!(obj instanceof AsyncRequest)) {
       return false;
     }
-    final AsyncRequest other = (AsyncRequest) obj;
-    if (this.id == null) {
+    AsyncRequest other = (AsyncRequest) obj;
+    if (description == null) {
+      if (other.description != null) {
+        return false;
+      }
+    } else if (!description.equals(other.description)) {
+      return false;
+    }
+    if (id == null) {
       if (other.id != null) {
         return false;
       }
-    } else if (!this.id.equals(other.id)) {
+    } else if (!id.equals(other.id)) {
       return false;
     }
-    if (this.triggers == null) {
+    if (triggers == null) {
       if (other.triggers != null) {
         return false;
       }
-    } else if (!CollectionUtils.isEqualCollection(this.triggers, other.triggers)) {
+    } else if (!triggers.equals(other.triggers)) {
       return false;
     }
     return true;
-  }
-
-  @Override
-  public String toString() {
-    return "AsyncRequest(id=" + this.id + ", triggers=" + JavaUtils.toString(this.triggers) + ")";
   }
 
   @Override
@@ -179,6 +184,11 @@ public class AsyncRequest extends RdfBean<AsyncRequest> {
   public void delete() {
     super.delete();
     DAO.fireOnRemoved(this);
+  }
+
+  @Override
+  public String toString() {
+    return String.format("AsyncRequest [id=%s, description=%s, triggers=%s]", id, description, triggers);
   }
 
 }

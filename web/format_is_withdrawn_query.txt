@@ -1,0 +1,11 @@
+# query for format is withdrawn
+
+?s watch:entity ?entity .
+?entity watch:type ?type .
+?type watch:name "format"^^xsd:string .
+?s watch:property ?nameproperty .
+?nameproperty watch:name "mime"^^xsd:string .
+?withdrawn rdf:type watch:PropertyValue .
+?withdrawn watch:entity ?entity .
+?withdrawn watch:property ?withdrawnproperty .
+?withdrawnproperty watch:name "withdrawn"^^xsd:string

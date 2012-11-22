@@ -979,7 +979,7 @@ public class KBTest {
     final Trigger trigger1 = new Trigger(question, notifications, plan);
     final List<Trigger> triggers = Arrays.asList(trigger1);
 
-    final AsyncRequest arequest1 = new AsyncRequest(triggers);
+    final AsyncRequest arequest1 = new AsyncRequest("test", triggers);
 
     // CASCADE SAVE
     final AsyncRequest arequest2 = DAO.ASYNC_REQUEST.save(arequest1);
@@ -1059,7 +1059,7 @@ public class KBTest {
     final Trigger trigger = new Trigger(question, notifications, plan);
     final List<Trigger> triggers = Arrays.asList(trigger);
 
-    final AsyncRequest arequest = new AsyncRequest(triggers);
+    final AsyncRequest arequest = new AsyncRequest("test", triggers);
 
     // CASCADE SAVE
     DAO.save(arequest);

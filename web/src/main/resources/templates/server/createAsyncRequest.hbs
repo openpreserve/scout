@@ -1,0 +1,54 @@
+{{#partial "title"}}Scout - Create Request{{/partial}} {{#partial
+"content"}}
+<form class="container" method="POST">
+	<legend>Create Request</legend>
+
+	<label>Description</label> <input name="description" type="text"
+		placeholder="Descriptive label for you to identify your notification request">
+	<div class="row-fluid">
+		<div class="well span2">
+			<p>
+				<strong>Target</strong>
+			</p>
+			<label class="radio"> <input type=radio name="target"
+				value="entity_type" checked="true"> Category
+			</label> <label class="radio"> <input type=radio name="target"
+				value="property"> Property
+			</label> <label class="radio"> <input type=radio name="target"
+				value="entity"> Entity
+			</label> <label class="radio"> <input type=radio name="target"
+				value="property_value"> Value
+			</label> <label class="radio"> <input type=radio name="target"
+				value="measurement"> Measurement
+			</label> <br />
+			<p>
+				<strong>Snippets</strong>
+			</p>
+			<div class="btn-group btn-group-vertical">
+				<button class="btn">Relations</button>
+				<button class="btn">Resources</button>
+			</div>
+		</div>
+
+		<div class="well span10">
+			<div class="pull-right">
+				<a href="#">Help</a>
+			</div>
+			<p>
+				<strong>SPARQL</strong>
+			</p>
+			<pre style="margin: 0;">SELECT ?s WHERE { <span
+					id="sparql-class-declaration"></span> .
+<textarea id="query" name="query" rows="8" class="span12" style="margin: 0;"></textarea>}</pre>
+
+		</div>
+	</div>
+	<label>Notification</label> <input name="email" type="text"
+		placeholder="The email where to send notification">
+		<br/>
+	<button type="submit" class="btn btn-primary">Create</button>
+
+</form>
+{{/partial}} {{> base}}
+
+

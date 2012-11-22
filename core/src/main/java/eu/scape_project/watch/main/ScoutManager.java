@@ -1,0 +1,200 @@
+package eu.scape_project.watch.main;
+
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import eu.scape_project.watch.adaptor.AdaptorManager;
+import eu.scape_project.watch.dao.DAO;
+import eu.scape_project.watch.dao.DOListener;
+import eu.scape_project.watch.domain.AsyncRequest;
+import eu.scape_project.watch.domain.SourceAdaptor;
+import eu.scape_project.watch.domain.SourceAdaptorEvent;
+import eu.scape_project.watch.domain.SourceAdaptorEventType;
+import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
+import eu.scape_project.watch.interfaces.SchedulerInterface;
+import eu.scape_project.watch.linking.DataLinker;
+import eu.scape_project.watch.merging.DataMerger;
+import eu.scape_project.watch.plugin.PluginManager;
+import eu.scape_project.watch.policy.PolicyModel;
+import eu.scape_project.watch.scheduling.quartz.QuartzScheduler;
+import eu.scape_project.watch.utils.ConfigUtils;
+import eu.scape_project.watch.utils.KBUtils;
+
+public class ScoutManager {
+  /**
+   * A default logger for this class.
+   */
+  private static final Logger LOG = LoggerFactory.getLogger(ScoutManager.class);
+
+  private AdaptorManager adaptorManager;
+  private SchedulerInterface scheduler;
+  private DataMerger dataMerger;
+  private DataLinker dataLinker;
+  private PolicyModel policyModel;
+
+  public ScoutManager() {
+
+  }
+
+  /**
+   * Opens up the tdb connection and looks for the current configuration and
+   * initializes the data folder if needed. If the knowledgebase is empty some
+   * test data is added.
+   * 
+   */
+  private void initDB() {
+
+    final ConfigUtils conf = new ConfigUtils("Knowledge Base");
+    final String datafolder = conf.getStringProperty(ConfigUtils.KB_DATA_FOLDER_KEY);
+    final boolean initdata = conf.getBooleanProperty(ConfigUtils.KB_INSERT_TEST_DATA);
+
+    KBUtils.dbConnect(datafolder, initdata);
+
+  }
+
+  public void start() {
+    // initialize the knowledgebase and make a connection.
+    initDB();
+
+    // initialize the PluginManager...
+    PluginManager.getDefaultPluginManager();
+
+    // create adaptormanager and load all active adaptors.
+    adaptorManager = new AdaptorManager();
+    final Map<String, AdaptorPluginInterface> activeAdaptors = adaptorManager.getActiveAdaptorPlugins();
+
+    /**
+     * TEST DATA try { saveTestRequest(manager); manager.reloadKnownAdaptors();
+     * } catch (final Throwable e) { LOG.error("Error saving test request", e);
+     * }
+     */
+
+    // create data merger and add it as a listener.
+    dataMerger = new DataMerger();
+
+    // create data linker
+    dataLinker = new DataLinker();
+    // TODO add link rules as more adaptors come.
+    // TODO create interface for creating these
+    // rules
+
+    // the policy model of scout
+    policyModel = new PolicyModel();
+
+    // create scheduler
+    scheduler = new QuartzScheduler();
+    scheduler.init();
+
+    // Add adaptors listeners
+    final AdaptorsFetchedDataListener resultListener = new AdaptorsFetchedDataListener(adaptorManager, dataMerger);
+    scheduler.addAdaptorListener(resultListener);
+
+    final AdaptorsLifecycleListener schedulerListener = new AdaptorsLifecycleListener(adaptorManager);
+    scheduler.addSchedulerListener(schedulerListener);
+
+    // Schedule active adaptors
+    for (AdaptorPluginInterface adaptor : activeAdaptors.values()) {
+      scheduler.start(adaptor, new SourceAdaptorEvent(SourceAdaptorEventType.STARTED, "Application startup"));
+    }
+
+    // Monitor adaptors
+    DAO.addDOListener(SourceAdaptor.class, new DOListener<SourceAdaptor>() {
+
+      @Override
+      public void onUpdated(SourceAdaptor adaptor) {
+        // TODO start/stop adaptor scheduling
+
+      }
+
+      @Override
+      public void onRemoved(SourceAdaptor adaptor) {
+        // TODO stop adaptor scheduling
+
+      }
+    });
+
+    final AssessmentService assessmentService = new AssessmentService();
+    final RequestToDataBinder requestToDataBinder = new RequestToDataBinder(assessmentService);
+
+    // Initialize current requests
+    final int requestCount = DAO.ASYNC_REQUEST.count("");
+
+    int i = 0;
+    while (i < requestCount) {
+      final List<AsyncRequest> requests = DAO.ASYNC_REQUEST.list(i, 100);
+      i += 100;
+
+      for (final AsyncRequest request : requests) {
+        addRequest(request, requestToDataBinder);
+      }
+    }
+
+    // Monitor requests CRUD
+    DAO.addDOListener(AsyncRequest.class, new DOListener<AsyncRequest>() {
+
+      @Override
+      public void onUpdated(AsyncRequest request) {
+        removeRequest(request, requestToDataBinder);
+        addRequest(request, requestToDataBinder);
+      }
+
+      @Override
+      public void onRemoved(AsyncRequest request) {
+        removeRequest(request, requestToDataBinder);
+      }
+    });
+  }
+
+  private void addRequest(final AsyncRequest request, final RequestToDataBinder requestToDataBinder) {
+    requestToDataBinder.bindRequest(request);
+    // TODO add request to scheduler
+  }
+
+  private void removeRequest(final AsyncRequest request, final RequestToDataBinder requestToDataBinder) {
+    requestToDataBinder.unbindRequest(request);
+    // TODO remove request from scheduler
+  }
+
+  public void stop() {
+    if (adaptorManager != null && scheduler != null) {
+      final Map<String, AdaptorPluginInterface> activeAdaptors = adaptorManager.getActiveAdaptorPlugins();
+
+      for (AdaptorPluginInterface adaptor : activeAdaptors.values()) {
+        scheduler.stop(adaptor, null);
+      }
+      scheduler.shutdown();
+
+      adaptorManager.shutdownAll();
+    } else {
+      LOG.warn("Could not get AdaptorManager or Scheduler from servlet context, skipping adaptor scheduling cleanup");
+    }
+
+    PluginManager.getDefaultPluginManager().shutdown();
+
+    KBUtils.dbDisconnect();
+  }
+
+  public AdaptorManager getAdaptorManager() {
+    return adaptorManager;
+  }
+
+  public SchedulerInterface getScheduler() {
+    return scheduler;
+  }
+
+  public DataMerger getDataMerger() {
+    return dataMerger;
+  }
+
+  public DataLinker getDataLinker() {
+    return dataLinker;
+  }
+
+  public PolicyModel getPolicyModel() {
+    return policyModel;
+  }
+
+}

@@ -1,6 +1,5 @@
 package eu.scape_project.watch.dao;
 
-import java.util.Collection;
 import java.util.List;
 
 import eu.scape_project.watch.domain.AsyncRequest;
@@ -68,7 +67,7 @@ public final class AsyncRequestDAO extends AbstractDO<AsyncRequest> {
    *          The maximum number of items to retrieve
    * @return A list of {@link AsyncRequest} filtered by the above constraints
    */
-  public Collection<AsyncRequest> list(final int start, final int max) {
+  public List<AsyncRequest> list(final int start, final int max) {
     return this.query("", start, max);
   }
 

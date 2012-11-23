@@ -2,6 +2,7 @@ package eu.scape_project.watch.adaptor.c3po.command;
 
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -16,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import eu.scape_project.watch.adaptor.c3po.common.C3POProfileReader;
+import eu.scape_project.watch.domain.DictionaryItem;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
 
@@ -59,7 +61,9 @@ public class CommandsTest {
   public void setup() {
     this.reader = mock(C3POProfileReader.class);
     this.values = new HashMap<String, String>();
-    this.values.put("test", VALUE);
+    this.values.put("test1", "1000");
+    this.values.put("test2", VALUE);
+    this.values.put("test3", "7");
 
     when(this.reader.getCollectionSize()).thenReturn(VALUE);
     when(this.reader.getCollectionName()).thenReturn("TestCollection");
@@ -192,5 +196,29 @@ public class CommandsTest {
     assertNotNull(pv.getValue());
     assertFalse(pv.getValue(List.class).isEmpty());
 
+  }
+  
+  @Test
+  public void shouldTestDescendingSortingOrderOfDistributionCommand() throws Exception {
+    final String name = FORMAT;
+
+    this.cmd = new DistributionCommand(name);
+    this.cmd.setReader(this.reader);
+
+    final PropertyValue pv = this.cmd.execute();
+
+    verify(this.reader).getDistribution(name);
+    List<DictionaryItem> items = pv.getValue(List.class);
+    
+    assertNotNull(pv);
+    assertNotNull(pv.getProperty());
+    assertNotNull(pv.getValue());
+    assertFalse(items.isEmpty());
+
+    for (int i = 1; i < items.size(); i++) {
+      long prev = Long.parseLong(items.get(i-1).getValue());
+      long next = Long.parseLong(items.get(i).getValue());
+      assertTrue(prev >= next);
+    }
   }
 }

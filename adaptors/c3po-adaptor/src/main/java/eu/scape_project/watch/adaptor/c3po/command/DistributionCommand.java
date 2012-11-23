@@ -3,6 +3,8 @@ package eu.scape_project.watch.adaptor.c3po.command;
 import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_DISTRIBUTION;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -70,6 +72,15 @@ public class DistributionCommand extends Command {
     for (Map.Entry<String, String> e : distribution.entrySet()) {
       values.add(new DictionaryItem(e.getKey(), e.getValue()));
     }
+    
+    Collections.sort(values, new Comparator<DictionaryItem>() {
+
+      @Override
+      public int compare(DictionaryItem item1, DictionaryItem item2) {
+        return item1.getValue().compareTo(item2.getValue()); //descending
+      }
+      
+    });
 
     try {
       property.setDatatype(DataType.STRING_DICTIONARY);

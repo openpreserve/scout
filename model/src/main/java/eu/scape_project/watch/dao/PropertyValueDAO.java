@@ -392,8 +392,6 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
     }
 
     if (createNewVersion) {
-      logger.info("Creating new PV");
-
       // create new property value with a new version.
       final int version = getNextVersionNumber(entity, property);
       pv.setVersion(version);
@@ -414,8 +412,6 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
       ret = super.saveImpl(pv);
 
     } else {
-      logger.info("Adding measurement to existing PV");
-
       // tag existing property value with a new measurement.
       final PropertyValue existingPV = existingPVs.get(0);
 

@@ -17,6 +17,7 @@ import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
 import eu.scape_project.watch.interfaces.SchedulerInterface;
 import eu.scape_project.watch.linking.DataLinker;
 import eu.scape_project.watch.merging.DataMerger;
+import eu.scape_project.watch.notification.NotificationService;
 import eu.scape_project.watch.plugin.PluginManager;
 import eu.scape_project.watch.policy.PolicyModel;
 import eu.scape_project.watch.scheduling.quartz.QuartzScheduler;
@@ -81,11 +82,15 @@ public class ScoutManager {
     // TODO create interface for creating these
     // rules
 
+    final NotificationService notificationService = new NotificationService();
+    final AssessmentService assessmentService = new AssessmentService(notificationService);
+    final RequestToDataBinder requestToDataBinder = new RequestToDataBinder(assessmentService);
+
     // the policy model of scout
     policyModel = new PolicyModel();
 
     // create scheduler
-    scheduler = new QuartzScheduler();
+    scheduler = new QuartzScheduler(assessmentService);
     scheduler.init();
 
     // Add adaptors listeners
@@ -97,7 +102,7 @@ public class ScoutManager {
 
     // Schedule active adaptors
     for (AdaptorPluginInterface adaptor : activeAdaptors.values()) {
-      scheduler.start(adaptor, new SourceAdaptorEvent(SourceAdaptorEventType.STARTED, "Application startup"));
+      scheduler.startAdaptor(adaptor, new SourceAdaptorEvent(SourceAdaptorEventType.STARTED, "Application startup"));
     }
 
     // Monitor adaptors
@@ -105,19 +110,36 @@ public class ScoutManager {
 
       @Override
       public void onUpdated(SourceAdaptor adaptor) {
-        // TODO start/stop adaptor scheduling
+        AdaptorPluginInterface adaptorPluginInstance = adaptorManager.findAdaptorPluginInstance(adaptor.getInstance());
 
+        if (adaptorPluginInstance == null) {
+          // new adaptor
+          adaptorPluginInstance = adaptorManager.createAdaptorInstance(adaptor.getInstance());
+          if (adaptor.isActive()) {
+            scheduler.startAdaptor(adaptorPluginInstance, new SourceAdaptorEvent(SourceAdaptorEventType.STARTED,
+              "Source adaptor was created"));
+          }
+        } else {
+          // updated adaptor
+          if (adaptor.isActive()) {
+            scheduler.startAdaptor(adaptorPluginInstance, new SourceAdaptorEvent(SourceAdaptorEventType.STARTED,
+              "Source adaptor was activated"));
+          } else {
+            scheduler.stopAdaptor(adaptorPluginInstance, new SourceAdaptorEvent(SourceAdaptorEventType.STOPPED,
+              "Source adaptor was de-activated"));
+          }
+        }
+        adaptorManager.reloadKnownAdaptors();
       }
 
       @Override
       public void onRemoved(SourceAdaptor adaptor) {
-        // TODO stop adaptor scheduling
-
+        final AdaptorPluginInterface adaptorInstance = adaptorManager.createAdaptorInstance(adaptor.getInstance());
+        scheduler.stopAdaptor(adaptorInstance, new SourceAdaptorEvent(SourceAdaptorEventType.STOPPED,
+          "Source adaptor was removed"));
+        adaptorManager.reloadKnownAdaptors();
       }
     });
-
-    final AssessmentService assessmentService = new AssessmentService();
-    final RequestToDataBinder requestToDataBinder = new RequestToDataBinder(assessmentService);
 
     // Initialize current requests
     final int requestCount = DAO.ASYNC_REQUEST.count("");
@@ -150,12 +172,12 @@ public class ScoutManager {
 
   private void addRequest(final AsyncRequest request, final RequestToDataBinder requestToDataBinder) {
     requestToDataBinder.bindRequest(request);
-    // TODO add request to scheduler
+    scheduler.startRequest(request);
   }
 
   private void removeRequest(final AsyncRequest request, final RequestToDataBinder requestToDataBinder) {
     requestToDataBinder.unbindRequest(request);
-    // TODO remove request from scheduler
+    scheduler.stopRequest(request);
   }
 
   public void stop() {
@@ -163,8 +185,15 @@ public class ScoutManager {
       final Map<String, AdaptorPluginInterface> activeAdaptors = adaptorManager.getActiveAdaptorPlugins();
 
       for (AdaptorPluginInterface adaptor : activeAdaptors.values()) {
-        scheduler.stop(adaptor, null);
+        scheduler.stopAdaptor(adaptor, null);
       }
+      final int requestCount = DAO.ASYNC_REQUEST.count("");
+      List<AsyncRequest> requests = DAO.ASYNC_REQUEST.list(0, requestCount);
+
+      for (AsyncRequest request : requests) {
+        scheduler.stopRequest(request);
+      }
+
       scheduler.shutdown();
 
       adaptorManager.shutdownAll();

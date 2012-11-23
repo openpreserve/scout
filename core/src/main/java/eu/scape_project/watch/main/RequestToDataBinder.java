@@ -53,24 +53,31 @@ public class RequestToDataBinder {
       final List<Entity> entities = question.getEntities();
       final List<Property> properties = question.getProperties();
 
-      for (final EntityType type : types) {
-        final List<ListenerWrapper<? extends RdfBean<?>>> typeListeners = createListenersForType(type, trigger, request);
-        listeners.addAll(typeListeners);
-      }
-
-      for (Entity entity : entities) {
-        if (types == null || !types.contains(entity.getType())) {
-          final List<ListenerWrapper<? extends RdfBean<?>>> entityListeners = createListenersForEntity(entity, trigger,
+      if (types != null) {
+        for (final EntityType type : types) {
+          final List<ListenerWrapper<? extends RdfBean<?>>> typeListeners = createListenersForType(type, trigger,
             request);
-          listeners.addAll(entityListeners);
+          listeners.addAll(typeListeners);
         }
       }
 
-      for (Property property : properties) {
-        if (types == null || !types.contains(property.getType())) {
-          final List<ListenerWrapper<? extends RdfBean<?>>> propertyListeners = createListenersForProperty(property,
-            trigger, request, entities);
-          listeners.addAll(propertyListeners);
+      if (entities != null) {
+        for (Entity entity : entities) {
+          if (types == null || !types.contains(entity.getType())) {
+            final List<ListenerWrapper<? extends RdfBean<?>>> entityListeners = createListenersForEntity(entity,
+              trigger, request);
+            listeners.addAll(entityListeners);
+          }
+        }
+      }
+
+      if (properties != null) {
+        for (Property property : properties) {
+          if (types == null || !types.contains(property.getType())) {
+            final List<ListenerWrapper<? extends RdfBean<?>>> propertyListeners = createListenersForProperty(property,
+              trigger, request, entities);
+            listeners.addAll(propertyListeners);
+          }
         }
       }
 

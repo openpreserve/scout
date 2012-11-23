@@ -36,14 +36,14 @@ public class QuartzExecutionListenerTest {
     listener.setScheduler(scheduler);
 
     listener.jobWasExecuted(context, jobException);
-    Mockito.verify(scheduler, Mockito.times(1)).execute(adaptor, Mockito.any(SourceAdaptorEvent.class));
+    Mockito.verify(scheduler, Mockito.times(1)).executeAdaptor(adaptor, Mockito.any(SourceAdaptorEvent.class));
     listener.jobWasExecuted(context, jobException);
     listener.jobWasExecuted(context, jobException);
     listener.jobWasExecuted(context, jobException);
     listener.jobWasExecuted(context, jobException);
     listener.jobWasExecuted(context, jobException);
-    Mockito.verify(scheduler, Mockito.times(5)).execute(adaptor, Mockito.any(SourceAdaptorEvent.class));
-    Mockito.verify(scheduler, Mockito.times(1)).stop(adaptor, Mockito.any(SourceAdaptorEvent.class));
+    Mockito.verify(scheduler, Mockito.times(5)).executeAdaptor(adaptor, Mockito.any(SourceAdaptorEvent.class));
+    Mockito.verify(scheduler, Mockito.times(1)).stopAdaptor(adaptor, Mockito.any(SourceAdaptorEvent.class));
 
   }
 }

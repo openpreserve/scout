@@ -30,7 +30,6 @@ import eu.scape_project.watch.web.annotations.TemplateSource;
 @TemplateSource("administration")
 public class Administration extends TemplateContext {
 
-
   public List<SourceAdaptor> getSourceAdaptors() {
     return DAO.SOURCE_ADAPTOR.queryAll(0, getPageSize());
   }
@@ -38,7 +37,7 @@ public class Administration extends TemplateContext {
   public List<PluginInfo> getPlugins() {
     return PluginManager.getDefaultPluginManager().getPluginInfo();
   }
-  
+
   public String getPluginDirectory() {
     return PluginManager.getDefaultPluginManager().getPluginDirectory().getAbsolutePath();
   }
@@ -58,15 +57,16 @@ public class Administration extends TemplateContext {
       continueChain = true;
     } else if (operation.equals("removeAdaptor")) {
       final String adaptorId = request.getParameter("adaptor");
-      
+
       final SourceAdaptor adaptor = DAO.SOURCE_ADAPTOR.findById(adaptorId);
-      
+
       final ServletContext context = ContextUtil.getServletContext(request);
       final AdaptorManager adaptorManager = ContextUtil.getAdaptorManager(context);
-      
+
       if (adaptor != null) {
         DAO.delete(adaptor);
-        adaptorManager.reloadKnownAdaptors();
+        // XXX reload and un-scheduling now done in ScoutManager (check before deleting next line)
+        // adaptorManager.reloadKnownAdaptors();
         response.sendRedirect(getMustacheletPath() + "/administration");
       } else {
         response.sendError(404, "Source adaptor not found: " + StringEscapeUtils.escapeHtml(adaptorId));

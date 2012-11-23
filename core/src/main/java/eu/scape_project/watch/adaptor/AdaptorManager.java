@@ -83,7 +83,7 @@ public class AdaptorManager {
       if (sa.isActive()) {
         final String instance = sa.getInstance();
         LOG.info("Found active adaptor with instance id [{}], reloading", instance);
-        final AdaptorPluginInterface plugin = this.getAdaptorInstance(instance);
+        final AdaptorPluginInterface plugin = this.createAdaptorInstance(instance);
 
         if (plugin == null) {
           LOG.error("An error occurred while reloading the active adaptor with instance [{}]", instance);
@@ -161,8 +161,8 @@ public class AdaptorManager {
    */
   public void updateSourceAdaptor(final SourceAdaptor adaptor) {
     LOG.debug("Updating SourceAdaptor Information {}-{}", adaptor.getName(), adaptor.getVersion());
-    DAO.save(adaptor);
     this.adaptors.put(adaptor.getInstance(), adaptor);
+    DAO.save(adaptor);
   }
 
   /**
@@ -223,7 +223,7 @@ public class AdaptorManager {
    *          user.
    * @return the {@link AdaptorPluginInterface} implementation or null.
    */
-  public AdaptorPluginInterface getAdaptorInstance(final String instance) {
+  public AdaptorPluginInterface createAdaptorInstance(final String instance) {
     final SourceAdaptor adaptor = this.getSourceAdaptor(instance);
     AdaptorPluginInterface plugin = null;
 
@@ -265,6 +265,10 @@ public class AdaptorManager {
     return plugin;
   }
 
+  public AdaptorPluginInterface findAdaptorPluginInstance(String instance) {
+    return this.cached.get(instance);
+  }
+
   public SourceAdaptor getSourceAdaptor(final AdaptorPluginInterface adaptorPlugin) {
     SourceAdaptor sourceAdaptor = null;
     String instance = reverseCached.get(adaptorPlugin);
@@ -300,9 +304,9 @@ public class AdaptorManager {
    */
   public void shutdownAll() {
     LOG.info("Shutting down all plugins");
-    
+
     final Set<String> adaptorIds = new HashSet<String>(this.cached.keySet());
-    
+
     for (final String id : adaptorIds) {
       final AdaptorPluginInterface plugin = this.cached.remove(id);
       this.reverseCached.remove(plugin);

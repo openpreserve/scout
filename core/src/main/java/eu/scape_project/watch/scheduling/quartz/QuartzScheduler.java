@@ -1,10 +1,14 @@
 package eu.scape_project.watch.scheduling.quartz;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.quartz.Job;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
+import org.quartz.JobExecutionContext;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -16,12 +20,14 @@ import org.quartz.impl.matchers.EverythingMatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import eu.scape_project.watch.domain.AsyncRequest;
 import eu.scape_project.watch.domain.SourceAdaptorEvent;
 import eu.scape_project.watch.domain.SourceAdaptorEventType;
 import eu.scape_project.watch.interfaces.AdaptorListenerInterface;
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
 import eu.scape_project.watch.interfaces.SchedulerInterface;
 import eu.scape_project.watch.interfaces.SchedulerListenerInterface;
+import eu.scape_project.watch.main.AssessmentService;
 
 /**
  * QuartzScheduler is an implementation of the SchedulerInterface. This
@@ -46,7 +52,9 @@ public class QuartzScheduler implements SchedulerInterface {
    */
   private Scheduler scheduler;
 
-  private QuartzCache cache;
+  private QuartzAdaptorCache adaptorCache;
+
+  private final Map<String, JobKey> triggerToJobKeyMap;
 
   private QuartzListenerManager listenerManager;
 
@@ -57,14 +65,16 @@ public class QuartzScheduler implements SchedulerInterface {
   /**
    * Default constructor
    */
-  public QuartzScheduler() {
+  public QuartzScheduler(final AssessmentService assessmentService) {
     LOG.info("Creating QuartzScheduler");
-    cache = new QuartzCache();
+    adaptorCache = new QuartzAdaptorCache();
+    triggerToJobKeyMap = new HashMap<String, JobKey>();
     listenerManager = new QuartzListenerManager();
     executionListener = new QuartzExecutionListener();
     schedulerListeners = new ArrayList<SchedulerListenerInterface>();
     executionListener.setScheduler(this);
     executionListener.setListenerManager(listenerManager);
+    executionListener.setAssessmentService(assessmentService);
   }
 
   @Override
@@ -82,9 +92,11 @@ public class QuartzScheduler implements SchedulerInterface {
 
   @Override
   public void shutdown() {
-    clear();
     try {
-      scheduler.shutdown();
+      // Waiting for jobs to finish
+      LOG.info("QuartzScheduler shutting down, waiting for all tasks to end...");
+      // scheduler.shutdown(true);
+      scheduler.shutdown(false);
       LOG.info("QuartzScheduler shutdown");
     } catch (SchedulerException e) {
       LOG.error("Failed to shut down QuartzScheduler, an exception occured " + e.getStackTrace());
@@ -92,17 +104,17 @@ public class QuartzScheduler implements SchedulerInterface {
   }
 
   @Override
-  public void start(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
+  public void startAdaptor(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
 
     if (event == null) {
       event = new SourceAdaptorEvent();
       event.setType(SourceAdaptorEventType.STARTED);
     }
 
-    if (!cache.containsAdaptor(adaptor)) {
+    if (!adaptorCache.containsAdaptor(adaptor)) {
 
       LOG.info("Starting the new adaptor plugin " + adaptor.getName());
-      String id = cache.addAdaptorPlugin(adaptor);
+      String id = adaptorCache.addAdaptorPlugin(adaptor);
 
       if (id != null) {
         // create job detail
@@ -121,7 +133,7 @@ public class QuartzScheduler implements SchedulerInterface {
         try {
           scheduler.scheduleJob(jobDetail, trigger);
           // store the JobKey to the cache
-          cache.addJobKey(adaptor, jobDetail.getKey());
+          adaptorCache.addJobKey(adaptor, jobDetail.getKey());
           LOG.info(adaptor.getName() + " is scheduled");
           event.setSuccessful(true);
           event.setMessage(adaptor.getName() + " is scheduled");
@@ -145,28 +157,28 @@ public class QuartzScheduler implements SchedulerInterface {
       event.setReason("Adaptor is already scheduled!");
     }
 
-    notifyEvent(adaptor, event);
+    notifyAdaptorEvent(adaptor, event);
 
   }
 
   @Override
-  public void stop(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
+  public void stopAdaptor(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
 
     if (event == null) {
       event = new SourceAdaptorEvent();
       event.setType(SourceAdaptorEventType.STOPPED);
     }
 
-    JobKey key = cache.getAdaptorJobKey(adaptor);
+    JobKey key = adaptorCache.getAdaptorJobKey(adaptor);
 
     if (key != null) {
       try {
         scheduler.pauseJob(key);
-        LOG.info("Adaptor " + adaptor.getName() + " successfully stoped");
+        LOG.info("Adaptor " + adaptor.getName() + " successfully stopped");
         event.setSuccessful(true);
-        event.setMessage("Adaptor " + adaptor.getName() + " successfully stoped");
+        event.setMessage("Adaptor " + adaptor.getName() + " successfully stopped");
       } catch (SchedulerException e) {
-        LOG.error("A scheduler exception occured while stoping the adaptor " + adaptor.getName());
+        LOG.error("A scheduler exception occured while stopping the adaptor " + adaptor.getName());
         event.setSuccessful(false);
         event.setMessage("Could not stop adaptor " + adaptor.getName());
         event.setReason("Exception: " + e);
@@ -179,19 +191,19 @@ public class QuartzScheduler implements SchedulerInterface {
       event.setMessage(adaptor.getName() + " unknown adaptor to stop");
     }
 
-    notifyEvent(adaptor, event);
+    notifyAdaptorEvent(adaptor, event);
 
   }
 
   @Override
-  public void resume(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
+  public void resumeAdaptor(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
 
     if (event == null) {
       event = new SourceAdaptorEvent();
       event.setType(SourceAdaptorEventType.RESUMED);
     }
 
-    JobKey key = cache.getAdaptorJobKey(adaptor);
+    JobKey key = adaptorCache.getAdaptorJobKey(adaptor);
     if (key != null) {
       try {
         scheduler.resumeJob(key);
@@ -211,23 +223,23 @@ public class QuartzScheduler implements SchedulerInterface {
       event.setReason("Adaptor " + adaptor.getName() + " is unknown");
     }
 
-    notifyEvent(adaptor, event);
+    notifyAdaptorEvent(adaptor, event);
 
   }
 
   @Override
-  public void delete(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
+  public void deleteAdaptor(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
 
     if (event == null) {
       event = new SourceAdaptorEvent();
       event.setType(SourceAdaptorEventType.DELETED);
     }
 
-    JobKey key = cache.getAdaptorJobKey(adaptor);
+    JobKey key = adaptorCache.getAdaptorJobKey(adaptor);
     if (key != null) {
       try {
         scheduler.deleteJob(key);
-        cache.removeAdaptorPlugin(adaptor);
+        adaptorCache.removeAdaptorPlugin(adaptor);
         LOG.info("Adaptor " + adaptor.getName() + " successfully deleted");
         event.setSuccessful(true);
         event.setMessage("Adaptor " + adaptor.getName() + " successfully deleted");
@@ -244,19 +256,19 @@ public class QuartzScheduler implements SchedulerInterface {
       event.setReason("Adaptor " + adaptor.getName() + " is unknown");
     }
 
-    notifyEvent(adaptor, event);
+    notifyAdaptorEvent(adaptor, event);
 
   }
 
   @Override
-  public void execute(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
+  public void executeAdaptor(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
 
     if (event == null) {
       event = new SourceAdaptorEvent();
       event.setType(SourceAdaptorEventType.EXECUTED);
     }
 
-    JobKey key = cache.getAdaptorJobKey(adaptor);
+    JobKey key = adaptorCache.getAdaptorJobKey(adaptor);
     if (key != null) {
       try {
         scheduler.triggerJob(key);
@@ -276,18 +288,8 @@ public class QuartzScheduler implements SchedulerInterface {
       event.setReason("Adaptor " + adaptor.getName() + " is unknown");
     }
 
-    notifyEvent(adaptor, event);
+    notifyAdaptorEvent(adaptor, event);
 
-  }
-
-  @Override
-  public void clear() {
-    try {
-      scheduler.clear();
-      LOG.info("All adaptors cleared from the scheduler");
-    } catch (SchedulerException e) {
-      LOG.info("A scheduler exception occured while clearing all adaptors");
-    }
   }
 
   @Override
@@ -316,20 +318,20 @@ public class QuartzScheduler implements SchedulerInterface {
   }
 
   public AdaptorPluginInterface getAdaptorPluginInterface(String id) {
-    AdaptorPluginInterface tmp = cache.getAdaptorPluginInterface(id);
+    AdaptorPluginInterface tmp = adaptorCache.getAdaptorPluginInterface(id);
     return tmp;
   }
-  
+
   public void blockAdaptorPlugin(AdaptorPluginInterface adaptor) {
-    cache.blockAdaptorPlugin(adaptor);
+    adaptorCache.blockAdaptorPlugin(adaptor);
   }
-  
+
   public void unblockAdaptorPlugin(AdaptorPluginInterface adaptor) {
-    cache.unblockAdaptorPlugin(adaptor);
+    adaptorCache.unblockAdaptorPlugin(adaptor);
   }
-  
+
   public boolean isAdaptorPluginBlocked(AdaptorPluginInterface adaptor) {
-    return cache.isAdaptorPluginBlocked(adaptor);
+    return adaptorCache.isAdaptorPluginBlocked(adaptor);
   }
 
   public QuartzListenerManager getQuartzListenerManager() {
@@ -345,10 +347,66 @@ public class QuartzScheduler implements SchedulerInterface {
    * @param event
    *          Details of the event.
    */
-  public void notifyEvent(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
+  public void notifyAdaptorEvent(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
     for (SchedulerListenerInterface sch : schedulerListeners) {
-      sch.onEvent(adaptor, event);
+      sch.onSourceAdaptorEvent(adaptor, event);
     }
   }
 
+  @Override
+  public void startRequest(AsyncRequest request) {
+
+    for (final eu.scape_project.watch.domain.Trigger trigger : request.getTriggers()) {
+      startTrigger(trigger, request);
+    }
+    // TODO fire event
+  }
+
+  private void startTrigger(eu.scape_project.watch.domain.Trigger trigger, AsyncRequest request) {
+
+    final String id = trigger.getId();
+    final long period = trigger.getQuestion().getPeriod();
+
+    // create job detail
+    final JobDetail jobDetail = JobBuilder.newJob(QuartzRequestTriggerJob.class).withIdentity(id, "triggers")
+      .usingJobData("triggerId", id).usingJobData("requestId", request.getId()).build();
+
+    // create trigger
+    final Trigger qztrigger = TriggerBuilder.newTrigger().startNow()
+      .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMilliseconds(period).repeatForever()).build();
+
+    // schedule it
+    try {
+      scheduler.scheduleJob(jobDetail, qztrigger);
+      // store the JobKey to the cache
+      triggerToJobKeyMap.put(id, jobDetail.getKey());
+      LOG.info("Request trigger {} is scheduled", id);
+    } catch (SchedulerException e) {
+      LOG.error("A scheduler exception occurred while starting the request trigger {}", trigger);
+      // TODO log errors into KB.
+    }
+
+  }
+
+  @Override
+  public void stopRequest(AsyncRequest request) {
+
+    for (final eu.scape_project.watch.domain.Trigger trigger : request.getTriggers()) {
+      stopTrigger(trigger, request);
+    }
+    // TODO fire event
+  }
+
+  private void stopTrigger(eu.scape_project.watch.domain.Trigger trigger, AsyncRequest request) {
+    final JobKey key = triggerToJobKeyMap.get(trigger.getId());
+    if (key != null) {
+      try {
+        scheduler.deleteJob(key);
+        triggerToJobKeyMap.remove(trigger.getId());
+      } catch (SchedulerException e) {
+        LOG.error("A scheduler exception occurred while starting the request trigger {}", trigger);
+        // TODO log errors into KB.
+      }
+    }
+  }
 }

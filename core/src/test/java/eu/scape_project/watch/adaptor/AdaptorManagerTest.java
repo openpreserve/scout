@@ -58,7 +58,7 @@ public class AdaptorManagerTest {
     final SourceAdaptor adaptor = manager.getSourceAdaptor("c3po-0.0.3");
     Assert.assertNotNull(adaptor);
 
-    final AdaptorPluginInterface plugin = manager.getAdaptorInstance(adaptor.getInstance());
+    final AdaptorPluginInterface plugin = manager.createAdaptorInstance(adaptor.getInstance());
     Assert.assertNull(plugin);
   }
 }

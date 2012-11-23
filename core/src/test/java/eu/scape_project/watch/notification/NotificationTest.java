@@ -30,7 +30,7 @@ public class NotificationTest {
   /**
    * The notification service instance.
    */
-  private static NotificationService service = NotificationService.getInstance();
+  private static NotificationService service = new NotificationService();
 
   /**
    * Initialized test adaptor and service.

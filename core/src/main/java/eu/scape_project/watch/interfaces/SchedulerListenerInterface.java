@@ -4,6 +4,6 @@ import eu.scape_project.watch.domain.SourceAdaptorEvent;
 
 public interface SchedulerListenerInterface {
 
-  void onEvent(AdaptorPluginInterface adaptor, SourceAdaptorEvent event);
+  void onSourceAdaptorEvent(AdaptorPluginInterface adaptor, SourceAdaptorEvent event);
 
 }

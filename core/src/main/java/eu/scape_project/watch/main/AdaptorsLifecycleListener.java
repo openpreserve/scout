@@ -39,7 +39,7 @@ public class AdaptorsLifecycleListener implements SchedulerListenerInterface {
   }
 
   @Override
-  public void onEvent(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
+  public void onSourceAdaptorEvent(AdaptorPluginInterface adaptor, SourceAdaptorEvent event) {
     registerEvent(adaptor, event);
   }
 

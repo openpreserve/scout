@@ -16,15 +16,15 @@ import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
  * @author Kresimir Duretec <duretec@ifs.tuwien.ac.at>
  * 
  */
-public class QuartzCache {
+public class QuartzAdaptorCache {
 
-  private static final Logger LOG = LoggerFactory.getLogger(QuartzCache.class);
+  private static final Logger LOG = LoggerFactory.getLogger(QuartzAdaptorCache.class);
 
   private Map<AdaptorPluginInterface, AdaptorState> aStates;
 
   private Map<String, AdaptorPluginInterface> adaptors;
 
-  public QuartzCache() {
+  public QuartzAdaptorCache() {
     aStates = new HashMap<AdaptorPluginInterface, AdaptorState>();
     adaptors = new HashMap<String, AdaptorPluginInterface>();
   }

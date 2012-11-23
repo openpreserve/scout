@@ -89,8 +89,10 @@ public class CreateSourceAdaptor extends TemplateContext {
         source);
 
       if (adaptor != null) {
-        final AdaptorPluginInterface adaptorInstance = adaptorManager.getAdaptorInstance(adaptor.getInstance());
-        scheduler.start(adaptorInstance, new SourceAdaptorEvent(SourceAdaptorEventType.STARTED, "First run"));
+        // XXX Start-up now done in ScoutManager (check before deleting next lines)
+        // final AdaptorPluginInterface adaptorInstance =
+        // adaptorManager.getAdaptorInstance(adaptor.getInstance());
+        // scheduler.startAdaptor(adaptorInstance, new SourceAdaptorEvent(SourceAdaptorEventType.STARTED, "First run"));
 
         response.sendRedirect(getMustacheletPath() + "/administration");
       } else {

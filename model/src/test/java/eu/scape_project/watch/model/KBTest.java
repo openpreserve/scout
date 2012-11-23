@@ -989,6 +989,7 @@ public class KBTest {
 
     // Test empty constructor
     final AsyncRequest arequest3 = new AsyncRequest();
+    arequest3.setDescription("test");
     arequest3.setTriggers(triggers);
     arequest3.setId(arequest1.getId());
     Assert.assertTrue(arequest1.equals(arequest3));

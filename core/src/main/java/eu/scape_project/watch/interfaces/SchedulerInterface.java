@@ -1,5 +1,6 @@
 package eu.scape_project.watch.interfaces;
 
+import eu.scape_project.watch.domain.AsyncRequest;
 import eu.scape_project.watch.domain.SourceAdaptorEvent;
 
 /**
@@ -29,7 +30,7 @@ public interface SchedulerInterface {
    * @param event
    *          - Details which will be passed to SchedulerListeners
    */
-  void start(AdaptorPluginInterface adaptor, SourceAdaptorEvent event);
+  void startAdaptor(AdaptorPluginInterface adaptor, SourceAdaptorEvent event);
 
   /**
    * Method responsible to stop an already running adaptor. Once paused adaptor
@@ -40,7 +41,7 @@ public interface SchedulerInterface {
    * @param details
    *          - Details which will be passed to SchedulerListeners
    */
-  void stop(AdaptorPluginInterface adaptor, SourceAdaptorEvent event);
+  void stopAdaptor(AdaptorPluginInterface adaptor, SourceAdaptorEvent event);
 
   /**
    * Method responsible for resuming stopped adaptor.
@@ -50,7 +51,7 @@ public interface SchedulerInterface {
    * @param details
    *          - Details which will be passed to SchedulerListeners
    */
-  void resume(AdaptorPluginInterface adaptor, SourceAdaptorEvent event);
+  void resumeAdaptor(AdaptorPluginInterface adaptor, SourceAdaptorEvent event);
 
   /**
    * Method for deleting specific adaptor.
@@ -60,7 +61,7 @@ public interface SchedulerInterface {
    * @param details
    *          - Details which will be passed to SchedulerListeners
    */
-  void delete(AdaptorPluginInterface adaptor, SourceAdaptorEvent event);
+  void deleteAdaptor(AdaptorPluginInterface adaptor, SourceAdaptorEvent event);
 
   /**
    * Method which allows immediate adaptor execution.
@@ -70,12 +71,11 @@ public interface SchedulerInterface {
    * @param details
    *          - Details which will be passed to SchedulerListeners
    */
-  void execute(AdaptorPluginInterface adaptor, SourceAdaptorEvent event);
+  void executeAdaptor(AdaptorPluginInterface adaptor, SourceAdaptorEvent event);
 
-  /**
-   * Clear all scheduled adaptors.
-   */
-  void clear();
+  void startRequest(AsyncRequest request);
+
+  void stopRequest(AsyncRequest request);
 
   /**
    * Adds an adaptor listener to all adaptors. This listener will be notified
@@ -107,7 +107,7 @@ public interface SchedulerInterface {
 
   /**
    * Adds a scheduler listener. This listener will be notified when a specific
-   * operation (start, stop ..) happens on a specific adaptor.
+   * operation (start, stop, ...) happens on a specific adaptor.
    * 
    * @param listener
    *          - listener to be added

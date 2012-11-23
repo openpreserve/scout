@@ -24,23 +24,6 @@ import eu.scape_project.watch.interfaces.NotificationPluginInterface;
 public final class NotificationService {
 
   /**
-   * The singleton instance.
-   */
-  private static NotificationService instance = null;
-
-  /**
-   * Get the singleton instance.
-   * 
-   * @return The existing instance if exists or a creates a new one.
-   */
-  public static synchronized NotificationService getInstance() {
-    if (instance == null) {
-      instance = new NotificationService();
-    }
-    return instance;
-  }
-
-  /**
    * Logger.
    */
   private static final Logger LOG = LoggerFactory.getLogger(NotificationService.class);
@@ -56,9 +39,9 @@ public final class NotificationService {
   private final Map<String, Set<NotificationPluginInterface>> adaptorsIndex;
 
   /**
-   * Private constructor for the singleton.
+   * New notification service.
    */
-  private NotificationService() {
+  public NotificationService() {
     this.adaptors = new HashSet<NotificationPluginInterface>();
     this.adaptorsIndex = new HashMap<String, Set<NotificationPluginInterface>>();
 
@@ -180,13 +163,15 @@ public final class NotificationService {
     final String type = notification.getType();
 
     final Set<NotificationPluginInterface> typeAdaptors = this.adaptorsIndex.get(type);
-    ret = !typeAdaptors.isEmpty();
+    ret = typeAdaptors != null && !typeAdaptors.isEmpty();
 
-    for (NotificationPluginInterface adaptor : typeAdaptors) {
-      final boolean consume = adaptor.send(notification, question, plan);
+    if (typeAdaptors != null) {
+      for (NotificationPluginInterface adaptor : typeAdaptors) {
+        final boolean consume = adaptor.send(notification, question, plan);
 
-      if (consume) {
-        break;
+        if (consume) {
+          break;
+        }
       }
     }
 

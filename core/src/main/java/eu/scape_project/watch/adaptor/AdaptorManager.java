@@ -66,10 +66,14 @@ public class AdaptorManager {
     reloadKnownAdaptors();
   }
 
+  public void reloadKnownAdaptors() {
+    reloadKnownAdaptors(true);
+  }
+
   /**
    * This method loads the known source adaptors from the knowledge base.
    */
-  public synchronized void reloadKnownAdaptors() {
+  public synchronized void reloadKnownAdaptors(final boolean autoCreateActiveInstances) {
     this.adaptors.clear();
     this.shutdownAll();
 
@@ -80,7 +84,7 @@ public class AdaptorManager {
     for (SourceAdaptor sa : all) {
       this.adaptors.put(sa.getInstance(), sa);
 
-      if (sa.isActive()) {
+      if (sa.isActive() && autoCreateActiveInstances) {
         final String instance = sa.getInstance();
         LOG.info("Found active adaptor with instance id [{}], reloading", instance);
         final AdaptorPluginInterface plugin = this.createAdaptorInstance(instance);

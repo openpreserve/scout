@@ -182,26 +182,6 @@ public final class DAO {
    */
   public static <T extends RdfBean<T>> void save(final T object) {
 
-    // Due to a bug in Oracle JDK
-    // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6548436
-    // Instead of instanceof and direct cast a work-around will be used:
-    // B b = B.class.cast(a) // instead of B b = (B)a;
-    // B.class.isInstance(a) // instead of a instanceof b
-
-    // if (object instanceof EntityType) {
-    // ENTITY_TYPE.save((EntityType) object);
-    // } else if (object instanceof Property) {
-    // PROPERTY.save((Property) object);
-    // } else if (object instanceof Entity) {
-    // ENTITY.save((Entity) object);
-    // } else if (object instanceof PropertyValue) {
-    // PROPERTY_VALUE.save((PropertyValue) object);
-    // } else if (object instanceof AsyncRequest) {
-    // ASYNC_REQUEST.save((AsyncRequest) object);
-    // } else {
-    // throw new IllegalArgumentException(object.getClass().getSimpleName());
-    // }
-
     if (EntityType.class.isInstance(object)) {
       ENTITY_TYPE.save(EntityType.class.cast(object));
     } else if (Property.class.isInstance(object)) {

@@ -35,6 +35,7 @@ public class ScoutManager {
   private DataMerger dataMerger;
   private DataLinker dataLinker;
   private PolicyModel policyModel;
+  private NotificationService notificationService;
 
   public ScoutManager() {
 
@@ -82,7 +83,7 @@ public class ScoutManager {
     // TODO create interface for creating these
     // rules
 
-    final NotificationService notificationService = new NotificationService();
+    notificationService = new NotificationService();
     final AssessmentService assessmentService = new AssessmentService(notificationService);
     final RequestToDataBinder requestToDataBinder = new RequestToDataBinder(assessmentService);
 
@@ -112,6 +113,8 @@ public class ScoutManager {
       public void onUpdated(SourceAdaptor adaptor) {
         AdaptorPluginInterface adaptorPluginInstance = adaptorManager.findAdaptorPluginInstance(adaptor.getInstance());
 
+        adaptorManager.reloadKnownAdaptors(false);
+        
         if (adaptorPluginInstance == null) {
           // new adaptor
           adaptorPluginInstance = adaptorManager.createAdaptorInstance(adaptor.getInstance());
@@ -129,7 +132,6 @@ public class ScoutManager {
               "Source adaptor was de-activated"));
           }
         }
-        adaptorManager.reloadKnownAdaptors();
       }
 
       @Override
@@ -224,6 +226,10 @@ public class ScoutManager {
 
   public PolicyModel getPolicyModel() {
     return policyModel;
+  }
+
+  public NotificationService getNotificationService() {
+    return notificationService;
   }
 
 }

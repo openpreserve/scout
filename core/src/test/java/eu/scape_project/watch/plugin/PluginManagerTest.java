@@ -15,6 +15,7 @@ import eu.scape_project.watch.interfaces.PluginInterface;
 import eu.scape_project.watch.utils.ConfigUtils;
 import eu.scape_project.watch.utils.exceptions.PluginException;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,12 +33,16 @@ public class PluginManagerTest {
   /**
    * A constant of an adaptor jar.
    */
-  private static final String ADAPTOR_1 = "testadaptor.jar";
+  public static final String ADAPTOR_1 = "testadaptor.jar";
+
+  public static final String ADAPTOR_1_NAME = "TestAdaptor";
+
+  public static final String ADAPTOR_1_VERSION = "0.1";
 
   /**
    * Another constant of an adaptor jar.
    */
-  private static final String ADAPTOR_2 = "testadaptor-0.2.jar";
+  public static final String ADAPTOR_2 = "testadaptor-0.2.jar";
 
   /**
    * A default logger.
@@ -226,7 +231,7 @@ public class PluginManagerTest {
    * @param s
    *          the name of the jar.
    */
-  private void copyTestJar(final String s) {
+  public static void copyTestJar(final String s) {
     InputStream inStream = null;
     OutputStream outStream = null;
 
@@ -240,13 +245,8 @@ public class PluginManagerTest {
       inStream = new FileInputStream(source);
       outStream = new FileOutputStream(target);
 
-      final byte[] buffer = new byte[BUFFER_SIZE];
+      IOUtils.copy(inStream, outStream);
 
-      int length;
-      // copy the file content in bytes
-      while ((length = inStream.read(buffer)) > 0) {
-        outStream.write(buffer, 0, length);
-      }
       inStream.close();
       outStream.close();
       LOG.debug("PluginInterface is copied successful!");

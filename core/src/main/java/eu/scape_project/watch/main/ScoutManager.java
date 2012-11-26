@@ -113,8 +113,6 @@ public class ScoutManager {
       public void onUpdated(SourceAdaptor adaptor) {
         AdaptorPluginInterface adaptorPluginInstance = adaptorManager.findAdaptorPluginInstance(adaptor.getInstance());
 
-        adaptorManager.reloadKnownAdaptors(false);
-        
         if (adaptorPluginInstance == null) {
           // new adaptor
           adaptorPluginInstance = adaptorManager.createAdaptorInstance(adaptor.getInstance());
@@ -136,10 +134,10 @@ public class ScoutManager {
 
       @Override
       public void onRemoved(SourceAdaptor adaptor) {
-        final AdaptorPluginInterface adaptorInstance = adaptorManager.createAdaptorInstance(adaptor.getInstance());
+        final AdaptorPluginInterface adaptorInstance = adaptorManager.findAdaptorPluginInstance(adaptor.getInstance());
         scheduler.stopAdaptor(adaptorInstance, new SourceAdaptorEvent(SourceAdaptorEventType.STOPPED,
           "Source adaptor was removed"));
-        adaptorManager.reloadKnownAdaptors();
+//        adaptorManager.reloadKnownAdaptors();
       }
     });
 

@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.scape_project.watch.dao.DAO;
+import eu.scape_project.watch.dao.DOListener;
 import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.Source;
@@ -33,7 +34,7 @@ import eu.scape_project.watch.utils.exceptions.PluginException;
  * @author Petar Petrov <me@petarpetrov.org>
  * 
  */
-public class AdaptorManager {
+public class AdaptorManager implements DOListener<SourceAdaptor> {
 
   /**
    * Default logger.
@@ -51,32 +52,21 @@ public class AdaptorManager {
   private Map<String, AdaptorPluginInterface> cached;
 
   /**
-   * Reverse cache to get adaptors from adaptor plugin interface.
-   */
-  private Map<AdaptorPluginInterface, String> reverseCached;
-
-  /**
    * Creates a new adaptor manager and loads the known source adaptors.
    */
   public AdaptorManager() {
     LOG.info("Creating adaptor manager");
     this.adaptors = new HashMap<String, SourceAdaptor>();
     this.cached = new HashMap<String, AdaptorPluginInterface>();
-    this.reverseCached = new HashMap<AdaptorPluginInterface, String>();
+    DAO.addDOListener(SourceAdaptor.class, this);
     reloadKnownAdaptors();
-  }
-
-  public void reloadKnownAdaptors() {
-    reloadKnownAdaptors(true);
   }
 
   /**
    * This method loads the known source adaptors from the knowledge base.
    */
-  public synchronized void reloadKnownAdaptors(final boolean autoCreateActiveInstances) {
+  private synchronized void reloadKnownAdaptors() {
     this.adaptors.clear();
-    this.shutdownAll();
-
     final int count = DAO.SOURCE_ADAPTOR.countAll();
     final List<SourceAdaptor> all = DAO.SOURCE_ADAPTOR.query("", 0, count);
     LOG.info("Found {} source adaptors", all.size());
@@ -84,7 +74,7 @@ public class AdaptorManager {
     for (SourceAdaptor sa : all) {
       this.adaptors.put(sa.getInstance(), sa);
 
-      if (sa.isActive() && autoCreateActiveInstances) {
+      if (sa.isActive()) {
         final String instance = sa.getInstance();
         LOG.info("Found active adaptor with instance id [{}], reloading", instance);
         final AdaptorPluginInterface plugin = this.createAdaptorInstance(instance);
@@ -115,7 +105,7 @@ public class AdaptorManager {
    *         implementation was found..
    */
   public SourceAdaptor createAdaptor(final String name, final String version, final String uid,
-    final Map<String, String> configuration, final Source source) {
+      final Map<String, String> configuration, final Source source) {
     LOG.debug("Creating new source adaptor information for {}-{}", name, version);
 
     final PluginInfo pluginInfo = PluginManager.getDefaultPluginManager().getPluginInfo(name, version);
@@ -152,7 +142,7 @@ public class AdaptorManager {
    * @return the source adaptor.
    */
   public SourceAdaptor createAdaptor(final PluginInfo info, final String uid, final Map<String, String> configuration,
-    final Source source) {
+      final Source source) {
     return this.createAdaptor(info.getName(), info.getVersion(), uid, configuration, source);
   }
 
@@ -247,7 +237,7 @@ public class AdaptorManager {
         try {
           plugin.init();
           this.cached.put(instance, plugin);
-          this.reverseCached.put(plugin, instance);
+          // this.reverseCached.put(plugin, instance);
         } catch (final PluginException e) {
           LOG.error("An error occurred during plugin initialization: {}", e.getMessage());
         }
@@ -275,9 +265,12 @@ public class AdaptorManager {
 
   public SourceAdaptor getSourceAdaptor(final AdaptorPluginInterface adaptorPlugin) {
     SourceAdaptor sourceAdaptor = null;
-    String instance = reverseCached.get(adaptorPlugin);
-    if (instance != null) {
-      sourceAdaptor = getSourceAdaptor(instance);
+    for (String key : this.cached.keySet()) {
+      AdaptorPluginInterface plugin = this.cached.get(key);
+      if (plugin == adaptorPlugin) { // compares object address and not equality
+        sourceAdaptor = this.getSourceAdaptor(key);
+        break;
+      }
     }
     return sourceAdaptor;
   }
@@ -293,7 +286,6 @@ public class AdaptorManager {
     LOG.info("Trying to shutdown plugin with id: {}", instance);
     final SourceAdaptor adaptor = this.getSourceAdaptor(instance);
     final AdaptorPluginInterface plugin = this.cached.remove(instance);
-    this.reverseCached.remove(plugin);
 
     this.shutdown(plugin);
 
@@ -313,9 +305,10 @@ public class AdaptorManager {
 
     for (final String id : adaptorIds) {
       final AdaptorPluginInterface plugin = this.cached.remove(id);
-      this.reverseCached.remove(plugin);
       this.shutdown(plugin);
     }
+    
+    DAO.removeDOListener(SourceAdaptor.class, this);
   }
 
   /**
@@ -361,6 +354,38 @@ public class AdaptorManager {
     }
 
     return plugin;
+  }
+
+  @Override
+  public void onUpdated(SourceAdaptor sa) {
+    boolean known = false;
+
+    for (SourceAdaptor s : this.adaptors.values()) {
+      if (s.getId().equals(sa.getId()) && s.getInstance().equals(sa.getInstance())) {
+        known = true;
+      }
+    }
+
+    if (!known) {
+      LOG.debug("Source Adaptor {} was saved and unknown, reloading", sa.getInstance());
+      this.reloadKnownAdaptors();
+    } else {
+      LOG.debug("Source Adaptor {} is known", sa.getInstance());
+    }
+
+  }
+
+  @Override
+  public void onRemoved(SourceAdaptor sa) {
+    LOG.debug("Source Adaptor {} was removed from the KB", sa.getInstance());
+    final AdaptorPluginInterface removed = this.cached.remove(sa.getInstance());
+
+    if (removed == null) {
+      LOG.warn("The removed source adaptor {} was not known", sa.getInstance());
+    } else {
+      this.shutdown(removed);
+    }
+
   }
 
 }

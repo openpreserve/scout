@@ -76,6 +76,7 @@ public class ScoutManagerTest {
 
   @Test
   public void lifecycleBySchedulingTest() throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
+    System.out.println("Starting TEST lifecycleByScheduling");
     FileUtils.deleteQuietly(new File("/tmp/watch"));
     final ScoutManager scout = new ScoutManager();
     final DummyNotificationAdaptor dummyNotificationAdaptor = new DummyNotificationAdaptor();

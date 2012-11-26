@@ -5,7 +5,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import eu.scape_project.watch.dao.DAO;
@@ -24,14 +26,38 @@ import eu.scape_project.watch.notification.DummyNotificationAdaptor;
 import eu.scape_project.watch.plugin.PluginManager;
 import eu.scape_project.watch.plugin.PluginManagerTest;
 import eu.scape_project.watch.utils.ConfigUtils;
+import eu.scape_project.watch.utils.KBUtils;
 import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeException;
 import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
 
 public class ScoutManagerTest {
 
+  /**
+   * A temporary directory to hold the data.
+   */
+  private static final String DATA_TEMP_DIR = "/tmp/watch";
+
+  /**
+   * Initialize the data folder.
+   */
+  @Before
+  public void beforeClass() {
+    final String datafolder = DATA_TEMP_DIR;
+    final boolean initdata = false;
+    KBUtils.dbConnect(datafolder, initdata);
+  }
+
+  /**
+   * Cleanup the data folder.
+   */
+  @After
+  public void afterClass() {
+    KBUtils.dbDisconnect();
+    FileUtils.deleteQuietly(new File(DATA_TEMP_DIR));
+  }
+
   @Test
   public void lifecycleByEventsTest() throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
-    FileUtils.deleteQuietly(new File("/tmp/watch"));
     final ScoutManager scout = new ScoutManager();
     final DummyNotificationAdaptor dummyNotificationAdaptor = new DummyNotificationAdaptor();
 
@@ -46,12 +72,12 @@ public class ScoutManagerTest {
     final Entity entity = new Entity(type, "image/jpeg");
     final Source source = new Source("test", "Test data");
     final SourceAdaptor adaptor = new SourceAdaptor(PluginManagerTest.ADAPTOR_1_NAME,
-      PluginManagerTest.ADAPTOR_1_VERSION, "default", source, Arrays.asList(type), Arrays.asList(property),
-      new HashMap<String, String>());
+        PluginManagerTest.ADAPTOR_1_VERSION, "default", source, Arrays.asList(type), Arrays.asList(property),
+        new HashMap<String, String>());
 
     final Question question = new Question("", RequestTarget.PROPERTY_VALUE, Arrays.asList(type), null, null, 0);
     final Notification notification = new Notification(DummyNotificationAdaptor.TEST_TYPE,
-      new HashMap<String, String>());
+        new HashMap<String, String>());
     final Trigger trigger = new Trigger(question, Arrays.asList(notification), null);
     final AsyncRequest request = new AsyncRequest("Test", Arrays.asList(trigger));
 
@@ -76,8 +102,6 @@ public class ScoutManagerTest {
 
   @Test
   public void lifecycleBySchedulingTest() throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
-    System.out.println("Starting TEST lifecycleByScheduling");
-    FileUtils.deleteQuietly(new File("/tmp/watch"));
     final ScoutManager scout = new ScoutManager();
     final DummyNotificationAdaptor dummyNotificationAdaptor = new DummyNotificationAdaptor();
 
@@ -92,12 +116,12 @@ public class ScoutManagerTest {
     final Entity entity = new Entity(type, "image/jpeg");
     final Source source = new Source("test", "Test data");
     final SourceAdaptor adaptor = new SourceAdaptor(PluginManagerTest.ADAPTOR_1_NAME,
-      PluginManagerTest.ADAPTOR_1_VERSION, "default", source, Arrays.asList(type), Arrays.asList(property),
-      new HashMap<String, String>());
+        PluginManagerTest.ADAPTOR_1_VERSION, "default", source, Arrays.asList(type), Arrays.asList(property),
+        new HashMap<String, String>());
 
     final Question question = new Question("", RequestTarget.PROPERTY_VALUE, null, null, null, 3000);
     final Notification notification = new Notification(DummyNotificationAdaptor.TEST_TYPE,
-      new HashMap<String, String>());
+        new HashMap<String, String>());
     final Trigger trigger = new Trigger(question, Arrays.asList(notification), null);
     final AsyncRequest request = new AsyncRequest("Test", Arrays.asList(trigger));
 

@@ -6,12 +6,12 @@ import java.io.IOException;
 import junit.framework.Assert;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
 import eu.scape_project.watch.plugin.PluginManager;
@@ -40,6 +40,7 @@ public class AdaptorManagerTest {
   public void teardown() {
     KBUtils.dbDisconnect();
     FileUtils.deleteQuietly(dataFolder);
+    DAO.clearDOListeners();
   }
 
   @Test

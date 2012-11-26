@@ -201,6 +201,8 @@ public class ScoutManager {
       LOG.warn("Could not get AdaptorManager or Scheduler from servlet context, skipping adaptor scheduling cleanup");
     }
 
+    DAO.clearDOListeners();
+    
     PluginManager.getDefaultPluginManager().shutdown();
 
     KBUtils.dbDisconnect();

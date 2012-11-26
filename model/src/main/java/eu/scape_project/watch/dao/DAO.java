@@ -86,6 +86,20 @@ public final class DAO {
    */
   private static final Map<Class<? extends RdfBean<?>>, List<DOListener<? extends RdfBean<?>>>> LISTENERS = new HashMap<Class<? extends RdfBean<?>>, List<DOListener<? extends RdfBean<?>>>>();
 
+  public static void clearDOListeners() {
+    LISTENERS.clear();
+  }
+
+  public static void clearDOListeners(final Class<? extends RdfBean<?>> classToListen) {
+    List<DOListener<? extends RdfBean<?>>> listeners = LISTENERS.get(classToListen);
+
+    if (listeners != null) {
+      for (DOListener<?> listener : listeners) {
+        LISTENERS.remove(listener);
+      }
+    }
+  }
+
   /**
    * Add a listeners to data object events.
    * 
@@ -97,7 +111,7 @@ public final class DAO {
    *          The listener handler.
    */
   public static void addDOListener(final Class<? extends RdfBean<?>> classTolisten,
-    final DOListener<? extends RdfBean<?>> listener) {
+      final DOListener<? extends RdfBean<?>> listener) {
     List<DOListener<? extends RdfBean<?>>> classListeners = LISTENERS.get(classTolisten);
     if (classListeners != null) {
       classListeners.add(listener);
@@ -119,7 +133,7 @@ public final class DAO {
    *          The listener to remove.
    */
   public static void removeDOListener(final Class<? extends RdfBean<?>> classTolisten,
-    final DOListener<? extends RdfBean<?>> listener) {
+      final DOListener<? extends RdfBean<?>> listener) {
     final List<DOListener<? extends RdfBean<?>>> classListeners = LISTENERS.get(classTolisten);
 
     if (classListeners != null) {
@@ -190,7 +204,7 @@ public final class DAO {
       ENTITY.save(Entity.class.cast(object));
     } else if (PropertyValue.class.isInstance(object)) {
       throw new IllegalArgumentException("To save PropertyValue, "
-        + "specialized PropertyValueDAO.save(PropertyValue,SourceAdaptor) must be used.");
+          + "specialized PropertyValueDAO.save(PropertyValue,SourceAdaptor) must be used.");
     } else if (AsyncRequest.class.isInstance(object)) {
       ASYNC_REQUEST.save(AsyncRequest.class.cast(object));
     } else if (Source.class.isInstance(object)) {

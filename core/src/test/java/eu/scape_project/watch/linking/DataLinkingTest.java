@@ -69,6 +69,7 @@ public class DataLinkingTest {
    */
   @Test
   public void entityCreatedRuleCallingTest() {
+    LOG.debug("Start entity created rule calling test");
     final DataLinker linker = new DataLinker();
     final DataMerger merger = new DataMerger();
 
@@ -113,6 +114,7 @@ public class DataLinkingTest {
   @Test
   public void propertyValueCreatedRuleCallingTest() throws UnsupportedDataTypeException,
     InvalidJavaClassForDataTypeException {
+    LOG.debug("Start property value created rule calling test");
     final DataLinker linker = new DataLinker();
     final DataMerger merger = new DataMerger();
 

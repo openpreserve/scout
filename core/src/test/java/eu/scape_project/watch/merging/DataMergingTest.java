@@ -70,6 +70,7 @@ public class DataMergingTest {
    */
   @Test
   public void mergeDefaultSameEntityTest() {
+    LOG.debug("Start merge default same entity test");
     final DataMerger merger = new DataMerger();
 
     final EntityType type = new EntityType("format", "file format");
@@ -98,6 +99,7 @@ public class DataMergingTest {
   @Test
   public void mergeDefaultSamePropertyValueTest() throws UnsupportedDataTypeException,
     InvalidJavaClassForDataTypeException {
+    LOG.debug("Start merge default same property value test");
     final DataMerger merger = new DataMerger();
 
     final EntityType type = new EntityType("format", "file format");
@@ -134,6 +136,7 @@ public class DataMergingTest {
    */
   @Test
   public void mergeDefaultDifferentEntitiesTest() {
+    LOG.debug("Start merge default different entities test");
     final DataMerger merger = new DataMerger();
 
     final EntityType type = new EntityType("format", "file format");
@@ -162,6 +165,7 @@ public class DataMergingTest {
   @Test
   public void mergeDefaultDifferentPropertyValueTest() throws UnsupportedDataTypeException,
     InvalidJavaClassForDataTypeException {
+    LOG.debug("Start merge default different property value test");
     final DataMerger merger = new DataMerger();
 
     final EntityType type = new EntityType("format", "file format");
@@ -197,6 +201,7 @@ public class DataMergingTest {
    */
   @Test
   public void specialEntityRulesTest() {
+    LOG.debug("Start special entity rules test");
     final DataMerger merger = new DataMerger();
     final MergeRule rule = Mockito.mock(MergeRule.class);
 
@@ -220,6 +225,7 @@ public class DataMergingTest {
    */
   @Test
   public void specialPropertyRulesTest() throws UnsupportedDataTypeException, InvalidJavaClassForDataTypeException {
+    LOG.debug("Start special property rules test");
     final DataMerger merger = new DataMerger();
     final MergeRule rule = Mockito.mock(MergeRule.class);
 

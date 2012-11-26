@@ -82,7 +82,7 @@ public class KBTest {
   /**
    * A temporary directory to hold the data.
    */
-  private File dataTempir;
+  private File dataTempDir;
 
   /**
    * Initialize the data folder.
@@ -92,8 +92,8 @@ public class KBTest {
    */
   @Before
   public void before() throws IOException {
-    dataTempir = JavaUtils.createTempDirectory();
-    KBUtils.dbConnect(dataTempir.getPath(), false);
+    dataTempDir = JavaUtils.createTempDirectory();
+    KBUtils.dbConnect(dataTempDir.getPath(), false);
   }
 
   /**
@@ -101,9 +101,9 @@ public class KBTest {
    */
   @After
   public void after() {
-    LOG.info("Deleting data folder at " + dataTempir);
+    LOG.info("Deleting data folder at " + dataTempDir);
     KBUtils.dbDisconnect();
-    FileUtils.deleteQuietly(dataTempir);
+    FileUtils.deleteQuietly(dataTempDir);
   }
 
   /**

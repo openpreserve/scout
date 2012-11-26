@@ -1,12 +1,13 @@
 package eu.scape_project.watch.linking;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
@@ -21,6 +22,7 @@ import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.merging.DataMerger;
+import eu.scape_project.watch.utils.JavaUtils;
 import eu.scape_project.watch.utils.KBUtils;
 import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeException;
 import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
@@ -41,27 +43,26 @@ public class DataLinkingTest {
   /**
    * A temporary directory to hold the data.
    */
-  private static final String DATA_TEMP_DIR = "/tmp/watch";
+  private File dataTempDir;
 
   /**
    * Initialize the data folder.
+   * 
+   * @throws IOException
    */
-  @BeforeClass
-  public static void beforeClass() {
-    LOG.info("Initializing the data folder");
-    final String datafolder = DATA_TEMP_DIR;
-    final boolean initdata = false;
-    KBUtils.dbConnect(datafolder, initdata);
+  @Before
+  public void before() throws IOException {
+    dataTempDir = JavaUtils.createTempDirectory();
+    KBUtils.dbConnect(dataTempDir.getPath(), false);
   }
 
   /**
    * Cleanup the data folder.
    */
-  @AfterClass
-  public static void afterClass() {
-    LOG.info("Deleting data folder at " + DATA_TEMP_DIR);
+  @After
+  public void afterClass() {
     KBUtils.dbDisconnect();
-    FileUtils.deleteQuietly(new File(DATA_TEMP_DIR));
+    FileUtils.deleteQuietly(dataTempDir);
   }
 
   /**
@@ -155,7 +156,6 @@ public class DataLinkingTest {
     Mockito.verify(rule2, Mockito.never()).findAndCreateLinks(value1);
     Mockito.verify(rule2, Mockito.never()).findAndCreateLinks(value2);
 
-    
     LOG.debug("clearing data");
     DAO.delete(type);
     DAO.delete(entity);

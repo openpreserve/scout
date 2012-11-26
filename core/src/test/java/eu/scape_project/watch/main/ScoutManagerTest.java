@@ -41,8 +41,9 @@ public class ScoutManagerTest {
    * Initialize the data folder.
    */
   @Before
-  public void beforeClass() {
+  public void before() {
     final String datafolder = DATA_TEMP_DIR;
+    FileUtils.deleteQuietly(new File(DATA_TEMP_DIR));
     final boolean initdata = false;
     KBUtils.dbConnect(datafolder, initdata);
   }
@@ -51,7 +52,7 @@ public class ScoutManagerTest {
    * Cleanup the data folder.
    */
   @After
-  public void afterClass() {
+  public void after() {
     KBUtils.dbDisconnect();
     FileUtils.deleteQuietly(new File(DATA_TEMP_DIR));
   }

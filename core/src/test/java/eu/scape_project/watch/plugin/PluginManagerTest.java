@@ -10,10 +10,6 @@ import java.io.OutputStream;
 import java.util.List;
 
 import junit.framework.Assert;
-import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
-import eu.scape_project.watch.interfaces.PluginInterface;
-import eu.scape_project.watch.utils.ConfigUtils;
-import eu.scape_project.watch.utils.exceptions.PluginException;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
@@ -21,6 +17,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
+import eu.scape_project.watch.interfaces.PluginInterface;
+import eu.scape_project.watch.utils.ConfigUtils;
+import eu.scape_project.watch.utils.exceptions.PluginException;
 
 /**
  * Tests the plugin manager.
@@ -48,11 +49,6 @@ public class PluginManagerTest {
    * A default logger.
    */
   private static final Logger LOG = LoggerFactory.getLogger(PluginManagerTest.class);
-
-  /**
-   * A default buffer size.
-   */
-  private static final int BUFFER_SIZE = 1024;
 
   /**
    * 1 second in ms.
@@ -84,7 +80,7 @@ public class PluginManagerTest {
     // if there are tests with notifications, delete the notification
     // sub folder as well...
     final File path = new File("src/test/resources/plugins/adaptors");
-    this.deleteFolder(path);
+    deleteFolder(path);
   }
 
   /**
@@ -261,7 +257,7 @@ public class PluginManagerTest {
    * @param path
    *          the path to delete.
    */
-  private void deleteFolder(final File path) {
+  public static void deleteFolder(final File path) {
     if (path.exists()) {
       final File[] files = path.listFiles(new FilenameFilter() {
 
@@ -272,7 +268,7 @@ public class PluginManagerTest {
       });
       for (final File f : files) {
         if (f.isDirectory()) {
-          this.deleteFolder(f);
+          deleteFolder(f);
         } else {
           f.delete();
         }

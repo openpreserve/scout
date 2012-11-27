@@ -20,6 +20,8 @@ import org.slf4j.LoggerFactory;
 
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
 import eu.scape_project.watch.interfaces.PluginInterface;
+import eu.scape_project.watch.interfaces.eventhandling.ScoutChangeEvent;
+import eu.scape_project.watch.interfaces.eventhandling.ScoutComponentListener;
 import eu.scape_project.watch.utils.ConfigUtils;
 import eu.scape_project.watch.utils.exceptions.PluginException;
 
@@ -142,7 +144,7 @@ public class PluginManagerTest {
 
     final PluginInfo i1 = info.get(0);
     final AdaptorPluginInterface plugin = (AdaptorPluginInterface) this.manager.getPlugin(i1.getClassName(),
-      i1.getVersion());
+        i1.getVersion());
     plugin.execute();
     Assert.assertNotNull(plugin);
     Assert.assertEquals("0.1", plugin.getVersion());
@@ -190,9 +192,9 @@ public class PluginManagerTest {
     final PluginInfo i1 = info.get(0);
     final PluginInfo i2 = info.get(1);
     final AdaptorPluginInterface p1 = (AdaptorPluginInterface) this.manager.getPlugin(i1.getClassName(),
-      i1.getVersion());
+        i1.getVersion());
     final AdaptorPluginInterface p2 = (AdaptorPluginInterface) this.manager.getPlugin(i2.getClassName(),
-      i2.getVersion());
+        i2.getVersion());
     Assert.assertNotSame(i1.getVersion(), i2.getVersion());
 
     LOG.debug("Executing plugin 1: {}-{}", p1.getName(), p1.getVersion());
@@ -219,6 +221,20 @@ public class PluginManagerTest {
     info = this.manager.getPluginInfo();
     Assert.assertEquals(0, info.size());
 
+  }
+
+  @Test
+  public void shouldBeNotifiedForNewPlugins() throws Exception {
+    LOG.debug("------ Should Be Notified For New Plugins Test ------");
+
+    TestComponentListener observer = new TestComponentListener();
+    this.manager.addObserver(observer);
+
+    copyTestJar(ADAPTOR_1);
+    this.manager.reScan();
+    this.sleep();
+
+    Assert.assertTrue(observer.isInvoked());
   }
 
   /**
@@ -286,6 +302,33 @@ public class PluginManagerTest {
     } catch (final InterruptedException e) {
       // swallow
     }
+  }
+
+  private class TestComponentListener implements ScoutComponentListener {
+    private boolean invoked = false;
+
+    @Override
+    public void onChange(ScoutChangeEvent evt) {
+      LOG.debug("Scout Change Event received, investigating");
+      if (evt.getSource() == PluginManagerTest.this.manager) {
+        Object message = evt.getMessage();
+        Assert.assertNotNull(message);
+        Assert.assertTrue(message instanceof PluginInfo);
+
+        PluginInfo info = (PluginInfo) message;
+        Assert.assertEquals(ADAPTOR_1_NAME, info.getName());
+
+      } else {
+        Assert.fail("The manager was not passed as a source to this message");
+      }
+
+      this.invoked = true;
+    }
+
+    public boolean isInvoked() {
+      return invoked;
+    }
+
   }
 
 }

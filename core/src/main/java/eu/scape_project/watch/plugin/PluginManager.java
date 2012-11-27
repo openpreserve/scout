@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -20,6 +21,9 @@ import java.util.jar.JarFile;
 
 import eu.scape_project.watch.interfaces.PluginInterface;
 import eu.scape_project.watch.interfaces.PluginType;
+import eu.scape_project.watch.interfaces.eventhandling.Observable;
+import eu.scape_project.watch.interfaces.eventhandling.ScoutChangeEvent;
+import eu.scape_project.watch.interfaces.eventhandling.ScoutComponentListener;
 import eu.scape_project.watch.utils.ConfigUtils;
 import eu.scape_project.watch.utils.exceptions.PluginException;
 
@@ -40,7 +44,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Petar Petrov - <me@petarpetrov.org>
  */
-public final class PluginManager {
+public final class PluginManager implements Observable {
 
   /**
    * A default logger for this class.
@@ -87,6 +91,8 @@ public final class PluginManager {
    */
   private boolean loading = false;
 
+  private HashSet<ScoutComponentListener> observers;
+
   /**
    * Gets the default {@link PluginManager}.
    * 
@@ -127,7 +133,9 @@ public final class PluginManager {
 
   /**
    * Returns an initialized instance of the {@link PluginInterface} with the
-   * specified ID (classname) or null if the initializing process failed.
+   * specified ID (classname) or null if the initializing process fails.
+   * 
+   * Note the the {@link PluginInterface#init()} method is not yet called!
    * 
    * @param pluginID
    *          the ID (classname) of the {@link PluginInterface}.
@@ -151,6 +159,21 @@ public final class PluginManager {
     }
 
     return plugin;
+  }
+
+  /**
+   * Returns an initialized instance of the @ link PluginInterface} with the
+   * specified plugin info or null if the initializing process fails.
+   * 
+   * Note the the {@link PluginInterface#init()} method is not yet called!
+   * 
+   * @param info
+   *          the plugin info for the plugin
+   * @return a {@link PluginInterface} or <code>null</code> if the specified
+   *         {@link PluginInfo} is incorrect.
+   */
+  public PluginInterface getPlugin(final PluginInfo info) {
+    return this.getPlugin(info.getClassName(), info.getVersion());
   }
 
   /**
@@ -303,6 +326,61 @@ public final class PluginManager {
   }
 
   /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean addObserver(ScoutComponentListener scoutComponent) {
+    lazyLoadObservers();
+    return this.observers.add(scoutComponent);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean removeObserver(ScoutComponentListener scoutComponent) {
+    lazyLoadObservers();
+    return this.observers.remove(scoutComponent);
+  }
+
+  /**
+   * {@inheritDoc}
+   * 
+   * This class always submits itself as a source of the change event and passes
+   * the {@link PluginInfo} of the newly loaded plugin as a message to all the
+   * subscribers.
+   */
+  @Override
+  public void notifyObservers(ScoutChangeEvent evt) {
+    lazyLoadObservers();
+    for (final ScoutComponentListener scl : this.observers) {
+      try {
+        scl.onChange(evt);
+      } catch (Exception e) {
+        LOGGER.warn("An error occurred, while notifying observers: {}", e.getMessage());
+      }
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void clear() {
+    lazyLoadObservers();
+    this.observers.clear();
+  }
+
+  /**
+   * Inits the observer list for this class.
+   */
+  private void lazyLoadObservers() {
+    if (this.observers == null) {
+      this.observers = new HashSet<ScoutComponentListener>();
+    }
+  }
+
+  /**
    * Checks if the plugin manager is currently loading plugins and waits until
    * the loading procedure finishes, then the method returns.
    */
@@ -373,7 +451,7 @@ public final class PluginManager {
 
     for (final File jarFile : jarFiles) {
       if (this.pluginRegistry.containsKey(jarFile)
-        && jarFile.lastModified() == this.pluginRegistry.get(jarFile).lastModified) {
+          && jarFile.lastModified() == this.pluginRegistry.get(jarFile).lastModified) {
         // The plugin already exists
         LOGGER.debug(jarFile.getName() + " is already loaded");
       } else {
@@ -382,7 +460,7 @@ public final class PluginManager {
         LOGGER.debug(jarFile.getName() + " is not loaded or modification dates differ. Inspecting Jar...");
 
         try {
-          final URL[] urls = {jarFile.toURI().toURL()};
+          final URL[] urls = { jarFile.toURI().toURL() };
           final PluginInterface plugin = loadPlugin(jarFile, urls);
 
           if (plugin == null) {
@@ -392,6 +470,8 @@ public final class PluginManager {
             synchronized (this.pluginRegistry) {
               this.pluginRegistry.put(jarFile, new JarPlugin(plugin, jarFile.lastModified()));
             }
+
+            this.notifyObservers(new ScoutChangeEvent(this, new PluginInfo(plugin)));
           }
         } catch (final MalformedURLException e) {
           LOGGER.error("An error caught: {}", e.getMessage());
@@ -421,7 +501,7 @@ public final class PluginManager {
       jar = new JarFile(jarFile);
 
     } catch (final IOException e) {
-      LOGGER.error("Could not open jar file '{}': {}", new Object[] {jarFile.getName(), e.getMessage()});
+      LOGGER.error("Could not open jar file '{}': {}", new Object[] { jarFile.getName(), e.getMessage() });
       return plugin;
     }
 
@@ -451,17 +531,17 @@ public final class PluginManager {
           }
 
         } catch (final ClassNotFoundException e) {
-          LOGGER.trace("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
-            e.getMessage()});
+          LOGGER.trace("{}#{} thrown {}: {}", new Object[] { jarFile.getName(), className,
+              e.getClass().getSimpleName(), e.getMessage() });
         } catch (final IllegalAccessError e) {
-          LOGGER.trace("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
-            e.getMessage()});
+          LOGGER.trace("{}#{} thrown {}: {}", new Object[] { jarFile.getName(), className,
+              e.getClass().getSimpleName(), e.getMessage() });
         } catch (final VerifyError e) {
-          LOGGER.trace("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
-            e.getMessage()});
+          LOGGER.trace("{}#{} thrown {}: {}", new Object[] { jarFile.getName(), className,
+              e.getClass().getSimpleName(), e.getMessage() });
         } catch (final NoClassDefFoundError e) {
-          LOGGER.trace("{}#{} thrown {}: {}", new Object[] {jarFile.getName(), className, e.getClass().getSimpleName(),
-            e.getMessage()});
+          LOGGER.trace("{}#{} thrown {}: {}", new Object[] { jarFile.getName(), className,
+              e.getClass().getSimpleName(), e.getMessage() });
         }
       }
     }
@@ -489,7 +569,7 @@ public final class PluginManager {
 
     try {
       if (PluginInterface.class.isAssignableFrom(clazz) && !clazz.isInterface()
-        && !Modifier.isAbstract(clazz.getModifiers())) {
+          && !Modifier.isAbstract(clazz.getModifiers())) {
         LOGGER.info("{} class is a plugin, instantiating", clazz.getName());
         plugin = (PluginInterface) clazz.newInstance();
       }

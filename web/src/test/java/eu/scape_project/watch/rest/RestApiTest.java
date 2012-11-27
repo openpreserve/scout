@@ -572,11 +572,11 @@ public class RestApiTest extends JerseyTest {
     // CREATE
     final Question q = new Question("?s watch:entity watch-Entity:" + entityName
       + ". ?s watch:property watch-Property:" + PropertyDAO.getPropertyRDFId(typeName, propertyName)
-      + " . ?s watch:value ?v . FILTER (?v >= 100000)", RequestTarget.PROPERTY_VALUE, Arrays.asList(entitytype),
-      Arrays.asList(property), Arrays.asList(entity), 60000L);
+      + " . ?s watch:value ?v . FILTER (?v >= 100000)", RequestTarget.PROPERTY_VALUE);
     final Notification n = new Notification("log", Arrays.asList(new DictionaryItem("recepients",
       "test@scape-project.eu")));
-    final Trigger trigger = new Trigger(q, Arrays.asList(n), null);
+    final Trigger trigger = new Trigger(Arrays.asList(entitytype), Arrays.asList(property), Arrays.asList(entity),
+      60000L, q, null, Arrays.asList(n));
     final AsyncRequest areq = new AsyncRequest("test", Arrays.asList(trigger));
     final AsyncRequest areq2 = client.createAsyncRequest(areq);
     Assert.assertEquals(areq, areq2);

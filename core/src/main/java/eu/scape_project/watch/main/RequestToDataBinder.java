@@ -46,12 +46,11 @@ public class RequestToDataBinder {
 
     final List<Trigger> triggers = request.getTriggers();
     for (final Trigger trigger : triggers) {
-      final Question question = trigger.getQuestion();
 
       // Event-based triggered assessment
-      final List<EntityType> types = question.getTypes();
-      final List<Entity> entities = question.getEntities();
-      final List<Property> properties = question.getProperties();
+      final List<EntityType> types = trigger.getTypes();
+      final List<Entity> entities = trigger.getEntities();
+      final List<Property> properties = trigger.getProperties();
 
       if (types != null) {
         for (final EntityType type : types) {

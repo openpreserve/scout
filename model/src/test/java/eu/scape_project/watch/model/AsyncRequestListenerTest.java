@@ -88,7 +88,7 @@ public class AsyncRequestListenerTest {
     final Property property = new Property(type, "property1", "property description");
 
     final PropertyValue pv = new PropertyValue(entity, property, "123");
-    
+
     final Source source = new Source("testsource", "A test source");
     final SourceAdaptor adaptor = new SourceAdaptor("testadaptor", "0.0.1", "default", source, Arrays.asList(type),
       Arrays.asList(property), new HashMap<String, String>());
@@ -109,12 +109,12 @@ public class AsyncRequestListenerTest {
     final List<Entity> entities = Arrays.asList(entity);
     final long period = 30000;
 
-    final Question question = new Question(sparql, target, types, properties, entities, period);
+    final Question question = new Question(sparql, target);
     final Notification notification = new Notification("test", new HashMap<String, String>());
     final List<Notification> notifications = Arrays.asList(notification);
     final Plan plan = null;
 
-    final Trigger trigger = new Trigger(question, notifications, plan);
+    final Trigger trigger = new Trigger(types, properties, entities, period, question, plan, notifications);
     final List<Trigger> triggers = Arrays.asList(trigger);
 
     final AsyncRequest arequest = new AsyncRequest("test", triggers);

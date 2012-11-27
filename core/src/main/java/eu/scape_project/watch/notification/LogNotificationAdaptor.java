@@ -1,6 +1,5 @@
 package eu.scape_project.watch.notification;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,11 +10,11 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import eu.scape_project.watch.domain.AsyncRequest;
 import eu.scape_project.watch.domain.DataType;
 import eu.scape_project.watch.domain.DictionaryItem;
 import eu.scape_project.watch.domain.Notification;
-import eu.scape_project.watch.domain.Plan;
-import eu.scape_project.watch.domain.Question;
+import eu.scape_project.watch.domain.Trigger;
 import eu.scape_project.watch.interfaces.NotificationPluginInterface;
 import eu.scape_project.watch.interfaces.PluginType;
 import eu.scape_project.watch.utils.ConfigParameter;
@@ -65,7 +64,7 @@ public class LogNotificationAdaptor implements NotificationPluginInterface {
   }
 
   @Override
-  public boolean send(final Notification notification, final Question question, final Plan plan) {
+  public boolean send(final Notification notification, final Trigger trigger, final AsyncRequest request) {
     final StringBuilder message = new StringBuilder();
 
     message.append("NOTIFICATION LOG ");

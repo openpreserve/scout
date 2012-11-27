@@ -8,11 +8,14 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import eu.scape_project.watch.domain.AsyncRequest;
 import eu.scape_project.watch.domain.DataType;
 import eu.scape_project.watch.domain.Notification;
 import eu.scape_project.watch.domain.Plan;
 import eu.scape_project.watch.domain.Question;
+import eu.scape_project.watch.domain.Trigger;
 import eu.scape_project.watch.interfaces.NotificationPluginInterface;
+import eu.scape_project.watch.utils.exceptions.PluginException;
 
 /**
  * 
@@ -45,8 +48,8 @@ public final class NotificationService {
     this.adaptors = new HashSet<NotificationPluginInterface>();
     this.adaptorsIndex = new HashMap<String, Set<NotificationPluginInterface>>();
 
-    // TODO load only notification via plugins
-    addAdaptor(new LogNotificationAdaptor());
+    // load only notification via plugins
+    // addAdaptor(new LogNotificationAdaptor());
   }
 
   /**
@@ -57,22 +60,29 @@ public final class NotificationService {
    * @return <code>true</code> if did not already contain the specified adaptor
    */
   public boolean addAdaptor(final NotificationPluginInterface adaptor) {
-    final boolean ret = this.adaptors.add(adaptor);
+    boolean ret;
+    try {
+      adaptor.init();
+      ret = this.adaptors.add(adaptor);
 
-    // update index
-    for (final String type : adaptor.getSupportedTypes()) {
-      Set<NotificationPluginInterface> typeAdaptors = this.adaptorsIndex.get(type);
+      // update index
+      for (final String type : adaptor.getSupportedTypes()) {
+        Set<NotificationPluginInterface> typeAdaptors = this.adaptorsIndex.get(type);
 
-      // add type if this is the first adaptor to support it
-      if (typeAdaptors == null) {
-        typeAdaptors = new HashSet<NotificationPluginInterface>();
-        this.adaptorsIndex.put(type, typeAdaptors);
+        // add type if this is the first adaptor to support it
+        if (typeAdaptors == null) {
+          typeAdaptors = new HashSet<NotificationPluginInterface>();
+          this.adaptorsIndex.put(type, typeAdaptors);
+        }
+
+        typeAdaptors.add(adaptor);
       }
 
-      typeAdaptors.add(adaptor);
+      LOG.debug("Registered " + adaptor);
+    } catch (PluginException e) {
+      ret = false;
+      LOG.error("Could not load notification plugin", e);
     }
-
-    LOG.debug("Registered " + adaptor);
 
     return ret;
   }
@@ -158,7 +168,7 @@ public final class NotificationService {
    * 
    * @see NotificationPluginInterface#send(Notification, Question, Plan)
    */
-  public boolean send(final Notification notification, final Question question, final Plan plan) {
+  public boolean send(final Notification notification, final Trigger trigger, final AsyncRequest request) {
     boolean ret;
     final String type = notification.getType();
 
@@ -167,12 +177,16 @@ public final class NotificationService {
 
     if (typeAdaptors != null) {
       for (NotificationPluginInterface adaptor : typeAdaptors) {
-        final boolean consume = adaptor.send(notification, question, plan);
+        final boolean consume = adaptor.send(notification, trigger, request);
 
         if (consume) {
           break;
         }
       }
+    }
+
+    if (!ret) {
+      LOG.warn("Could not find any notification plugins to send {}", notification);
     }
 
     return ret;

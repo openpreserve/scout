@@ -43,12 +43,11 @@ public class CreateAsyncRequest extends TemplateContext {
     final String sparql = request.getParameter("query");
     final String email = request.getParameter("email");
 
-    final Question question = new Question(sparql, RequestTarget.valueOf(target.toUpperCase()), null, null, null,
-      3600000L);
+    final Question question = new Question(sparql, RequestTarget.valueOf(target.toUpperCase()));
     final Map<String, String> parameters = new HashMap<String, String>();
     parameters.put("recipient", email);
     final Notification notification = new Notification("email", parameters);
-    final Trigger trigger = new Trigger(question, Arrays.asList(notification), null);
+    final Trigger trigger = new Trigger(null, null, null, 3600000L, question, null, Arrays.asList(notification));
     final AsyncRequest request = new AsyncRequest(description, Arrays.asList(trigger));
     DAO.save(request);
 

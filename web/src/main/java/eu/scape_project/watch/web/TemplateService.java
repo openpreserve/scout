@@ -146,20 +146,20 @@ public class TemplateService extends HttpServlet implements Filter {
       pathInfo = "/";
     }
 
-    logger.info("Request URI: {}", requestURI);
-    logger.info("context path: {}", contextPath);
-    logger.info("Mustachelet path: {}", mustacheletPath);
-    logger.info("Path info: {}", pathInfo);
+    logger.debug("Request URI: {}", requestURI);
+    logger.debug("context path: {}", contextPath);
+    logger.debug("Mustachelet path: {}", mustacheletPath);
+    logger.debug("Path info: {}", pathInfo);
 
     if (pathInfo.startsWith("/error/404")) {
       String originalUri = (String) req.getAttribute("javax.servlet.error.request_uri");
-      logger.info("Original URI: {}", originalUri);
+      logger.debug("Original URI: {}", originalUri);
     }
 
     for (Map.Entry<Pattern, Map<HttpMethod.Type, Class<?>>> entry : pathMap.entrySet()) {
       final Matcher matcher = entry.getKey().matcher(pathInfo);
       if (matcher.matches()) {
-        logger.info("Path: {}", entry.getKey().pattern());
+        logger.debug("Path: {}", entry.getKey().pattern());
         final Map<HttpMethod.Type, Class<?>> methodClassMap = entry.getValue();
         String httpMethod = req.getMethod();
         final boolean head;
@@ -170,7 +170,7 @@ public class TemplateService extends HttpServlet implements Filter {
           head = false;
         }
         final HttpMethod.Type type = HttpMethod.Type.valueOf(httpMethod);
-        logger.info("HTTP type is {}", type);
+        logger.debug("HTTP type is {}", type);
 
         // Inject request and response into mustachelet
         final Injector injector = Guice.createInjector(new Module() {
@@ -185,7 +185,7 @@ public class TemplateService extends HttpServlet implements Filter {
         });
 
         final Class<?> templateContext = methodClassMap.get(type);
-        logger.info("Template context is {}", templateContext);
+        logger.debug("Template context is {}", templateContext);
 
         final Object o = injector.getInstance(templateContext);
         if (o != null) {
@@ -260,7 +260,7 @@ public class TemplateService extends HttpServlet implements Filter {
       protected Reader read(String templateName) throws IOException {
         final InputStream stream = getClass().getResourceAsStream(DEFAULT_RESOURCE_ROOT + templateName);
         if (stream != null) {
-          logger.info("Loaded template {}", DEFAULT_RESOURCE_ROOT + templateName);
+          logger.trace("Loaded template {}", DEFAULT_RESOURCE_ROOT + templateName);
           return new InputStreamReader(stream);
         } else {
           throw new IOException("Cannot find template " + DEFAULT_RESOURCE_ROOT + templateName);
@@ -297,7 +297,7 @@ public class TemplateService extends HttpServlet implements Filter {
       try {
         final Template mustache = compiler.compile(URI.create(template.value()));
         templateMap.put(mustachelet, mustache);
-        logger.info("Added mustachelet {}", mustachelet);
+        logger.trace("Added mustachelet {}", mustachelet);
       } catch (final IOException e) {
         throw new ServletException("Failed to compile template: " + template.value(), e);
       }

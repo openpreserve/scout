@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.io.Writer;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -20,10 +22,12 @@ import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.mustachejava.DefaultMustacheFactory;
-import com.github.mustachejava.Mustache;
-import com.github.mustachejava.MustacheFactory;
+import com.github.jknack.handlebars.Handlebars;
+import com.github.jknack.handlebars.Template;
+import com.github.jknack.handlebars.TemplateLoader;
+import com.github.jknack.handlebars.cache.ConcurrentMapCache;
 
+import eu.scape_project.watch.domain.AsyncRequest;
 import eu.scape_project.watch.domain.DataType;
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.EntityType;
@@ -32,6 +36,7 @@ import eu.scape_project.watch.domain.Plan;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.Question;
 import eu.scape_project.watch.domain.RequestTarget;
+import eu.scape_project.watch.domain.Trigger;
 import eu.scape_project.watch.interfaces.NotificationPluginInterface;
 import eu.scape_project.watch.interfaces.PluginType;
 import eu.scape_project.watch.notification.email.utils.MailUtils;
@@ -109,7 +114,7 @@ public class EmailNotification implements NotificationPluginInterface {
   /**
    * The compiled mustache template.
    */
-  private Mustache mustache;
+  private Template template;
 
   @Override
   public void init() throws PluginException {
@@ -118,14 +123,31 @@ public class EmailNotification implements NotificationPluginInterface {
     fromAddress = bundle.getString("fromAddress");
     fromName = bundle.getString("fromName");
 
-    final String template = bundle.getString("template");
-    InputStream templateStream = getClass().getResourceAsStream(template);
-    if (templateStream == null) {
-      templateStream = getClass().getResourceAsStream("/" + template);
-    }
+    final String templateName = bundle.getString("template");
 
-    final MustacheFactory mf = new DefaultMustacheFactory();
-    mustache = mf.compile(new InputStreamReader(templateStream), template);
+    final Handlebars compiler = new Handlebars(new TemplateLoader() {
+
+      @Override
+      protected Reader read(String templateName) throws IOException {
+        InputStream stream = getClass().getResourceAsStream(templateName);
+        if (stream == null) {
+          stream = getClass().getResourceAsStream("/" + templateName);
+        }
+
+        if (stream != null) {
+          return new InputStreamReader(stream);
+        } else {
+          throw new IOException("Cannot find template " + templateName);
+        }
+
+      }
+    }, new ConcurrentMapCache());
+    try {
+      template = compiler.compile(URI.create(templateName));
+    } catch (IOException e) {
+      log.error("Could not compile the email template", e);
+      throw new PluginException(e);
+    }
   }
 
   @Override
@@ -169,7 +191,7 @@ public class EmailNotification implements NotificationPluginInterface {
   }
 
   @Override
-  public boolean send(final Notification notification, final Question question, final Plan plan) {
+  public boolean send(final Notification notification, final Trigger trigger, final AsyncRequest request) {
 
     final Map<String, String> parameters = notification.getParameterMap();
     final String recipient = parameters.get(PARAM_RECIPIENT);
@@ -189,18 +211,18 @@ public class EmailNotification implements NotificationPluginInterface {
     // XXX un-comment social section in mustache if any of the above are
     // activated
 
-    if (question != null) {
-      messageParams.put("question", question);
+    if (trigger != null) {
+      messageParams.put("trigger", trigger);
     }
-    if (plan != null) {
-      messageParams.put("plan", plan);
+    if (request != null) {
+      messageParams.put("request", request);
     }
 
     final ByteArrayOutputStream msgByteArray = new ByteArrayOutputStream();
     final Writer msgWriter = new OutputStreamWriter(msgByteArray);
-    mustache.execute(msgWriter, messageParams);
 
     try {
+      template.apply(messageParams, msgWriter);
       msgWriter.flush();
 
       final String message = msgByteArray.toString();
@@ -248,14 +270,18 @@ public class EmailNotification implements NotificationPluginInterface {
     final List<Entity> entities = Arrays.asList(entity);
     final long period = 30000;
 
-    final Question question = new Question(sparql, target, types, properties, entities, period);
-
+    final Question question = new Question(sparql, target);
     final Plan plan = new Plan("plan123");
+
+    final Trigger trigger = new Trigger(types, properties, entities, period, question, plan,
+      Arrays.asList(notification));
+
+    final AsyncRequest request = new AsyncRequest("Request description", Arrays.asList(trigger));
 
     try {
       email.init();
       System.out.println("Sending notification to " + args[0]);
-      email.send(notification, question, plan);
+      email.send(notification, trigger, request);
       email.shutdown();
     } catch (final PluginException e) {
       e.printStackTrace();

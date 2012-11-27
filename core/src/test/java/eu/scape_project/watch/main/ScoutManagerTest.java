@@ -73,13 +73,13 @@ public class ScoutManagerTest {
     final Entity entity = new Entity(type, "image/jpeg");
     final Source source = new Source("test", "Test data");
     final SourceAdaptor adaptor = new SourceAdaptor(PluginManagerTest.ADAPTOR_1_NAME,
-        PluginManagerTest.ADAPTOR_1_VERSION, "default", source, Arrays.asList(type), Arrays.asList(property),
-        new HashMap<String, String>());
+      PluginManagerTest.ADAPTOR_1_VERSION, "default", source, Arrays.asList(type), Arrays.asList(property),
+      new HashMap<String, String>());
 
-    final Question question = new Question("", RequestTarget.PROPERTY_VALUE, Arrays.asList(type), null, null, 0);
+    final Question question = new Question("", RequestTarget.PROPERTY_VALUE);
     final Notification notification = new Notification(DummyNotificationAdaptor.TEST_TYPE,
-        new HashMap<String, String>());
-    final Trigger trigger = new Trigger(question, Arrays.asList(notification), null);
+      new HashMap<String, String>());
+    final Trigger trigger = new Trigger(Arrays.asList(type), null, null, 0, question, null, Arrays.asList(notification));
     final AsyncRequest request = new AsyncRequest("Test", Arrays.asList(trigger));
 
     // Save data model
@@ -117,13 +117,13 @@ public class ScoutManagerTest {
     final Entity entity = new Entity(type, "image/jpeg");
     final Source source = new Source("test", "Test data");
     final SourceAdaptor adaptor = new SourceAdaptor(PluginManagerTest.ADAPTOR_1_NAME,
-        PluginManagerTest.ADAPTOR_1_VERSION, "default", source, Arrays.asList(type), Arrays.asList(property),
-        new HashMap<String, String>());
+      PluginManagerTest.ADAPTOR_1_VERSION, "default", source, Arrays.asList(type), Arrays.asList(property),
+      new HashMap<String, String>());
 
-    final Question question = new Question("", RequestTarget.PROPERTY_VALUE, null, null, null, 3000);
+    final Question question = new Question("", RequestTarget.PROPERTY_VALUE);
     final Notification notification = new Notification(DummyNotificationAdaptor.TEST_TYPE,
-        new HashMap<String, String>());
-    final Trigger trigger = new Trigger(question, Arrays.asList(notification), null);
+      new HashMap<String, String>());
+    final Trigger trigger = new Trigger(null, null, null, 3000, question, null, Arrays.asList(notification));
     final AsyncRequest request = new AsyncRequest("Test", Arrays.asList(trigger));
 
     // Save data model

@@ -364,26 +364,33 @@ public class QuartzScheduler implements SchedulerInterface {
 
   private void startTrigger(eu.scape_project.watch.domain.Trigger trigger, AsyncRequest request) {
 
+    LOG.info("Starting trigger {}", trigger);
     final String id = trigger.getId();
-    final long period = trigger.getQuestion().getPeriod();
+    final long period = trigger.getPeriod();
+    if (period > 0) {
 
-    // create job detail
-    final JobDetail jobDetail = JobBuilder.newJob(QuartzRequestTriggerJob.class).withIdentity(id, "triggers")
-      .usingJobData("triggerId", id).usingJobData("requestId", request.getId()).build();
+      // create job detail
+      final JobDetail jobDetail = JobBuilder.newJob(QuartzRequestTriggerJob.class).withIdentity(id, "triggers")
+        .usingJobData("triggerId", id).usingJobData("requestId", request.getId()).build();
 
-    // create trigger
-    final Trigger qztrigger = TriggerBuilder.newTrigger().startNow()
-      .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMilliseconds(period).repeatForever()).build();
+      // create trigger
+      final Trigger qztrigger = TriggerBuilder.newTrigger().startNow()
+        .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMilliseconds(period).repeatForever())
+        .build();
 
-    // schedule it
-    try {
-      scheduler.scheduleJob(jobDetail, qztrigger);
-      // store the JobKey to the cache
-      triggerToJobKeyMap.put(id, jobDetail.getKey());
-      LOG.info("Request trigger {} is scheduled", id);
-    } catch (SchedulerException e) {
-      LOG.error("A scheduler exception occurred while starting the request trigger {}", trigger);
-      // TODO log errors into KB.
+      // schedule it
+      try {
+        LOG.info("Scheduling trigger {} to run every {}ms", new Object[] {id, period});
+        scheduler.scheduleJob(jobDetail, qztrigger);
+        // store the JobKey to the cache
+        triggerToJobKeyMap.put(id, jobDetail.getKey());
+        LOG.info("Request trigger {} is scheduled", id);
+      } catch (SchedulerException e) {
+        LOG.error("A scheduler exception occurred while starting the request trigger {}", trigger);
+        // TODO log errors into KB.
+      }
+    } else {
+      LOG.info("Trigger had no scheduling period: {}", trigger);
     }
 
   }

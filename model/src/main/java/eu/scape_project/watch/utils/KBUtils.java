@@ -332,7 +332,7 @@ public final class KBUtils {
       LOG.error("Data folder {} could not be created", e.getMessage());
     }
   }
-  
+
   /**
    * Cleanly shutdown from the database, flushing the cache and closing the
    * model.
@@ -346,15 +346,15 @@ public final class KBUtils {
     }
     TDB.closedown();
   }
-  
+
   public static Model getNamedModel(String name) {
     if (dataset != null) {
       return dataset.getNamedModel(name);
     }
-    
+
     return null;
   }
-  
+
   /**
    * Creates some initial data.
    */
@@ -463,14 +463,14 @@ public final class KBUtils {
       LOG.error("Invalid Java class: " + e.getMessage());
     }
 
-    final Question question1 = new Question("?s watch:type watch-EntityType:tools", RequestTarget.ENTITY,
-      Arrays.asList(tools), Arrays.asList(toolVersion), Arrays.asList(imageMagickTool), 60);
+    final Question question1 = new Question("?s watch:type watch-EntityType:tools", RequestTarget.ENTITY);
     final Map<String, String> not1config = new HashMap<String, String>();
     not1config.put("to", "lfaria@keep.pt");
     not1config.put("subject", "New tools");
     final Notification notification1 = new Notification("log", not1config);
 
-    final Trigger trigger1 = new Trigger(question1, Arrays.asList(notification1), null);
+    final Trigger trigger1 = new Trigger(Arrays.asList(tools), Arrays.asList(toolVersion),
+      Arrays.asList(imageMagickTool), 60, question1, null, Arrays.asList(notification1));
 
     final AsyncRequest request = new AsyncRequest("test", Arrays.asList(trigger1));
 
@@ -616,10 +616,10 @@ public final class KBUtils {
 
     final byte[] finalDigest = md.digest(composedDigest);
     final String base64Hash = Base64.encodeBase64URLSafeString(finalDigest);
-    
+
     LOG.trace("Generated Hash for {} is {}", Arrays.deepToString(ids), base64Hash);
-    
-    return base64Hash; 
+
+    return base64Hash;
   }
 
   /**

@@ -67,6 +67,7 @@ public class QuartzRequestTriggerJob implements Job {
 
   @Override
   public void execute(final JobExecutionContext jec) {
+    LOG.info("Executing scheduled trigger {}", triggerId);
 
     final AsyncRequest request = DAO.ASYNC_REQUEST.findById(requestId);
     Trigger trigger = null;

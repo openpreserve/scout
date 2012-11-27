@@ -916,29 +916,17 @@ public class KBTest {
     final String sparql = "?s watch:entity watch-Entity:" + entity.getName() + ". ?s watch:property watch-Property:"
       + Property.createId(type.getName(), property.getName() + ". FILTER(?s < 200)");
     final RequestTarget target = RequestTarget.PROPERTY_VALUE;
-    final List<EntityType> types = Arrays.asList(type);
-    final List<Property> properties = Arrays.asList(property);
-    final List<Entity> entities = Arrays.asList(entity);
-    final long period = 30000;
 
-    final Question question1 = new Question(sparql, target, types, properties, entities, period);
+    final Question question1 = new Question(sparql, target);
     final Question question2 = new Question();
     question2.setId(question1.getId());
     question2.setSparql(sparql);
     question2.setTarget(target);
-    question2.setTypes(types);
-    question2.setProperties(properties);
-    question2.setEntities(entities);
-    question2.setPeriod(period);
 
     Assert.assertEquals(question1, question2);
     Assert.assertEquals(question1.getId(), question2.getId());
     Assert.assertEquals(question1.getSparql(), question2.getSparql());
     Assert.assertEquals(question1.getTarget(), question2.getTarget());
-    Assert.assertEquals(question1.getTypes(), question2.getTypes());
-    Assert.assertEquals(question1.getProperties(), question2.getProperties());
-    Assert.assertEquals(question1.getEntities(), question2.getEntities());
-    Assert.assertEquals(question1.getPeriod(), question2.getPeriod());
 
   }
 
@@ -969,12 +957,12 @@ public class KBTest {
     final List<Entity> entities = Arrays.asList(entity);
     final long period = 30000;
 
-    final Question question = new Question(sparql, target, types, properties, entities, period);
+    final Question question = new Question(sparql, target);
     final Notification notification = new Notification("test", new HashMap<String, String>());
     final List<Notification> notifications = Arrays.asList(notification);
     final Plan plan = null;
 
-    final Trigger trigger1 = new Trigger(question, notifications, plan);
+    final Trigger trigger1 = new Trigger(types, properties, entities, period, question, plan, notifications);
     final List<Trigger> triggers = Arrays.asList(trigger1);
 
     final AsyncRequest arequest1 = new AsyncRequest("test", triggers);
@@ -1050,12 +1038,12 @@ public class KBTest {
     final List<Entity> entities = Arrays.asList(entity);
     final long period = 30000;
 
-    final Question question = new Question(sparql, target, types, properties, entities, period);
+    final Question question = new Question(sparql, target);
     final Notification notification = new Notification("test", new HashMap<String, String>());
     final List<Notification> notifications = Arrays.asList(notification);
     final Plan plan = null;
 
-    final Trigger trigger = new Trigger(question, notifications, plan);
+    final Trigger trigger = new Trigger(types, properties, entities, period, question, plan, notifications);
     final List<Trigger> triggers = Arrays.asList(trigger);
 
     final AsyncRequest arequest = new AsyncRequest("test", triggers);

@@ -3,17 +3,9 @@
  */
 package eu.scape_project.watch.rest.resource;
 
-import com.wordnik.swagger.core.ApiError;
-import com.wordnik.swagger.core.ApiErrors;
-import com.wordnik.swagger.core.ApiOperation;
-import com.wordnik.swagger.core.ApiParam;
-import com.wordnik.swagger.core.JavaHelp;
-import eu.scape_project.watch.dao.DAO;
-import eu.scape_project.watch.domain.AsyncRequest;
-import eu.scape_project.watch.utils.exception.NotFoundException;
-
 import java.util.Collection;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -21,6 +13,16 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
+
+import com.wordnik.swagger.core.ApiError;
+import com.wordnik.swagger.core.ApiErrors;
+import com.wordnik.swagger.core.ApiOperation;
+import com.wordnik.swagger.core.ApiParam;
+import com.wordnik.swagger.core.JavaHelp;
+
+import eu.scape_project.watch.dao.DAO;
+import eu.scape_project.watch.domain.AsyncRequest;
+import eu.scape_project.watch.utils.exception.NotFoundException;
 
 /**
  * REST API for {@link AsyncRequest} operations.
@@ -90,6 +92,23 @@ public class AsyncRequestResource extends JavaHelp {
     final Collection<AsyncRequest> list = DAO.ASYNC_REQUEST.list(start, max);
     return Response.ok().entity(new GenericEntity<Collection<AsyncRequest>>(list) {
     }).build();
+  }
+
+  @DELETE
+  @Path("/{id}")
+  @ApiOperation(value = "Delete request by id", notes = "")
+  @ApiErrors(value = {@ApiError(code = NotFoundException.CODE, reason = "Request not found")})
+  public Response deleteAsyncRequestById(
+    @ApiParam(value = "Request Id", required = true) @PathParam("id") final String requestId) {
+
+    final AsyncRequest request = DAO.ASYNC_REQUEST.findById(requestId);
+
+    if (request != null) {
+      DAO.delete(request);
+      return Response.ok().entity(request).build();
+    } else {
+      throw new NotFoundException("Request not found: " + requestId);
+    }
   }
 
 }

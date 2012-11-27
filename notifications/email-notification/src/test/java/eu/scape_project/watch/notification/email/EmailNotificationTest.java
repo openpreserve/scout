@@ -22,6 +22,7 @@ import org.jvnet.mock_javamail.Mailbox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import eu.scape_project.watch.domain.AsyncRequest;
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.domain.Notification;
@@ -29,6 +30,7 @@ import eu.scape_project.watch.domain.Plan;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.Question;
 import eu.scape_project.watch.domain.RequestTarget;
+import eu.scape_project.watch.domain.Trigger;
 import eu.scape_project.watch.utils.exceptions.PluginException;
 
 /**
@@ -72,13 +74,17 @@ public class EmailNotificationTest {
     final List<Entity> entities = Arrays.asList(entity);
     final long period = 30000;
 
-    final Question question = new Question(sparql, target, types, properties, entities, period);
-
+    final Question question = new Question(sparql, target);
     final Plan plan = new Plan("plan123");
+
+    final Trigger trigger = new Trigger(types, properties, entities, period, question, plan,
+      Arrays.asList(notification));
+
+    final AsyncRequest request = new AsyncRequest("Request description", Arrays.asList(trigger));
 
     // Sending notification
     emailNotification.init();
-    emailNotification.send(notification, question, plan);
+    emailNotification.send(notification, trigger, request);
     emailNotification.shutdown();
 
     // Checking if notification was sent

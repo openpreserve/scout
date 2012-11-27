@@ -14,10 +14,13 @@ import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.domain.SourceAdaptorEvent;
 import eu.scape_project.watch.domain.SourceAdaptorEventType;
 import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
+import eu.scape_project.watch.interfaces.NotificationPluginInterface;
+import eu.scape_project.watch.interfaces.PluginType;
 import eu.scape_project.watch.interfaces.SchedulerInterface;
 import eu.scape_project.watch.linking.DataLinker;
 import eu.scape_project.watch.merging.DataMerger;
 import eu.scape_project.watch.notification.NotificationService;
+import eu.scape_project.watch.plugin.PluginInfo;
 import eu.scape_project.watch.plugin.PluginManager;
 import eu.scape_project.watch.policy.PolicyModel;
 import eu.scape_project.watch.scheduling.quartz.QuartzScheduler;
@@ -62,7 +65,7 @@ public class ScoutManager {
     initDB();
 
     // initialize the PluginManager...
-    PluginManager.getDefaultPluginManager();
+    final PluginManager pluginManager = PluginManager.getDefaultPluginManager();
 
     // create adaptormanager and load all active adaptors.
     adaptorManager = new AdaptorManager();
@@ -86,6 +89,18 @@ public class ScoutManager {
     notificationService = new NotificationService();
     final AssessmentService assessmentService = new AssessmentService(notificationService);
     final RequestToDataBinder requestToDataBinder = new RequestToDataBinder(assessmentService);
+
+    // Register all notification plugins in notification service
+    final List<PluginInfo> notificationPluginInfos = pluginManager.getPluginInfo(PluginType.NOTIFICATION);
+
+    for (PluginInfo notificationPluginInfo : notificationPluginInfos) {
+      final NotificationPluginInterface notificationPlugin = (NotificationPluginInterface) pluginManager.getPlugin(
+        notificationPluginInfo.getClassName(), notificationPluginInfo.getVersion());
+      notificationService.addAdaptor(notificationPlugin);
+    }
+
+    // TODO Add a plugin listener to plugin manager to detect new or removed
+    // notification plugins
 
     // the policy model of scout
     policyModel = new PolicyModel();
@@ -137,7 +152,7 @@ public class ScoutManager {
         final AdaptorPluginInterface adaptorInstance = adaptorManager.findAdaptorPluginInstance(adaptor.getInstance());
         scheduler.stopAdaptor(adaptorInstance, new SourceAdaptorEvent(SourceAdaptorEventType.STOPPED,
           "Source adaptor was removed"));
-//        adaptorManager.reloadKnownAdaptors();
+        // adaptorManager.reloadKnownAdaptors();
       }
     });
 
@@ -158,19 +173,22 @@ public class ScoutManager {
     DAO.addDOListener(AsyncRequest.class, new DOListener<AsyncRequest>() {
 
       @Override
-      public void onUpdated(AsyncRequest request) {
+      public void onUpdated(final AsyncRequest request) {
+        LOG.info("Request update detected: {}", request);
         removeRequest(request, requestToDataBinder);
         addRequest(request, requestToDataBinder);
       }
 
       @Override
-      public void onRemoved(AsyncRequest request) {
+      public void onRemoved(final AsyncRequest request) {
+        LOG.info("Request delete detected: {}", request);
         removeRequest(request, requestToDataBinder);
       }
     });
   }
 
   private void addRequest(final AsyncRequest request, final RequestToDataBinder requestToDataBinder) {
+    LOG.info("Adding request to data binding and scheduling: {}", request);
     requestToDataBinder.bindRequest(request);
     scheduler.startRequest(request);
   }
@@ -202,7 +220,7 @@ public class ScoutManager {
     }
 
     DAO.clearDOListeners();
-    
+
     PluginManager.getDefaultPluginManager().shutdown();
 
     KBUtils.dbDisconnect();

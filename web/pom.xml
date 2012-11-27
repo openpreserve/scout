@@ -63,10 +63,10 @@
 							<directory>jquery-textfill-v0.1</directory>
 							<targetPath>jquery-textfill</targetPath>
 						</resource>
-                        <resource>
-                            <directory>jquery-fileuploader</directory>
-                            <targetPath>jquery-fileuploader</targetPath>
-                        </resource>
+						<resource>
+							<directory>jquery-fileuploader</directory>
+							<targetPath>jquery-fileuploader</targetPath>
+						</resource>
 						<resource>
 							<directory>moment.js-v1.7.2</directory>
 							<targetPath>moment</targetPath>
@@ -131,17 +131,17 @@
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-server</artifactId>
-			<version>1.13</version>
+			<version>1.15</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-json</artifactId>
-			<version>1.13</version>
+			<version>1.15</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-servlet</artifactId>
-			<version>1.13</version>
+			<version>1.15</version>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
@@ -156,7 +156,7 @@
 		<dependency>
 			<groupId>com.sun.jersey.jersey-test-framework</groupId>
 			<artifactId>jersey-test-framework-grizzly2</artifactId>
-			<version>1.13</version>
+			<version>1.15</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -193,24 +193,25 @@
 		<dependency>
 			<groupId>com.github.jknack</groupId>
 			<artifactId>handlebars</artifactId>
-			<version>0.5.5</version>
+			<version>0.6.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.mfornos</groupId>
 			<artifactId>humanize-icu</artifactId>
 			<version>0.1.4</version>
 		</dependency>
-        <dependency>
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
-            <version>1.2.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20090211</version>
-        </dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20090211</version>
+		</dependency>
 	</dependencies>
+
 	<scm>
 		<connection>scm:git:git://github.com/openplanets/scape-pw.git</connection>
 		<url>https://github.com/openplanets/scape-pw/tree/prototype</url>
@@ -227,4 +228,16 @@
 		<system>GitHub</system>
 		<url>https://github.com/openplanets/scape-pw/issues</url>
 	</issueManagement>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<!-- To be compatible with asm 3.3.1 of jersey server -->
+				<groupId>org.parboiled</groupId>
+				<artifactId>parboiled-java</artifactId>
+				<version>1.0.2</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 </project>

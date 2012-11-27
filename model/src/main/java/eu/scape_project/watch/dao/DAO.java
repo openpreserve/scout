@@ -244,26 +244,6 @@ public final class DAO {
    */
   public static <T extends RdfBean<T>> void delete(final T object) {
 
-    // Due to a bug in Oracle JDK
-    // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6548436
-    // Instead of instanceof and direct cast a work-around will be used:
-    // B b = B.class.cast(a) // instead of B b = (B)a;
-    // B.class.isInstance(a) // instead of a instanceof b
-
-    // if (object instanceof EntityType) {
-    // ENTITY_TYPE.delete((EntityType) object);
-    // } else if (object instanceof Property) {
-    // PROPERTY.delete((Property) object);
-    // } else if (object instanceof Entity) {
-    // ENTITY.delete((Entity) object);
-    // } else if (object instanceof PropertyValue) {
-    // PROPERTY_VALUE.delete((PropertyValue) object);
-    // } else if (object instanceof AsyncRequest) {
-    // ASYNC_REQUEST.delete((AsyncRequest) object);
-    // } else {
-    // throw new IllegalArgumentException(object.getClass().getSimpleName());
-    // }
-
     if (EntityType.class.isInstance(object)) {
       ENTITY_TYPE.delete(EntityType.class.cast(object));
     } else if (Property.class.isInstance(object)) {

@@ -51,33 +51,6 @@ public class Question extends RdfBean<Question> {
   private RequestTarget target;
 
   /**
-   * The entity types that are questioned.
-   */
-  @XmlElement
-  @JsonProperty
-  private List<EntityType> types;
-
-  /**
-   * The properties that are questioned.
-   */
-  @XmlElement
-  @JsonProperty
-  private List<Property> properties;
-
-  /**
-   * The entities that are questioned.
-   */
-  @XmlElement
-  @JsonProperty
-  private List<Entity> entities;
-
-  /**
-   * The preferred period in milliseconds in which to re-assess this question.
-   */
-  @XmlElement
-  private long period;
-
-  /**
    * Create a new empty question.
    */
   public Question() {
@@ -103,32 +76,12 @@ public class Question extends RdfBean<Question> {
    *          question
    * 
    */
-  public Question(final String sparql, final RequestTarget target, final List<EntityType> types,
-    final List<Property> properties, final List<Entity> entities, final long period) {
+  public Question(final String sparql, final RequestTarget target) {
     super();
     this.id = UUID.randomUUID().toString();
     this.sparql = sparql;
     this.target = target;
-    this.types = types;
-    this.properties = properties;
-    this.entities = entities;
-    this.period = period;
-  }
 
-  public List<EntityType> getTypes() {
-    return this.types;
-  }
-
-  public void setTypes(final List<EntityType> types) {
-    this.types = types;
-  }
-
-  public List<Property> getProperties() {
-    return this.properties;
-  }
-
-  public void setProperties(final List<Property> properties) {
-    this.properties = properties;
   }
 
   public String getId() {
@@ -155,87 +108,43 @@ public class Question extends RdfBean<Question> {
     this.target = target;
   }
 
-  public List<Entity> getEntities() {
-    return entities;
-  }
-
-  public void setEntities(final List<Entity> entities) {
-    this.entities = entities;
-  }
-
-  public long getPeriod() {
-    return period;
-  }
-
-  public void setPeriod(final long period) {
-    this.period = period;
-  }
-
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((this.entities == null) ? 0 : this.entities.hashCode());
-    result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
-    result = prime * result + (int) (this.period ^ (this.period >>> 32));
-    result = prime * result + ((this.properties == null) ? 0 : this.properties.hashCode());
-    result = prime * result + ((this.sparql == null) ? 0 : this.sparql.hashCode());
-    result = prime * result + ((this.target == null) ? 0 : this.target.hashCode());
-    result = prime * result + ((this.types == null) ? 0 : this.types.hashCode());
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
+    result = prime * result + ((sparql == null) ? 0 : sparql.hashCode());
+    result = prime * result + ((target == null) ? 0 : target.hashCode());
     return result;
   }
 
   @Override
-  public boolean equals(final Object obj) {
+  public boolean equals(Object obj) {
     if (this == obj) {
       return true;
     }
     if (obj == null) {
       return false;
     }
-    if (getClass() != obj.getClass()) {
+    if (!(obj instanceof Question)) {
       return false;
     }
-    final Question other = (Question) obj;
-    if (this.entities == null) {
-      if (other.entities != null) {
-        return false;
-      }
-    } else if (!CollectionUtils.isEqualCollection(this.entities, other.entities)) {
-      return false;
-    }
-    if (this.id == null) {
+    Question other = (Question) obj;
+    if (id == null) {
       if (other.id != null) {
         return false;
       }
-    } else if (!this.id.equals(other.id)) {
+    } else if (!id.equals(other.id)) {
       return false;
     }
-    if (this.period != other.period) {
-      return false;
-    }
-    if (this.properties == null) {
-      if (other.properties != null) {
-        return false;
-      }
-    } else if (!CollectionUtils.isEqualCollection(this.properties, other.properties)) {
-      return false;
-    }
-    if (this.sparql == null) {
+    if (sparql == null) {
       if (other.sparql != null) {
         return false;
       }
-    } else if (!this.sparql.equals(other.sparql)) {
+    } else if (!sparql.equals(other.sparql)) {
       return false;
     }
-    if (this.target != other.target) {
-      return false;
-    }
-    if (this.types == null) {
-      if (other.types != null) {
-        return false;
-      }
-    } else if (!CollectionUtils.isEqualCollection(this.types, other.types)) {
+    if (target != other.target) {
       return false;
     }
     return true;
@@ -243,9 +152,7 @@ public class Question extends RdfBean<Question> {
 
   @Override
   public String toString() {
-    return "Question [id=" + this.id + ", sparql=" + this.sparql + ", target=" + this.target + ", types="
-      + JavaUtils.toString(this.types) + ", properties=" + JavaUtils.toString(this.properties) + ", entities="
-      + JavaUtils.toString(this.entities) + ", period=" + this.period + "]";
+    return String.format("Question [id=%s, sparql=%s, target=%s]", id, sparql, target);
   }
 
 }

@@ -38,6 +38,33 @@ public class Trigger extends RdfBean<Trigger> {
   private String id;
 
   /**
+   * The entity types that are questioned.
+   */
+  @XmlElement
+  @JsonProperty
+  private List<EntityType> types;
+
+  /**
+   * The properties that are questioned.
+   */
+  @XmlElement
+  @JsonProperty
+  private List<Property> properties;
+
+  /**
+   * The entities that are questioned.
+   */
+  @XmlElement
+  @JsonProperty
+  private List<Entity> entities;
+
+  /**
+   * The preferred period in milliseconds in which to re-assess this question.
+   */
+  @XmlElement
+  private long period;
+
+  /**
    * A plan for optional external assessment.
    */
   @XmlElement
@@ -78,9 +105,14 @@ public class Trigger extends RdfBean<Trigger> {
    *          A plan for optional external assessment, set <code>null</code> if
    *          no external assessment required.
    */
-  public Trigger(final Question question, final List<Notification> notifications, final Plan plan) {
+  public Trigger(final List<EntityType> types, final List<Property> properties, final List<Entity> entities,
+    final long period, final Question question, final Plan plan, final List<Notification> notifications) {
     super();
     this.id = UUID.randomUUID().toString();
+    this.types = types;
+    this.properties = properties;
+    this.entities = entities;
+    this.period = period;
     this.question = question;
     this.notifications = notifications;
     this.plan = plan;
@@ -92,6 +124,38 @@ public class Trigger extends RdfBean<Trigger> {
 
   public void setId(final String id) {
     this.id = id;
+  }
+
+  public List<EntityType> getTypes() {
+    return this.types;
+  }
+
+  public void setTypes(final List<EntityType> types) {
+    this.types = types;
+  }
+
+  public List<Property> getProperties() {
+    return this.properties;
+  }
+
+  public void setProperties(final List<Property> properties) {
+    this.properties = properties;
+  }
+
+  public List<Entity> getEntities() {
+    return entities;
+  }
+
+  public void setEntities(final List<Entity> entities) {
+    this.entities = entities;
+  }
+
+  public long getPeriod() {
+    return period;
+  }
+
+  public void setPeriod(final long period) {
+    this.period = period;
   }
 
   public Question getQuestion() {
@@ -122,51 +186,79 @@ public class Trigger extends RdfBean<Trigger> {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
-    result = prime * result + ((this.notifications == null) ? 0 : this.notifications.hashCode());
-    result = prime * result + ((this.plan == null) ? 0 : this.plan.hashCode());
-    result = prime * result + ((this.question == null) ? 0 : this.question.hashCode());
+    result = prime * result + ((entities == null) ? 0 : entities.hashCode());
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
+    result = prime * result + ((notifications == null) ? 0 : notifications.hashCode());
+    result = prime * result + (int) (period ^ (period >>> 32));
+    result = prime * result + ((plan == null) ? 0 : plan.hashCode());
+    result = prime * result + ((properties == null) ? 0 : properties.hashCode());
+    result = prime * result + ((question == null) ? 0 : question.hashCode());
+    result = prime * result + ((types == null) ? 0 : types.hashCode());
     return result;
   }
 
   @Override
-  public boolean equals(final Object obj) {
+  public boolean equals(Object obj) {
     if (this == obj) {
       return true;
     }
     if (obj == null) {
       return false;
     }
-    if (getClass() != obj.getClass()) {
+    if (!(obj instanceof Trigger)) {
       return false;
     }
-    final Trigger other = (Trigger) obj;
-    if (this.id == null) {
+    Trigger other = (Trigger) obj;
+    if (entities == null) {
+      if (other.entities != null) {
+        return false;
+      }
+    } else if (!entities.equals(other.entities)) {
+      return false;
+    }
+    if (id == null) {
       if (other.id != null) {
         return false;
       }
-    } else if (!this.id.equals(other.id)) {
+    } else if (!id.equals(other.id)) {
       return false;
     }
-    if (this.notifications == null) {
+    if (notifications == null) {
       if (other.notifications != null) {
         return false;
       }
-    } else if (!CollectionUtils.isEqualCollection(notifications, other.notifications)) {
+    } else if (!notifications.equals(other.notifications)) {
       return false;
     }
-    if (this.plan == null) {
+    if (period != other.period) {
+      return false;
+    }
+    if (plan == null) {
       if (other.plan != null) {
         return false;
       }
-    } else if (!this.plan.equals(other.plan)) {
+    } else if (!plan.equals(other.plan)) {
       return false;
     }
-    if (this.question == null) {
+    if (properties == null) {
+      if (other.properties != null) {
+        return false;
+      }
+    } else if (!properties.equals(other.properties)) {
+      return false;
+    }
+    if (question == null) {
       if (other.question != null) {
         return false;
       }
-    } else if (!this.question.equals(other.question)) {
+    } else if (!question.equals(other.question)) {
+      return false;
+    }
+    if (types == null) {
+      if (other.types != null) {
+        return false;
+      }
+    } else if (!types.equals(other.types)) {
       return false;
     }
     return true;
@@ -174,8 +266,9 @@ public class Trigger extends RdfBean<Trigger> {
 
   @Override
   public String toString() {
-    return String.format("Trigger(id=%1$s, plan=%2$s, question=%3$s, notifications=%4$s)", id, plan, question,
-      JavaUtils.toString(notifications));
+    return String.format(
+      "Trigger [id=%s, types=%s, properties=%s, entities=%s, period=%s, plan=%s, question=%s, notifications=%s]", id,
+      types, properties, entities, period, plan, question, notifications);
   }
 
 }

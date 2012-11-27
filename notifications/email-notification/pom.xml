@@ -1,23 +1,24 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <artifactId>scout-notifications</artifactId>
-    <groupId>eu.scape-project</groupId>
-    <version>0.0.2</version>
-  </parent>
-  <artifactId>email-notification</artifactId>
-  <version>0.0.3</version>
-  
-  <build>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>scout-notifications</artifactId>
+		<groupId>eu.scape-project</groupId>
+		<version>0.0.2</version>
+	</parent>
+	<artifactId>email-notification</artifactId>
+	<version>0.0.3</version>
+
+	<build>
 		<plugins>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<dependencies>
-	<dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
@@ -53,9 +54,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.github.spullara.mustache.java</groupId>
-			<artifactId>compiler</artifactId>
-			<version>0.8.4</version>
+			<groupId>com.github.jknack</groupId>
+			<artifactId>handlebars</artifactId>
+			<version>0.5.5</version>
 		</dependency>
 	</dependencies>
 </project>

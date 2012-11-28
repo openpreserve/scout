@@ -70,15 +70,18 @@ public class QuartzAdaptorJob implements Job {
         scheduler.unblockAdaptorPlugin(adaptor);
         return;
       } catch (PluginException e) {
-        LOG.warn("An exception occured in Adaptor");
+        LOG.warn("An exception occured in the adaptor " + adaptor.getName());
         jec.put("exception", e);
         jec.setResult(new Boolean(false));
         scheduler.unblockAdaptorPlugin(adaptor);
+        jec.put("skip", new Boolean(false));
         return;
       } catch (Throwable e) {
         LOG.warn("An unknown exception occured!");
+        jec.put("exception", e);
+        jec.setResult(new Boolean(false));
         scheduler.unblockAdaptorPlugin(adaptor);
-        jec.put("skip", new Boolean(true));
+        jec.put("skip", new Boolean(false));
       }
     }else {
       jec.put("skip", new Boolean(true));

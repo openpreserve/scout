@@ -91,7 +91,7 @@ public class QuartzExecutionListener implements JobListener {
         QuartzAdaptorJob job = (QuartzAdaptorJob) jobInstance;
         AdaptorPluginInterface adaptor = job.getAdaptorPlugin();
         Boolean result = (Boolean) context.getResult();
-        if (result != null && result.booleanValue()) {
+        if (result.booleanValue()) {
           failed.remove(adaptor);
           LOG.info(adaptor.getName() + " was successfully executed");
           SourceAdaptorEvent event = new SourceAdaptorEvent();
@@ -100,7 +100,7 @@ public class QuartzExecutionListener implements JobListener {
           event.setMessage(adaptor.getName() + " was successfully executed");
           scheduler.notifyAdaptorEvent(adaptor, event);
         } else {
-          PluginException e = (PluginException) context.get("exception");
+          Throwable e = (Throwable) context.get("exception");
           LOG.warn(adaptor.getName() + " was not successfully executed. An exception happened: " + e.getMessage());
           SourceAdaptorEvent event = new SourceAdaptorEvent();
           event.setType(SourceAdaptorEventType.EXECUTED);
@@ -138,7 +138,7 @@ public class QuartzExecutionListener implements JobListener {
 
   }
 
-  private String printException(PluginException e) {
+  private String printException(Throwable e) {
     final StringBuilder ret = new StringBuilder();
     if (e != null) {
       ret.append(e.getMessage());

@@ -366,12 +366,20 @@ public class QuartzScheduler implements SchedulerInterface {
 
     LOG.info("Starting trigger {}", trigger);
     final String id = trigger.getId();
+//<<<<<<< HEAD
     final long period = trigger.getPeriod();
     if (period > 0) {
 
       // create job detail
       final JobDetail jobDetail = JobBuilder.newJob(QuartzRequestTriggerJob.class).withIdentity(id, "triggers")
         .usingJobData("triggerId", id).usingJobData("requestId", request.getId()).build();
+//=======
+//
+//    final long period = trigger.getQuestion().getPeriod();
+//    // create job detail
+//    final JobDetail jobDetail = JobBuilder.newJob(QuartzRequestTriggerJob.class).withIdentity(id, "triggers")
+//      .usingJobData("triggerId", id).usingJobData("requestId", request.getId()).build();
+//>>>>>>> improving exception handling in the scheduler ref #126
 
       // create trigger
       final Trigger qztrigger = TriggerBuilder.newTrigger().startNow()

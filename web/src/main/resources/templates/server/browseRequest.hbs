@@ -4,85 +4,72 @@
 	{{#request}}
 	<div class="page-header">
 		<h1>
-			Request<br /> <small>{{description}}</small>
+			Trigger<br /> <small>{{description}}</small>
 		</h1>
 	</div>
 
 	{{#triggers}}
-	<h2>
-		Trigger <small>{{id}}</small>
-	</h2>
-	<p>Task initiated by schedule or events that will execute the
-		assessment of a question or a plan in order to notify users of events.</p>
 
-	<h3>Initiators</h3>
-	<p>
-		<strong>Scheduling period: </strong> {{period}}
-	</p>
-	<div>
-		<strong>Watched categories</strong> {{#if types}}
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Description</th>
-					<th style="width: 10%">Action</th>
-				</tr>
-			</thead>
-			<tbody>
-				{{#each types}}
-				<tr>
-					<td>{{name}}</td>
-					<td>{{description}}</td>
-					<td><a class="btn btn-small btn-link"
-						href="{{../mustacheletPath}}/browse/type/{{id}}"><i
-							class=" icon-th-list"></i></a></td>
-				</tr>
-				{{/each}}
-			</tbody>
-		</table>
-		{{/if}} {{#unless types}}
-		<p>None</p>
-		{{/unless}}
-	</div>
-	<div>
-		<strong>Watched entities</strong> {{#if entities}} TODO {{/if}}
-		{{#unless entities}}
-		<p>None</p>
-		{{/unless}}
-	</div>
-	<div>
-		<strong>Watched properties</strong> {{#if properties}} TODO {{/if}}
-		{{#unless properties}}
-		<p>None</p>
-		{{/unless}}
-	</div>
+	<h4>Initiators</h4>
+	<dl class="dl-horizontal">
+		<dt>Schedule</dt>
+		<dd>{{#durationMS period}}{{/durationMS}}</dd>
+		{{#if types}}
+		<dt>Categories</dt>
+		<dd>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Description</th>
+						<th style="width: 10%">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					{{#each types}}
+					<tr>
+						<td>{{name}}</td>
+						<td>{{description}}</td>
+						<td><a class="btn btn-small btn-link"
+							href="{{../mustacheletPath}}/browse/type/{{id}}"><i
+								class=" icon-th-list"></i></a></td>
+					</tr>
+					{{/each}}
+				</tbody>
+			</table>
+		</dd>
+		{{/if}} {{#if entities}}
+		<dt>Entities</dt>
+		<dd>TODO</dd>
+		{{/if}} {{#if properties}}
+		<dt>Properties</dt>
+		<dd>TODO</dd>
+		{{/if}}
+	</dl>
 
 	{{#if question}}
-	<h3>Question</h3>
+	<h4>Question</h4>
 	{{#with question}}
-	<p>
-		<strong>Target: </strong> {{target}}
-	</p>
-	<div>
-		<span> <strong>SPARQL</strong>
-		</span>
-		<pre style="margin: 0;">SELECT ?s WHERE { <span
-				id="sparql-class-declaration"></span> {{#if sparql}}.
-					{{sparql}}{{/if}}}</pre>
-	</div>
+	<dl class="dl-horizontal">
+		<dt>Target</dt>
+		<dd>{{target}}</dd>
+		<dt>SPARQL</dt>
+		<dd>
+			<pre style="margin: 0;">SELECT ?s WHERE { <span
+					id="sparql-class-declaration"></span>{{#if sparql}} . {{sparql}}{{/if}} }</pre>
+		</dd>
+	</dl>
 
 	{{/with}} {{/if}} {{#if plan}}
-	<h3>Preservation Plan</h3>
+	<h4>Preservation Plan</h4>
 	{{#with plan}}
-	<p>
-		<strong>Plan id:</strong> {{planId}}
-	</p>
+	<dl class="dl-horizontal">
+		<dt>Plan Id</dt>
+		<dd>{{planId}}</dd>
+	</dl>
 	{{/with}} {{/if}}
 
-	<h3>Notifications</h3>
-	<p>List of notification actions that will be executed when the
-		question or plan assessement finds a significant event.</p>
+	<h4>Notifications</h4>
 
 	{{#if notifications}}
 	<table class="table table-striped">
@@ -149,17 +136,38 @@
 
 {{/partial}} {{#partial "scripts"}}
 <script type="text/javascript">
+
+		var updateSparqlDeclaration = function(value) {
+			if (value == 'entity_type') {
+				$('#sparql-class-declaration').html("?s rdf:type watch:EntityType");
+			} else if (value == 'property') {
+				$('#sparql-class-declaration').html("?s rdf:type watch:Property");
+			} else if (value == 'entity') {
+				$('#sparql-class-declaration').html("?s rdf:type watch:Entity");
+			} else if (value == 'property_value') {
+				$('#sparql-class-declaration').html("?s rdf:type watch:PropertyValue");
+			} else if (value == 'measurement') {
+				$('#sparql-class-declaration').html("?s rdf:type watch:Measurement");
+			}
+		};
+		
+		{{#each request.triggers}}
+		{{#if question.target}}
+		updateSparqlDeclaration('{{question.target}}'.toLowerCase());
+		{{/if}}
+		{{/each}}
+</script>
+<script type="text/javascript">
 	$(document).ready(function() {
 		$('.btn').button();
-		var deleteButton = document.getElementById('deleteButton');
-		deleteButton.onclick = function() {
+		$('#deleteButton').click(function() {
 			var btn = $(this);
 			btn.button('loading');
 			$.ajax({
 				url : '{{contextPath}}/api/asyncrequest.json/{{request.id}}',
 				type : 'DELETE',
 				success : function() {
-					 window.location = '{{mustacheletPath}}/dashboard';
+					window.location = '{{mustacheletPath}}/dashboard';
 				},
 				error : function(xhr, ajaxOptions, thrownError) {
 					alert(xhr.responseText);
@@ -167,7 +175,7 @@
 					$('#deleteConfirmModal').hide();
 				}
 			});
-		};
+		});
 	});
 </script>
 {{/partial}} {{>base}}

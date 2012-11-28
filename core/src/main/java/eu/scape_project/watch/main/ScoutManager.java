@@ -17,6 +17,8 @@ import eu.scape_project.watch.interfaces.AdaptorPluginInterface;
 import eu.scape_project.watch.interfaces.NotificationPluginInterface;
 import eu.scape_project.watch.interfaces.PluginType;
 import eu.scape_project.watch.interfaces.SchedulerInterface;
+import eu.scape_project.watch.interfaces.eventhandling.ScoutChangeEvent;
+import eu.scape_project.watch.interfaces.eventhandling.ScoutComponentListener;
 import eu.scape_project.watch.linking.DataLinker;
 import eu.scape_project.watch.merging.DataMerger;
 import eu.scape_project.watch.notification.NotificationService;
@@ -83,8 +85,7 @@ public class ScoutManager {
     // create data linker
     dataLinker = new DataLinker();
     // TODO add link rules as more adaptors come.
-    // TODO create interface for creating these
-    // rules
+    // TODO create interface for creating these rules
 
     notificationService = new NotificationService();
     final AssessmentService assessmentService = new AssessmentService(notificationService);
@@ -99,8 +100,25 @@ public class ScoutManager {
       notificationService.addAdaptor(notificationPlugin);
     }
 
-    // TODO Add a plugin listener to plugin manager to detect new or removed
-    // notification plugins
+    pluginManager.addObserver(new ScoutComponentListener() {
+
+      @Override
+      public void onChange(ScoutChangeEvent evt) {
+        // XXX Event only occurs when plugin is added
+        Object message = evt.getMessage();
+        if (message instanceof PluginInfo) {
+          final PluginInfo pluginInfo = (PluginInfo) message;
+          if (pluginInfo.getType().equals(PluginType.NOTIFICATION)) {
+            final NotificationPluginInterface notificationPlugin = (NotificationPluginInterface) pluginManager
+              .getPlugin(pluginInfo.getClassName(), pluginInfo.getVersion());
+            notificationService.addAdaptor(notificationPlugin);
+          }
+        }
+      }
+    });
+
+    // TODO Detect removed notification plugins and unregister them from
+    // notification service
 
     // the policy model of scout
     policyModel = new PolicyModel();

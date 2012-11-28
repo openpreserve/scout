@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 
 import com.github.jknack.handlebars.Context;
 import com.github.jknack.handlebars.Handlebars;
+import com.github.jknack.handlebars.HumanizeHelper;
 import com.github.jknack.handlebars.Template;
 import com.github.jknack.handlebars.TemplateLoader;
 import com.github.jknack.handlebars.cache.ConcurrentMapCache;
@@ -39,6 +40,7 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.name.Names;
 
+import eu.scape_project.watch.utils.HumanizeHelperExtra;
 import eu.scape_project.watch.utils.ValueHelper;
 import eu.scape_project.watch.web.annotations.Controller;
 import eu.scape_project.watch.web.annotations.HttpMethod;
@@ -270,7 +272,9 @@ public class TemplateService extends HttpServlet implements Filter {
     }, new ConcurrentMapCache());
 
     compiler.registerHelper("value-render", new ValueHelper());
-
+    HumanizeHelper.register(compiler);
+    HumanizeHelperExtra.register(compiler);
+    
     for (Class<?> mustachelet : MUSTACHELETS) {
       final Path annotation = mustachelet.getAnnotation(Path.class);
       if (annotation == null) {

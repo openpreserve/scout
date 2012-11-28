@@ -1,0 +1,10 @@
+# query for collection 'default' size bigger than 18MB
+
+?s watch:property ?property .
+?property watch:name "Collection size"^^xsd:string .
+?s watch:entity ?entity .
+?entity watch:name "default"^^xsd:string .
+?entity watch:type ?type .
+?type watch:name "content_profile"^^xsd:string .
+?s watch:longValue ?value .
+FILTER(?value > 18000000)

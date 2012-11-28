@@ -6,12 +6,12 @@
 	</div>
 	<p>All about your own information.</p>
 
-	<h2>My requests</h2>
+	<h2>My triggers</h2>
 	{{#if requests}}
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th>Description</th>
+				<th>Name</th>
 				<th style="width: 10%">Action</th>
 			</tr>
 		</thead>
@@ -26,9 +26,9 @@
 	{{/if}}
 	{{#unless requests}}
 	<div class="alert alert-warning">
-		You have no requests defined, create a request now!
+		You have no triggers defined, create one now!
 	</div>
-	<a class="btn btn-success" href="{{mustacheletPath}}/request/new"><i class="icon-plus icon-white"></i> Create request</a>
 	{{/unless}}
+	<a class="btn btn-success" href="{{mustacheletPath}}/request/new"><i class="icon-plus icon-white"></i> Create trigger</a>
 </div>
 {{/partial}} {{> base}}

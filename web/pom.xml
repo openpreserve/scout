@@ -210,6 +210,11 @@
 			<artifactId>json</artifactId>
 			<version>20090211</version>
 		</dependency>
+		<dependency>
+			<groupId>com.github.jknack</groupId>
+			<artifactId>handlebars-humanize</artifactId>
+			<version>0.6.2</version>
+		</dependency>
 	</dependencies>
 
 	<scm>

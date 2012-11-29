@@ -51,7 +51,6 @@
 		<dependency>
 			<groupId>eu.scape-project</groupId>
 			<artifactId>scout-model</artifactId>
-			<version>0.0.2</version>
 		</dependency>
 	</dependencies>
 </project>

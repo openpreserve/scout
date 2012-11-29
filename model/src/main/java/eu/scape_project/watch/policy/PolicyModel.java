@@ -151,6 +151,13 @@ public class PolicyModel {
     if (!loaded) {
       LOG.debug("Loading policy model from file system");
       final File modelDir = this.getModelDir();
+      
+      if (modelDir == null || !modelDir.exists()) {
+        LOG.warn("Could not create policy model directory!");
+        LOG.warn("This might lead to unexpected behavior!");
+        return false;
+      }
+      
       final String[] files = modelDir.list(new FilenameFilter() {
 
         @Override

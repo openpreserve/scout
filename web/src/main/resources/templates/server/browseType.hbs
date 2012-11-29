@@ -2,14 +2,25 @@
 "NavBrowseClass"}}active{{/partial}} {{#partial "content"}}
 <div class="container">
 	{{#entityType}}
+	<ul class="breadcrumb">
+		<li><a href="{{mustacheletPath}}/browse">Categories</a> <span class="divider">/</span></li>
+		<li class="active">{{name}}</li>
+	</ul>
 	<div class="page-header">
-	<h1>{{description}} <small>category</small></h1>
+		<h1>Category</h1>
 	</div>
 
-	<h2>Entities</h2>
+	<dl class="dl-horizontal">
+		<dt>Name</dt>
+		<dd>{{name}}</dd>
+		<dt>Description</dt>
+		<dd>{{description}}</dd>
+	</dl>
+
+	<h4>Entities</h4>
 	<div id="entityList" class="content">Loading entities...</div>
 
-<!-- 
+	<!-- 
 	<div>
 		<h2>Properties</h2>
 		<table class="table table-hover table-striped">
@@ -43,11 +54,9 @@
 	</div>
 	{{/entityType}}
 </div>
-{{/partial}} 
-{{#partial "scripts"}}
+{{/partial}} {{#partial "scripts"}}
 <script>
 var paginator = Paginator({{entityCount}}, '/api/entity.json/list?type={{entityType.id}}', 20, 'entity_list.hbs', '#entityList', '{{contextPath}}', '{{mustacheletPath}}');
 paginator.init();
 </script>
-{{/partial}}
-{{> base}}
+{{/partial}} {{> base}}

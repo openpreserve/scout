@@ -1,6 +1,5 @@
 package eu.scape_project.watch.dao;
 
-import java.util.Collection;
 import java.util.List;
 
 import eu.scape_project.watch.domain.EntityType;
@@ -67,6 +66,10 @@ public final class PropertyDAO extends AbstractDO<Property> {
    */
   protected PropertyDAO() {
 
+  }
+
+  public Property findById(final String id) {
+    return super.findById(id, Property.class);
   }
 
   /**

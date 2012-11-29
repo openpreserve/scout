@@ -2,10 +2,17 @@
 "NavBrowseClass"}}active{{/partial}} {{#partial "content"}}
 <div class="container">
 	{{#propertyValue}}
+	<ul class="breadcrumb">
+		<li><a href="{{mustacheletPath}}/browse">Categories</a> <span
+			class="divider">/</span></li>
+		<li><a href="{{mustacheletPath}}/browse/type/{{entity.type.id}}">{{entity.type.name}}</a>
+			<span class="divider">/</span></li>
+		<li><a href="{{mustacheletPath}}/browse/entity/{{entity.id}}">{{entity.name}}</a>
+			<span class="divider">/</span></li>
+		<li class="active">{{property.name}}</li>
+	</ul>
 	<div class="page-header">
-		<h1>
-			{{property.description}} <small>property</small>
-		</h1>
+		<h1>{{property.name}} <small>{{property.description}}</small></h1>
 	</div>
 	<br />
 	<div class="container jtextfill"

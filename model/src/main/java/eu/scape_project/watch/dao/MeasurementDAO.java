@@ -38,6 +38,10 @@ public final class MeasurementDAO extends AbstractDO<Measurement> {
     return super.findById(Measurement.createId(propertyName, timestamp), Measurement.class);
   }
 
+  public Measurement findById(final String id) {
+    return super.findById(id, Measurement.class);
+  }
+
   /**
    * Query for {@link Measurement}.
    * 

@@ -31,4 +31,41 @@
 	{{/unless}}
 	<a class="btn btn-success" href="{{mustacheletPath}}/request/new"><i class="icon-plus icon-white"></i> Create trigger</a>
 </div>
+<div class="container">
+   <h2>
+    My policies
+   </h2>
+   {{#if objectives}}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th style="width: 10%">Objective</th>
+                <th style="width: 10%">Measure</th>
+                <th style="width: 30%">Description</th>
+                <th style="width: 5%">Modality</th>
+                <th style="width: 5%">Qualifier</th>
+                <th style="width: 10%">Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each objectives}}
+            <tr>
+                <td style="white-space: nowrap;">{{url}}</td>
+                <td>{{measure}}</td>
+                <td>{{measureDescription}}</td>
+                <td>{{modality}}</td>
+                <td>{{qualifier}}</td>
+                <td>{{value}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    {{/if}}
+    {{#unless objectives}}
+    <div class="alert alert-warning">
+        <b>Empty!</b> There are no defined policies.
+    </div>
+    {{/unless}}
+     <a class="btn btn-success" href="{{mustacheletPath}}/upload/policy/new"><i class="icon-plus icon-white"></i>Upload policies</a>
+</div>
 {{/partial}} {{> base}}

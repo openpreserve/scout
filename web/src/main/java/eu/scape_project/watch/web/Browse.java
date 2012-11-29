@@ -19,16 +19,6 @@ import eu.scape_project.watch.web.annotations.TemplateSource;
 @TemplateSource("browse")
 public class Browse extends TemplateContext {
   
-  @Inject
-  private HttpServletRequest request;
-
-  public List<Objective> getObjectives() {
-    final ServletContext context = this.request.getSession().getServletContext();
-    final PolicyModel policyModel = ContextUtil.getPolicyModel(context);
-
-    return policyModel.listAllObjectives();
-  }
-
   public List<EntityType> getEntityTypes() {
     return DAO.ENTITY_TYPE.query("", 0, getPageSize());
   }

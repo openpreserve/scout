@@ -1,17 +1,48 @@
-Scout: a preservation watch system
-=============================
+# Scout: a preservation watch system
+
 Scout is a preservation watch system being developed within the [SCAPE project](http://www.scape-project.eu). 
 
-Requirements
------------------------------
+## Install
+
+### Requirements
+ - *nix operative system (tested in Ubuntu LTS 12.04)
+ - JBoss AS 7.1.1 Final
+ - Optional[^1]: Mail Transport Agent (e.g. Postfix) 
+
+### Instructions
+
+ 1. Download and install JBoss AS
+ 2. Optional[^1]: Install a mail transport agent (e.g. `$ sudo apt-get install postfix`)
+ 3. Configure JBoss AS to remove Resteasy
+ 4. Install scout-web-*.war application into JBoss AS
+ 5. Create directory `/usr/local/scout/data` with write permissions by the user running the JBoss AS server
+ 6. Create directory `/usr/local/scout/plugins/adaptors` and copy all adaptor jars there (e.g. C3PO and PRONOM)
+ 7. Create directory `/usr/local/scout/plugins/notifications` and copy all notification jars there (e.g. email-notification)
+ 8. Create directory `.scout` in the home of the user running JBoss AS server
+ 9. Start JBoss AS server
+
+[^1]: An external SMTP server can optionally be configured.
+
+### Create the PRONOM adaptor
+
+ 1. Open the scout-web web application
+ 2. Go to Administration
+ 3. Create a new Source Adaptor
+ 4. Create a new Source called "PRONOM"
+ 5. Select the new Source Adaptor with the pronom plugin and the instance name "pronom-default"
+
+*****
+
+## Development
+
+### Requirements
  - Eclipse Indigo: http://www.eclipse.org/downloads/index-developer.php
  - Eclipse checkstyle plugin: http://marketplace.eclipse.org/node/150
  - Eclipse m2eclipse plugin: http://marketplace.eclipse.org/content/maven-integration-eclipse
  - Maven 3: http://maven.apache.org/
  - clone this repo (if you haven't)
 
-Setup IDE
------------------------------
+### Setup IDE
 After you install eclipse and clone the repo, install the following
 plugins listed above. To install a plugin click on Help > Eclipse Market Place
 and search them or just use the nice drag and drop feature and drag them from the links above.
@@ -35,12 +66,9 @@ This will continouosly check the code as you type and mark the bad spots with ye
 warnings.
 
 
-Watch Component
----------------
-TBD
 
-Acknowledgements
-----------------
+
+## Acknowledgements
 
 Part of this work was supported by the European Union in the 7th Framework Program, IST, through the SCAPE project, Contract 270137.
 

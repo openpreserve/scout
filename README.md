@@ -13,11 +13,15 @@ Scout is a preservation watch system being developed within the [SCAPE project](
 
  1. Download and install JBoss AS
  2. Optional[^1]: Install a mail transport agent (e.g. `$ sudo apt-get install postfix`)
- 3. Configure JBoss AS to remove Resteasy
- 4. Install scout-web-*.war application into JBoss AS
+ 3. Configure JBoss AS to deactivate Resteasy by removing the following lines from `JBOSS/standalone/configuration/standalone.xml`
+<pre>
+    \<extension module="org.jboss.as.jaxrs"/>
+    \<subsystem xmlns="urn:jboss:domain:jaxrs:1.0"/>
+</pre>
+ 4. Install [Scout Web Application](https://github.com/downloads/openplanets/scout/scout-web-0.1.0.war) into JBoss AS
  5. Create directory `/usr/local/scout/data` with write permissions by the user running the JBoss AS server
- 6. Create directory `/usr/local/scout/plugins/adaptors` and copy all adaptor jars there (e.g. C3PO and PRONOM)
- 7. Create directory `/usr/local/scout/plugins/notifications` and copy all notification jars there (e.g. email-notification)
+ 6. Create directory `/usr/local/scout/plugins/adaptors` and copy all adaptor jars there (e.g. [C3PO adaptor plugin](https://github.com/downloads/openplanets/scout/c3po-adaptor-0.0.5-jar-with-dependencies.jar) and [PRONOM adaptor plugin](https://github.com/downloads/openplanets/scout/pronom-adaptor-0.0.6-jar-with-dependencies.jar))
+ 7. Create directory `/usr/local/scout/plugins/notifications` and copy all notification jars there (e.g. [Email notification plugin](https://github.com/downloads/openplanets/scout/email-notification-0.0.3-jar-with-dependencies.jar))
  8. Create directory `.scout` in the home of the user running JBoss AS server
  9. Start JBoss AS server
 

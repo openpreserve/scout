@@ -1,4 +1,5 @@
-# Scout: a preservation watch system
+Scout: a preservation watch system
+=============================
 
 Scout is a preservation watch system being developed within the [SCAPE project](http://www.scape-project.eu). 
 
@@ -69,10 +70,8 @@ To activate checkstyle for a certain project just right click on it select check
 This will continouosly check the code as you type and mark the bad spots with yellow and will provide
 warnings.
 
-
-
-
-## Acknowledgements
+Acknowledgements
+----------------
 
 Part of this work was supported by the European Union in the 7th Framework Program, IST, through the SCAPE project, Contract 270137.
 

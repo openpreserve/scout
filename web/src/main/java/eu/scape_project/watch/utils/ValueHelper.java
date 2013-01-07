@@ -11,6 +11,7 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import scala.actors.threadpool.Arrays;
 import thewebsemantic.lazy.LazyList;
 
 import com.github.jknack.handlebars.Helper;
@@ -57,7 +58,7 @@ public class ValueHelper implements Helper<PropertyValue> {
       } else {
         builder.append(longValue);
       }
-    }else if (value instanceof Double) {
+    } else if (value instanceof Double) {
       final Double doubleValue = (Double) value;
       if (RenderingHint.STORAGE_VOLUME.equals(renderingHint)) {
         builder.append(Humanize.binaryPrefix(doubleValue));
@@ -77,6 +78,7 @@ public class ValueHelper implements Helper<PropertyValue> {
 
     } else if (value instanceof LazyList) {
       final LazyList listValue = (LazyList) value;
+      log.info("lazy list: " + Arrays.toString(listValue.toArray()));
 
       if (datatype.equals(DataType.STRING_DICTIONARY)) {
         builder.append("<table class='table table-bordered table-condensed' style='margin:0'>");

@@ -8,8 +8,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.ComparatorUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.eekboom.utils.Strings;
 
 import eu.scape_project.watch.domain.DataType;
 import eu.scape_project.watch.domain.DictionaryItem;
@@ -72,14 +75,14 @@ public class DistributionCommand extends Command {
     for (Map.Entry<String, String> e : distribution.entrySet()) {
       values.add(new DictionaryItem(e.getKey(), e.getValue()));
     }
-    
+
     Collections.sort(values, new Comparator<DictionaryItem>() {
 
       @Override
       public int compare(DictionaryItem item1, DictionaryItem item2) {
-        return item1.getValue().compareTo(item2.getValue()); //descending
+        return Strings.compareNatural(item2.getValue(), item1.getValue()); // descending
       }
-      
+
     });
 
     try {
@@ -94,6 +97,18 @@ public class DistributionCommand extends Command {
     }
 
     return pv;
+  }
+
+  public static void main(String[] args) {
+    List<String> list = new ArrayList<String>();
+
+    list.add("20");
+    list.add("100");
+    list.add("10");
+
+    Collections.sort(list, ComparatorUtils.naturalComparator());
+
+    System.out.println(list);
   }
 
 }

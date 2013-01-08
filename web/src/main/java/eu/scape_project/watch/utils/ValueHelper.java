@@ -41,7 +41,7 @@ public class ValueHelper implements Helper<PropertyValue> {
     final Object value = pv.getValue();
     final DataType datatype = pv.getProperty().getDatatype();
     final RenderingHint renderingHint = pv.getProperty().getRenderingHint();
-    boolean shortForm = options.hash("short", false);
+    final Boolean shortForm = options.hash("short", Boolean.FALSE);
 
     log.info("value: " + value);
     final StringBuilder builder = new StringBuilder();

@@ -41,6 +41,7 @@ public class ValueHelper implements Helper<PropertyValue> {
     final Object value = pv.getValue();
     final DataType datatype = pv.getProperty().getDatatype();
     final RenderingHint renderingHint = pv.getProperty().getRenderingHint();
+    boolean shortForm = options.hash("short", false);
 
     log.info("value: " + value);
     final StringBuilder builder = new StringBuilder();
@@ -81,28 +82,34 @@ public class ValueHelper implements Helper<PropertyValue> {
       log.info("lazy list: " + Arrays.toString(listValue.toArray()));
 
       if (datatype.equals(DataType.STRING_DICTIONARY)) {
-        builder.append("<table class='table table-bordered table-condensed' style='margin:0'>");
-        builder.append("<thead><th>Key</th><th>Value</th></thead>");
-        for (Object item : listValue) {
-          if (item instanceof DictionaryItem) {
-            final DictionaryItem dictionaryItem = (DictionaryItem) item;
-            builder.append("<tr>");
-            builder.append("<td>");
-            builder.append(dictionaryItem.getKey());
-            builder.append("</td>");
-            builder.append("<td>");
-            builder.append(dictionaryItem.getValue());
-            builder.append("</td>");
-            builder.append("</tr>");
-          } else {
-            builder.append("<tr>");
-            builder.append("<td>");
-            builder.append(item);
-            builder.append("</td>");
-            builder.append("</tr>");
+        if (shortForm) {
+          builder.append("<span>");
+          builder.append(listValue.size());
+          builder.append(" key-value pairs</span>");
+        } else {
+          builder.append("<table class='table table-bordered table-condensed' style='margin:0'>");
+          builder.append("<thead><th>Key</th><th>Value</th></thead>");
+          for (Object item : listValue) {
+            if (item instanceof DictionaryItem) {
+              final DictionaryItem dictionaryItem = (DictionaryItem) item;
+              builder.append("<tr>");
+              builder.append("<td>");
+              builder.append(dictionaryItem.getKey());
+              builder.append("</td>");
+              builder.append("<td>");
+              builder.append(dictionaryItem.getValue());
+              builder.append("</td>");
+              builder.append("</tr>");
+            } else {
+              builder.append("<tr>");
+              builder.append("<td>");
+              builder.append(item);
+              builder.append("</td>");
+              builder.append("</tr>");
+            }
           }
+          builder.append("</table>");
         }
-        builder.append("</table>");
       } else {
         builder.append("<ul>");
         for (Object item : listValue) {

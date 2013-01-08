@@ -98,7 +98,7 @@ Handlebars.registerHelper('dateFormat', function(context, block) {
 });
 
 var ValueRenderer = {
-	render : function(value, datatype, renderingHint) {
+	render : function(value, datatype, renderingHint, shortFormat) {
 		var ret;
 
 		if (datatype == 'URI') {
@@ -114,30 +114,35 @@ var ValueRenderer = {
 				ret = moment(date).format("dddd, D MMMM YYYY, h:mm:ss a");
 			}
 		} else if (datatype == "STRING_DICTIONARY") {
-			ret = "<table class='table table-bordered table-condensed' style='margin:0'>";
-			ret += "<thead><th>Key</th><th>Value</th></thead>";
-			for ( var index in value) {
-				ret += "<tr>";
-				ret += "<td>" + value[index].key + "</td>";
-				ret += "<td>" + value[index].value + "</td>";
-				ret += "</tr>";
+			if (shortFormat) {
+				ret = "<span>" + value.length + " key-value pairs</span>";
+			} else {
+				ret = "<table class='table table-bordered table-condensed' style='margin:0'>";
+				ret += "<thead><th>Key</th><th>Value</th></thead>";
+				for ( var index in value) {
+					ret += "<tr>";
+					ret += "<td>" + value[index].key + "</td>";
+					ret += "<td>" + value[index].value + "</td>";
+					ret += "</tr>";
+				}
+				ret += "</table>";
 			}
-			ret += "</table>";
 		} else {
 			ret = value;
 		}
 
 		return ret;
 	},
-	renderValue : function(pv) {
+	renderValue : function(pv, shortFormat) {
 		var value = pv.value;
 		var datatype = pv.property.datatype;
 		var renderingHint = pv.property.renderingHint;
 
-		return this.render(value, datatype, renderingHint);
+		return this.render(value, datatype, renderingHint, shortFormat);
 	}
 };
 
 Handlebars.registerHelper('value-render', function(pv, block) {
-	return ValueRenderer.renderValue(pv);
+	var shortFormat = block.hash.short || false;
+	return ValueRenderer.renderValue(pv, shortFormat);
 });

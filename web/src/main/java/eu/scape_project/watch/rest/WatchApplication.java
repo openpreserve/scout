@@ -3,6 +3,7 @@ package eu.scape_project.watch.rest;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 import eu.scape_project.watch.rest.resource.AsyncRequestResourceJSON;
@@ -34,6 +35,7 @@ import eu.scape_project.watch.rest.resource.SourceResourceXML;
  * @author Luis Faria <lfaria@keep.pt>
  * 
  */
+@ApplicationPath("/api")
 public class WatchApplication extends Application {
   @Override
   public Set<Class<?>> getClasses() {

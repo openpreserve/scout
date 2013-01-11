@@ -210,6 +210,16 @@ public final class KBUtils {
   public static final String SOURCE_ADAPTOR_EVENT_TYPE = "sourceadaptoreventtype";
 
   /**
+   * A question template constant.
+   */
+  public static final String QUESTION_TEMPLATE = "questiontemplate";
+  
+  /**
+   * A question template parameter constant.
+   */
+  public static final String QUESTION_TEMPLATE_PARAMETER = "questiontemplateparameter";
+
+  /**
    * A plug-in constant.
    */
   public static final String PLUGIN = "plugin";

@@ -1,0 +1,44 @@
+<p>
+	<strong>{{title}}</strong>
+</p>
+<p>{{description}}</p>
+
+{{#if parameters}}
+<p>
+	<em>Parameters</em>
+</p>
+
+<dl class="dl-horizontal">
+	{{#each parameters}}
+	<dt class="parameter">{{label}}</dt>
+	<dd>
+	{{#compare parameterType '==' 'NODE'}}
+		<input type="text" class="input-xxlarge" placeholder="The ID from the URL (e.g. http://scout.keep.pt/web/browse/entity/ID)"></input>
+	{{/compare}}
+	
+	{{#compare parameterType '==' 'LITERAL'}}
+			{{#compare literalFilterDatatype '==' 'LONG'}}
+				{{#compare literalFilterRenderingHint '==' 'STORAGE_VOLUME'}}
+					<div class="">
+						<input id="literal-long" class="input-mini" type="text"/>
+						<select id="literal-long-storageunit" class="input-mini">
+							<option>MB</option>
+							<option>GB</option>
+							<option>TB</option>
+						</select>
+					</div>
+				{{/compare}}
+				{{#compare literalFilterRenderingHint '!=' 'STORAGE_VOLUME'}}
+					<div class="alert">No long besides storage size yet implemented</div>
+				{{/compare}}
+			{{/compare}}
+	
+			{{#compare literalFilterDatatype '!=' 'LONG'}}
+				<div class="alert">literal not yet implemented</div>
+			{{/compare}}
+	{{/compare}}
+	<span class="help-block"><small>{{description}}</small></span>
+	</dd>
+	{{/each}}
+</dl>
+{{/if}}

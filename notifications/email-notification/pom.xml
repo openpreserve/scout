@@ -46,6 +46,7 @@
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4.5</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jvnet.mock-javamail</groupId>

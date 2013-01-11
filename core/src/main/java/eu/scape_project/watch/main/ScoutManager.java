@@ -1,5 +1,7 @@
 package eu.scape_project.watch.main;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +12,12 @@ import eu.scape_project.watch.adaptor.AdaptorManager;
 import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.dao.DOListener;
 import eu.scape_project.watch.domain.AsyncRequest;
+import eu.scape_project.watch.domain.QuestionTemplate;
+import eu.scape_project.watch.domain.QuestionTemplateParameter;
+import eu.scape_project.watch.domain.QuestionTemplateParameter.ParameterType;
+import eu.scape_project.watch.domain.DataType;
+import eu.scape_project.watch.domain.RenderingHint;
+import eu.scape_project.watch.domain.RequestTarget;
 import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.domain.SourceAdaptorEvent;
 import eu.scape_project.watch.domain.SourceAdaptorEventType;
@@ -203,6 +211,37 @@ public class ScoutManager {
         removeRequest(request, requestToDataBinder);
       }
     });
+
+    // TODO remove question template test
+    List<QuestionTemplate> templates = DAO.QUESTION_TEMPLATE.list(0, DAO.QUESTION_TEMPLATE.count(""));
+    DAO.delete(templates.toArray(new QuestionTemplate[templates.size()]));
+    
+    final String title1 = "Collection size limit";
+    final String description1 = "Warn when a collection reaches a determinated storage size threshold";
+    final String sparql1 = "?s watch:id ?id . ?s watch:longValue ?value . FILTER(?value > ?threshold)";
+    final RequestTarget target1 = RequestTarget.PROPERTY_VALUE;
+    final List<QuestionTemplateParameter> parameters1 = new ArrayList<QuestionTemplateParameter>();
+    parameters1.add(new QuestionTemplateParameter("id", "Collection",
+      "Your collection profile already inserted into scout", ParameterType.NODE,
+      "?s watch:property ?p . ? watch:id \"3lkHQ_nkayLHyyqDwmL9R4hF6jQ\"^^xsd:string", RequestTarget.PROPERTY_VALUE,
+      null, null));
+    parameters1.add(new QuestionTemplateParameter("threshold", "Storage size threshold",
+      "The storage size above which to raise the alert", ParameterType.LITERAL, null, null, DataType.LONG,
+      RenderingHint.STORAGE_VOLUME));
+    final QuestionTemplate template1 = new QuestionTemplate(title1, description1, sparql1, target1, parameters1);
+    DAO.save(template1);
+
+    final String title2 = "File format is withdrawn";
+    final String description2 = "Warn when a file format in my collection is marked as withdrawn";
+    final String sparql2 = "?s watch:property ?nameproperty . " + "?nameproperty watch:name \"mime\"^^xsd:string . "
+      + "?withdrawn rdf:type watch:PropertyValue . " + "?withdrawn watch:entity ?entity . "
+      + "?withdrawn watch:property ?withdrawnproperty . "
+      + "?withdrawnproperty watch:id \"gszzE-ZmAKXKxsqeesWjKw8v_8A\"^^xsd:string";
+    final RequestTarget target2 = RequestTarget.PROPERTY_VALUE;
+    final List<QuestionTemplateParameter> parameters2 = new ArrayList<QuestionTemplateParameter>();
+    final QuestionTemplate template2 = new QuestionTemplate(title2, description2, sparql2, target2, parameters2);
+    DAO.save(template2);
+
   }
 
   private void addRequest(final AsyncRequest request, final RequestToDataBinder requestToDataBinder) {

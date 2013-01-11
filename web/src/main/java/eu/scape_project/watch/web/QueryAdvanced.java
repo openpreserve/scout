@@ -5,7 +5,7 @@ import eu.scape_project.watch.web.annotations.Path;
 import eu.scape_project.watch.web.annotations.TemplateSource;
 
 
-@Path("/query")
+@Path("/query/advanced")
 @TemplateSource("queryAdvanced")
 public class QueryAdvanced extends TemplateContext {
 

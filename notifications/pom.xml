@@ -50,6 +50,7 @@
 			<dependency>
 				<groupId>eu.scape-project</groupId>
 				<artifactId>scout-model</artifactId>
+				<version>0.1.0</version>
 				<scope>provided</scope>
 				<exclusions>
 					<exclusion>
@@ -61,11 +62,6 @@
 						<groupId>xerces</groupId>
 					</exclusion>
 				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>eu.scape-project</groupId>
-				<artifactId>scout-model</artifactId>
-				<version>0.1.0</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

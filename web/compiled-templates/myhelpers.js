@@ -146,3 +146,13 @@ Handlebars.registerHelper('value-render', function(pv, block) {
 	var shortFormat = block.hash.short || false;
 	return ValueRenderer.renderValue(pv, shortFormat);
 });
+
+
+Handlebars.registerHelper('eachProperty', function(context, options) {
+    var ret = "";
+    for(var prop in context)
+    {
+        ret = ret + options.fn({property:prop,value:context[prop]});
+    }
+    return ret;
+});

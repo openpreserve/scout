@@ -4,41 +4,62 @@
 <p>{{description}}</p>
 
 {{#if parameters}}
-<p>
-	<em>Parameters</em>
-</p>
-
-<dl class="dl-horizontal">
-	{{#each parameters}}
-	<dt class="parameter">{{label}}</dt>
-	<dd>
-	{{#compare parameterType '==' 'NODE'}}
-		<input type="text" class="input-xxlarge" placeholder="The ID from the URL (e.g. http://scout.keep.pt/web/browse/entity/ID)"></input>
-	{{/compare}}
-	
-	{{#compare parameterType '==' 'LITERAL'}}
-			{{#compare literalFilterDatatype '==' 'LONG'}}
+<form class="form-horizontal">
+		{{#each parameters}}
+		<div class="control-group">
+			<label class="control-label">{{label}}</label>
+			<div class="controls">
+				{{#compare parameterType '==' 'NODE'}}
+				<input type="text" name="{{label}}"
+					class="input-xlarge validation"
+					required
+					data-validator-required-message="This field is mandatory"
+					pattern="[a-zA-Z0-9\-\_]{27}"
+					data-validation-pattern-message="Please just put the ID, it must have 27 characters and be valid"
+					placeholder="The ID from the URL"></input>
+				{{/compare}}
+				{{#compare parameterType '==' 'LITERAL'}}
+				{{#compare literalFilterDatatype '==' 'LONG'}}
 				{{#compare literalFilterRenderingHint '==' 'STORAGE_VOLUME'}}
-					<div class="">
-						<input id="literal-long" class="input-mini" type="text"/>
-						<select id="literal-long-storageunit" class="input-mini">
-							<option>MB</option>
-							<option>GB</option>
-							<option>TB</option>
-						</select>
-					</div>
+				<div class="">
+					<input name="{{label}}" class="input-mini validation"
+						type="number" min="1" required
+						data-validator-required-message="This field is mandatory"
+						data-validation-number-message="Must insert a valid number"
+						data-validation-min-message="Too low, must be higher than 0" />
+						<select class="input-mini validation">
+						<option>MB</option>
+						<option>GB</option>
+						<option>TB</option>
+					</select>
+				</div>
 				{{/compare}}
 				{{#compare literalFilterRenderingHint '!=' 'STORAGE_VOLUME'}}
-					<div class="alert">No long besides storage size yet implemented</div>
+				<div class="alert">No long besides storage size yet
+					implemented</div>
 				{{/compare}}
-			{{/compare}}
-	
-			{{#compare literalFilterDatatype '!=' 'LONG'}}
+				{{/compare}}
+				{{#compare literalFilterDatatype '!=' 'LONG'}}
 				<div class="alert">literal not yet implemented</div>
-			{{/compare}}
-	{{/compare}}
-	<span class="help-block"><small>{{description}}</small></span>
-	</dd>
-	{{/each}}
-</dl>
+				{{/compare}} {{/compare}}
+				<p class="help-block">
+					<small>{{description}}</small>
+				</p>
+			</div>
+		</div>
+		{{/each}}
+		<div class="form-actions">
+			<button id="searchButton" type="submit"
+				class="btn btn-large btn-primary" data-loading-text="Loading...">
+				<i class="icon-search icon-white"></i> Search
+			</button>
+			<button id="createRequestButton"
+				class="btn btn-large btn-success disabled">
+				<i class="icon-plus icon-white"></i> Create trigger
+			</button>
+		</div>
+</form>
+<script type="text/javascript">
+	$(function () { $(".validation").jqBootstrapValidation(); } );
+</script>
 {{/if}}

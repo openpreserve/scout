@@ -80,6 +80,10 @@
 							<targetPath>humanize</targetPath>
 						</resource>
 						<resource>
+							<directory>jqBootstrapValidation-v1.3.6</directory>
+							<targetPath>jqBootstrapValidation</targetPath>
+						</resource>
+						<resource>
 							<directory>compiled-templates/</directory>
 							<targetPath>templates</targetPath>
 						</resource>

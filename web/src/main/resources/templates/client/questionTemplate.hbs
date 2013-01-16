@@ -4,13 +4,13 @@
 <p>{{description}}</p>
 
 {{#if parameters}}
-<form class="form-horizontal">
+<form class="form-horizontal" id="search_form">
 		{{#each parameters}}
 		<div class="control-group">
 			<label class="control-label">{{label}}</label>
 			<div class="controls">
 				{{#compare parameterType '==' 'NODE'}}
-				<input type="text" name="{{label}}"
+				<input type="text" name="{{sparqlVariable}}"
 					class="input-xlarge validation"
 					required
 					data-validator-required-message="This field is mandatory"
@@ -22,7 +22,7 @@
 				{{#compare literalFilterDatatype '==' 'LONG'}}
 				{{#compare literalFilterRenderingHint '==' 'STORAGE_VOLUME'}}
 				<div class="">
-					<input name="{{label}}" class="input-mini validation"
+					<input name="{{sparqlVariable}}" class="input-mini validation"
 						type="number" min="1" required
 						data-validator-required-message="This field is mandatory"
 						data-validation-number-message="Must insert a valid number"

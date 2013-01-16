@@ -39,26 +39,40 @@
 </div>
 {{/partial}} {{#partial "scripts"}}
 <script type="text/javascript">
-	updateTemplate = function() {
-		$('.template').removeClass('active');
+
+	var getTemplateId = function() {
+		var templateId;
 		var params = $.deparam.fragment(true);
 		if (params && params.template) {
-			var templateId = params.template;
-			var templateLabel = $('#template_'+templateId);
-			if(templateLabel) {
-				templateLabel.addClass("active");
-				
-				var apiRequest = "{{contextPath}}/api/questiontemplate.json/"+templateId;
+			templateId = params.template;
+		}
+		return templateId;
+	};
 
-				$.getJSON(apiRequest, function(questionTemplate) {
-					var template = Handlebars.templates['questionTemplate.hbs'];
-					var html = template(questionTemplate);
-					$('#question_template').html(html);
-				});
-				
+	var updateTemplate = function() {
+		console.log('updating template');
+		var templateId = getTemplateId();
+		if ('undefined' !== typeof templateId) {
+			var templateLabel = $('#template_'+templateId);
+				if(templateLabel) {
+					
+					if(!templateLabel.hasClass("active")) {
+					$('.template').removeClass('active');
+					templateLabel.addClass("active");
+					
+					var apiRequest = "{{contextPath}}/api/questiontemplate.json/"+templateId;
+	
+					$.getJSON(apiRequest, function(questionTemplate) {
+						var template = Handlebars.templates['questionTemplate.hbs'];
+						var html = template(questionTemplate);
+						$('#question_template').html(html);
+					});
+				}
 			} else {
 				// TODO Warning
 			}
+		} else {
+			$('.template').removeClass('active');
 		}
 	};
 	
@@ -70,62 +84,72 @@
 <script type="text/javascript">
 	var paginator;
 	var search = function() {
+		var btn = $(this);
+		btn.button('loading');
 		
-		if($('.validation').jqBootstrapValidation("hasErrors")) {
-			console.log("validation error?");
+		var templateId = getTemplateId();
+		if ('undefined' !== typeof templateId) {
+			var apiRequest = "{{contextPath}}/api/questiontemplate.json/"+templateId;
+			$.getJSON(apiRequest, function(questionTemplate) {
+				var target = questionTemplate.target;
+				var query = questionTemplate.sparql;
+				// TODO initial bindings based on parameters
+
+				var apiCountRequest = '{{contextPath}}/api/request.json/count/?target='
+						+ target + '&query=' + encodeURIComponent(query);
+				var jqxhr = $.getJSON(
+								apiCountRequest,
+								function(count) {
+									var apiListRequest = '{{contextPath}}/api/request.json/list/?target='
+											+ target
+											+ '&query='
+											+ encodeURIComponent(query);
+									var template;
+
+									if (target.toLowerCase() == 'entity_type') {
+										template = 'type_list.hbs';
+									} else if (target.toLowerCase() == 'property') {
+										template = 'property_list_for_query.hbs';
+									} else if (target.toLowerCase() == 'entity') {
+										template = 'entity_list_for_query.hbs';
+									} else if (target.toLowerCase() == 'property_value') {
+										template = 'value_list_for_query.hbs';
+									} else if (target.toLowerCase() == 'measurement') {
+										template = 'measurement_list_for_query.hbs';
+									}
+
+									paginator = Paginator(count, apiListRequest, 20,
+											template, '#resultList', '{{contextPath}}',
+											'{{mustacheletPath}}');
+									paginator.init();
+									btn.button('reset');
+									$('#createRequestButton').removeClass('disabled');
+								});
+
+				jqxhr.error(function() {
+							$('#resultList').html("<div class='alert alert-error'>Error parsing SPARQL query</div>");
+							btn.button('reset');
+						});
+			});
 		} else {
-			var btn = $(this);
-			btn.button('loading');
-	
-			var target = $("input[name='target']:checked").val();
-			var query = $('#query').val();
-	
-			var apiCountRequest = '{{contextPath}}/api/request.json/count/?target='
-					+ target + '&query=' + encodeURIComponent(query);
-			var jqxhr = $
-					.getJSON(
-							apiCountRequest,
-							function(count) {
-								var apiListRequest = '{{contextPath}}/api/request.json/list/?target='
-										+ target
-										+ '&query='
-										+ encodeURIComponent(query);
-								var template;
-	
-								if (target == 'entity_type') {
-									template = 'type_list.hbs';
-								} else if (target == 'property') {
-									template = 'property_list_for_query.hbs';
-								} else if (target == 'entity') {
-									template = 'entity_list_for_query.hbs';
-								} else if (target == 'property_value') {
-									template = 'value_list_for_query.hbs';
-								} else if (target == 'measurement') {
-									template = 'measurement_list_for_query.hbs';
-								}
-	
-								paginator = Paginator(count, apiListRequest, 20,
-										template, '#resultList', '{{contextPath}}',
-										'{{mustacheletPath}}');
-								paginator.init();
-								btn.button('reset');
-								$('#createRequestButton').removeClass('disabled');
-							});
-	
-			jqxhr
-					.error(function() {
-						$('#resultList')
-								.html(
-										"<div class='alert alert-error'>Error parsing SPARQL query</div>__________________________$tag_");
-						btn.button('reset');
-					});
+			Window.alert("Please select a query template");
 		}
+		
+		$("search_form").submit(function(e){
+		    var form = $(this);
+		    
+		    // form.attr('action');
+		    
+		    search();
+		    
+		    return false;
+		 });
 	};
 
 	$(document).ready(function(){
 		var searchButton = $('#searchButton');
 		searchButton.button();
-		searchButton.click(search);
+		// searchButton.click(search);
 		$('#createRequestButton').click(function(){
 			var target = $("input[name='target']:checked").val();
 			var query = $('#query').val();

@@ -2,7 +2,10 @@ package eu.scape_project.watch.dao;
 
 import java.util.List;
 
+import com.hp.hpl.jena.query.QuerySolutionMap;
+
 import eu.scape_project.watch.domain.AsyncRequest;
+import eu.scape_project.watch.domain.QueryBinding;
 import eu.scape_project.watch.domain.QuestionTemplate;
 import eu.scape_project.watch.domain.QuestionTemplateParameter;
 
@@ -112,6 +115,20 @@ public final class QuestionTemplateDAO extends AbstractDO<QuestionTemplate> {
     template.delete();
     DAO.fireOnRemoved(template);
     return template;
+  }
+
+  public QuerySolutionMap parseBindings(List<QueryBinding> bindings) {
+    final QuerySolutionMap ret = new QuerySolutionMap();
+
+    for (final QueryBinding binding : bindings) {
+      // TODO get query parameter
+      // Create RDF node or literal and add it to ret.
+      
+      // ret.add(name, node)
+    }
+
+    return ret;
+
   }
 
 }

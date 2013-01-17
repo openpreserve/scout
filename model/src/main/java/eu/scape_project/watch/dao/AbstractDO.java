@@ -142,6 +142,10 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
     return query(typeClass, bindings, new QuerySolutionMap(), start, max, null);
   }
 
+  protected synchronized int count(final Class<T> typeClass, final String bindings) {
+    return count(typeClass, bindings, new QuerySolutionMap());
+  }
+
   /**
    * Count the number of results that a query will produce.
    * 
@@ -154,7 +158,7 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
    *          ... \< ...
    * @return The number of results expected for this query.
    */
-  protected synchronized int count(final Class<T> typeClass, final String bindings) {
+  protected synchronized int count(final Class<T> typeClass, final String bindings, final QuerySolutionMap solutions) {
     int count = -1;
 
     final String classType = KBUtils.WATCH_NS + typeClass.getSimpleName();
@@ -178,6 +182,7 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
     final QuerySolutionMap initialBinding = new QuerySolutionMap();
     initialBinding.add("rel", model.createProperty(KBUtils.RDF_TYPE_REL));
     initialBinding.add("class", model.createResource(classType));
+    initialBinding.addAll(solutions);
     final Query query = QueryFactory.create(sparql.toString());
 
     final QueryExecution qexec = QueryExecutionFactory.create(query, model, initialBinding);

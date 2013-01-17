@@ -2,6 +2,8 @@ package eu.scape_project.watch.dao;
 
 import java.util.List;
 
+import com.hp.hpl.jena.query.QuerySolutionMap;
+
 import thewebsemantic.binding.RdfBean;
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.EntityType;
@@ -74,32 +76,38 @@ public final class RequestDAO extends AbstractDO {
    *          The request target
    * @param query
    *          The request query
+   * @param bindings
+   *          Initial bindings for the variable
    * @return The number of items of the list of resources, of the type defined
    *         in the target, filtered by the above constraints
    */
   @SuppressWarnings("unchecked")
-  public int count(final RequestTarget target, final String query) {
+  public int count(final RequestTarget target, final String query, final QuerySolutionMap bindings) {
     int ret;
     switch (target) {
       case ENTITY_TYPE:
-        ret = super.count(EntityType.class, query);
+        ret = super.count(EntityType.class, query, bindings);
         break;
       case PROPERTY:
-        ret = super.count(Property.class, query);
+        ret = super.count(Property.class, query, bindings);
         break;
       case ENTITY:
-        ret = super.count(Entity.class, query);
+        ret = super.count(Entity.class, query, bindings);
         break;
       case PROPERTY_VALUE:
-        ret = super.count(PropertyValue.class, query);
+        ret = super.count(PropertyValue.class, query, bindings);
         break;
       case MEASUREMENT:
-        ret = super.count(Measurement.class, query);
+        ret = super.count(Measurement.class, query, bindings);
         break;
       default:
         ret = -1;
         break;
     }
     return ret;
+  }
+
+  public int count(final RequestTarget target, final String query) {
+    return count(target, query, new QuerySolutionMap());
   }
 }

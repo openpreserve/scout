@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import thewebsemantic.binding.RdfBean;
 
 import com.hp.hpl.jena.query.QueryParseException;
+import com.hp.hpl.jena.query.QuerySolutionMap;
 import com.sun.jersey.api.client.ClientResponse.Status;
 import com.wordnik.swagger.core.ApiError;
 import com.wordnik.swagger.core.ApiErrors;
@@ -30,6 +31,7 @@ import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.domain.Measurement;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
+import eu.scape_project.watch.domain.QueryBinding;
 import eu.scape_project.watch.domain.RequestTarget;
 
 /**
@@ -123,11 +125,13 @@ public class RequestResource extends JavaHelp {
   @ApiErrors(value = {@ApiError(code = 400, reason = "Query parse exception")})
   public Response getRequestCount(
     @ApiParam(value = "Request target", required = true, allowableValues = "entity, entity_type, property, property_value") @QueryParam("target") final String target,
-    @ApiParam(value = "Request query", required = true) @QueryParam("query") final String query) {
+    @ApiParam(value = "Request query", required = true) @QueryParam("query") final String query,
+    @ApiParam(value = "Initial bindings") @QueryParam("binding") final List<QueryBinding> queryBindings) {
 
     final RequestTarget requestTarget = RequestTarget.valueOf(target.toUpperCase());
+    final QuerySolutionMap bindings = DAO.QUESTION_TEMPLATE.parseBindings(queryBindings);
     try {
-      final int count = DAO.REQUEST.count(requestTarget, query);
+      final int count = DAO.REQUEST.count(requestTarget, query, bindings);
       return Response.ok().entity(count).build();
     } catch (final QueryParseException e) {
       return Response.status(Status.BAD_REQUEST).build();

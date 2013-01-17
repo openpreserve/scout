@@ -48,9 +48,52 @@
 		}
 		return templateId;
 	};
+	
+	var overrideTemplateForm = function(e) {
+	    var form = $(this);
+	    
+	    var form_inputs = form.serializeArray();
+	    var bindings = new Array();
+	    var i = 0;
+	    
+	    $.each(form_inputs, function(index, field) {
+	    	var key = field.name;
+	    	var value = field.value;
+	    	
+	    	try {
+		    	if(key.indexOf("node_") == 0) {
+		    		var sparqlKey = key.substring(5);
+		    		bindings[i++] = {name: 'binding', value: sparqlKey+'|'+value};
+		    	} else if(key.indexOf("long-storagevolume-number_") == 0) {
+		    		var sparqlKey = key.substring(26);
+		    		var number = value;
+		    		var unit = form_inputs[index+1].value;
+		    		
+		    		if(unit == 'MB') {
+		    			number = number*1073741824;
+		    		} else if(unit == 'GB') {
+		    			number = number*1099511627776;
+		    		} else if(unit == 'TB') {
+		    			number = number*1125899906842624;
+		    		}
+		    		
+		    		bindings[i++] = {name: 'binding', value: sparqlKey+'|'+number};
+		    	} else if(key.indexOf("long-storagevolume-unit_") == 0) {
+		    		// parsed in above condition
+		    	} else {
+		    		console.log('Parameter not supported: '+key);
+		    	}
+	    	} catch(error) {
+	    		console.log('Could not parse parameter: '+error);
+	    	}
+	    });
+	    
+	    search(bindings);
+	    
+	    return false;
+	 };
 
 	var updateTemplate = function() {
-		console.log('updating template');
 		var templateId = getTemplateId();
 		if ('undefined' !== typeof templateId) {
 			var templateLabel = $('#template_'+templateId);
@@ -66,6 +109,8 @@
 						var template = Handlebars.templates['questionTemplate.hbs'];
 						var html = template(questionTemplate);
 						$('#question_template').html(html);
+						
+						$("#search_form").submit(overrideTemplateForm);
 					});
 				}
 			} else {
@@ -83,7 +128,7 @@
 </script>
 <script type="text/javascript">
 	var paginator;
-	var search = function() {
+	var search = function(parameters) {
 		var btn = $(this);
 		btn.button('loading');
 		
@@ -94,9 +139,16 @@
 				var target = questionTemplate.target;
 				var query = questionTemplate.sparql;
 				// TODO initial bindings based on parameters
+				
+				var bindings = $.param(parameters);
+				console.log('bindings: ' + bindings);
+				
+				if(bindings.length > 0) {
+					bindings = '&'+bindings;
+				}
 
 				var apiCountRequest = '{{contextPath}}/api/request.json/count/?target='
-						+ target + '&query=' + encodeURIComponent(query);
+						+ target + '&query=' + encodeURIComponent(query) + bindings;
 				var jqxhr = $.getJSON(
 								apiCountRequest,
 								function(count) {
@@ -135,15 +187,6 @@
 			Window.alert("Please select a query template");
 		}
 		
-		$("search_form").submit(function(e){
-		    var form = $(this);
-		    
-		    // form.attr('action');
-		    
-		    search();
-		    
-		    return false;
-		 });
 	};
 
 	$(document).ready(function(){

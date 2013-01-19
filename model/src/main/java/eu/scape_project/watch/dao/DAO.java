@@ -13,6 +13,7 @@ import eu.scape_project.watch.domain.Measurement;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.domain.QuestionTemplate;
+import eu.scape_project.watch.domain.QuestionTemplateParameter;
 import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.domain.SourceAdaptorEvent;
@@ -86,6 +87,11 @@ public final class DAO {
    * {@link QuestionTemplate} Data Access Object.
    */
   public static final QuestionTemplateDAO QUESTION_TEMPLATE = new QuestionTemplateDAO();
+  
+  /**
+   * {@link QuestionTemplateParameter} Data Access Object.
+   */
+  public static final QuestionTemplateParameterDAO QUESTION_TEMPLATE_PARAMETER = new QuestionTemplateParameterDAO();
 
   /**
    * Map of listeners for each class.

@@ -1,4 +1,4 @@
-{{#partial "title"}}Scout - Advanced query{{/partial}} {{#partial
+{{#partial "title"}}Scout - Query{{/partial}} {{#partial
 "NavQueryClass"}}active{{/partial}} {{#partial "content"}}
 <div class="container">
 	<div class="page-header">
@@ -70,11 +70,11 @@
 		    		var unit = form_inputs[index+1].value;
 		    		
 		    		if(unit == 'MB') {
-		    			number = number*1073741824;
+		    			number = number*1048576;
 		    		} else if(unit == 'GB') {
-		    			number = number*1099511627776;
+		    			number = number*1073741824;
 		    		} else if(unit == 'TB') {
-		    			number = number*1125899906842624;
+		    			number = number*1099511627776;
 		    		}
 		    		
 		    		bindings[i++] = {name: 'binding', value: sparqlKey+'|'+number};
@@ -155,7 +155,8 @@
 									var apiListRequest = '{{contextPath}}/api/request.json/list/?target='
 											+ target
 											+ '&query='
-											+ encodeURIComponent(query);
+											+ encodeURIComponent(query) 
+											+ bindings;
 									var template;
 
 									if (target.toLowerCase() == 'entity_type') {

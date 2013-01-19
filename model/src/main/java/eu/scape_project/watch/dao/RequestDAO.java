@@ -35,6 +35,8 @@ public final class RequestDAO extends AbstractDO {
    *          The request target
    * @param query
    *          The request query
+   * @param bindings
+   *          Initial bindings for the variable
    * @param start
    *          The index of the first item to retrieve
    * @param max
@@ -44,29 +46,49 @@ public final class RequestDAO extends AbstractDO {
    *         the above constraints
    */
   @SuppressWarnings("unchecked")
-  public List<? extends RdfBean<?>> query(final RequestTarget target, final String query, final int start, final int max) {
+  public List<? extends RdfBean<?>> query(final RequestTarget target, final String query,
+    final QuerySolutionMap bindings, final int start, final int max) {
     List<? extends RdfBean<?>> ret;
     switch (target) {
       case ENTITY_TYPE:
-        ret = super.query(EntityType.class, query, start, max);
+        ret = super.query(EntityType.class, query, bindings, start, max);
         break;
       case PROPERTY:
-        ret = super.query(Property.class, query, start, max);
+        ret = super.query(Property.class, query, bindings, start, max);
         break;
       case ENTITY:
-        ret = super.query(Entity.class, query, start, max);
+        ret = super.query(Entity.class, query, bindings, start, max);
         break;
       case PROPERTY_VALUE:
-        ret = super.query(PropertyValue.class, query, start, max);
+        ret = super.query(PropertyValue.class, query, bindings, start, max);
         break;
       case MEASUREMENT:
-        ret = super.query(Measurement.class, query, start, max);
+        ret = super.query(Measurement.class, query, bindings, start, max);
         break;
       default:
         ret = null;
         break;
     }
     return ret;
+  }
+
+  /**
+   * Make a synchronous request to the KB.
+   * 
+   * @param target
+   *          The request target
+   * @param query
+   *          The request query
+   * @param start
+   *          The index of the first item to retrieve
+   * @param max
+   *          The maximum number of items to retrieve
+   * 
+   * @return A list of resources, of the type defined in the target, filtered by
+   *         the above constraints
+   */
+  public List<? extends RdfBean<?>> query(final RequestTarget target, final String query, final int start, final int max) {
+    return query(target, query, new QuerySolutionMap(), start, max);
   }
 
   /**

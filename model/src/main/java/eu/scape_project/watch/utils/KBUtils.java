@@ -3,11 +3,16 @@ package eu.scape_project.watch.utils;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.URI;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +28,7 @@ import thewebsemantic.binding.Jenabean;
 
 import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.rdf.model.InfModel;
+import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFNode;
@@ -44,6 +50,7 @@ import eu.scape_project.watch.domain.Notification;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
 import eu.scape_project.watch.domain.Question;
+import eu.scape_project.watch.domain.RenderingHint;
 import eu.scape_project.watch.domain.RequestTarget;
 import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.domain.SourceAdaptor;
@@ -213,7 +220,7 @@ public final class KBUtils {
    * A question template constant.
    */
   public static final String QUESTION_TEMPLATE = "questiontemplate";
-  
+
   /**
    * A question template parameter constant.
    */
@@ -650,6 +657,175 @@ public final class KBUtils {
     builder.append(">");
 
     return builder.toString();
+  }
+
+  /**
+   * Get RDF id.
+   * 
+   * @param entityClass
+   * @param id
+   * @return
+   */
+  public static String getRdfUrl(Class<?> entityClass, String id) {
+    final StringBuilder builder = new StringBuilder();
+
+    builder.append(WATCH_NS);
+    builder.append(entityClass.getSimpleName());
+    builder.append("/");
+    builder.append(id);
+
+    return builder.toString();
+  }
+
+  /**
+   * Get RDF id.
+   * 
+   * @param entityClass
+   * @param id
+   * @return
+   */
+  public static Resource parseResource(String id, Class<?> entityClass) {
+    final String rdfUrl = getRdfUrl(entityClass, id);
+    return Jenabean.instance().model().createResource(rdfUrl);
+  }
+
+  public static Literal parseLiteral(String value, DataType datatype) {
+    // TODO support StringList and StringDictionary
+
+    Literal literal;
+    final Model model = Jenabean.instance().model();
+
+    switch (datatype) {
+      case STRING:
+        literal = model.createTypedLiteral(value);
+        break;
+      case INTEGER:
+        literal = model.createTypedLiteral(Integer.valueOf(value));
+        break;
+      case LONG:
+        literal = model.createTypedLiteral(Long.valueOf(value));
+        break;
+      case FLOAT:
+        literal = model.createTypedLiteral(Float.valueOf(value));
+        break;
+      case DOUBLE:
+        literal = model.createTypedLiteral(Double.valueOf(value));
+        break;
+      case DATE:
+        final DateFormat fullFormat = new SimpleDateFormat("EEEE, d MMMM yyyy, h:mm:ss a");
+        final DateFormat shortFormat = new SimpleDateFormat("EEEE, d MMMM yyyy");
+
+        Date date;
+        try {
+          date = fullFormat.parse(value);
+        } catch (ParseException e) {
+          try {
+            date = shortFormat.parse(value);
+          } catch (ParseException e2) {
+            date = null;
+          }
+        }
+
+        if (date != null) {
+          Calendar calendar = Calendar.getInstance();
+          calendar.setTime((Date) date);
+
+          literal = model.createTypedLiteral(calendar);
+        } else {
+          LOG.error("Could not parse date literal: {}", value);
+          literal = model.createTypedLiteral(value);
+        }
+        break;
+      case URI:
+        literal = model.createTypedLiteral(URI.create(value));
+        break;
+      default:
+        literal = model.createTypedLiteral(value);
+    }
+    return literal;
+  }
+
+  /**
+   * Create the query binding for a value of a determined data type.
+   * 
+   * @param value
+   *          the value content.
+   * @param datatype
+   *          the type of data contained.
+   * @return The query binding, using ?s as subject, which should be the id of
+   *         the PropertValue.
+   */
+  public static Literal createValueLiteral(final Object value, final DataType datatype) {
+    // TODO support StringList and StringDictionary
+
+    Literal literal;
+    final Model model = Jenabean.instance().model();
+
+    switch (datatype) {
+      case STRING:
+        final String stringValue = (String) value;
+        literal = model.createTypedLiteral(stringValue);
+        break;
+      case INTEGER:
+        final int intValue = (Integer) value;
+        literal = model.createTypedLiteral(intValue);
+        break;
+      case LONG:
+        final long longValue = (Long) value;
+        literal = model.createTypedLiteral(longValue);
+        break;
+      case FLOAT:
+        final float floatValue = (Float) value;
+        literal = model.createTypedLiteral(floatValue);
+        break;
+      case DOUBLE:
+        final double doubleValue = (Double) value;
+        literal = model.createTypedLiteral(doubleValue);
+        break;
+      case DATE:
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime((Date) value);
+
+        literal = model.createTypedLiteral(calendar);
+        break;
+      case URI:
+        URI uriValue = (URI) value;
+        literal = model.createTypedLiteral(uriValue);
+        break;
+      default:
+        literal = model.createTypedLiteral(value);
+    }
+    return literal;
+  }
+
+  public static String getValuePredicate(final DataType datatype) {
+    String predicate;
+    switch (datatype) {
+      case STRING:
+        predicate = "watch:stringValue";
+        break;
+      case INTEGER:
+        predicate = "watch:integerValue";
+        break;
+      case LONG:
+        predicate = "watch:longValue";
+        break;
+      case FLOAT:
+        predicate = "watch:floatValue";
+        break;
+      case DOUBLE:
+        predicate = "watch:doubleValue";
+        break;
+      case DATE:
+        predicate = "watch:dateValue";
+        break;
+      case URI:
+        predicate = "watch:uriValue";
+        break;
+      default:
+        return null;
+    }
+    return predicate;
   }
 
 }

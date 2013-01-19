@@ -69,14 +69,16 @@ public class RequestResource extends JavaHelp {
   public Response getRequestList(
     @ApiParam(value = "Request target", required = true, allowableValues = "entity, entity_type, property, property_value") @QueryParam("target") final String target,
     @ApiParam(value = "Request query", required = true) @QueryParam("query") final String query,
+    @ApiParam(value = "Initial bindings") @QueryParam("binding") final List<QueryBinding> queryBindings,
     @ApiParam(value = "Start index", required = true) @QueryParam("start") final int start,
     @ApiParam(value = "Max number of items", required = true) @QueryParam("max") final int max) {
 
-    LOG.debug("Making request '{}', target={}, start={}, max={}", new Object[] {query, target, start, max});
+    LOG.info("Making request '{}', bindings={}, target={}, start={}, max={}", new Object[] {query, queryBindings,
+      target, start, max});
 
     final RequestTarget requestTarget = RequestTarget.valueOf(target.toUpperCase());
-
-    final List<? extends RdfBean<?>> list = DAO.REQUEST.query(requestTarget, query, start, max);
+    final QuerySolutionMap bindings = DAO.QUESTION_TEMPLATE_PARAMETER.parseBindings(queryBindings);
+    final List<? extends RdfBean<?>> list = DAO.REQUEST.query(requestTarget, query, bindings, start, max);
 
     Response ret;
     switch (requestTarget) {
@@ -129,7 +131,7 @@ public class RequestResource extends JavaHelp {
     @ApiParam(value = "Initial bindings") @QueryParam("binding") final List<QueryBinding> queryBindings) {
 
     final RequestTarget requestTarget = RequestTarget.valueOf(target.toUpperCase());
-    final QuerySolutionMap bindings = DAO.QUESTION_TEMPLATE.parseBindings(queryBindings);
+    final QuerySolutionMap bindings = DAO.QUESTION_TEMPLATE_PARAMETER.parseBindings(queryBindings);
     try {
       final int count = DAO.REQUEST.count(requestTarget, query, bindings);
       return Response.ok().entity(count).build();

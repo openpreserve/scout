@@ -218,12 +218,12 @@ public class ScoutManager {
     
     final String title1 = "Collection size limit";
     final String description1 = "Warn when a collection reaches a determinated storage size threshold";
-    final String sparql1 = "?s watch:id ?id . ?s watch:longValue ?value . FILTER(?value > ?threshold)";
+    final String sparql1 = "?s watch:entity ?collection . ?s watch:property ?collectionSize . ?collectionSize watch:id \"3lkHQ_nkayLHyyqDwmL9R4hF6jQ\"^^xsd:string . ?s watch:longValue ?value . FILTER(?value > ?threshold)";
     final RequestTarget target1 = RequestTarget.PROPERTY_VALUE;
     final List<QuestionTemplateParameter> parameters1 = new ArrayList<QuestionTemplateParameter>();
-    parameters1.add(new QuestionTemplateParameter("id", "Collection",
+    parameters1.add(new QuestionTemplateParameter("collection", "Collection",
       "Your collection profile already inserted into scout", ParameterType.NODE,
-      "?s watch:property ?p . ? watch:id \"3lkHQ_nkayLHyyqDwmL9R4hF6jQ\"^^xsd:string", RequestTarget.PROPERTY_VALUE,
+      "?s watch:type ?type . ?type watch:id \"SD5Mc73YuwE9fH0b8s-h-mzfbvA\"^^xsd:string", RequestTarget.ENTITY,
       null, null));
     parameters1.add(new QuestionTemplateParameter("threshold", "Storage size threshold",
       "The storage size above which to raise the alert", ParameterType.LITERAL, null, null, DataType.LONG,

@@ -345,8 +345,8 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
     final Entity entity = pv.getEntity();
     final Property property = pv.getProperty();
 
-    final String valuePredicate = getValuePredicate(property.getDatatype());
-    final Literal valueLiteral = createValueLiteral(pv.getValue(), property.getDatatype());
+    final String valuePredicate = KBUtils.getValuePredicate(property.getDatatype());
+    final Literal valueLiteral = KBUtils.createValueLiteral(pv.getValue(), property.getDatatype());
     final boolean canBindValue = valuePredicate != null && valueLiteral != null;
 
     final QuerySolutionMap variableBinding = new QuerySolutionMap();
@@ -470,95 +470,11 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
       + PropertyDAO.getPropertyRDFId(property));
   }
 
-  /**
-   * Create the query binding for a value of a determined data type.
-   * 
-   * @param value
-   *          the value content.
-   * @param datatype
-   *          the type of data contained.
-   * @return The query binding, using ?s as subject, which should be the id of
-   *         the PropertValue.
-   */
-  private Literal createValueLiteral(final Object value, final DataType datatype) {
-    // TODO support StringList and StringDictionary
-
-    Literal literal;
-    final Model model = Jenabean.instance().model();
-
-    switch (datatype) {
-      case STRING:
-        final String stringValue = (String) value;
-        literal = model.createTypedLiteral(stringValue);
-        break;
-      case INTEGER:
-        final int intValue = (Integer) value;
-        literal = model.createTypedLiteral(intValue);
-        break;
-      case LONG:
-        final long longValue = (Long) value;
-        literal = model.createTypedLiteral(longValue);
-        break;
-      case FLOAT:
-        final float floatValue = (Float) value;
-        literal = model.createTypedLiteral(floatValue);
-        break;
-      case DOUBLE:
-        final double doubleValue = (Double) value;
-        literal = model.createTypedLiteral(doubleValue);
-        break;
-      case DATE:
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime((Date) value);
-
-        literal = model.createTypedLiteral(calendar);
-        break;
-      case URI:
-        URI uriValue = (URI) value;
-        literal = model.createTypedLiteral(uriValue);
-        break;
-      default:
-        literal = model.createTypedLiteral(value);
-    }
-    return literal;
-  }
-
-  private String getValuePredicate(final DataType datatype) {
-    String predicate;
-    switch (datatype) {
-      case STRING:
-        predicate = "watch:stringValue";
-        break;
-      case INTEGER:
-        predicate = "watch:integerValue";
-        break;
-      case LONG:
-        predicate = "watch:longValue";
-        break;
-      case FLOAT:
-        predicate = "watch:floatValue";
-        break;
-      case DOUBLE:
-        predicate = "watch:doubleValue";
-        break;
-      case DATE:
-        predicate = "watch:dateValue";
-        break;
-      case URI:
-        predicate = "watch:uriValue";
-        break;
-      default:
-        return null;
-    }
-    return predicate;
-  }
-
   public static void main(String[] args) throws IOException {
     File dataTempir = JavaUtils.createTempDirectory();
     KBUtils.dbConnect(dataTempir.getPath(), false);
     String test = "ME (Millenium Edition)\\\n.9)";
-    PropertyValueDAO dao = new PropertyValueDAO();
-    System.out.println("binding: " + dao.createValueLiteral(test, DataType.STRING));
+    System.out.println("binding: " + KBUtils.createValueLiteral(test, DataType.STRING));
     KBUtils.dbDisconnect();
     FileUtils.deleteQuietly(dataTempir);
   }

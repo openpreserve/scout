@@ -38,13 +38,13 @@ Paginator.prototype = {
 		});
 	},
 	updateListImpl : function(start) {
-		if(start >= resourceCount) {
+		if (start >= resourceCount) {
 			start = resourceCount - pageSize;
 		}
 		if (start < 0) {
 			start = 0;
 		}
-		
+
 		var end = start + pageSize < resourceCount ? start + pageSize
 				: resourceCount;
 		var next = end < resourceCount ? end : start;
@@ -52,6 +52,9 @@ Paginator.prototype = {
 
 		var apiRequest = jQuery.param.querystring(contextPath + resourceAPI,
 				'start=' + start + '&max=' + pageSize);
+		
+		// XXX fix array notation
+		apiRequest = apiRequest.replace(/%5B%5D=/g, "=");
 
 		$.getJSON(apiRequest, function(data) {
 			var template = Handlebars.templates[templateName];

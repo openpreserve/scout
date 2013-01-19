@@ -117,18 +117,4 @@ public final class QuestionTemplateDAO extends AbstractDO<QuestionTemplate> {
     return template;
   }
 
-  public QuerySolutionMap parseBindings(List<QueryBinding> bindings) {
-    final QuerySolutionMap ret = new QuerySolutionMap();
-
-    for (final QueryBinding binding : bindings) {
-      // TODO get query parameter
-      // Create RDF node or literal and add it to ret.
-      
-      // ret.add(name, node)
-    }
-
-    return ret;
-
-  }
-
 }

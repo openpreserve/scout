@@ -8,3 +8,25 @@
 ?type watch:name "content_profile"^^xsd:string .
 ?s watch:longValue ?value .
 FILTER(?value > 18000000)
+
+
+# template ()
+
+?s watch:entity ?collection . 
+?s watch:property ?collectionSize . 
+?collectionSize watch:id "3lkHQ_nkayLHyyqDwmL9R4hF6jQ"^^xsd:string . 
+?s watch:longValue ?value . 
+FILTER(?value > ?threshold)
+
+# bindings for (IM number10 collection bigger than 10GB)
+?collection: <http://watch.scape-project.eu/kb#Entity/cqIZb3bGzMqfrmWGD2ffdzcfK0s>
+?threshold: "10485760"^^xsd:integer
+
+# result
+?s watch:entity <http://watch.scape-project.eu/kb#Entity/cqIZb3bGzMqfrmWGD2ffdzcfK0s> . 
+?s watch:property ?collectionSize . 
+?collectionSize watch:id "3lkHQ_nkayLHyyqDwmL9R4hF6jQ"^^xsd:string . 
+?s watch:longValue ?value . 
+FILTER(?value > "10485760"^^xsd:integer)
+
+

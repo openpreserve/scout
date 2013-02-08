@@ -1,4 +1,3 @@
-!https://travis-ci.org/luis100/scout.png!":https://travis-ci.org/luis100/scout
 [![Build Status](https://travis-ci.org/luis100/scout.png)](https://travis-ci.org/luis100/scout)
 
 Scout: a preservation watch system

@@ -28,10 +28,10 @@ import eu.scape_project.watch.web.annotations.HttpMethod;
 import eu.scape_project.watch.web.annotations.Path;
 import eu.scape_project.watch.web.annotations.TemplateSource;
 
-@Path("/request/new")
-@TemplateSource("createAsyncRequest")
+@Path("/request/new/advanced")
+@TemplateSource("createAsyncRequestAdvanced")
 @HttpMethod({HttpMethod.Type.GET, HttpMethod.Type.POST})
-public class CreateAsyncRequest extends TemplateContext {
+public class CreateAsyncRequestAdvanced extends TemplateContext {
 
   @Inject
   private HttpServletResponse response;

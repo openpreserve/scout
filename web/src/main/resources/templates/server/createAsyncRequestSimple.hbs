@@ -1,0 +1,113 @@
+{{#partial "title"}}Scout - Create Request{{/partial}} {{#partial
+"content"}}
+<form class="container form-horizontal" method="POST">
+	<legend>New trigger</legend>
+
+	<div class="control-group">
+		<label class="control-label" for="description">Name</label>
+		<div class="controls">
+			<input id="description" name="description" type="text"
+				class="input-xxlarge" placeholder="Label to identify your trigger">
+		</div>
+	</div>
+
+	<h5>Initiators</h5>
+	<div class="control-group">
+		<label class="control-label" for="periodDaily">Schedule</label>
+		<div class="controls">
+			<label class="radio inline"> <input type="radio"
+				name="periodOptions" id="periodDaily" value="daily">daily
+			</label> <label class="radio inline"> <input type="radio"
+				name="periodOptions" id="periodWeekly" value="weekly">weekly
+			</label> <label class="radio inline"> <input type="radio"
+				name="periodOptions" id="periodMontly" value="monthly">monthly
+			</label> <label class="radio inline"> <input type="radio"
+				name="periodOptions" id="periodQuarterly" value="quarterly">every
+				3 months
+			</label> <label class="radio inline"> <input type="radio"
+				name="periodOptions" id="periodYearly" value="yearly">yearly
+			</label> <label class="radio inline"> <input type="radio"
+				name="periodOptions" id="periodNever" value="never" checked>never
+			</label>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="addCategory">Categories</label>
+		<div class="controls">
+			<a id="addCategory" class="btn btn-link">add category</a>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="addEntity">Entities</label>
+		<div class="controls">
+			<a id="addEntity" class="btn btn-link">add entity</a>
+		</div>
+	</div>
+
+	<div class="control-group">
+		<label class="control-label" for="addProperty">Properties</label>
+		<div class="controls">
+			<a id="addProperty" class="btn btn-link">add property</a>
+		</div>
+	</div>
+
+	<h5>Question</h5>
+	<div id="question_template" class="row-fluid">
+		
+	</div>
+
+	<h5>Preservation plan</h5>
+	<div class="control-group">
+		<label class="control-label" for="plan">Plan Id</label>
+		<div class="controls">
+			<input id="plan" name="plan" type="text" class="input-xxlarge"
+				placeholder="The plato preservation plan id">
+
+		</div>
+	</div>
+
+	<h5>Notifications</h5>
+	<div class="control-group">
+		<label class="control-label" for="email">Email</label>
+		<div class="controls">
+			<input id="email" name="email" type="text" class="input-xxlarge"
+				placeholder="The email where to send notification">
+
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls">
+			<button type="submit" class="btn btn-large btn-success">
+				<i class="icon-plus icon-white"></i> Create trigger
+			</button>
+		</div>
+	</div>
+</form>
+{{/partial}} {{#partial "scripts"}}
+<script type="text/javascript">
+	var injectFragmentData = function() {
+		var params = $.deparam.querystring(true);
+		var templateId = params.template;
+		var bindings = params.binding;
+		
+		var apiRequest = "{{contextPath}}/api/questiontemplate.json/"+templateId;
+		
+		$.getJSON(apiRequest, function(questionTemplate) {
+			var template = Handlebars.templates['questionTemplate.hbs'];
+			var html = template(questionTemplate);
+			$('#question_template').html(html);
+			
+			// $("#search_form").submit(overrideTemplateForm);
+			// $('#createRequestButton').click(createTrigger(templateId));
+		});
+
+		// TODO retrieve template and inject bindings
+	};
+
+	$(document).ready(function() {
+		injectFragmentData();
+	});
+</script>
+{{/partial}} {{> base}}
+
+

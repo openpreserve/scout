@@ -49,10 +49,8 @@
 		return templateId;
 	};
 	
-	var overrideTemplateForm = function(e) {
-	    var form = $(this);
-	    
-	    var form_inputs = form.serializeArray();
+	var parseBindings = function(form) {
+		var form_inputs = form.serializeArray();
 	    var bindings = new Array();
 	    var i = 0;
 	    
@@ -87,12 +85,36 @@
 	    		console.log('Could not parse parameter: '+error);
 	    	}
 	    });
-	    
+	    return bindings;
+	};
+	
+	var overrideTemplateForm = function(e) {
+	    var form = $(this);
+	    var bindings = parseBindings(form);
 	    search(bindings);
 	    
 	    return false;
 	 };
 
+	var createTrigger = function(templateId) {
+		return function(e) {
+			var button = $(this);
+			if(!button.hasClass('disabled')) {
+				var form = $("#search_form");
+				var bindings = parseBindings(form);
+				
+				var queryBindings = $.param(bindings);
+				
+				if(queryBindings.length > 0) {
+					queryBindings = '&'+queryBindings;
+				}
+				
+				document.location = "{{mustacheletPath}}/request/new?template="+templateId+queryBindings;
+			}
+			return false;
+		};
+	};
+	
 	var updateTemplate = function() {
 		var templateId = getTemplateId();
 		if ('undefined' !== typeof templateId) {
@@ -111,6 +133,7 @@
 						$('#question_template').html(html);
 						
 						$("#search_form").submit(overrideTemplateForm);
+						$('#createRequestButton').click(createTrigger(templateId));
 					});
 				}
 			} else {
@@ -135,13 +158,11 @@
 		var templateId = getTemplateId();
 		if ('undefined' !== typeof templateId) {
 			var apiRequest = "{{contextPath}}/api/questiontemplate.json/"+templateId;
-			$.getJSON(apiRequest, function(questionTemplate) {
+			var jqxhr = $.getJSON(apiRequest, function(questionTemplate) {
 				var target = questionTemplate.target;
 				var query = questionTemplate.sparql;
-				// TODO initial bindings based on parameters
 				
 				var bindings = $.param(parameters);
-				console.log('bindings: ' + bindings);
 				
 				if(bindings.length > 0) {
 					bindings = '&'+bindings;
@@ -149,7 +170,7 @@
 
 				var apiCountRequest = '{{contextPath}}/api/request.json/count/?target='
 						+ target + '&query=' + encodeURIComponent(query) + bindings;
-				var jqxhr = $.getJSON(
+				var jqxhr2 = $.getJSON(
 								apiCountRequest,
 								function(count) {
 									var apiListRequest = '{{contextPath}}/api/request.json/list/?target='
@@ -179,10 +200,14 @@
 									$('#createRequestButton').removeClass('disabled');
 								});
 
-				jqxhr.error(function() {
+				jqxhr2.error(function() {
 							$('#resultList').html("<div class='alert alert-error'>Error parsing SPARQL query</div>");
 							btn.button('reset');
 						});
+			});
+			jqxhr.error(function() {
+				$('#resultList').html("<div class='alert alert-error'>Error getting query template</div>");
+				btn.button('reset');
 			});
 		} else {
 			Window.alert("Please select a query template");

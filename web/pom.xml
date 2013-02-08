@@ -48,32 +48,12 @@
 							<targetPath>apidoc</targetPath>
 						</resource>
 						<resource>
-							<directory>bootstrap-v2.1.1</directory>
-							<targetPath>bootstrap</targetPath>
-						</resource>
-						<resource>
-							<directory>handlebars.js-v1.0.rc1</directory>
-							<targetPath>handlebars</targetPath>
-						</resource>
-						<resource>
-							<directory>jquery-bbq-v1.2.1</directory>
-							<targetPath>jquery-bbq</targetPath>
-						</resource>
-						<resource>
 							<directory>jquery-textfill-v0.1</directory>
 							<targetPath>jquery-textfill</targetPath>
 						</resource>
 						<resource>
 							<directory>jquery-fileuploader</directory>
 							<targetPath>jquery-fileuploader</targetPath>
-						</resource>
-						<resource>
-							<directory>moment.js-v1.7.2</directory>
-							<targetPath>moment</targetPath>
-						</resource>
-						<resource>
-							<directory>highcharts-v2.3.3/js</directory>
-							<targetPath>highcharts</targetPath>
 						</resource>
 						<resource>
 							<directory>humanize.js-v0.0.1</directory>

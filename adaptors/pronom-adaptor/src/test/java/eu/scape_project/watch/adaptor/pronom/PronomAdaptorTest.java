@@ -75,6 +75,8 @@ public class PronomAdaptorTest {
    * 
    * @throws Exception
    */
+  // Test ignored because it relies in the PRONOM service being active
+  @Ignore
   @Test
   public void onExecute() throws Exception {
     final boolean hasNext = this.adaptor.hasNext();
@@ -95,7 +97,7 @@ public class PronomAdaptorTest {
       LOG.error("Could not create cache file.");
     }
   }
-  
+
   private void removeCacheFile() {
     if (this.cache != null && this.cache.exists()) {
       this.cache.delete();

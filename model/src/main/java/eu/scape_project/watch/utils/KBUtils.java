@@ -225,6 +225,11 @@ public final class KBUtils {
    * A question template parameter constant.
    */
   public static final String QUESTION_TEMPLATE_PARAMETER = "questiontemplateparameter";
+  
+  /**
+   * A question template parameter constant.
+   */
+  public static final String QUERY_BINDING = "querybinding";
 
   /**
    * A plug-in constant.

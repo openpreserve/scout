@@ -91,25 +91,27 @@ public final class QuestionTemplateParameterDAO extends AbstractDO<QuestionTempl
   public QuerySolutionMap parseBindings(List<QueryBinding> bindings) {
     final QuerySolutionMap ret = new QuerySolutionMap();
 
-    for (final QueryBinding binding : bindings) {
-      // get query parameter
-      final QuestionTemplateParameter parameter = findById(binding.getKey());
+    if (bindings != null) {
+      for (final QueryBinding binding : bindings) {
+        // get query parameter
+        final QuestionTemplateParameter parameter = findById(binding.getQuestionTemplateParameterId());
 
-      if (parameter != null) {
-        RDFNode node = null;
-        // Create RDF node or literal and add it
-        if (parameter.getParameterType().equals(ParameterType.NODE)) {
-          final RequestTarget target = parameter.getNodeFilterTarget();
-          node = KBUtils.parseResource(binding.getValue(), target.getTargetClass());
-        } else if (parameter.getParameterType().equals(ParameterType.LITERAL)) {
-          final DataType dataType = parameter.getLiteralFilterDatatype();
-          node = KBUtils.parseLiteral(binding.getValue(), dataType);
+        if (parameter != null) {
+          RDFNode node = null;
+          // Create RDF node or literal and add it
+          if (parameter.getParameterType().equals(ParameterType.NODE)) {
+            final RequestTarget target = parameter.getNodeFilterTarget();
+            node = KBUtils.parseResource(binding.getValue(), target.getTargetClass());
+          } else if (parameter.getParameterType().equals(ParameterType.LITERAL)) {
+            final DataType dataType = parameter.getLiteralFilterDatatype();
+            node = KBUtils.parseLiteral(binding.getValue(), dataType);
+          }
+
+          if (node != null) {
+            ret.add(parameter.getSparqlVariable(), node);
+          }
+
         }
-
-        if (node != null) {
-          ret.add(parameter.getSparqlVariable(), node);
-        }
-
       }
     }
 

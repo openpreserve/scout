@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +19,9 @@ import eu.scape_project.watch.domain.AsyncRequest;
 import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.domain.Notification;
 import eu.scape_project.watch.domain.Plan;
+import eu.scape_project.watch.domain.QueryBinding;
 import eu.scape_project.watch.domain.Question;
+import eu.scape_project.watch.domain.QuestionTemplate;
 import eu.scape_project.watch.domain.RequestTarget;
 import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.domain.SourceAdaptor;
@@ -42,12 +45,19 @@ public class CreateAsyncRequestSimple extends TemplateContext {
   @Controller(HttpMethod.Type.POST)
   boolean redirectPostData() throws IOException {
     final String description = request.getParameter("description");
-    final String target = request.getParameter("target");
-    final String sparql = request.getParameter("query");
+    final String templateId = request.getParameter("template");
+    final String[] bindingsArray = request.getParameterValues("binding");
     final String email = request.getParameter("email");
     final String periodOption = request.getParameter("periodOptions");
     final String planId = request.getParameter("plan");
-
+    
+    final QuestionTemplate template = DAO.QUESTION_TEMPLATE.findById(templateId);
+    
+    final List<QueryBinding> bindings = new ArrayList<QueryBinding>();
+    for(String unparsedBinding : bindingsArray) {
+      bindings.add(QueryBinding.valueOf(unparsedBinding));
+    }
+    
     long period;
 
     if (periodOption.equals("daily")) {
@@ -71,12 +81,14 @@ public class CreateAsyncRequestSimple extends TemplateContext {
 
     if (StringUtils.isBlank(description)) {
       response.sendError(400, "Please introduce a name for your trigger");
+    } else if(template == null) {
+      response.sendError(404, "Question template not found");
     } else if (period == 0) {
       response.sendError(400, "Select a scheduling period or a category, entity or property initiator");
     } else if (StringUtils.isBlank(email)) {
       response.sendError(400, "Select an email where to send the notification");
     } else {
-      final Question question = new Question(sparql, RequestTarget.valueOf(target.toUpperCase()));
+      final Question question = new Question(template.getSparql(), bindings, template.getTarget());
       final Map<String, String> parameters = new HashMap<String, String>();
       parameters.put("recipient", email);
       final Notification notification = new Notification("email", parameters);

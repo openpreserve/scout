@@ -1,6 +1,6 @@
 {{#partial "title"}}Scout - Create Request{{/partial}} {{#partial
 "content"}}
-<form class="container form-horizontal" method="POST">
+<form id="trigger_form" class="container form-horizontal" method="POST">
 	<legend>New trigger</legend>
 
 	<div id="content">
@@ -8,7 +8,8 @@
 		<label class="control-label" for="description">Name</label>
 		<div class="controls">
 			<input id="description" name="description" type="text"
-				class="input-xxlarge" placeholder="Label to identify your trigger">
+				class="input-xxlarge validation" placeholder="Label to identify your trigger"
+				required data-validation-required-message="Trigger must have a name">
 		</div>
 	</div>
 
@@ -17,18 +18,17 @@
 		<label class="control-label" for="periodDaily">Schedule</label>
 		<div class="controls">
 			<label class="radio inline"> <input type="radio"
-				name="periodOptions" id="periodDaily" value="daily">daily
+				name="periodOptions" id="periodDaily" value="daily" checked>daily
 			</label> <label class="radio inline"> <input type="radio"
 				name="periodOptions" id="periodWeekly" value="weekly">weekly
 			</label> <label class="radio inline"> <input type="radio"
 				name="periodOptions" id="periodMontly" value="monthly">monthly
 			</label> <label class="radio inline"> <input type="radio"
-				name="periodOptions" id="periodQuarterly" value="quarterly">every
-				3 months
+				name="periodOptions" id="periodQuarterly" value="quarterly">quaterly
 			</label> <label class="radio inline"> <input type="radio"
 				name="periodOptions" id="periodYearly" value="yearly">yearly
 			</label> <label class="radio inline"> <input type="radio"
-				name="periodOptions" id="periodNever" value="never" checked>never
+				name="periodOptions" id="periodNever" value="never">never
 			</label>
 		</div>
 	</div>
@@ -71,14 +71,15 @@
 	<div class="control-group">
 		<label class="control-label" for="email">Email</label>
 		<div class="controls">
-			<input id="email" name="email" type="text" class="input-xxlarge"
-				placeholder="The email where to send notification">
+			<input id="email" name="email" type="text" class="input-xxlarge validation"
+				placeholder="The email where to send notification"
+				required data-validation-required-message="Must define a notification email">
 
 		</div>
 	</div>
 	<div class="control-group">
 		<div class="controls">
-			<button type="submit" class="btn btn-large btn-success">
+			<button id="createTriggerButton" type="submit" class="btn btn-large btn-success">
 				<i class="icon-plus icon-white"></i> Create trigger
 			</button>
 		</div>
@@ -87,12 +88,97 @@
 </form>
 {{/partial}} {{#partial "scripts"}}
 <script type="text/javascript">
+	$(function () { $(".validation").jqBootstrapValidation(); } );
+</script>
+<script type="text/javascript">
 	var lookupParameter = function(parameters, parameterId) {
 		for (var i = 0; i < parameters.length; i++) {
 			if(parameters[i].id == parameterId) {
 				return parameters[i];
 			}
 		}
+	};
+	
+	var getTemplateId = function() {
+		var templateId;
+		var params = $.deparam.querystring(true);
+		if (params && params.template) {
+			templateId = params.template;
+		}
+		return templateId;
+	};
+	
+	var parseBindings = function(form) {
+		var form_inputs = form.serializeArray();
+		var postdata = {};
+	    var bindings = new Array();
+	    var i = 0;
+	    
+	    $.each(form_inputs, function(index, field) {
+	    	var key = field.name;
+	    	var value = field.value;
+	    	
+	    	try {
+		    	if(key.indexOf("node_") == 0) {
+		    		var sparqlKey = key.substring(5);
+		    		bindings[i++] = {name: 'binding', value: sparqlKey+'|'+value};
+		    	} else if(key.indexOf("long-storagevolume-number_") == 0) {
+		    		var sparqlKey = key.substring(26);
+		    		var number = value;
+		    		var unit = form_inputs[index+1].value;
+		    		
+		    		if(unit == 'MB') {
+		    			number = number*1048576;
+		    		} else if(unit == 'GB') {
+		    			number = number*1073741824;
+		    		} else if(unit == 'TB') {
+		    			number = number*1099511627776;
+		    		}
+		    		
+		    		bindings[i++] = {name: 'binding', value: sparqlKey+'|'+number};
+		    	} else if(key.indexOf("long-storagevolume-unit_") == 0) {
+		    		// parsed in above condition
+		    	} else {
+		    		postdata[key] = value;
+		    		// console.log('Parameter not supported: '+key);
+		    	}
+	    	} catch(error) {
+	    		console.log('Could not parse parameter: '+error);
+	    	}
+	    });
+	    
+	    postdata['binding'] = bindings;
+	    return postdata;
+	};
+	
+	var overrideTriggerForm = function(e) {
+	    var form = $(this);
+	    var bindings = parseBindings(form);
+	    search(bindings);
+	    
+	    return false;
+	 };
+
+	var createTrigger = function(templateId) {
+		return function(e) {
+			var button = $(this);
+			if(!button.hasClass('disabled')) {
+				var form = $("#trigger_form");
+				var postdata = parseBindings(form);
+				
+				postdata['template'] = templateId;
+				var jqxhr = $.post("", postdata, function() {
+					console.log("created trigger");
+					document.location = "{{mustacheletPath}}/dashboard";
+				});
+				
+				jqxhr.fail(function() {
+					// TODO alert that it failed
+					console.log("Failed to create trigger :(");
+				});
+			}
+			return false;
+		};
 	};
 
 	var injectFragmentData = function() {
@@ -152,10 +238,6 @@
 						// TODO alert
 					}
 				}
-				
-				
-				// $("#search_form").submit(overrideTemplateForm);
-				// $('#createRequestButton').click(createTrigger(templateId));
 			});
 	
 			
@@ -172,6 +254,9 @@
 
 	$(document).ready(function() {
 		injectFragmentData();
+		$("#trigger_form").submit(overrideTriggerForm);
+		var templateId = getTemplateId();
+		$('#createTriggerButton').click(createTrigger(templateId));
 	});
 </script>
 {{/partial}} {{> base}}

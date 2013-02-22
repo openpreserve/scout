@@ -215,7 +215,27 @@ public class ScoutManager {
     // TODO remove question template test
     List<QuestionTemplate> templates = DAO.QUESTION_TEMPLATE.list(0, DAO.QUESTION_TEMPLATE.count(""));
     DAO.delete(templates.toArray(new QuestionTemplate[templates.size()]));
-    
+
+    final String title0 = "Validate lossless policy";
+    final String description0 = "If lossless policy is active, validate a collection according to this policy";
+    final String sparql0 = "<http://www.oesta.gv.at/policies/FormatMustHaveLosslessCompression> <http://scape-project.eu/pw/vocab/control-policy#modality> <http://scape-project.eu/pw/vocab/modalities#MUST> . "
+      + "<http://www.oesta.gv.at/policies/FormatMustHaveLosslessCompression> <http://scape-project.eu/pw/vocab/control-policy#value> \"lossless\" . "
+      + "?s watch:entity ?collection . "
+      + "?s watch:property ?compressionSchemeDist . "
+      + "?compressionSchemeDist watch:id \"ci-KDNE_rjmuRKxjIhnqeHpYgnw\"^^xsd:string . "
+      + "?s watch:stringDictionaryValue ?value . "
+      + "?value ?l ?dictionaryItem . "
+      + "?dictionaryItem watch:key ?compressionType . "
+      + "FILTER regex(?compressionType, \"^(Unknown|Conflicted|JPEG)\")";
+    final RequestTarget target0 = RequestTarget.PROPERTY_VALUE;
+    final List<QuestionTemplateParameter> parameters0 = new ArrayList<QuestionTemplateParameter>();
+    parameters0.add(new QuestionTemplateParameter("collection", "Collection",
+      "Your collection profile already inserted into scout", ParameterType.NODE,
+      "?s watch:type ?type . ?type watch:id \"SD5Mc73YuwE9fH0b8s-h-mzfbvA\"^^xsd:string", RequestTarget.ENTITY, null,
+      null));
+    final QuestionTemplate template0 = new QuestionTemplate(title0, description0, sparql0, target0, parameters0);
+    DAO.save(template0);
+
     final String title1 = "Collection size limit";
     final String description1 = "Warn when a collection reaches a determinated storage size threshold";
     final String sparql1 = "?s watch:entity ?collection . ?s watch:property ?collectionSize . ?collectionSize watch:id \"3lkHQ_nkayLHyyqDwmL9R4hF6jQ\"^^xsd:string . ?s watch:longValue ?value . FILTER(?value > ?threshold)";
@@ -223,24 +243,30 @@ public class ScoutManager {
     final List<QuestionTemplateParameter> parameters1 = new ArrayList<QuestionTemplateParameter>();
     parameters1.add(new QuestionTemplateParameter("collection", "Collection",
       "Your collection profile already inserted into scout", ParameterType.NODE,
-      "?s watch:type ?type . ?type watch:id \"SD5Mc73YuwE9fH0b8s-h-mzfbvA\"^^xsd:string", RequestTarget.ENTITY,
-      null, null));
+      "?s watch:type ?type . ?type watch:id \"SD5Mc73YuwE9fH0b8s-h-mzfbvA\"^^xsd:string", RequestTarget.ENTITY, null,
+      null));
     parameters1.add(new QuestionTemplateParameter("threshold", "Storage size threshold",
       "The storage size above which to raise the alert", ParameterType.LITERAL, null, null, DataType.LONG,
       RenderingHint.STORAGE_VOLUME));
     final QuestionTemplate template1 = new QuestionTemplate(title1, description1, sparql1, target1, parameters1);
     DAO.save(template1);
 
-    final String title2 = "File format is withdrawn";
-    final String description2 = "Warn when a file format in my collection is marked as withdrawn";
-    final String sparql2 = "?s watch:property ?nameproperty . " + "?nameproperty watch:name \"mime\"^^xsd:string . "
-      + "?withdrawn rdf:type watch:PropertyValue . " + "?withdrawn watch:entity ?entity . "
-      + "?withdrawn watch:property ?withdrawnproperty . "
-      + "?withdrawnproperty watch:id \"gszzE-ZmAKXKxsqeesWjKw8v_8A\"^^xsd:string";
-    final RequestTarget target2 = RequestTarget.PROPERTY_VALUE;
-    final List<QuestionTemplateParameter> parameters2 = new ArrayList<QuestionTemplateParameter>();
-    final QuestionTemplate template2 = new QuestionTemplate(title2, description2, sparql2, target2, parameters2);
-    DAO.save(template2);
+    // final String title2 = "File format is withdrawn";
+    // final String description2 =
+    // "Warn when a file format in my collection is marked as withdrawn";
+    // final String sparql2 = "?s watch:property ?nameproperty . " +
+    // "?nameproperty watch:name \"mime\"^^xsd:string . "
+    // + "?withdrawn rdf:type watch:PropertyValue . " +
+    // "?withdrawn watch:entity ?entity . "
+    // + "?withdrawn watch:property ?withdrawnproperty . "
+    // +
+    // "?withdrawnproperty watch:id \"gszzE-ZmAKXKxsqeesWjKw8v_8A\"^^xsd:string";
+    // final RequestTarget target2 = RequestTarget.PROPERTY_VALUE;
+    // final List<QuestionTemplateParameter> parameters2 = new
+    // ArrayList<QuestionTemplateParameter>();
+    // final QuestionTemplate template2 = new QuestionTemplate(title2,
+    // description2, sparql2, target2, parameters2);
+    // DAO.save(template2);
 
   }
 

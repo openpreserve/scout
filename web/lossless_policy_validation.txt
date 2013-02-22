@@ -1,0 +1,27 @@
+
+# TEST
+
+<http://www.oesta.gv.at/policies/FormatMustHaveLosslessCompression> <http://scape-project.eu/pw/vocab/control-policy#modality> <http://scape-project.eu/pw/vocab/modalities#MUST> .
+<http://www.oesta.gv.at/policies/FormatMustHaveLosslessCompression> <http://scape-project.eu/pw/vocab/control-policy#value> "lossless" .
+?s watch:entity <http://watch.scape-project.eu/kb#Entity/cqIZb3bGzMqfrmWGD2ffdzcfK0s> . 
+?s watch:property ?compressionSchemeDist . 
+?compressionSchemeDist watch:id "ci-KDNE_rjmuRKxjIhnqeHpYgnw"^^xsd:string . 
+?s watch:stringDictionaryValue ?value .
+?value ?l ?dictionaryItem .
+?dictionaryItem watch:key ?compressionType .
+FILTER regex(?compressionType, "^(Unknown|Conflicted|JPEG)")
+
+# TEMPLATE
+
+<http://www.oesta.gv.at/policies/FormatMustHaveLosslessCompression> <http://scape-project.eu/pw/vocab/control-policy#modality> <http://scape-project.eu/pw/vocab/modalities#MUST> .
+<http://www.oesta.gv.at/policies/FormatMustHaveLosslessCompression> <http://scape-project.eu/pw/vocab/control-policy#value> "lossless" .
+?s watch:entity ?collection . 
+?s watch:property ?compressionSchemeDist . 
+?compressionSchemeDist watch:id "ci-KDNE_rjmuRKxjIhnqeHpYgnw"^^xsd:string . 
+?s watch:stringDictionaryValue ?value .
+?value ?l ?dictionaryItem .
+?dictionaryItem watch:key ?compressionType .
+FILTER regex(?compressionType, "^(Unknown|Conflicted|JPEG)")
+
+## Bindings
+?collection <http://watch.scape-project.eu/kb#Entity/cqIZb3bGzMqfrmWGD2ffdzcfK0s>

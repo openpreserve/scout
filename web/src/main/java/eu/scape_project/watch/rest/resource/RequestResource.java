@@ -14,10 +14,22 @@ import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import thewebsemantic.binding.Jenabean;
 import thewebsemantic.binding.RdfBean;
 
+import com.hp.hpl.jena.query.Query;
+import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.QueryExecutionFactory;
+import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QueryParseException;
+import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.QuerySolutionMap;
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.query.ResultSetFormatter;
+import com.hp.hpl.jena.rdf.model.Literal;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Resource;
 import com.sun.jersey.api.client.ClientResponse.Status;
 import com.wordnik.swagger.core.ApiError;
 import com.wordnik.swagger.core.ApiErrors;
@@ -138,5 +150,26 @@ public class RequestResource extends JavaHelp {
     } catch (final QueryParseException e) {
       return Response.status(Status.BAD_REQUEST).build();
     }
+  }
+
+  @GET
+  @Path("/sparql")
+  @ApiOperation(value = "Direct sparql interface", notes = "")
+  public Response sparql(
+    @ApiParam(value = "Request query", required = true) @QueryParam("query") final String queryString) {
+
+    LOG.info("SPARQL: {}", queryString);
+    
+    Model model = Jenabean.instance().model();
+    Query query = QueryFactory.create(queryString);
+    QueryExecution qexec = QueryExecutionFactory.create(query, model);
+    String result = "";
+    try {
+      ResultSet results = qexec.execSelect();
+      result = ResultSetFormatter.asXMLString(results);
+    } finally {
+      qexec.close();
+    }
+    return Response.ok().entity(result).build();
   }
 }

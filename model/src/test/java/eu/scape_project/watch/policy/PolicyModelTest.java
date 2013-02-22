@@ -65,6 +65,7 @@ public class PolicyModelTest {
     Assert.assertTrue(loaded);
     
     List<Objective> allObjectives = policyModel.listAllObjectives();
+    
     Assert.assertFalse(allObjectives.isEmpty());
     
   }

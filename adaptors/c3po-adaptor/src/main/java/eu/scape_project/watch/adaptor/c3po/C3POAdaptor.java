@@ -107,6 +107,7 @@ public class C3POAdaptor implements AdaptorPluginInterface {
     this.initConfigs();
 
     final String formatDistr = "Format";
+    final String compressionSchemeDistr = "compression_scheme";
 
     this.commands = new HashMap<String, Command>();
     this.commands.put(CP_COLLECTION_SIZE, new CollectionSizeCommand());
@@ -115,6 +116,8 @@ public class C3POAdaptor implements AdaptorPluginInterface {
     this.commands.put(CP_OBJECTS_MIN_SIZE, new ObjectsMinSizeCommand());
     this.commands.put(CP_OBJECTS_AVG_SIZE, new ObjectsAvgSizeCommand());
     this.commands.put(String.format(CP_DISTRIBUTION, formatDistr), new DistributionCommand(formatDistr));
+    this.commands.put(String.format(CP_DISTRIBUTION, "Compression scheme"), new DistributionCommand(
+      compressionSchemeDistr));
   }
 
   /**

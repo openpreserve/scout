@@ -184,7 +184,14 @@
 	var injectFragmentData = function() {
 		var params = $.deparam.querystring(true);
 		var templateId = params.template;
-		var bindings = params.binding;
+		var bindings;
+		if (params.binding instanceof Array) {
+			bindings = params.binding;
+		} else {
+			var bindings = new Array();
+			bindings[0] = params.binding;
+		}
+		
 		
 		if(templateId) {
 			var apiRequest = "{{contextPath}}/api/questiontemplate.json/"+templateId;
@@ -196,7 +203,7 @@
 				
 				$('#description').val(questionTemplate.title);
 				
-				// TODO inject bindings
+				// inject bindings
 				for (var i = 0; i < bindings.length; i++) {
 					var split = bindings[i].split("|");
 					var parameterId = split[0];

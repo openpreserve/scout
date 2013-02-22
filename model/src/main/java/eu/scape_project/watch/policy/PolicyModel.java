@@ -13,6 +13,8 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import thewebsemantic.binding.Jenabean;
+
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QuerySolution;
@@ -34,7 +36,8 @@ public class PolicyModel {
 
   private static final String MODEL_PATH = POLICIES_PATH + File.separator + "model";
 
-  private static final String MODEL_NAME = "policymodel";
+  // XXX Now loading the policy model into the base model
+  // private static final String MODEL_NAME = "policymodel";
 
   private static final Logger LOG = LoggerFactory.getLogger(PolicyModel.class);
 
@@ -212,7 +215,8 @@ public class PolicyModel {
   }
 
   private Model getModel() {
-    return KBUtils.getNamedModel(MODEL_NAME);
+//    return KBUtils.getNamedModel(MODEL_NAME);
+    return Jenabean.instance().model();
   }
 
   private boolean isModelLoaded() {

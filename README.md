@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/openplanets/scout.png)](https://travis-ci.org/openplanets/scout)
-
 Scout: a preservation watch system
 =============================
 
@@ -105,6 +103,8 @@ $ cp [SOURCES]/web/target/scout-web-0.1.0.war [JBOSS]/standalone/deployments/
 *****
 
 ## Develop
+
+[![Build Status](https://travis-ci.org/openplanets/scout.png)](https://travis-ci.org/openplanets/scout)
 
 ### Requirements
  - Eclipse Indigo: http://www.eclipse.org/downloads/index-developer.php

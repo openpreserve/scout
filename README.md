@@ -3,19 +3,48 @@
 Scout: a preservation watch system
 =============================
 
-Scout is a preservation watch system being developed within the [SCAPE project](http://www.scape-project.eu). It provides an ontological knowledge base to centralize all necessary
-information to detect preservation risks and opportunities. It uses plugins to
-allow easy integration of new sources of information, as file format registries, tools for characterization, migration
-and quality assurance, policies, human knowledge and others. The knowledge base can be easily browsed and
-triggers can be installed to automatically notify users of new risks and opportunities. Examples of such notification
-could be: content fails to conform to defined policies, a format became obsolete or new tools able to render your
+Scout is a preservation watch system being developed within the [SCAPE project](http://www.scape-project.eu). It provides an ontological knowledge base to centralize all necessary information to detect preservation risks and opportunities. It uses plugins to allow easy integration of new sources of information, as file format registries, tools for characterization, migration and quality assurance, policies, human knowledge and others. The knowledge base can be easily browsed and triggers can be installed to automatically notify users of new risks and opportunities. Examples of such notification could be: content fails to conform to defined policies, a format became obsolete or new tools able to render your
 content are available.
 
+## Features (version 0.1.0 - alpha)
+- Ontologic knowledge base backend
+- Information sources:
+ - Content characterization profile (via C3PO adaptor)
+ - File format information (via PRONOM adaptor)
+ - Institutional policy information (using a policy model)
+- Web and REST interface with:
+ - Browsing of knowledge base
+ - Advanced query with SPARQL
+ - Simple query with query templates
+ - Create triggers and be notified
+- Notifications:
+ - Email
+
+## Roadmap (version 1.0.0 - final)
+* Information sources:
+ * Repository events (e.g. ingest, access, preservation action)
+ * Web content renderability analisys
+ * Tools catalogues (via myExperiment)
+ * External assessment via Plato
+ * Simulation of repository resources
+* Web and REST interface with:
+  * User support
+  * Form for manual insertion of knowledge
+  * Notification history
+* Notifications:
+  * HTTP push API
+
+## License
+
+Scout is released under [Apache version 2.0 license](LICENSE-2.0.txt).
+
+*****
 
 ## Install
 
 ### Requirements
  - *nix operative system (tested in Ubuntu LTS 12.04)
+ - Maven 3
  - JBoss AS 7.1.1 Final
  - Optional[^1]: Mail Transport Agent (e.g. Postfix) 
 
@@ -28,14 +57,42 @@ content are available.
     \<extension module="org.jboss.as.jaxrs"/>
     \<subsystem xmlns="urn:jboss:domain:jaxrs:1.0"/>
 </pre>
- 4. Install [Scout Web Application](https://github.com/downloads/openplanets/scout/scout-web-0.1.0.war) into JBoss AS
- 5. Create directory `/usr/local/scout/data` with write permissions by the user running the JBoss AS server
- 6. Create directory `/usr/local/scout/plugins/adaptors` and copy all adaptor jars there (e.g. [C3PO adaptor plugin](https://github.com/downloads/openplanets/scout/c3po-adaptor-0.0.5-jar-with-dependencies.jar) and [PRONOM adaptor plugin](https://github.com/downloads/openplanets/scout/pronom-adaptor-0.0.6-jar-with-dependencies.jar))
- 7. Create directory `/usr/local/scout/plugins/notifications` and copy all notification jars there (e.g. [Email notification plugin](https://github.com/downloads/openplanets/scout/email-notification-0.0.3-jar-with-dependencies.jar))
- 8. Create directory `.scout` in the home of the user running JBoss AS server
- 9. Start JBoss AS server
+ 4. Download and uncompress the [last stable version of Scout sources](https://github.com/openplanets/scout/tags)
+ 5. Go to the Scout sources folder and compile with:
+ 
+ ```
+ $ cd [SOURCES]
+ $ mvn clean install -Dmaven.test.skip=true
+ ```
+ 
+ 6. Install Scout Web Application into JBoss AS
+```
+$ cp [SOURCES]/web/target/scout-web-0.1.0.war [JBOSS]/standalone/deployments/
+```
+ 7. Create the following directories with write permissions by the user running the JBoss AS server
+ ```
+ $ sudo mkdir /usr/local/scout
+ $ sudo chown [JBOSS_USER] /usr/local/scout
+ $ sudo su [JBOSS_USER]
+ $ mkdir /usr/local/scout/data
+ $ mkdir /usr/local/scout/plugins
+ $ mkdir /usr/local/scout/plugins/adaptors
+ $ mkdir /usr/local/scout/plugins/notifications
+ $ mkdir ~/.scout 
+ ```
+ 8. Copy available adaptor plugins
+```
+ $ find [SOURCES]/adaptors/ -name *-jar-with-dependencies.jar -exec cp -v {} /usr/local/scout/plugins/adaptors/ \;
+```
+ 9. Copy available notification plugins
+```
+ $ find [SOURCES]/notifications/ -name *-jar-with-dependencies.jar -exec cp -v {} /usr/local/scout/plugins/notifications/ \;
+```
+ 10. Start JBoss AS server
 
 [^1]: An external SMTP server can optionally be configured.
+
+## Configure
 
 ### Create the PRONOM adaptor
 
@@ -47,7 +104,7 @@ content are available.
 
 *****
 
-## Development
+## Develop
 
 ### Requirements
  - Eclipse Indigo: http://www.eclipse.org/downloads/index-developer.php

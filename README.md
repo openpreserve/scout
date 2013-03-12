@@ -3,7 +3,14 @@
 Scout: a preservation watch system
 =============================
 
-Scout is a preservation watch system being developed within the [SCAPE project](http://www.scape-project.eu). 
+Scout is a preservation watch system being developed within the [SCAPE project](http://www.scape-project.eu). It provides an ontological knowledge base to centralize all necessary
+information to detect preservation risks and opportunities. It uses plugins to
+allow easy integration of new sources of information, as file format registries, tools for characterization, migration
+and quality assurance, policies, human knowledge and others. The knowledge base can be easily browsed and
+triggers can be installed to automatically notify users of new risks and opportunities. Examples of such notification
+could be: content fails to conform to defined policies, a format became obsolete or new tools able to render your
+content are available.
+
 
 ## Install
 

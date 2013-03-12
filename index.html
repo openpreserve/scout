@@ -7,41 +7,38 @@
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/main.js"></script>
+    <script src="javascripts/respond.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
     <![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
   </head>
   <body>
-
-      <header>
-        <h1>Scout</h1>
-        <p>SCOUT - A preservation watch system</p>
-      </header>
-
-      <div id="banner">
-        <span id="logo"></span>
-
-        <a href="https://github.com/openplanets/scout" class="button fork"><strong>View On GitHub</strong></a>
-        <div class="downloads">
-          <span>Downloads:</span>
-          <ul>
-            <li><a href="https://github.com/openplanets/scout/zipball/master" class="button">ZIP</a></li>
-            <li><a href="https://github.com/openplanets/scout/tarball/master" class="button">TAR</a></li>
-          </ul>
-        </div>
-      </div><!-- end banner -->
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/openplanets/scout">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/openplanets/scout/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/openplanets/scout/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
 
     <div class="wrapper">
-      <nav>
-        <ul></ul>
-      </nav>
-      <section>
-        <p><a href="https://travis-ci.org/openplanets/scout"><img src="https://travis-ci.org/openplanets/scout.png" alt="Build Status"></a></p>
 
-<h1>Scout: a preservation watch system</h1>
+      <section>
+        <div id="title">
+          <h1>Scout</h1>
+          <p>SCOUT - A preservation watch system</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/openplanets">openplanets</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>Scout: a preservation watch system</h1>
 
 <p>Scout is a preservation watch system being developed within the <a href="http://www.scape-project.eu">SCAPE project</a>. It provides an ontological knowledge base to centralize all necessary information to detect preservation risks and opportunities. It uses plugins to allow easy integration of new sources of information, as file format registries, tools for characterization, migration and quality assurance, policies, human knowledge and others. The knowledge base can be easily browsed and triggers can be installed to automatically notify users of new risks and opportunities. Examples of such notification could be: content fails to conform to defined policies, a format became obsolete or new tools able to render your
 content are available.</p>
@@ -179,6 +176,8 @@ $ mkdir ~/.scout
 <li>Select the new Source Adaptor with the pronom plugin and the instance name "pronom-default"</li>
 </ol><hr><h2>Develop</h2>
 
+<p><a href="https://travis-ci.org/openplanets/scout"><img src="https://travis-ci.org/openplanets/scout.png" alt="Build Status"></a></p>
+
 <h3>Requirements</h3>
 
 <ul>
@@ -219,10 +218,7 @@ warnings.</p>
 
 <p>Part of this work was supported by the European Union in the 7th Framework Program, IST, through the SCAPE project, Contract 270137.</p>
       </section>
-      <footer>
-        <p>Project maintained by <a href="https://github.com/openplanets">openplanets</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
-      </footer>
+
     </div>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
               <script type="text/javascript">

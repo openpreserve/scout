@@ -5,17 +5,18 @@ PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX pw: <http://scape-project.eu/pw/vocab/>
 PREFIX cp: <http://scape-project.eu/pw/vocab/control-policy#>
 
-
-
-
-SELECT ?objective ?name ?desc ?modality ?value ?qualifier WHERE { 
-?class rdfs:subClassOf cp:Objective .
-?objective a ?class .
-?objective cp:modality ?modality .
-?objective cp:value ?value .
-OPTIONAL {?objective cp:qualifier ?qualifier .}
-?objective cp:property ?measure .
-?measure pw:description ?desc .
-?measure rdfs:label ?name
-
+SELECT ?objective ?measure ?name ?desc ?modality ?value ?qualifier WHERE { 
+  ?objectiveSubclass rdfs:subClassOf cp:Objective .
+  ?objective a ?objectiveSubclass ;
+             cp:property ?measure;
+             cp:modality ?modality ;
+             cp:value ?value .
+  OPTIONAL {
+    ?objective cp:qualifier ?qualifier .
+  }
+  ?measure a pw:Measure .
+  OPTIONAL {
+    ?measure pw:description ?desc ;
+             rdfs:label ?name .
+  }
 }

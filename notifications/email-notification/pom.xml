@@ -57,7 +57,6 @@
 		<dependency>
 			<groupId>com.github.jknack</groupId>
 			<artifactId>handlebars</artifactId>
-			<version>0.5.5</version>
 		</dependency>
 	</dependencies>
 </project>

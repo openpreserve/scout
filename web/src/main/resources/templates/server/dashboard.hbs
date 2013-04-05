@@ -41,19 +41,19 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th style="width: 10%">Objective</th>
-                <th style="width: 10%">Measure</th>
-                <th style="width: 30%">Description</th>
-                <th style="width: 5%">Modality</th>
-                <th style="width: 5%">Qualifier</th>
-                <th style="width: 10%">Value</th>
+                <th style="">Objective</th>
+                <th style="width: 25%">Measure</th>
+                <th style="width: 100%">Description</th>
+                <th style="">Modality</th>
+                <th style="">Qualifier</th>
+                <th style="">Value</th>
             </tr>
         </thead>
         <tbody>
             {{#each objectives}}
             <tr>
-                <td style="white-space: nowrap;">{{url}}</td>
-                <td>{{measure}}</td>
+                <td style="white-space: nowrap;"><a href="#" data-toggle="tooltip" title="{{url}}">{{@index}}</a></td>
+                <td><a href="#" data-toggle="tooltip" title="{{measure}}">{{measureName}}</a></td>
                 <td>{{measureDescription}}</td>
                 <td>{{modality}}</td>
                 <td>{{qualifier}}</td>

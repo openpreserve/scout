@@ -58,8 +58,11 @@ public final class MailUtils {
     // Set the host smtp address
     final Properties props = new Properties();
     try {
-      props.load(MailUtils.class.getResourceAsStream("/mail.properties"));
+      props.load(MailUtils.class.getResourceAsStream("/eu/scape_project/watch/notification/email/config/mail.properties"));
     } catch (final IOException e) {
+      LOG.error("Could not find mail.properties, using localhost as SMTP host", e);
+      props.put("mail.smtp.host", "localhost");
+    } catch (final NullPointerException e) {
       LOG.error("Could not find mail.properties, using localhost as SMTP host", e);
       props.put("mail.smtp.host", "localhost");
     }

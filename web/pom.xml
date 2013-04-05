@@ -44,7 +44,7 @@
 					</archive>
 					<webResources>
 						<resource>
-							<directory>swagger-ui-1.0</directory>
+							<directory>swagger-ui-1.1.7/dist</directory>
 							<targetPath>apidoc</targetPath>
 						</resource>
 						<resource>
@@ -103,11 +103,6 @@
 			<artifactId>slf4j-log4j12</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.wordnik</groupId>
-			<artifactId>swagger-core</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-jaxrs</artifactId>
 			<version>1.9.10</version>
@@ -115,17 +110,17 @@
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-server</artifactId>
-			<version>1.15</version>
+			<version>1.17.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-json</artifactId>
-			<version>1.15</version>
+			<version>1.17.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-servlet</artifactId>
-			<version>1.15</version>
+			<version>1.17.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
@@ -140,7 +135,7 @@
 		<dependency>
 			<groupId>com.sun.jersey.jersey-test-framework</groupId>
 			<artifactId>jersey-test-framework-grizzly2</artifactId>
-			<version>1.15</version>
+			<version>1.17.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -173,11 +168,6 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.github.jknack</groupId>
-			<artifactId>handlebars</artifactId>
-			<version>0.6.2</version>
-		</dependency>
-		<dependency>
 			<groupId>com.github.mfornos</groupId>
 			<artifactId>humanize-icu</artifactId>
 			<version>0.1.4</version>
@@ -193,10 +183,35 @@
 			<version>20090211</version>
 		</dependency>
 		<dependency>
+			<groupId>com.wordnik</groupId>
+			<artifactId>swagger-core_2.10.0</artifactId>
+			<version>1.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.wordnik</groupId>
+			<artifactId>swagger-jaxrs_2.10.0</artifactId>
+			<version>1.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.jknack</groupId>
+			<artifactId>handlebars</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.github.jknack</groupId>
 			<artifactId>handlebars-humanize</artifactId>
-			<version>0.6.2</version>
 		</dependency>
+		<!-- Added this two dependencies because the email plugin would fail without them -->
+		<dependency>
+			<groupId>org.abego.treelayout</groupId>
+			<artifactId>org.abego.treelayout.core</artifactId>
+			<version>1.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>xmlbeans</groupId>
+			<artifactId>xbean</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+		<!-- / -->
 	</dependencies>
 
 	<scm>
@@ -218,12 +233,12 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<!-- To be compatible with asm 3.3.1 of jersey server -->
+			<!--<dependency>
+				 To be compatible with asm 3.3.1 of jersey server 
 				<groupId>org.parboiled</groupId>
 				<artifactId>parboiled-java</artifactId>
 				<version>1.0.2</version>
-			</dependency>
+			</dependency>-->
 		</dependencies>
 	</dependencyManagement>
 

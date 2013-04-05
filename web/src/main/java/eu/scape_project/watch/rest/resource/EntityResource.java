@@ -3,17 +3,6 @@
  */
 package eu.scape_project.watch.rest.resource;
 
-import com.wordnik.swagger.core.ApiError;
-import com.wordnik.swagger.core.ApiErrors;
-import com.wordnik.swagger.core.ApiOperation;
-import com.wordnik.swagger.core.ApiParam;
-import com.wordnik.swagger.core.JavaHelp;
-import eu.scape_project.watch.dao.DAO;
-import eu.scape_project.watch.dao.EntityDAO;
-import eu.scape_project.watch.domain.Entity;
-import eu.scape_project.watch.domain.EntityType;
-import eu.scape_project.watch.utils.exception.NotFoundException;
-
 import java.util.Collection;
 
 import javax.ws.rs.DELETE;
@@ -28,6 +17,17 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 
+import com.wordnik.swagger.annotations.ApiError;
+import com.wordnik.swagger.annotations.ApiErrors;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
+
+import eu.scape_project.watch.dao.DAO;
+import eu.scape_project.watch.dao.EntityDAO;
+import eu.scape_project.watch.domain.Entity;
+import eu.scape_project.watch.domain.EntityType;
+import eu.scape_project.watch.utils.exception.NotFoundException;
+
 /**
  * 
  * REST API for {@link Entity} operations.
@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
  * @author Luis Faria <lfaria@keep.pt>
  * 
  */
-public class EntityResource extends JavaHelp {
+public class EntityResource {
 
   /**
    * Logger.

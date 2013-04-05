@@ -32,8 +32,10 @@ import com.github.jknack.handlebars.Context;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.HumanizeHelper;
 import com.github.jknack.handlebars.Template;
-import com.github.jknack.handlebars.TemplateLoader;
-import com.github.jknack.handlebars.cache.ConcurrentMapCache;
+import com.github.jknack.handlebars.cache.HighConcurrencyTemplateCache;
+import com.github.jknack.handlebars.cache.TemplateCache;
+import com.github.jknack.handlebars.io.ClassPathTemplateLoader;
+import com.github.jknack.handlebars.io.TemplateLoader;
 import com.google.inject.Binder;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -257,20 +259,8 @@ public class TemplateService extends HttpServlet implements Filter {
       }
     }
 
-    final Handlebars compiler = new Handlebars(new TemplateLoader() {
-
-      @Override
-      protected Reader read(String templateName) throws IOException {
-        final InputStream stream = getClass().getResourceAsStream(DEFAULT_RESOURCE_ROOT + templateName);
-        if (stream != null) {
-          logger.trace("Loaded template {}", DEFAULT_RESOURCE_ROOT + templateName);
-          return new InputStreamReader(stream);
-        } else {
-          throw new IOException("Cannot find template " + DEFAULT_RESOURCE_ROOT + templateName);
-        }
-
-      }
-    }, new ConcurrentMapCache());
+    final Handlebars compiler = new Handlebars(new ClassPathTemplateLoader(DEFAULT_RESOURCE_ROOT),
+      new HighConcurrencyTemplateCache());
 
     compiler.registerHelper("value-render", new ValueHelper());
     HumanizeHelper.register(compiler);

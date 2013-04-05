@@ -1,12 +1,10 @@
 package eu.scape_project.watch.notification.email;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.Reader;
 import java.io.Writer;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -24,8 +22,8 @@ import org.slf4j.LoggerFactory;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
-import com.github.jknack.handlebars.TemplateLoader;
-import com.github.jknack.handlebars.cache.ConcurrentMapCache;
+import com.github.jknack.handlebars.cache.ConcurrentMapTemplateCache;
+import com.github.jknack.handlebars.io.ClassPathTemplateLoader;
 
 import eu.scape_project.watch.domain.AsyncRequest;
 import eu.scape_project.watch.domain.DataType;
@@ -118,30 +116,22 @@ public class EmailNotification implements NotificationPluginInterface {
 
   @Override
   public void init() throws PluginException {
-    final ResourceBundle bundle = ResourceBundle.getBundle("email_notification");
+    final ResourceBundle bundle = ResourceBundle
+      .getBundle("eu.scape_project.watch.notification.email.templates.email_notification");
     subject = bundle.getString("subject");
     fromAddress = bundle.getString("fromAddress");
     fromName = bundle.getString("fromName");
 
     final String templateName = bundle.getString("template");
 
-    final Handlebars compiler = new Handlebars(new TemplateLoader() {
-
+    final Handlebars compiler = new Handlebars(new ClassPathTemplateLoader(
+      "/eu/scape_project/watch/notification/email/templates") {
+      // This override is to use the correct classloader in the getResource
       @Override
-      protected Reader read(String templateName) throws IOException {
-        InputStream stream = getClass().getResourceAsStream(templateName);
-        if (stream == null) {
-          stream = getClass().getResourceAsStream("/" + templateName);
-        }
-
-        if (stream != null) {
-          return new InputStreamReader(stream);
-        } else {
-          throw new IOException("Cannot find template " + templateName);
-        }
-
+      protected URL getResource(final String location) throws IOException {
+        return EmailNotification.class.getResource(location);
       }
-    }, new ConcurrentMapCache());
+    }, new ConcurrentMapTemplateCache());
     try {
       template = compiler.compile(URI.create(templateName));
     } catch (IOException e) {

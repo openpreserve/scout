@@ -3,15 +3,12 @@
  */
 package eu.scape_project.watch.rest.resource;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
@@ -24,11 +21,10 @@ import org.slf4j.LoggerFactory;
 
 import thewebsemantic.binding.Jenabean;
 
-import com.wordnik.swagger.core.ApiError;
-import com.wordnik.swagger.core.ApiErrors;
-import com.wordnik.swagger.core.ApiOperation;
-import com.wordnik.swagger.core.ApiParam;
-import com.wordnik.swagger.core.JavaHelp;
+import com.wordnik.swagger.annotations.ApiError;
+import com.wordnik.swagger.annotations.ApiErrors;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
 
 import eu.scape_project.watch.adaptor.AdaptorManager;
 import eu.scape_project.watch.dao.DAO;
@@ -36,13 +32,9 @@ import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.EntityType;
 import eu.scape_project.watch.domain.Property;
 import eu.scape_project.watch.domain.PropertyValue;
-import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.listener.ContextUtil;
-import eu.scape_project.watch.utils.exception.BadRequestException;
 import eu.scape_project.watch.utils.exception.NotFoundException;
-import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeException;
-import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
 
 /**
  * REST API for {@link PropertyValue} operations.
@@ -50,7 +42,7 @@ import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
  * @author Luis Faria <lfaria@keep.pt>
  * 
  */
-public class PropertyValueResource extends JavaHelp {
+public class PropertyValueResource {
 
   /**
    * The logger.

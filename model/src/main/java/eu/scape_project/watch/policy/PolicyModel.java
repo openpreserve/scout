@@ -22,9 +22,9 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.update.UpdateAction;
 
 import eu.scape_project.watch.domain.Objective;
-import eu.scape_project.watch.utils.KBUtils;
 
 public class PolicyModel {
 
@@ -82,6 +82,7 @@ public class PolicyModel {
     while (set.hasNext()) {
       final QuerySolution next = set.nextSolution();
       final Resource obj = next.getResource("objective");
+      final Resource measure = next.getResource("measure");
       final Literal name = next.getLiteral("name");
       final Literal desc = next.getLiteral("desc");
       final Resource mod = next.getResource("modality");
@@ -91,8 +92,12 @@ public class PolicyModel {
       Objective tmp = new Objective();
       tmp.setUrl(obj.toString());
 
+      if (measure != null) {
+        tmp.setMeasure(measure.toString());
+      }
+
       if (name != null) {
-        tmp.setMeasure(name.getString());
+        tmp.setMeasureName(name.getString());
       }
 
       if (q != null) {
@@ -115,6 +120,12 @@ public class PolicyModel {
     }
 
     return result;
+  }
+
+  public void deleteAllObjectives() {
+    final String query = this.getQuery("/queries/delete_all_objectives.txt");
+
+    UpdateAction.parseExecute(query, this.getModel());
   }
 
   private boolean loadFromClasspath() {
@@ -154,13 +165,13 @@ public class PolicyModel {
     if (!loaded) {
       LOG.debug("Loading policy model from file system");
       final File modelDir = this.getModelDir();
-      
+
       if (modelDir == null || !modelDir.exists()) {
         LOG.warn("Could not create policy model directory!");
         LOG.warn("This might lead to unexpected behavior!");
         return false;
       }
-      
+
       final String[] files = modelDir.list(new FilenameFilter() {
 
         @Override
@@ -215,7 +226,7 @@ public class PolicyModel {
   }
 
   private Model getModel() {
-//    return KBUtils.getNamedModel(MODEL_NAME);
+    // return KBUtils.getNamedModel(MODEL_NAME);
     return Jenabean.instance().model();
   }
 

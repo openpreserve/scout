@@ -45,63 +45,63 @@ public class PropertyValue extends RdfBean<PropertyValue> {
   /**
    * Value holder when type is {@link String}.
    */
-  @XmlElement(name = "value")
+  @XmlElement(name = "stringValue")
   @JsonProperty("stringValue")
   private String stringValue;
 
   /**
    * Value holder when type is {@link Integer}.
    */
-  @XmlElement(name = "value")
+  @XmlElement(name = "integerValue")
   @JsonProperty("integerValue")
   private Integer integerValue;
 
   /**
    * Value holder when type is {@link Long}.
    */
-  // @XmlElement(name = "value")
+  @XmlElement(name = "longValue")
   @JsonProperty("longValue")
   private long longValue;
 
   /**
    * Value holder when type is {@link Float}.
    */
-  @XmlElement(name = "value")
+  @XmlElement(name = "floatValue")
   @JsonProperty("floatValue")
   private Float floatValue;
 
   /**
    * Value holder when type is {@link Double}.
    */
-  @XmlElement(name = "value")
+  @XmlElement(name = "doubleValue")
   @JsonProperty("doubleValue")
   private Double doubleValue;
 
   /**
    * Value holder when type is {@link URI}.
    */
-  @XmlElement(name = "value")
+  @XmlElement(name = "uriValue")
   @JsonProperty("uriValue")
   private URI uriValue;
 
   /**
    * Value holder when type is {@link Date}.
    */
-  @XmlElement(name = "value")
+  @XmlElement(name = "dateValue")
   @JsonProperty("dateValue")
   private Date dateValue;
   /**
    * Value holder when type is {@link List<String>}.
    */
-  @XmlElement(name = "value")
-  // @JsonProperty("stringListValue")
+  @XmlElement(name = "stringListValue")
+  @JsonProperty("stringListValue")
   @JsonIgnore
   private List<String> stringListValue = new ArrayList<String>();
   /**
    * Value holder when type is {@link List<DictionaryItem>}.
    */
-  @XmlElement(name = "value")
-  // @JsonProperty("stringDictionaryValue")
+  @XmlElement(name = "stringDictionaryValue")
+  @JsonProperty("stringDictionaryValue")
   @JsonIgnore
   private List<DictionaryItem> stringDictionaryValue = new ArrayList<DictionaryItem>();
 
@@ -201,6 +201,7 @@ public class PropertyValue extends RdfBean<PropertyValue> {
    *           not supported by this method.
    */
   @JsonProperty("value")
+  @XmlElement(name = "value")
   public Object getValue() {
     Object value = null;
 

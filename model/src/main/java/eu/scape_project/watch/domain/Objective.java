@@ -6,6 +6,8 @@ public class Objective {
 
   private String measure;
 
+  private String measureName;
+
   private String measureDescription;
 
   private String modality;
@@ -32,6 +34,14 @@ public class Objective {
 
   public void setMeasure(String measure) {
     this.measure = measure;
+  }
+
+  public String getMeasureName() {
+    return measureName;
+  }
+
+  public void setMeasureName(String measureName) {
+    this.measureName = measureName;
   }
 
   public String getMeasureDescription() {
@@ -66,9 +76,10 @@ public class Objective {
     this.value = value;
   }
 
+  @Override
   public String toString() {
-    return "Objective [" + this.getUrl() + "] defines that: \nmeasure '" + this.getMeasure() + "' with description '"
-        + this.getMeasureDescription() + "' " + this.getModality() + " have a \nvalue " + this.getQualifier()
-        + this.getValue() + "'\n";
+    return String.format(
+      "Objective [url=%s, measure=%s, measureName=%s, measureDescription=%s, modality=%s, qualifier=%s, value=%s]",
+      url, measure, measureName, measureDescription, modality, qualifier, value);
   }
 }

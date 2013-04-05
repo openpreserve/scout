@@ -9,8 +9,6 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
@@ -21,19 +19,16 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.wordnik.swagger.core.ApiError;
-import com.wordnik.swagger.core.ApiErrors;
-import com.wordnik.swagger.core.ApiOperation;
-import com.wordnik.swagger.core.ApiParam;
-import com.wordnik.swagger.core.JavaHelp;
+import com.wordnik.swagger.annotations.ApiError;
+import com.wordnik.swagger.annotations.ApiErrors;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
 
 import eu.scape_project.watch.adaptor.AdaptorManager;
 import eu.scape_project.watch.dao.DAO;
-import eu.scape_project.watch.domain.Source;
 import eu.scape_project.watch.domain.SourceAdaptor;
 import eu.scape_project.watch.domain.SourceAdaptorEvent;
 import eu.scape_project.watch.listener.ContextUtil;
-import eu.scape_project.watch.utils.exception.BadRequestException;
 import eu.scape_project.watch.utils.exception.NotFoundException;
 
 /**
@@ -43,7 +38,7 @@ import eu.scape_project.watch.utils.exception.NotFoundException;
  * @author Luis Faria <lfaria@keep.pt>
  * 
  */
-public class SourceAdaptorEventResource extends JavaHelp {
+public class SourceAdaptorEventResource {
 
   /**
    * Logger.

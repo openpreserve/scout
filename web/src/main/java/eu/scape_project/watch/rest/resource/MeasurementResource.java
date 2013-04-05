@@ -4,7 +4,6 @@
 package eu.scape_project.watch.rest.resource;
 
 import java.util.Collection;
-import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
@@ -18,16 +17,12 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import thewebsemantic.binding.Jenabean;
-
-import com.wordnik.swagger.core.ApiOperation;
-import com.wordnik.swagger.core.ApiParam;
-import com.wordnik.swagger.core.JavaHelp;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
 
 import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.domain.Measurement;
 import eu.scape_project.watch.domain.PropertyValue;
-import eu.scape_project.watch.utils.exception.BadRequestException;
 import eu.scape_project.watch.utils.exception.NotFoundException;
 
 /**
@@ -36,7 +31,7 @@ import eu.scape_project.watch.utils.exception.NotFoundException;
  * @author Luis Faria <lfaria@keep.pt>
  * 
  */
-public class MeasurementResource extends JavaHelp {
+public class MeasurementResource {
 
   /**
    * The logger.

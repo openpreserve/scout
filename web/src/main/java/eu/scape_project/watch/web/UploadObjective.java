@@ -79,6 +79,8 @@ public class UploadObjective extends TemplateContext {
           response.put(metadata);
 
           // process objectives
+          // TODO remove the delete when other way of updating is available
+          policyModel.deleteAllObjectives();
           boolean loaded = policyModel.loadPolicies(file.getAbsolutePath());
           System.out.println(String.format("Loaded file %s: %s", file.getAbsolutePath(), loaded + ""));
         }

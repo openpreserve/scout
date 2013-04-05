@@ -3,26 +3,10 @@
  */
 package eu.scape_project.watch.rest.resource;
 
-import com.wordnik.swagger.core.ApiError;
-import com.wordnik.swagger.core.ApiErrors;
-import com.wordnik.swagger.core.ApiOperation;
-import com.wordnik.swagger.core.ApiParam;
-import com.wordnik.swagger.core.JavaHelp;
-import eu.scape_project.watch.dao.DAO;
-import eu.scape_project.watch.domain.EntityType;
-import eu.scape_project.watch.interfaces.PluginType;
-import eu.scape_project.watch.plugin.PluginInfo;
-import eu.scape_project.watch.plugin.PluginManager;
-import eu.scape_project.watch.utils.exception.BadRequestException;
-import eu.scape_project.watch.utils.exception.NotFoundException;
-
 import java.util.Collection;
 import java.util.List;
 
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
@@ -30,7 +14,17 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
-import thewebsemantic.binding.Jenabean;
+
+import com.wordnik.swagger.annotations.ApiError;
+import com.wordnik.swagger.annotations.ApiErrors;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
+
+import eu.scape_project.watch.interfaces.PluginType;
+import eu.scape_project.watch.plugin.PluginInfo;
+import eu.scape_project.watch.plugin.PluginManager;
+import eu.scape_project.watch.utils.exception.BadRequestException;
+import eu.scape_project.watch.utils.exception.NotFoundException;
 
 /**
  * 
@@ -39,7 +33,7 @@ import thewebsemantic.binding.Jenabean;
  * @author Luis Faria <lfaria@keep.pt>
  * 
  */
-public class PluginResource extends JavaHelp {
+public class PluginResource {
 
   /**
    * Logger.

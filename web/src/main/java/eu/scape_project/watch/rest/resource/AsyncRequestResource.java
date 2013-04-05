@@ -14,11 +14,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
-import com.wordnik.swagger.core.ApiError;
-import com.wordnik.swagger.core.ApiErrors;
-import com.wordnik.swagger.core.ApiOperation;
-import com.wordnik.swagger.core.ApiParam;
-import com.wordnik.swagger.core.JavaHelp;
+import com.wordnik.swagger.annotations.ApiError;
+import com.wordnik.swagger.annotations.ApiErrors;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
 
 import eu.scape_project.watch.dao.DAO;
 import eu.scape_project.watch.domain.AsyncRequest;
@@ -31,7 +30,7 @@ import eu.scape_project.watch.utils.exception.NotFoundException;
  * @author Luis Faria <lfaria@keep.pt>
  * 
  */
-public class AsyncRequestResource extends JavaHelp {
+public class AsyncRequestResource {
 
   /**
    * Get an existing {@link AsyncRequest}.

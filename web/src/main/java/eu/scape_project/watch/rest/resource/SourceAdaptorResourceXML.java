@@ -4,7 +4,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import com.sun.jersey.spi.resource.Singleton;
-import com.wordnik.swagger.core.Api;
+import com.wordnik.swagger.annotations.Api;
 
 /**
  * {@link SourceAdaptorResource} with XML output.

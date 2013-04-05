@@ -88,9 +88,9 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
     sparql.append(KBUtils.PREFIXES_DECL);
 
     if (StringUtils.isNotBlank(bindings)) {
-      sparql.append(String.format("SELECT ?s WHERE { ?s ?rel ?class . %1$s}", bindings));
+      sparql.append(String.format("SELECT DISTINCT ?s WHERE { ?s ?rel ?class . %1$s}", bindings));
     } else {
-      sparql.append("SELECT ?s WHERE { ?s ?rel ?class }");
+      sparql.append("SELECT DISTINCT ?s WHERE { ?s ?rel ?class }");
     }
 
     if (StringUtils.isNotBlank(orderBy)) {
@@ -171,9 +171,9 @@ public abstract class AbstractDO<T extends RdfBean<T>> {
     // http://jena.apache.org/documentation/query/manipulating_sparql_using_arq.html
 
     if (StringUtils.isNotBlank(bindings)) {
-      sparql.append(String.format("SELECT (count(distinct ?s) AS ?total) WHERE { ?s ?rel ?class . %1$s }", bindings));
+      sparql.append(String.format("SELECT (COUNT(DISTINCT ?s) AS ?total) WHERE { ?s ?rel ?class . %1$s }", bindings));
     } else {
-      sparql.append("SELECT (count(distinct ?s) AS ?total) WHERE { ?s ?rel ?class }");
+      sparql.append("SELECT (COUNT(DISTINCT ?s) AS ?total) WHERE { ?s ?rel ?class }");
     }
 
     LOG.trace("SPARQL:\n {}", sparql);

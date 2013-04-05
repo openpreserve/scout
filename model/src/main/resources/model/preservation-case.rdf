@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Digital Preservation: Preservation Case
+
+  Changes:
+  * removed
+    <rdf:Description rdf:about="http://purl.org/DP/preservation-case#hasComparisonMetric">
+      <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://purl.org/DP/preservation-case#hasComparisonMetric">
+      <rdfs:domain rdf:resource="http://purl.org/DP/preservation-case#Criterion"/>
+    </rdf:Description>
+
+-->
+<rdf:RDF xmlns="http://purl.org/DP/preservation-case#"
+    xmlns:control-policy="http://purl.org/DP/control-policy#" 
+    xmlns:foaf="http://xmlns.com/foaf/0.1/" 
+    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:org="http://www.w3.org/ns/org#"
+    xmlns:ns="http://premis.loc.gov/ns/"    
+    xmlns:ont="http://www.co-ode.org/ontologies/ont.owl#" 
+    xmlns:owl="http://www.w3.org/2002/07/owl#" 
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+
+  <owl:Ontology rdf:about="http://purl.org/DP/preservation-case"/>
+
+  <rdf:Description rdf:about="http://premis.loc.gov/ns/Object">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://reference.data.gov.uk/technical-registry/file-format">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <skos:prefLabel>File Format</skos:prefLabel> 
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <owl:imports rdf:resource="http://multimedialab.elis.ugent.be/users/samcoppe/ontologies/Premis/premis.owl"/>
+    <owl:imports rdf:resource="http://purl.org/DP/control-policy"/>
+    <owl:imports rdf:resource="http://xmlns.com/foaf/0.1/"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#CharacterizationTool">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://purl.org/DP/preservation-case#Software"/>
+    <skos:prefLabel>Characterization Tool</skos:prefLabel> 
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#ContentSet">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <skos:prefLabel>Content Set</skos:prefLabel> 
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#EmulationTool">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://purl.org/DP/preservation-case#Software"/>
+    <skos:prefLabel>Emulation Tool</skos:prefLabel> 
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#Hardware">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <skos:prefLabel>Hardware</skos:prefLabel> 
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#MigrationActionTool">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://purl.org/DP/preservation-case#Software"/>
+    <skos:prefLabel>Migration Action Tool</skos:prefLabel> 
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#PreservationCase">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <skos:prefLabel>Preservation Case</skos:prefLabel> 
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#Software">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <skos:prefLabel>Software</skos:prefLabel> 
+  </rdf:Description>
+  
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#TechnicalCharacteristic">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <skos:prefLabel>Technical Characteristic</skos:prefLabel> 
+  </rdf:Description>
+  
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#TechnicalEnvironment">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <skos:prefLabel>Technical Environment</skos:prefLabel> 
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://www.w3.org/ns/org#Organization">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <skos:prefLabel>Technical Environment</skos:prefLabel> 
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#belongsToOrganization">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:comment>Relates the content set to a particular organization</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/DP/preservation-case#ContentSet"/>
+    <rdfs:range rdf:resource="http://www.w3.org/ns/org#Organization"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#consistsOf">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:comment>Relates a sub content set to the parent content set</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/DP/preservation-case#ContentSet"/>
+    <rdfs:range rdf:resource="http://purl.org/DP/preservation-case#ContentSet"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#contentSetScope">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://purl.org/DP/control-policy#Objective"/>
+    <rdfs:range rdf:resource="http://purl.org/DP/preservation-case#ContentSet"/>
+    <rdfs:subPropertyOf rdf:resource="http://purl.org/DP/preservation-case#objectiveScope"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#formatScope">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://purl.org/DP/control-policy#Objective"/>
+    <rdfs:subPropertyOf rdf:resource="http://purl.org/DP/preservation-case#objectiveScope"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#formatTypeScope">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:subPropertyOf rdf:resource="http://purl.org/DP/preservation-case#objectiveScope"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#hasCharacteristic">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://purl.org/DP/preservation-case#Hardware"/>
+    <rdfs:domain rdf:resource="http://purl.org/DP/preservation-case#Software"/>
+    <rdfs:range rdf:resource="http://purl.org/DP/preservation-case#TechnicalCharacteristic"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#hasCharacteristicKey">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://purl.org/DP/preservation-case#TechnicalCharacteristic"/>
+  </rdf:Description>
+  
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#hasCharacteristicValue">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://purl.org/DP/preservation-case#TechnicalCharacteristic"/>
+  </rdf:Description>
+  
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#hasContentSet">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://purl.org/DP/preservation-case#PreservationCase"/>
+    <rdfs:range rdf:resource="http://purl.org/DP/preservation-case#ContentSet"/>
+  </rdf:Description>
+  
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#hasFormat">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://purl.org/DP/preservation-case#ContentSet"/>
+    <rdfs:range rdf:resource="http://reference.data.gov.uk/technical-registry/file-format"/>
+  </rdf:Description>
+  
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#hasHardware">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://purl.org/DP/preservation-case#TechnicalEnvironment"/>
+    <rdfs:range rdf:resource="http://purl.org/DP/preservation-case#Hardware"/>
+  </rdf:Description>
+  
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#hasInstalled">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://purl.org/DP/preservation-case#Hardware"/>
+    <rdfs:range rdf:resource="http://purl.org/DP/preservation-case#Software"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#hasObjectUid">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://premis.loc.gov/ns/Object"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#hasObjective">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://purl.org/DP/preservation-case#PreservationCase"/>
+    <rdfs:range rdf:resource="http://purl.org/DP/control-policy#Objective"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#hasOwner">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://purl.org/DP/preservation-case#TechnicalEnvironment"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#hasSoftware">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://purl.org/DP/preservation-case#TechnicalEnvironment"/>
+    <rdfs:range rdf:resource="http://purl.org/DP/preservation-case#Software"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#hasUid">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://purl.org/DP/preservation-case#ContentSet"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#hasUserCommunity">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://purl.org/DP/preservation-case#PreservationCase"/>
+    <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Group"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#objectiveScope">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://purl.org/DP/control-policy#Objective"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#organizationScope">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://purl.org/DP/control-policy#Objective"/>
+    <rdfs:range rdf:resource="http://www.w3.org/ns/org#Organization"/>
+    <rdfs:subPropertyOf rdf:resource="http://purl.org/DP/preservation-case#objectiveScope"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/preservation-case#partOf">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:comment>Relates the Object to the ContentSet</rdfs:comment>
+    <rdfs:domain rdf:resource="http://premis.loc.gov/ns/Object"/>
+    <rdfs:range rdf:resource="http://purl.org/DP/preservation-case#ContentSet"/>
+  </rdf:Description>
+
+</rdf:RDF>

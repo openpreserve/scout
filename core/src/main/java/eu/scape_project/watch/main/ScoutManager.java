@@ -216,17 +216,12 @@ public class ScoutManager {
     List<QuestionTemplate> templates = DAO.QUESTION_TEMPLATE.list(0, DAO.QUESTION_TEMPLATE.count(""));
     DAO.delete(templates.toArray(new QuestionTemplate[templates.size()]));
 
-    final String title0 = "Validate lossless policy";
-    final String description0 = "If lossless policy is active, validate a collection according to this policy";
-    final String sparql0 = "<http://www.oesta.gv.at/policies/FormatMustHaveLosslessCompression> <http://scape-project.eu/pw/vocab/control-policy#modality> <http://scape-project.eu/pw/vocab/modalities#MUST> . "
-      + "<http://www.oesta.gv.at/policies/FormatMustHaveLosslessCompression> <http://scape-project.eu/pw/vocab/control-policy#value> \"lossless\" . "
-      + "?s watch:entity ?collection . "
-      + "?s watch:property ?compressionSchemeDist . "
-      + "?compressionSchemeDist watch:id \"ci-KDNE_rjmuRKxjIhnqeHpYgnw\"^^xsd:string . "
-      + "?s watch:stringDictionaryValue ?value . "
-      + "?value ?l ?dictionaryItem . "
-      + "?dictionaryItem watch:key ?compressionType . "
-      + "FILTER regex(?compressionType, \"^(Unknown|Conflicted|JPEG)\")";
+    final String title0 = "Check compression scheme policy conformance";
+    final String description0 = "Check if selected collection contains files which compression scheme is not compliant with the policies (lossless and none compression type policy supported). ";
+    final String sparql0 = "?s watch:entity ?collection ; watch:property ?compressionSchemeDist ; watch:stringDictionaryValue ?value . "
+      + "?compressionSchemeDist watch:id \"ci-KDNE_rjmuRKxjIhnqeHpYgnw\"^^xsd:string . ?value ?l ?dictionaryItem . "
+      + "{?dictionaryItem watch:key ?compressionType1 . ?policy1 a cp:FormatObjective ; cp:measure measure:117 ; cp:value \"none\"^^xsd:string . FILTER regex(?compressionType1, \"^(Unknown|Uncompressed)\") } UNION {?dictionaryItem watch:key ?compressionType2 .  ?policy2 a cp:FormatObjective ; cp:measure measure:117 ; cp:value \"lossless\"^^xsd:string . FILTER regex(?compressionType2, \"^(Conflicted|JPEG)\") }";
+
     final RequestTarget target0 = RequestTarget.PROPERTY_VALUE;
     final List<QuestionTemplateParameter> parameters0 = new ArrayList<QuestionTemplateParameter>();
     parameters0.add(new QuestionTemplateParameter("collection", "Collection",

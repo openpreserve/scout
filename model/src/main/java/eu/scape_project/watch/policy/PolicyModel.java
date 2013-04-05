@@ -28,7 +28,7 @@ import eu.scape_project.watch.domain.Objective;
 
 public class PolicyModel {
 
-  private static final String BASE_URI = "http://scape-project.eu/pw/vocab/";
+  private static final String BASE_URI = "http://purl.org/DP/";
 
   private static final String HOME_PATH = System.getProperty("user.home");
 
@@ -134,21 +134,25 @@ public class PolicyModel {
     if (!loaded) {
       LOG.debug("Loading policy model from classpath");
 
-      final String policyModelFile = "/model/policy_model.rdf";
-      final String controlPolicyFile = "/model/control-policy.rdf";
-      final String modalitiesFile = "/model/modalities.rdf";
-      final String qualifiersFile = "/model/qualifiers.rdf";
-      final String scalesFile = "/model/scales.rdf";
-      final String scopesFile = "/model/scopes.rdf";
-      final String attributesFile = "/model/attributes_measures.rdf";
-
-      this.readModel(getClass().getResourceAsStream(policyModelFile));
-      this.readModel(getClass().getResourceAsStream(controlPolicyFile));
-      this.readModel(getClass().getResourceAsStream(modalitiesFile));
-      this.readModel(getClass().getResourceAsStream(qualifiersFile));
-      this.readModel(getClass().getResourceAsStream(scalesFile));
-      this.readModel(getClass().getResourceAsStream(scopesFile));
-      this.readModel(getClass().getResourceAsStream(attributesFile));
+      final String policyModelBase = "/model/";
+      final List<String> policyModelFiles = new ArrayList<String>(); 
+      
+      policyModelFiles.add("control-policy.rdf");
+      policyModelFiles.add("control-policy_modalities.rdf");
+      policyModelFiles.add("control-policy_qualifiers.rdf");
+      
+      policyModelFiles.add("quality.rdf");
+      policyModelFiles.add("quality_attributes.rdf");
+      policyModelFiles.add("quality_categories.rdf");
+      policyModelFiles.add("quality_measures.rdf");
+      policyModelFiles.add("quality_scales.rdf");
+      policyModelFiles.add("quality_scopes.rdf");
+      
+      policyModelFiles.add("preservation-case.rdf");
+      
+      for(String policyModelFile : policyModelFiles) {
+        this.readModel(getClass().getResourceAsStream(policyModelBase + policyModelFile));
+      }
 
       loaded = true;
 
@@ -231,7 +235,7 @@ public class PolicyModel {
   }
 
   private boolean isModelLoaded() {
-    final String query = getQuery("/queries/query_all.txt") + " LIMIT 10";
+    final String query = getQuery("/queries/query_all_objectives.txt") + " LIMIT 10";
     final QueryExecution qe = QueryExecutionFactory.create(query, this.getModel());
     final ResultSet set = qe.execSelect();
 

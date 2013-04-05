@@ -1,0 +1,383 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://purl.org/DP/quality#"
+  xml:base="http://purl.org/DP/quality/"
+  xmlns:scales="http://purl.org/DP/quality/scales#"
+  xmlns:scopes="http://purl.org/DP/quality/scopes#"
+  xmlns:dct="http://purl.org/dc/terms/"
+  xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+  xmlns:owl="http://www.w3.org/2002/07/owl#"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema#">  
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#format_sustainability">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Format sustainability</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#functional_correctness_transformation_independent_property">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Functional correctness: Transformation Independent Property</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#OBJECT" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#action_licensing">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Action licensing</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#confidentiality">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Confidentiality</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#accountability">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Accountability</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#modularity">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Modularity</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#reusability">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Reusability</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#functional_correctness_representation_instance_property">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Functional correctness: Representation Instance Property</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#OBJECT" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#functional_completeness">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Functional completeness</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#functional_correctness">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Category"/>
+  <skos:prefLabel>Functional correctness</skos:prefLabel>
+  
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#functional_correctness_information_property" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#functional_correctness_transformation_independent_property" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#functional_appropriateness" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#functional_correctness_representation_instance_property" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#outcome_effect">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Outcome effect</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#fault_tolerance">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Fault tolerance</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#time_behaviour">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Time behaviour</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#testability">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Testability</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#non-repudiation">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Non-repudiation</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#replaceability">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Replaceability</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#user_interface_aesthetics">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>User interface aesthetics</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#resource_utilization">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Resource utilization</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#format_quality_and_functionality">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Format quality and functionality</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#security">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Category"/>
+  <skos:prefLabel>Security</skos:prefLabel>
+  
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#confidentiality" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#non-repudiation" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#integrity" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#authenticity_of_the_action" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#accountability" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#format_business_factors">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Format business factors</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#analysability">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Analysability</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#operability">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Operability</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#recoverability">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Recoverability</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#functional_appropriateness">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Functional appropriateness</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#action_maintenance">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Action maintenance</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#format_of_the_content">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Category"/>
+  <skos:prefLabel>Format of the content</skos:prefLabel>
+  
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#format_sustainability" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#format_business_factors" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#format_quality_and_functionality" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#functional_suitability">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Category"/>
+  <skos:prefLabel>Functional suitability</skos:prefLabel>
+  
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#functional_completeness" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#appropriateness_recognizability">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Appropriateness recognizability</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#integrity">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Integrity</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#compatability">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Category"/>
+  <skos:prefLabel>Compatability</skos:prefLabel>
+  
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#co-existence" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#interoperability" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#learnability">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Learnability</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#portability">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Category"/>
+  <skos:prefLabel>Portability</skos:prefLabel>
+  
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#adaptability" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#replaceability" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#installability" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#accessibility">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Accessibility</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#maintainability">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Category"/>
+  <skos:prefLabel>Maintainability</skos:prefLabel>
+  
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#modularity" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#testability" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#modifiability" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#analysability" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#reusability" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#action">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Category"/>
+  <skos:prefLabel>Action</skos:prefLabel>
+  
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#action_quality" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#availability">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Availability</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#maturity">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Maturity</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#action_costs">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Action costs</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#installability">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Installability</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#functional_correctness_information_property">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Functional correctness: Information Property</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#OBJECT" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#reliability">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Category"/>
+  <skos:prefLabel>Reliability</skos:prefLabel>
+  
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#availability" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#fault_tolerance" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#maturity" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#recoverability" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#action_quality">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Category"/>
+  <skos:prefLabel>Action quality</skos:prefLabel>
+  
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#maintainability" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#functional_suitability" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#performance_efficiency" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#functional_correctness" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#action_licensing" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#security" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#reliability" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#compatability" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#portability" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#action_maintenance" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#action_costs" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#usability" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#interoperability">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Interoperability</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#outcome">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Category"/>
+  <skos:prefLabel>Outcome</skos:prefLabel>
+  
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#format_of_the_content" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#outcome_effect" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#usability">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Category"/>
+  <skos:prefLabel>Usability</skos:prefLabel>
+  
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#accessibility" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#appropriateness_recognizability" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#learnability" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#user_error_protection" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#user_interface_aesthetics" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#operability" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#co-existence">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Co-existence</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#adaptability">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Adaptability</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#user_error_protection">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>User error protection</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#performance_efficiency">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Category"/>
+  <skos:prefLabel>Performance efficiency</skos:prefLabel>
+  
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#resource_utilization" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#time_behaviour" />
+  <subcategory rdf:resource="http://purl.org/DP/quality/categories#capacity" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#authenticity_of_the_action">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Authenticity of the action</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#capacity">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Capacity</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/categories#modifiability">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#CriterionCategory"/>
+  <skos:prefLabel>Modifiability</skos:prefLabel>
+  <scope rdf:resource="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION" />
+</rdf:Description>
+
+
+</rdf:RDF>     <!-- Generated with csvmod2rdf 0.3.1  -->

@@ -225,7 +225,7 @@ public final class KBUtils {
    * A question template parameter constant.
    */
   public static final String QUESTION_TEMPLATE_PARAMETER = "questiontemplateparameter";
-  
+
   /**
    * A question template parameter constant.
    */
@@ -246,6 +246,24 @@ public final class KBUtils {
    */
   public static final String RDF_PREFIX_DECL = createPrefixDecl(RDF_PREFIX, RDF_NS);
 
+  public static final String RDFS_PREFIX_DECL = createPrefixDecl("rdfs:", "http://www.w3.org/2000/01/rdf-schema#");
+
+  public static final String OWL_PREFIX_DECL = createPrefixDecl("owl:", "http://www.w3.org/2002/07/owl#");
+
+  public static final String SKOS_PREFIX_DECL = createPrefixDecl("skos:", "http://www.w3.org/2004/02/skos/core#");
+
+  public static final String DCT_PREFIX_DECL = createPrefixDecl("dct:", "http://purl.org/dc/terms/");
+
+  public static final String DP_PREFIX_DECL = createPrefixDecl("dp:", "http://purl.org/DP/");
+
+  public static final String CP_PREFIX_DECL = createPrefixDecl("cp:", "http://purl.org/DP/control-policy#");
+
+  public static final String QA_PREFIX_DECL = createPrefixDecl("qa:", "http://purl.org/DP/quality#");
+  
+  public static final String DP_MEASURE_PREFIX_DECL = createPrefixDecl("measure:", "http://purl.org/DP/quality/measures#");
+  
+  
+
   /**
    * The declaration of the WATCH prefix to use in SPARQL queries.
    */
@@ -254,7 +272,8 @@ public final class KBUtils {
   /**
    * List of all defined prefixes declarations to help creating SPARQL queries.
    */
-  public static final String PREFIXES_DECL = XSD_PREFIX_DECL + RDF_PREFIX_DECL + WATCH_PREFIX_DECL;
+  public static final String PREFIXES_DECL = XSD_PREFIX_DECL + RDF_PREFIX_DECL + RDFS_PREFIX_DECL + OWL_PREFIX_DECL
+    + SKOS_PREFIX_DECL + DCT_PREFIX_DECL + DP_PREFIX_DECL + CP_PREFIX_DECL + QA_PREFIX_DECL + DP_MEASURE_PREFIX_DECL + WATCH_PREFIX_DECL;
 
   /**
    * Debugging method that prints all statements in triple store to standard
@@ -340,6 +359,13 @@ public final class KBUtils {
       // register namespace prefixes
       model.setNsPrefix("xsd", XSD_NS);
       model.setNsPrefix("rdf", RDF_NS);
+      model.setNsPrefix("rdfs", "http://www.w3.org/2000/01/rdf-schema#");
+      model.setNsPrefix("owl", "http://www.w3.org/2002/07/owl#");
+      model.setNsPrefix("skos", "http://www.w3.org/2004/02/skos/core#");
+      model.setNsPrefix("dct", "http://purl.org/dc/terms/");
+      model.setNsPrefix("dp", "http://purl.org/DP/");
+      model.setNsPrefix("cp", "http://purl.org/DP/control-policy#");
+      model.setNsPrefix("qa", "http://purl.org/DP/quality#");
       model.setNsPrefix("watch", WATCH_NS);
 
       LOG.info("Model was created at {} and is bound to Jenabean", datafolder);

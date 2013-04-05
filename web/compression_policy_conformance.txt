@@ -1,0 +1,21 @@
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX dp: <http://purl.org/DP/>
+PREFIX cp: <http://purl.org/DP/control-policy#>
+PREFIX qa: <http://purl.org/DP/quality#>
+PREFIX measure: <http://purl.org/DP/quality/measures#>
+PREFIX watch: <http://watch.scape-project.eu/kb#>
+
+SELECT DISTINCT ?s WHERE {
+?s watch:entity ?collection ; watch:property ?compressionSchemeDist ; watch:stringDictionaryValue ?value . 
+?compressionSchemeDist watch:id "ci-KDNE_rjmuRKxjIhnqeHpYgnw"^^xsd:string . 
+?value ?l ?dictionaryItem . 
+{?dictionaryItem watch:key ?compressionType1 . ?policy1 a cp:FormatObjective ; cp:measure measure:117 ; cp:value "none"^^xsd:string . FILTER regex(?compressionType1, "^(Unknown|Uncompressed)") } UNION {?dictionaryItem watch:key ?compressionType2 .  ?policy2 a cp:FormatObjective ; cp:measure measure:117 ; cp:value "lossless"^^xsd:string . FILTER regex(?compressionType2, "^(Conflicted|JPEG)") }
+}
+
+
+

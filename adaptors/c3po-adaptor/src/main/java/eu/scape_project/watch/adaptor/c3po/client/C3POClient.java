@@ -52,18 +52,20 @@ public class C3POClient implements C3POClientInterface {
   /**
    * A longer timeout interval for the requests. Amounts to 10 minutes.
    */
-  private static final int LONG_TIMEOUT_INTERVAL = 1000 * 60 * 10;
+  protected static final int LONG_TIMEOUT_INTERVAL = 1000 * 60 * 10;
 
   /**
    * The endpoint of the c3po service.
    */
-  private String apiEndpoint;
+  protected String apiEndpoint;
 
   /**
    * The port of the service.
    */
-  private int port;
+  protected int port;
 
+  
+  public C3POClient() {} 
   /**
    * Creates a client and sets the endpoint.
    * 
@@ -207,7 +209,7 @@ public class C3POClient implements C3POClientInterface {
    * @throws IOException
    *           if an error occurs.
    */
-  private String submitRequest(final String request) throws IOException {
+  protected String submitRequest(final String request) throws IOException {
     return this.submitRequest(request, SHORT_TIMEOUT_INTERVAL);
   }
 
@@ -220,7 +222,7 @@ public class C3POClient implements C3POClientInterface {
    * @throws IOException
    *           if an error occurs.
    */
-  private String submitRequest(final String request, final int readTimeOut) throws IOException {
+  protected String submitRequest(final String request, final int readTimeOut) throws IOException {
     LOG.debug("Submitting request to c3po: {}", request);
 
     final URL location = new URL(this.apiEndpoint + request);
@@ -242,7 +244,7 @@ public class C3POClient implements C3POClientInterface {
    *          the connection through which the query was made.
    * @return the response as a String.
    */
-  private String readResponse(final URLConnection connection) {
+  protected String readResponse(final URLConnection connection) {
     final StringBuffer response = new StringBuffer("");
     BufferedReader in = null;
     String result = "";

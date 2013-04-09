@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import eu.scape_project.watch.adaptor.c3po.client.C3POClient;
 import eu.scape_project.watch.adaptor.c3po.client.C3POClientInterface;
 import eu.scape_project.watch.adaptor.c3po.client.C3PODummyClient;
+import eu.scape_project.watch.adaptor.c3po.client.C3POFileClient;
 import eu.scape_project.watch.adaptor.c3po.command.CollectionSizeCommand;
 import eu.scape_project.watch.adaptor.c3po.command.Command;
 import eu.scape_project.watch.adaptor.c3po.command.DistributionCommand;
@@ -61,7 +62,7 @@ public class C3POAdaptor implements AdaptorPluginInterface {
   /**
    * The current version of the adaptor.
    */
-  private static final String VERSION = "0.0.5";
+  private static final String VERSION = "0.0.6";
 
   /**
    * The current config of c3po.
@@ -292,6 +293,7 @@ public class C3POAdaptor implements AdaptorPluginInterface {
 
     this.defaultConfig = new ArrayList<ConfigParameter>();
     this.defaultConfig.add(new ConfigParameter(ENDPOINT_CNF, ENDPOINT_DEFAULT, ENDPOINT_DESC, true));
+    this.defaultConfig.add(new ConfigParameter("time", "10", "how often should it run", true));
 
     for (final ConfigParameter cp : this.defaultConfig) {
       this.config.put(cp.getKey(), cp.getValue());
@@ -330,8 +332,10 @@ public class C3POAdaptor implements AdaptorPluginInterface {
 
     if (endpoint.equals(ENDPOINT_DEFAULT)) {
       this.source = new C3PODummyClient();
-    } else {
+    } else if (endpoint.endsWith("/c3po")) {
       this.source = new C3POClient(endpoint);
+    }else {
+      this.source = new C3POFileClient(endpoint);
     }
 
     if (this.source == null) {

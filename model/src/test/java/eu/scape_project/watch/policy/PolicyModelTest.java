@@ -52,7 +52,7 @@ public class PolicyModelTest {
     boolean loaded = policyModel.loadPolicies("src/test/resources/policies/giberrish.txt");
     Assert.assertFalse(loaded);
     
-    loaded = policyModel.loadPolicies("src/test/resources/policies/test_policies.rdf");
+    loaded = policyModel.loadPolicies("src/test/resources/policies/bl_policies.rdf");
     Assert.assertTrue(loaded);
     
   }
@@ -60,7 +60,7 @@ public class PolicyModelTest {
   @Test
   public void shouldGetAllObjectives() throws Exception {
     PolicyModel policyModel = new PolicyModel();
-    boolean loaded = policyModel.loadPolicies("src/test/resources/policies/test_policies.rdf");
+    boolean loaded = policyModel.loadPolicies("src/test/resources/policies/bl_policies.rdf");
     
     Assert.assertTrue(loaded);
     

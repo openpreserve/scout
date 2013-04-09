@@ -314,5 +314,6 @@ public class TemplateService extends HttpServlet implements Filter {
   }
 
   public void destroy() {
+    
   }
 }

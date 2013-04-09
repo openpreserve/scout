@@ -95,8 +95,8 @@ public class QuartzScheduler implements SchedulerInterface {
     try {
       // Waiting for jobs to finish
       LOG.info("QuartzScheduler shutting down, waiting for all tasks to end...");
-      // scheduler.shutdown(true);
-      scheduler.shutdown(false);
+      scheduler.shutdown(true);
+      // scheduler.shutdown(false);
       LOG.info("QuartzScheduler shutdown");
     } catch (SchedulerException e) {
       LOG.error("Failed to shut down QuartzScheduler, an exception occured " + e.getStackTrace());

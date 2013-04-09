@@ -38,6 +38,10 @@ public class ValueHelper implements Helper<PropertyValue> {
   @Override
   public CharSequence apply(final PropertyValue pv, final Options options) throws IOException {
 
+    if(pv == null) {
+      return "NULL";
+    }
+    
     final Object value = pv.getValue();
     final DataType datatype = pv.getProperty().getDatatype();
     final RenderingHint renderingHint = pv.getProperty().getRenderingHint();

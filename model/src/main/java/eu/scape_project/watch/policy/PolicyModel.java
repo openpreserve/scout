@@ -22,6 +22,7 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.shared.Lock;
 import com.hp.hpl.jena.update.UpdateAction;
 
 import eu.scape_project.watch.domain.Objective;
@@ -76,7 +77,10 @@ public class PolicyModel {
   public List<Objective> listAllObjectives() {
     final List<Objective> result = new ArrayList<Objective>();
     final String query = this.getQuery("/queries/query_all_objectives.txt");
-    final QueryExecution qe = QueryExecutionFactory.create(query, this.getModel()); // getBaseModel?
+    
+    final Model model = this.getModel();
+    model.enterCriticalSection(Lock.READ);
+    final QueryExecution qe = QueryExecutionFactory.create(query, model);
     final ResultSet set = qe.execSelect();
 
     while (set.hasNext()) {
@@ -118,14 +122,17 @@ public class PolicyModel {
 
       result.add(tmp);
     }
+    model.leaveCriticalSection();
 
     return result;
   }
 
   public void deleteAllObjectives() {
     final String query = this.getQuery("/queries/delete_all_objectives.txt");
-
+    final Model model = this.getModel();
+    model.enterCriticalSection(Lock.WRITE);
     UpdateAction.parseExecute(query, this.getModel());
+    model.leaveCriticalSection();
   }
 
   private boolean loadFromClasspath() {
@@ -226,7 +233,9 @@ public class PolicyModel {
 
   private void readModel(InputStream file) {
     Model model = getModel();
+    model.enterCriticalSection(Lock.WRITE);
     model.read(file, BASE_URI, "RDF/XML");
+    model.leaveCriticalSection();
   }
 
   private Model getModel() {
@@ -236,10 +245,14 @@ public class PolicyModel {
 
   private boolean isModelLoaded() {
     final String query = getQuery("/queries/query_all_objectives.txt") + " LIMIT 10";
-    final QueryExecution qe = QueryExecutionFactory.create(query, this.getModel());
+    final Model model = this.getModel();
+    model.enterCriticalSection(Lock.READ);
+    final QueryExecution qe = QueryExecutionFactory.create(query, model);
     final ResultSet set = qe.execSelect();
-
-    return set.hasNext();
+    boolean ret = set.hasNext();
+    model.leaveCriticalSection();
+    
+    return ret;
   }
 
   private File getModelDir() {

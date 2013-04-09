@@ -43,50 +43,46 @@ Scout is released under [Apache version 2.0 license](LICENSE.txt).
 ### Requirements
  - *nix operative system (tested in Ubuntu LTS 12.04)
  - Maven 3
- - JBoss AS 7.1.1 Final
+ - Apache Tomcat 7.x
  - Optional[^1]: Mail Transport Agent (e.g. Postfix) 
 
 ### Instructions
 
- 1. Download and install JBoss AS
+ 1. Download and install [Apache Tomcat 7.x](http://tomcat.apache.org/download-70.cgi)
  2. Optional[^1]: Install a mail transport agent (e.g. `$ sudo apt-get install postfix`)
- 3. Configure JBoss AS to deactivate Resteasy by removing the following lines from `JBOSS/standalone/configuration/standalone.xml`
-<pre>
-    \<extension module="org.jboss.as.jaxrs"/>
-    \<subsystem xmlns="urn:jboss:domain:jaxrs:1.0"/>
-</pre>
- 4. Download and uncompress the [last stable version of Scout sources](https://github.com/openplanets/scout/tags)
- 5. Go to the Scout sources folder and compile with:
+ 3. Download and uncompress the [last stable version of Scout sources](https://github.com/openplanets/scout/tags)
+ 4. Go to the Scout sources folder and compile with:
  
  ```
  $ cd [SOURCES]
- $ mvn clean install -Dmaven.test.skip=true
+ $ mvn clean install
  ```
  
- 6. Install Scout Web Application into JBoss AS
+ 5. Install Scout Web Application into Apache Tomcat
 ```
-$ cp [SOURCES]/web/target/scout-web-0.1.0.war [JBOSS]/standalone/deployments/
+$ rm -rf [TOMCAT]/webapps/ROOT
+$ cp [SOURCES]/web/target/scout-web-0.1.0.war [TOMCAT]/webapps/ROOT.war
 ```
- 7. Create the following directories with write permissions by the user running the JBoss AS server
+ 6. Create the following directories with write permissions by the user running the Apache Tomcat server
  ```
  $ sudo mkdir /usr/local/scout
- $ sudo chown [JBOSS_USER] /usr/local/scout
- $ sudo su [JBOSS_USER]
+ $ sudo chown [TOMCAT_USER] /usr/local/scout
+ $ sudo su [TOMCAT_USER]
  $ mkdir /usr/local/scout/data
  $ mkdir /usr/local/scout/plugins
  $ mkdir /usr/local/scout/plugins/adaptors
  $ mkdir /usr/local/scout/plugins/notifications
  $ mkdir ~/.scout 
  ```
- 8. Copy available adaptor plugins
+ 7. Copy available adaptor plugins
 ```
  $ find [SOURCES]/adaptors/ -name *-jar-with-dependencies.jar -exec cp -v {} /usr/local/scout/plugins/adaptors/ \;
 ```
- 9. Copy available notification plugins
+ 8. Copy available notification plugins
 ```
  $ find [SOURCES]/notifications/ -name *-jar-with-dependencies.jar -exec cp -v {} /usr/local/scout/plugins/notifications/ \;
 ```
- 10. Start JBoss AS server
+ 9. Start Apache Tomcat server
 
 [^1]: An external SMTP server can optionally be configured.
 

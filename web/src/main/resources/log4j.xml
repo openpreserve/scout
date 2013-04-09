@@ -10,17 +10,17 @@
 	</appender>
 
   <logger name="eu.scape_project.watch.adaptor.c3po" additivity="false">
-    <level value="DEBUG" />
+    <level value="INFO" />
     <appender-ref ref="CONSOLE" />
   </logger>
   
   <logger name="eu.scape_project.watch.adaptor.pronom" additivity="false">
-    <level value="DEBUG" />
+    <level value="INFO" />
     <appender-ref ref="CONSOLE" />
   </logger>
 
   <logger name="eu.scape_project.watch" additivity="false">
-    <level value="DEBUG" />
+    <level value="INFO" />
     <appender-ref ref="CONSOLE" />
   </logger>
   

@@ -34,7 +34,7 @@ content are available.
 
 ## License
 
-Scout is released under [Apache version 2.0 license](LICENSE-2.0.txt).
+Scout is released under [Apache version 2.0 license](LICENSE.txt).
 
 *****
 

@@ -41,6 +41,14 @@ public class ConfigParameter {
    * The data type of this parameter. DataType.STRING by default
    */
   private DataType dataType;
+  
+
+  /**
+   * No-arg constructor for serialization.
+   */
+  public ConfigParameter() {
+    super();
+  }
 
   /**
    * Inits a config parameter.

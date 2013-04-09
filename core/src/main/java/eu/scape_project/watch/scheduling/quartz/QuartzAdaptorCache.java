@@ -3,7 +3,6 @@ package eu.scape_project.watch.scheduling.quartz;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.openjena.atlas.logging.Log;
 import org.quartz.JobKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

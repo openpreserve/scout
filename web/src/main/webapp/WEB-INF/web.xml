@@ -8,8 +8,8 @@
 		<servlet-name>jersey</servlet-name>
 		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
 		<init-param>
-			<param-name>javax.ws.rs.Application</param-name>
-			<param-value>eu.scape_project.watch.rest.WatchApplication</param-value>
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>eu.scape_project.watch.rest.resource</param-value>
 		</init-param>
 		<init-param>
 			<param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>

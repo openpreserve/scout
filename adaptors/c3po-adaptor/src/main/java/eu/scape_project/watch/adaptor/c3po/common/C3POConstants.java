@@ -23,11 +23,18 @@ public final class C3POConstants {
   public static final String ENDPOINT_DEFAULT = "dummy";
 
   /**
+   * How often will it be scheduled 
+   */
+  public static final String SCHEDULING_TIME = "scheduling";
+  
+  /**
    * A human readable description of the {@link C3POConstants#ENDPOINT_CNF}
    * configuration parameter.
    */
   public static final String ENDPOINT_DESC = "The url endpoint for the c3po profiler source";
 
+  public static final String SCHEDULING_TIME_DESC = "Time in minutes to denote how often is adaptor executed, to execute only once enter 0";
+  
   // ############ supported properties #################
   /**
    * The collection name identifier property.
@@ -110,6 +117,7 @@ public final class C3POConstants {
   /**
    * Utility classes have only hidden constructors.
    */
+  
   private C3POConstants() {
 
   }

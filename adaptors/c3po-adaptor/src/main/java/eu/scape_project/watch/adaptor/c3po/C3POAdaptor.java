@@ -11,6 +11,8 @@ import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.CP_OBJECT
 import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_CNF;
 import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_DEFAULT;
 import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_DESC;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.SCHEDULING_TIME;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.SCHEDULING_TIME_DESC;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -62,7 +64,7 @@ public class C3POAdaptor implements AdaptorPluginInterface {
   /**
    * The current version of the adaptor.
    */
-  private static final String VERSION = "0.0.6";
+  private static final String VERSION = "0.0.7";
 
   /**
    * The current config of c3po.
@@ -293,7 +295,7 @@ public class C3POAdaptor implements AdaptorPluginInterface {
 
     this.defaultConfig = new ArrayList<ConfigParameter>();
     this.defaultConfig.add(new ConfigParameter(ENDPOINT_CNF, ENDPOINT_DEFAULT, ENDPOINT_DESC, true));
-    this.defaultConfig.add(new ConfigParameter("time", "10", "how often should it run", true));
+    this.defaultConfig.add(new ConfigParameter(SCHEDULING_TIME, "60", SCHEDULING_TIME_DESC, true));
 
     for (final ConfigParameter cp : this.defaultConfig) {
       this.config.put(cp.getKey(), cp.getValue());

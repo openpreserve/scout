@@ -41,11 +41,12 @@ public class QuartzScheduler implements SchedulerInterface {
   private static final Logger LOG = LoggerFactory.getLogger(QuartzScheduler.class);
 
   /**
-   * The period of monitoring in seconds.
+   * Default period of monitoring in minutes. This value is used if adaptor doesn't 
+   * specify its own value.
    * 
    * TODO this should be defined in external configuration or per adaptor.
    */
-  private static final int SCHEDULE_INTERVAL_IN_SECONDS = 3600; // 1 hour
+  private static final int SCHEDULE_INTERVAL_IN_MINUTES = 1; // 1 minute
 
   /**
    * Quartz Scheduler interface
@@ -121,13 +122,23 @@ public class QuartzScheduler implements SchedulerInterface {
         JobDetail jobDetail = JobBuilder.newJob(QuartzAdaptorJob.class).withIdentity(id, "adaptors")
           .usingJobData("adaptorId", id).build();
 
+        //get scheduling time from adaptor if possible
+        String adaptorSchedulePeriod = adaptor.getParameterValues().get("scheduling");
+        int iTime = Integer.parseInt(adaptorSchedulePeriod);
+        TriggerBuilder triggerBuilder = TriggerBuilder
+                .newTrigger()
+                .startNow(); 
+        
+        if (adaptorSchedulePeriod==null) {
+        	triggerBuilder = triggerBuilder.withSchedule(
+                    SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(SCHEDULE_INTERVAL_IN_MINUTES).repeatForever());
+        }else if (iTime>0){
+        	triggerBuilder = triggerBuilder.withSchedule(
+                    SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(iTime).repeatForever());
+        }
+       
         // create trigger
-        Trigger trigger = TriggerBuilder
-          .newTrigger()
-          .startNow()
-          .withSchedule(
-            SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(SCHEDULE_INTERVAL_IN_SECONDS).repeatForever())
-          .build();
+        Trigger trigger = triggerBuilder.build();
 
         // schedule it
         try {

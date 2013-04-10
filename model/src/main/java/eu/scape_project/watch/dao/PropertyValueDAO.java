@@ -113,9 +113,9 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
     query.append("?s watch:property " + PropertyDAO.getPropertyRDFId(propertyId));
     query.append(" . ");
     query.append("?measurement watch:propertyValue ?s");
+    query.append(" . ");
+    query.append("?measurement watch:timestamp ?timestamp");
     if (asOfDate != null) {
-      query.append(" . ");
-      query.append("?measurement watch:timestamp ?timestamp");
       query.append(" . ");
       final Calendar asOfCalendar = Calendar.getInstance();
       asOfCalendar.setTime(asOfDate);

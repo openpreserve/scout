@@ -216,8 +216,8 @@ public class ScoutManager {
     List<QuestionTemplate> templates = DAO.QUESTION_TEMPLATE.list(0, DAO.QUESTION_TEMPLATE.count(""));
     DAO.delete(templates.toArray(new QuestionTemplate[templates.size()]));
 
-    final String title0 = "Check compression scheme policy conformance";
-    final String description0 = "Check if selected collection contains files which compression scheme is not compliant with the policies (lossless and none compression type policy supported). ";
+    final String title0 = "Check collection policy conformance";
+    final String description0 = "Check if selected collection conforms to the defined policy (only compression scheme policy is checked right now)";
     final String sparql0 = "?s watch:entity ?collection ; watch:property ?compressionSchemeDist ; watch:stringDictionaryValue ?value . "
       + "?compressionSchemeDist watch:id \"ci-KDNE_rjmuRKxjIhnqeHpYgnw\"^^xsd:string . ?value ?l ?dictionaryItem . "
       + "{?dictionaryItem watch:key ?compressionType1 . ?policy1 a cp:FormatObjective ; cp:measure measure:117 ; cp:value \"none\"^^xsd:string . FILTER regex(?compressionType1, \"^(Unknown|Uncompressed)\") } UNION {?dictionaryItem watch:key ?compressionType2 .  ?policy2 a cp:FormatObjective ; cp:measure measure:117 ; cp:value \"lossless\"^^xsd:string . FILTER regex(?compressionType2, \"^(Conflicted|JPEG)\") }";

@@ -46,7 +46,7 @@ public class QuartzScheduler implements SchedulerInterface {
    * 
    * TODO this should be defined in external configuration or per adaptor.
    */
-  private static final int SCHEDULE_INTERVAL_IN_MINUTES = 1; // 1 minute
+  private static final int SCHEDULE_INTERVAL_IN_MINUTES = 60; // 1 hour
 
   /**
    * Quartz Scheduler interface
@@ -124,11 +124,13 @@ public class QuartzScheduler implements SchedulerInterface {
 
         //get scheduling time from adaptor if possible
         String adaptorSchedulePeriod = adaptor.getParameterValues().get("scheduling");
-        int iTime = Integer.parseInt(adaptorSchedulePeriod);
+        int iTime = 0; 
         TriggerBuilder triggerBuilder = TriggerBuilder
                 .newTrigger()
                 .startNow(); 
-        
+        if (adaptorSchedulePeriod != null) {
+          iTime = Integer.parseInt(adaptorSchedulePeriod);
+        }
         if (adaptorSchedulePeriod==null) {
         	triggerBuilder = triggerBuilder.withSchedule(
                     SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(SCHEDULE_INTERVAL_IN_MINUTES).repeatForever());

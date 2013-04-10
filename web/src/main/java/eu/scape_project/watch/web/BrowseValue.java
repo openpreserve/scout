@@ -24,7 +24,12 @@ public class BrowseValue extends TemplateContext {
   }
 
   public int getVersionMeasurementCount() {
-    return DAO.MEASUREMENT.countByPropertyValue(getPropertyValue());
+    PropertyValue propertyValue = getPropertyValue();
+    int ret = 0;
+    if(propertyValue != null) {
+      ret = DAO.MEASUREMENT.countByPropertyValue(getPropertyValue());
+    }
+    return ret;
   }
 
   public int getVersionSourceCount() {

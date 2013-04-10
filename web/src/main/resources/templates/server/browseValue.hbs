@@ -1,6 +1,7 @@
 {{#partial "title"}}Scout - Browse - Value{{/partial}} {{#partial
 "NavBrowseClass"}}active{{/partial}} {{#partial "content"}}
 <div class="container">
+	{{#if propertyValue}}
 	{{#propertyValue}}
 	<ul class="breadcrumb">
 		<li><a href="{{mustacheletPath}}/browse">Categories</a> <span
@@ -53,6 +54,12 @@
 		version {{version}}.
 	</div>
 	{{/propertyValue}}
+	{{/if}}
+	{{#unless propertyValue}}
+	<div class="alert alert-error">
+		<b>Not found!</b> Could not find value {{id}}.
+	</div>
+	{{/unless}}
 </div>
 {{/partial}} {{#partial "scripts"}}
 <script src="{{contextPath}}/jquery-textfill/jquery-textfill.js"

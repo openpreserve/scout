@@ -31,7 +31,9 @@ public class BrowseEntity extends TemplateContext {
 
     for (final Property property : properties) {
       final PropertyValue pv = DAO.PROPERTY_VALUE.find(entity.getId(), property.getId());
-      ret.add(pv);
+      if (pv != null) {
+        ret.add(pv);
+      }
     }
 
     // return DAO.PROPERTY_VALUE.listWithEntity(getEntity(), 0, 100);

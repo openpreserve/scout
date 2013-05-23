@@ -99,7 +99,7 @@ content are available.</p>
 </li>
 </ul><h2>License</h2>
 
-<p>Scout is released under <a href="LICENSE-2.0.txt">Apache version 2.0 license</a>.</p>
+<p>Scout is released under <a href="LICENSE.txt">Apache version 2.0 license</a>.</p>
 
 <hr><h2>Install</h2>
 
@@ -108,40 +108,41 @@ content are available.</p>
 <ul>
 <li>*nix operative system (tested in Ubuntu LTS 12.04)</li>
 <li>Maven 3</li>
-<li>JBoss AS 7.1.1 Final</li>
+<li>Apache Tomcat 7.x</li>
 <li>Optional[^1]: Mail Transport Agent (e.g. Postfix) </li>
 </ul><h3>Instructions</h3>
 
 <ol>
-<li>Download and install JBoss AS</li>
-<li>Optional[^1]: Install a mail transport agent (e.g. <code>$ sudo apt-get install postfix</code>)</li>
-<li>Configure JBoss AS to deactivate Resteasy by removing the following lines from <code>JBOSS/standalone/configuration/standalone.xml</code>
-<pre>
-&lt;extension module="org.jboss.as.jaxrs"/&gt;
-&lt;subsystem xmlns="urn:jboss:domain:jaxrs:1.0"/&gt;
-</pre>
+<li>Download and install <a href="http://tomcat.apache.org/download-70.cgi">Apache Tomcat 7.x</a>
 </li>
+<li>Configure Apache Tomcat to use more memory. Edit <code>bin/catalina.sh</code> and add the following line in the beggining of the file, after the comments:
+<code>
+JAVA_OPTS="-Xmx512m -Xms128m $JAVA_OPTS"
+</code>
+</li>
+<li>Optional[^1]: Install a mail transport agent (e.g. <code>$ sudo apt-get install postfix</code>)</li>
 <li>Download and uncompress the <a href="https://github.com/openplanets/scout/tags">last stable version of Scout sources</a>
 </li>
 <li>
 <p>Go to the Scout sources folder and compile with:</p>
 
 <pre><code>$ cd [SOURCES]
-$ mvn clean install -Dmaven.test.skip=true
+$ mvn clean install
 </code></pre>
 </li>
 <li>
-<p>Install Scout Web Application into JBoss AS</p>
+<p>Install Scout Web Application into Apache Tomcat</p>
 
-<pre><code>$ cp [SOURCES]/web/target/scout-web-0.1.0.war [JBOSS]/standalone/deployments/
+<pre><code>$ rm -rf [TOMCAT]/webapps/ROOT
+$ cp [SOURCES]/web/target/scout-web-0.1.0.war [TOMCAT]/webapps/ROOT.war
 </code></pre>
 </li>
 <li>
-<p>Create the following directories with write permissions by the user running the JBoss AS server</p>
+<p>Create the following directories with write permissions by the user running the Apache Tomcat server</p>
 
 <pre><code>$ sudo mkdir /usr/local/scout
-$ sudo chown [JBOSS_USER] /usr/local/scout
-$ sudo su [JBOSS_USER]
+$ sudo chown [TOMCAT_USER] /usr/local/scout
+$ sudo su [TOMCAT_USER]
 $ mkdir /usr/local/scout/data
 $ mkdir /usr/local/scout/plugins
 $ mkdir /usr/local/scout/plugins/adaptors
@@ -161,7 +162,7 @@ $ mkdir ~/.scout
 <pre><code>$ find [SOURCES]/notifications/ -name *-jar-with-dependencies.jar -exec cp -v {} /usr/local/scout/plugins/notifications/ \;
 </code></pre>
 </li>
-<li><p>Start JBoss AS server</p></li>
+<li><p>Start Apache Tomcat server</p></li>
 </ol><p>[^1]: An external SMTP server can optionally be configured.</p>
 
 <h2>Configure</h2>

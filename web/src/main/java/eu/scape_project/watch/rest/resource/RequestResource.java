@@ -11,6 +11,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,6 +74,7 @@ public class RequestResource  {
   @GET
   @Path("/list")
   @ApiOperation(value = "Make a request", notes = "")
+  @ApiErrors(value = {@ApiError(code = 400, reason = "Bad request")})
   public Response getRequestList(
     @ApiParam(value = "Request target", required = true, allowableValues = "entity, entity_type, property, property_value") @QueryParam("target") final String target,
     @ApiParam(value = "Request query", required = true) @QueryParam("query") final String query,
@@ -82,6 +84,10 @@ public class RequestResource  {
 
     LOG.info("Making request '{}', bindings={}, target={}, start={}, max={}", new Object[] {query, queryBindings,
       target, start, max});
+    
+    if(StringUtils.isBlank(target) || StringUtils.isBlank(query) || start < 0 || max <= 0) {
+      return Response.status(Status.BAD_REQUEST).build();
+    }
 
     final RequestTarget requestTarget = RequestTarget.valueOf(target.toUpperCase());
     final QuerySolutionMap bindings = DAO.QUESTION_TEMPLATE_PARAMETER.parseBindings(queryBindings);
@@ -136,6 +142,10 @@ public class RequestResource  {
     @ApiParam(value = "Request target", required = true, allowableValues = "entity, entity_type, property, property_value") @QueryParam("target") final String target,
     @ApiParam(value = "Request query", required = true) @QueryParam("query") final String query,
     @ApiParam(value = "Initial bindings") @QueryParam("binding") final List<QueryBinding> queryBindings) {
+    
+    if(StringUtils.isBlank(target) || StringUtils.isBlank(query)) {
+      return Response.status(Status.BAD_REQUEST).build();
+    }
 
     final RequestTarget requestTarget = RequestTarget.valueOf(target.toUpperCase());
     final QuerySolutionMap bindings = DAO.QUESTION_TEMPLATE_PARAMETER.parseBindings(queryBindings);

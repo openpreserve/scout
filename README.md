@@ -49,21 +49,25 @@ Scout is released under [Apache version 2.0 license](LICENSE.txt).
 ### Instructions
 
  1. Download and install [Apache Tomcat 7.x](http://tomcat.apache.org/download-70.cgi)
- 2. Optional[^1]: Install a mail transport agent (e.g. `$ sudo apt-get install postfix`)
- 3. Download and uncompress the [last stable version of Scout sources](https://github.com/openplanets/scout/tags)
- 4. Go to the Scout sources folder and compile with:
+ 2. Configure Apache Tomcat to use more memory. Edit `bin/catalina.sh` and add the following line in the beggining of the file, after the comments:
+```
+JAVA_OPTS="-Xmx512m -Xms128m $JAVA_OPTS"
+```
+ 3. Optional[^1]: Install a mail transport agent (e.g. `$ sudo apt-get install postfix`)
+ 4. Download and uncompress the [last stable version of Scout sources](https://github.com/openplanets/scout/tags)
+ 5. Go to the Scout sources folder and compile with:
  
  ```
  $ cd [SOURCES]
  $ mvn clean install
  ```
  
- 5. Install Scout Web Application into Apache Tomcat
+ 6. Install Scout Web Application into Apache Tomcat
 ```
 $ rm -rf [TOMCAT]/webapps/ROOT
 $ cp [SOURCES]/web/target/scout-web-0.1.0.war [TOMCAT]/webapps/ROOT.war
 ```
- 6. Create the following directories with write permissions by the user running the Apache Tomcat server
+ 7. Create the following directories with write permissions by the user running the Apache Tomcat server
  ```
  $ sudo mkdir /usr/local/scout
  $ sudo chown [TOMCAT_USER] /usr/local/scout
@@ -74,15 +78,15 @@ $ cp [SOURCES]/web/target/scout-web-0.1.0.war [TOMCAT]/webapps/ROOT.war
  $ mkdir /usr/local/scout/plugins/notifications
  $ mkdir ~/.scout 
  ```
- 7. Copy available adaptor plugins
+ 8. Copy available adaptor plugins
 ```
  $ find [SOURCES]/adaptors/ -name *-jar-with-dependencies.jar -exec cp -v {} /usr/local/scout/plugins/adaptors/ \;
 ```
- 8. Copy available notification plugins
+ 9. Copy available notification plugins
 ```
  $ find [SOURCES]/notifications/ -name *-jar-with-dependencies.jar -exec cp -v {} /usr/local/scout/plugins/notifications/ \;
 ```
- 9. Start Apache Tomcat server
+ 10. Start Apache Tomcat server
 
 [^1]: An external SMTP server can optionally be configured.
 

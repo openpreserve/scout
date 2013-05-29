@@ -19,28 +19,33 @@ import eu.scape_project.watch.main.ScoutManager;
  */
 public class ApplicationListener implements ServletContextListener {
 
-  /**
-   * A default logger for this class.
-   */
-  private static final Logger LOG = LoggerFactory.getLogger(ApplicationListener.class);
+	/**
+	 * A default logger for this class.
+	 */
+	private static final Logger LOG = LoggerFactory
+			.getLogger(ApplicationListener.class);
 
-  private ScoutManager scoutManager;
+	private ScoutManager scoutManager;
 
-  @Override
-  public void contextInitialized(final ServletContextEvent sce) {
-    LOG.info("Starting Scout");
+	@Override
+	public void contextInitialized(final ServletContextEvent sce) {
+		LOG.info("Starting Scout");
 
-    scoutManager = new ScoutManager();
-    scoutManager.start();
+		try {
+			scoutManager = new ScoutManager();
+			scoutManager.start();
 
-    LOG.info("Setting up the servlet context.");
-    final ServletContext context = sce.getServletContext();
-    ContextUtil.setScoutManager(scoutManager, context);
-  }
+			LOG.info("Setting up the servlet context.");
+			final ServletContext context = sce.getServletContext();
+			ContextUtil.setScoutManager(scoutManager, context);
+		} catch (Throwable e) {
+			LOG.error("Unexpected error - " + e.getMessage(), e);
+		}
+	}
 
-  @Override
-  public void contextDestroyed(final ServletContextEvent sce) {
-    LOG.info("Preparing Scout for shutdown.");
-    scoutManager.stop();
-  }
+	@Override
+	public void contextDestroyed(final ServletContextEvent sce) {
+		LOG.info("Preparing Scout for shutdown.");
+		scoutManager.stop();
+	}
 }

@@ -82,6 +82,11 @@
 			<id>apache-repo-snapshots</id>
 			<url>https://repository.apache.org/content/repositories/snapshots/</url>
 		</repository>
+		<repository>
+			<id>KeepArtifacts</id>
+			<name>KeepArtifacts-releases</name>
+			<url>http://artifactory.keep.pt/keep</url>
+		</repository>
 	</repositories>
 
 	<build>

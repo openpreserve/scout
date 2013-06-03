@@ -1,5 +1,8 @@
 package eu.scape_project.watch.adaptor.report_api;
 
+import info.lc.xmlns.premis_v2.EventComplexType;
+
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -8,15 +11,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.xml.bind.JAXBElement;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
+import org.openarchives.oai._2.RecordType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.util.DateParser;
 import org.w3c.util.InvalidDateException;
-
-import com.rdksys.oai.Harvester;
-import com.rdksys.oai.data.Record;
-import com.rdksys.oai.data.RecordIterator;
-import com.rdksys.oai.repository.Identify;
+import org.xml.sax.SAXException;
 
 import eu.scape_project.watch.common.DefaultResult;
 import eu.scape_project.watch.domain.DataType;
@@ -32,6 +36,10 @@ import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeExcept
 import eu.scape_project.watch.utils.exceptions.InvalidParameterException;
 import eu.scape_project.watch.utils.exceptions.PluginException;
 import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
+//import com.rdksys.oai.Harvester;
+//import com.rdksys.oai.data.Record;
+//import com.rdksys.oai.data.RecordIterator;
+//import com.rdksys.oai.repository.Identify;
 
 /**
  * The Report API Adaptor queries a repository Report API and parses the events.
@@ -77,12 +85,12 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 	/**
 	 * The name of property: Ingest average time
 	 */
-	private static final String PROPERTY_INGEST_AVG_TIME_NAME = "Ingest average time";
+	private static final String PROPERTY_INGEST_AVG_TIME_NAME = "Ingest average time (ms)";
 
 	/**
 	 * The description of property: Ingest average time
 	 */
-	private static final String PROPERTY_INGEST_AVG_TIME_DESCRIPTION = "The average time that takes for a SIP to be ingested";
+	private static final String PROPERTY_INGEST_AVG_TIME_DESCRIPTION = "The average time, in milliseconds, that takes for a SIP to be ingested";
 
 	/**
 	 * The default config of this plugin.
@@ -100,9 +108,9 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 	private Harvester harvester;
 
 	/**
-	 * The repository identify returned by harvester verb "Identify".
+	 * The repository name returned by harvester verb "Identify".
 	 */
-	private Identify repositoryIdentity;
+	private String repositoryName;
 
 	/**
 	 * A map of property values collected from the repository.
@@ -299,14 +307,13 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 					+ " already exists.");
 		} else {
 
-			if (this.repositoryIdentity == null) {
+			if (this.repositoryName == null) {
 				LOG.debug("Couldn't add properties because repository identity is not available yet.");
 			} else {
 
 				EntityType type = new EntityType(ENTITY_TYPE_REPOSITORY_NAME,
 						ENTITY_TYPE_REPOSITORY_DESCRIPTION);
-				Entity entity = new Entity(type,
-						this.repositoryIdentity.getRepositoryName());
+				Entity entity = new Entity(type, this.repositoryName);
 				try {
 
 					Property property = new Property(type,
@@ -354,16 +361,33 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 		} else {
 
 			try {
-				// this.harvester = new Harvester(address, getUsername(),
-				// getPassword());
+
 				this.harvester = new Harvester(address);
 
-				this.repositoryIdentity = this.harvester.identify();
+				this.repositoryName = this.harvester.getRepositoryName();
 
-				LOG.debug("Repository Identify repositoryName: "
-						+ repositoryIdentity.getRepositoryName());
-
-			} catch (Exception e) {
+			} catch (IOException e) {
+				LOG.error(
+						"Couldn't get the repository identify - "
+								+ e.getMessage(), e);
+				throw new PluginException(
+						"Couldn't get the repository identify - "
+								+ e.getMessage(), e);
+			} catch (ParserConfigurationException e) {
+				LOG.error(
+						"Couldn't get the repository identify - "
+								+ e.getMessage(), e);
+				throw new PluginException(
+						"Couldn't get the repository identify - "
+								+ e.getMessage(), e);
+			} catch (SAXException e) {
+				LOG.error(
+						"Couldn't get the repository identify - "
+								+ e.getMessage(), e);
+				throw new PluginException(
+						"Couldn't get the repository identify - "
+								+ e.getMessage(), e);
+			} catch (TransformerException e) {
 				LOG.error(
 						"Couldn't get the repository identify - "
 								+ e.getMessage(), e);
@@ -371,6 +395,7 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 						"Couldn't get the repository identify - "
 								+ e.getMessage(), e);
 			}
+
 		}
 
 	}
@@ -405,46 +430,75 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	private void calculateIngestAverageTime() {
 		LOG.debug("calculateIngestAverageTime()");
+
 		if (this.harvester == null) {
 		} else {
 
 			try {
-				RecordIterator listRecords = this.harvester.listRecords(null,
-						null, null);
-
 				Map<String, SIPIngestTime> mapIngestTime = new HashMap<String, ReportAPIAdaptor.SIPIngestTime>();
 
-				while (listRecords.hasNext()) {
+				Iterator<RecordType> recordIterator = this.harvester
+						.getRecordIterator(null, null, null, "premis-event-v2");
 
-					Record record = listRecords.next();
-					String[] idParts = record.getHeader().getIdentifier()
-							.split(":");
+				while (recordIterator.hasNext()) {
+					RecordType record = recordIterator.next();
 
-					SIPIngestTime sipIngestTime = mapIngestTime.get(idParts[1]);
-					if (sipIngestTime == null) {
-						sipIngestTime = new SIPIngestTime();
-						mapIngestTime.put(idParts[1], sipIngestTime);
-					}
+					LOG.debug("Processing record "
+							+ record.getHeader().getIdentifier());
 
-					if ("IngestStarted".equals(idParts[0])) {
-						try {
-							sipIngestTime.startTime = DateParser.parse(record
-									.getMetadata().getDateList().get(0));
-						} catch (InvalidDateException e) {
-							LOG.warn("Couldn't parse date " + e.getMessage(), e);
+					@SuppressWarnings("unchecked")
+					JAXBElement<EventComplexType> premisEventElement = (JAXBElement<EventComplexType>) record
+							.getMetadata().getAny();
+					EventComplexType premisEvent = premisEventElement
+							.getValue();
+
+					if ("IngestStarted".equalsIgnoreCase(premisEvent
+							.getEventType())
+							|| "IngestFinished".equalsIgnoreCase(premisEvent
+									.getEventType())) {
+
+						String sipID = this.harvester
+								.getPremisLinkingObjectSipID(premisEvent);
+
+						LOG.debug("SIP ID is " + sipID);
+
+						SIPIngestTime sipIngestTime = mapIngestTime.get(sipID);
+						if (sipIngestTime == null) {
+							sipIngestTime = new SIPIngestTime();
+							mapIngestTime.put(sipID, sipIngestTime);
 						}
-					} else if ("IngestFinish".equals(idParts[0])) {
-						try {
-							sipIngestTime.finishTime = DateParser.parse(record
-									.getMetadata().getDateList().get(0));
-						} catch (InvalidDateException e) {
-							LOG.warn("Couldn't parse date " + e.getMessage(), e);
+
+						if ("IngestStarted".equals(premisEvent.getEventType())) {
+							try {
+								sipIngestTime.startTime = DateParser
+										.parse(premisEvent.getEventDateTime());
+							} catch (InvalidDateException e) {
+								LOG.warn(
+										"Couldn't parse date " + e.getMessage(),
+										e);
+							}
+						} else if ("IngestFinished".equals(premisEvent
+								.getEventType())) {
+							try {
+								sipIngestTime.finishTime = DateParser
+										.parse(premisEvent.getEventDateTime());
+							} catch (InvalidDateException e) {
+								LOG.warn(
+										"Couldn't parse date " + e.getMessage(),
+										e);
+							}
 						}
 					}
 
 				}
+
+				LOG.info("Collected ingest time information for "
+						+ mapIngestTime.size() + " SIPs");
 
 				long durationMillis = 0;
 				long numOfSips = 0;
@@ -467,6 +521,10 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 						propertyValue.setValue((float) durationMillis
 								/ numOfSips, Float.class);
 
+						LOG.info("Property "
+								+ propertyValue.getProperty().getName()
+								+ " has new value: " + propertyValue.getValue());
+
 						this.iterator = this.properties.values().iterator();
 
 					} catch (UnsupportedDataTypeException e) {
@@ -479,12 +537,13 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 			} catch (Exception e) {
 				LOG.error("Couldn't get records - " + e.getMessage(), e);
 			}
-		}
 
+		}
 	}
 
 	class SIPIngestTime {
 		Date startTime;
 		Date finishTime;
 	}
+
 }

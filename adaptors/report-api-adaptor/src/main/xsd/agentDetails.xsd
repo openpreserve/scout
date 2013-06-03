@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+  targetNamespace="http://scape-project.eu/repository/agentDetails"
+  xmlns="http://scape-project.eu/repository/agentDetails">
+
+  <xs:element name="agentDetails" type="AgentDetails"/>
+
+  <xs:complexType name="AgentDetails">
+    <xs:sequence>
+      <xs:element name="user" type="User" minOccurs="0"/>
+      <xs:element name="endpoint" type="Endpoint"/>
+      <xs:element name="userAgent" type="UserAgent" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="User">
+    <xs:sequence>
+      <xs:element name="role" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+      <xs:element name="language" type="Language" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Endpoint">
+    <xs:sequence>
+      <xs:element name="ipHash" type="xs:string"/>
+      <xs:element name="networkHash" type="xs:string" minOccurs="0"/>
+      <xs:element name="sessionID" type="xs:string" minOccurs="0"/>
+      <xs:element name="geoIP" type="GeoIP" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="GeoIP">
+    <xs:sequence>
+      <xs:element name="countryCode" type="xs:string" minOccurs="0"/>
+      <xs:element name="countryName" type="xs:string" minOccurs="0"/>
+      <xs:element name="regionName" type="xs:string" minOccurs="0"/>
+      <xs:element name="cityName" type="xs:string" minOccurs="0"/>
+      <xs:element name="zipCode" type="xs:string" minOccurs="0"/>
+      <xs:element name="latitude" type="xs:string" minOccurs="0"/>
+      <xs:element name="longitude" type="xs:string" minOccurs="0"/>
+      <xs:element name="timeZone" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="UserAgent">
+    <xs:sequence>
+      <xs:element name="userAgentID" type="xs:string"/>
+      <xs:element name="languages" type="Languages" minOccurs="0"/>
+      <xs:element name="plugins" type="Plugins" minOccurs="0"/>
+      <xs:element name="os" type="xs:string" minOccurs="0"/>
+      <xs:element name="device" type="Device" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Languages">
+    <xs:sequence>
+      <xs:element name="language" type="Language" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="Language">
+    <xs:annotation>
+      <xs:documentation>RFC 1766 language code (http://www.ietf.org/rfc/rfc1766.txt). Pattern taken
+        from http://books.xmlschemata.org/relaxng/ch19-77191.html</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:language">
+      <xs:pattern value="([a-zA-Z]{2}|[iI]-[a-zA-Z]+|[xX]-[a-zA-Z]{1,8})(-[a-zA-Z]{1,8})*"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="Plugins">
+    <xs:sequence>
+      <xs:element name="plugin" type="Plugin" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Plugin">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="version" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Device">
+    <xs:sequence>
+      <xs:element name="screenHeight" type="xs:integer"/>
+      <xs:element name="screenWidth" type="xs:integer"/>
+      <xs:element name="colorspace" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

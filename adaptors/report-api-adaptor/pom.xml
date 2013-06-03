@@ -20,6 +20,24 @@
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jaxb2-maven-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<id>xjc</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<!--<schemaDirectory>src/main/xsd</schemaDirectory>-->
+					<!-- The name of your generated source package -->
+					<!--<packageName>eu.scape_project.repository</packageName>-->
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -48,6 +66,7 @@
 			<groupId>eu.scape-project</groupId>
 			<artifactId>scout-model</artifactId>
 		</dependency>
+		<!-- 
 		<dependency>
 			<groupId>net.sf.json-lib</groupId>
 			<artifactId>json-lib</artifactId>
@@ -60,31 +79,16 @@
 			<version>2.1</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.ws.commons.axiom</groupId>
-			<artifactId>axiom-api</artifactId>
-			<version>1.2.14</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.ws.commons.axiom</groupId>
-			<artifactId>axiom-dom</artifactId>
-			<version>1.2.14</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.ws.commons.axiom</groupId>
-			<artifactId>axiom-c14n</artifactId>
-			<version>1.2.14</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.ws.commons.axiom</groupId>
-			<artifactId>axiom-impl</artifactId>
-			<version>1.2.14</version>
-			<scope>provided</scope>
-		</dependency>
+		-->
 		<dependency>
 			<groupId>org.w3c</groupId>
 			<artifactId>w3c-utils</artifactId>
 			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.oclc.oai</groupId>
+			<artifactId>oaiharvester2</artifactId>
+			<version>0.1.12</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -1,5 +1,4 @@
-Scout: a preservation watch system
-=============================
+# About Scout
 
 Scout is a preservation watch system being developed within the [SCAPE project](http://www.scape-project.eu). It provides an ontological knowledge base to centralize all necessary information to detect preservation risks and opportunities. It uses plugins to allow easy integration of new sources of information, as file format registries, tools for characterization, migration and quality assurance, policies, human knowledge and others. The knowledge base can be easily browsed and triggers can be installed to automatically notify users of new risks and opportunities. Examples of such notification could be: content fails to conform to defined policies, a format became obsolete or new tools able to render your
 content are available.
@@ -41,16 +40,16 @@ Version 1.0.0 (final):
 
 Scout is released under [Apache version 2.0 license](LICENSE.txt).
 
-## Install
+# Install
 
-### Requirements
+## Requirements
 
 * *nix operative system (tested in Ubuntu LTS 12.04)
 * Maven 3
 * Apache Tomcat 7.x
 * Optional[^1]: Mail Transport Agent (e.g. Postfix) 
 
-### Instructions
+## Instructions
 
  1. Download and install [Apache Tomcat 7.x](http://tomcat.apache.org/download-70.cgi)
  2. Configure Apache Tomcat to use more memory. Edit `bin/catalina.sh` and add the following line in the beggining of the file, after the comments:
@@ -94,9 +93,9 @@ $ cp [SOURCES]/web/target/scout-web-0.1.0.war [TOMCAT]/webapps/ROOT.war
 
 [^1]: An external SMTP server can optionally be configured.
 
-## Configure
+# Configure
 
-### Create the PRONOM adaptor
+## Create the PRONOM adaptor
 
  1. Open the scout-web web application
  2. Go to Administration
@@ -104,18 +103,18 @@ $ cp [SOURCES]/web/target/scout-web-0.1.0.war [TOMCAT]/webapps/ROOT.war
  4. Create a new Source called "PRONOM"
  5. Select the new Source Adaptor with the pronom plugin and the instance name "pronom-default"
 
-## Develop
+# Develop
 
 [![Build Status](https://travis-ci.org/openplanets/scout.png)](https://travis-ci.org/openplanets/scout)
 
-### Requirements
+## Requirements
  * Eclipse Indigo: http://www.eclipse.org/downloads/index-developer.php
  * Eclipse checkstyle plugin: http://marketplace.eclipse.org/node/150
  * Eclipse m2eclipse plugin: http://marketplace.eclipse.org/content/maven-integration-eclipse
  * Maven 3: http://maven.apache.org/
  * clone this repo (if you haven't)
 
-### Setup IDE
+## Setup IDE
 After you install eclipse and clone the repo, install the following
 plugins listed above. To install a plugin click on Help > Eclipse Market Place
 and search them or just use the nice drag and drop feature and drag them from the links above.
@@ -138,8 +137,7 @@ To activate checkstyle for a certain project just right click on it select check
 This will continouosly check the code as you type and mark the bad spots with yellow and will provide
 warnings.
 
-Acknowledgements
-----------------
+# Acknowledgements
 
 Part of this work was supported by the European Union in the 7th Framework Program, IST, through the SCAPE project, Contract 270137.
 

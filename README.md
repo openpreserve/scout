@@ -4,21 +4,26 @@ Scout: a preservation watch system
 Scout is a preservation watch system being developed within the [SCAPE project](http://www.scape-project.eu). It provides an ontological knowledge base to centralize all necessary information to detect preservation risks and opportunities. It uses plugins to allow easy integration of new sources of information, as file format registries, tools for characterization, migration and quality assurance, policies, human knowledge and others. The knowledge base can be easily browsed and triggers can be installed to automatically notify users of new risks and opportunities. Examples of such notification could be: content fails to conform to defined policies, a format became obsolete or new tools able to render your
 content are available.
 
-## Features (version 0.1.0 - alpha)
-- Ontologic knowledge base backend
-- Information sources:
- - Content characterization profile (via C3PO adaptor)
- - File format information (via PRONOM adaptor)
- - Institutional policy information (using a policy model)
-- Web and REST interface with:
- - Browsing of knowledge base
- - Advanced query with SPARQL
- - Simple query with query templates
- - Create triggers and be notified
-- Notifications:
- - Email
+## Features
 
-## Roadmap (version 1.0.0 - final)
+Version 0.1.0 (alpha):
+
+* Ontologic knowledge base backend
+* Information sources:
+ * Content characterization profile (via C3PO adaptor)
+ * File format information (via PRONOM adaptor)
+ * Institutional policy information (using a policy model)
+* Web and REST interface with:
+ * Browsing of knowledge base
+ * Advanced query with SPARQL
+ * Simple query with query templates
+ * Create triggers and be notified
+* Notifications:
+ * Email
+
+## Roadmap
+Version 1.0.0 (final):
+
 * Information sources:
  * Repository events (e.g. ingest, access, preservation action)
  * Web content renderability analisys
@@ -39,10 +44,11 @@ Scout is released under [Apache version 2.0 license](LICENSE.txt).
 ## Install
 
 ### Requirements
- - *nix operative system (tested in Ubuntu LTS 12.04)
- - Maven 3
- - Apache Tomcat 7.x
- - Optional[^1]: Mail Transport Agent (e.g. Postfix) 
+
+* *nix operative system (tested in Ubuntu LTS 12.04)
+* Maven 3
+* Apache Tomcat 7.x
+* Optional[^1]: Mail Transport Agent (e.g. Postfix) 
 
 ### Instructions
 
@@ -103,11 +109,11 @@ $ cp [SOURCES]/web/target/scout-web-0.1.0.war [TOMCAT]/webapps/ROOT.war
 [![Build Status](https://travis-ci.org/openplanets/scout.png)](https://travis-ci.org/openplanets/scout)
 
 ### Requirements
- - Eclipse Indigo: http://www.eclipse.org/downloads/index-developer.php
- - Eclipse checkstyle plugin: http://marketplace.eclipse.org/node/150
- - Eclipse m2eclipse plugin: http://marketplace.eclipse.org/content/maven-integration-eclipse
- - Maven 3: http://maven.apache.org/
- - clone this repo (if you haven't)
+ * Eclipse Indigo: http://www.eclipse.org/downloads/index-developer.php
+ * Eclipse checkstyle plugin: http://marketplace.eclipse.org/node/150
+ * Eclipse m2eclipse plugin: http://marketplace.eclipse.org/content/maven-integration-eclipse
+ * Maven 3: http://maven.apache.org/
+ * clone this repo (if you haven't)
 
 ### Setup IDE
 After you install eclipse and clone the repo, install the following

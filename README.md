@@ -36,8 +36,6 @@ content are available.
 
 Scout is released under [Apache version 2.0 license](LICENSE.txt).
 
-*****
-
 ## Install
 
 ### Requirements
@@ -99,8 +97,6 @@ $ cp [SOURCES]/web/target/scout-web-0.1.0.war [TOMCAT]/webapps/ROOT.war
  3. Create a new Source Adaptor
  4. Create a new Source called "PRONOM"
  5. Select the new Source Adaptor with the pronom plugin and the instance name "pronom-default"
-
-*****
 
 ## Develop
 

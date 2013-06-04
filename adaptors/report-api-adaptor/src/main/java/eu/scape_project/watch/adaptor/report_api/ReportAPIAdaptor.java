@@ -36,10 +36,6 @@ import eu.scape_project.watch.utils.exceptions.InvalidJavaClassForDataTypeExcept
 import eu.scape_project.watch.utils.exceptions.InvalidParameterException;
 import eu.scape_project.watch.utils.exceptions.PluginException;
 import eu.scape_project.watch.utils.exceptions.UnsupportedDataTypeException;
-//import com.rdksys.oai.Harvester;
-//import com.rdksys.oai.data.Record;
-//import com.rdksys.oai.data.RecordIterator;
-//import com.rdksys.oai.repository.Identify;
 
 /**
  * The Report API Adaptor queries a repository Report API and parses the events.
@@ -260,7 +256,12 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 		LOG.debug("next()");
 		try {
 
-			return new DefaultResult(this.iterator.next());
+			DefaultResult result = new DefaultResult(this.iterator.next());
+
+			LOG.info("Returning next property '{}' with value {}", result
+					.getProperty().getName(), result.getValue().getValue());
+
+			return result;
 
 		} catch (Throwable e) {
 			LOG.error("Unexpected error - " + e.getMessage(), e);
@@ -324,7 +325,7 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 					this.properties.put(property.getName(), new PropertyValue(
 							entity, property, 0f));
 
-					LOG.debug("Added property " + property.getName()
+					LOG.info("Added property " + property.getName()
 							+ " with ID " + property.getId()
 							+ " to table of properties");
 
@@ -365,6 +366,8 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 				this.harvester = new Harvester(address);
 
 				this.repositoryName = this.harvester.getRepositoryName();
+
+				LOG.info("Repository name: " + this.repositoryName);
 
 			} catch (IOException e) {
 				LOG.error(
@@ -437,6 +440,7 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 		LOG.debug("calculateIngestAverageTime()");
 
 		if (this.harvester == null) {
+			LOG.warn("Cannot calculate IngestAverageTime because Harvester is null");
 		} else {
 
 			try {
@@ -475,8 +479,17 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 
 						if ("IngestStarted".equals(premisEvent.getEventType())) {
 							try {
+
 								sipIngestTime.startTime = DateParser
 										.parse(premisEvent.getEventDateTime());
+
+								LOG.debug(
+										"SIP {} IngestStarted EventDateTime is {}",
+										sipID, premisEvent.getEventDateTime());
+
+								LOG.debug("SIP {} Ingest startTime is {}",
+										sipID, sipIngestTime.startTime);
+
 							} catch (InvalidDateException e) {
 								LOG.warn(
 										"Couldn't parse date " + e.getMessage(),
@@ -485,8 +498,17 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 						} else if ("IngestFinished".equals(premisEvent
 								.getEventType())) {
 							try {
+
 								sipIngestTime.finishTime = DateParser
 										.parse(premisEvent.getEventDateTime());
+
+								LOG.debug(
+										"SIP {} IngestFinished EventDateTime is {}",
+										sipID, premisEvent.getEventDateTime());
+
+								LOG.debug("SIP {} Ingest finishTime is {}",
+										sipID, sipIngestTime.finishTime);
+
 							} catch (InvalidDateException e) {
 								LOG.warn(
 										"Couldn't parse date " + e.getMessage(),
@@ -500,26 +522,44 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 				LOG.info("Collected ingest time information for "
 						+ mapIngestTime.size() + " SIPs");
 
-				long durationMillis = 0;
-				long numOfSips = 0;
+				long totalDurationMillis = 0;
+				long numOfValidIntervals = 0;
+
 				for (SIPIngestTime ingestTime : mapIngestTime.values()) {
+
 					if (ingestTime.startTime != null
 							&& ingestTime.finishTime != null) {
 
-						numOfSips++;
-						durationMillis += ingestTime.finishTime.getTime()
+						numOfValidIntervals++;
+
+						totalDurationMillis += ingestTime.finishTime.getTime()
 								- ingestTime.startTime.getTime();
 
+						LOG.debug(
+								"Added {} - total duration={}ms, number of intervals={}",
+								new Object[] { ingestTime, totalDurationMillis,
+										numOfValidIntervals });
+
+					} else {
+						LOG.debug("Ignoring incomplete interval {}", ingestTime);
 					}
 				}
 
-				if (numOfSips > 0) {
+				if (numOfValidIntervals > 0) {
 					PropertyValue propertyValue = this.properties
 							.get(PROPERTY_INGEST_AVG_TIME_NAME);
 					try {
 
-						propertyValue.setValue((float) durationMillis
-								/ numOfSips, Float.class);
+						LOG.debug(
+								"Calculating average - total duration={}ms, number of intervals={}",
+								totalDurationMillis, numOfValidIntervals);
+
+						float average = (float) totalDurationMillis
+								/ numOfValidIntervals;
+
+						LOG.debug("Average duration={}ms", average);
+
+						propertyValue.setValue(average, Float.class);
 
 						LOG.info("Property "
 								+ propertyValue.getProperty().getName()
@@ -532,6 +572,9 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 					} catch (InvalidJavaClassForDataTypeException e) {
 						LOG.error("Couldn't set value - " + e.getMessage(), e);
 					}
+
+				} else {
+					LOG.debug("Not calculating average because there's no valid intervals");
 				}
 
 			} catch (Exception e) {
@@ -544,6 +587,12 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 	class SIPIngestTime {
 		Date startTime;
 		Date finishTime;
+
+		@Override
+		public String toString() {
+			return String.format("%s (startTime: %s, finishTime: %s)",
+					getClass().getSimpleName(), startTime, finishTime);
+		}
 	}
 
 }

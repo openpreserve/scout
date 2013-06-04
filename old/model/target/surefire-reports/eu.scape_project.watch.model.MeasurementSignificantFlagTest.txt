@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: eu.scape_project.watch.model.MeasurementSignificantFlagTest
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.533 sec

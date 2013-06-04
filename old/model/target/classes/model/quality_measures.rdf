@@ -1,0 +1,3272 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://purl.org/DP/quality#"
+  xml:base="http://purl.org/DP/quality/"
+  xmlns:scales="http://purl.org/DP/quality/scales#"
+  xmlns:scopes="http://purl.org/DP/quality/scopes#"
+  xmlns:dct="http://purl.org/dc/terms/"
+  xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+  xmlns:owl="http://www.w3.org/2002/07/owl#"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema#">  
+     
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#235">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>presence of data dictionary</skos:prefLabel>
+  <dct:description>Indicates whether a data dictionary is present in the database.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#83"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#236">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>quality of data dictionary</skos:prefLabel>
+  <dct:description>Quality of the present data dictionary.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#83"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not available/good/acceptable/bad</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#237">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>presence of data model</skos:prefLabel>
+  <dct:description>Indicates whether a data model is present in the database.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#83"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#238">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>quality of data model</skos:prefLabel>
+  <dct:description>Quality of the present data model.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#83"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not available/good/acceptable/bad</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#239">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>syntax of data model</skos:prefLabel>
+  <dct:description>Syntax used in the present data model.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#83"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not available/ERD/UML/other</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#240">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>original database product</skos:prefLabel>
+  <dct:description>Indicates whether the original database product is documented.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#83"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#242">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>metadata for each element is present</skos:prefLabel>
+  <dct:description>Indicates whether metadata for each element exists.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#83"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#243">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>data dictionary is present</skos:prefLabel>
+  <dct:description>Indicates whether the (external) data dictionary is present.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#83"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#244">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>either metadata for each element or data dictionary present</skos:prefLabel>
+  <dct:description>Indicates whether metadata is present for each element. This means that either the element metadata or the (external) data dictionary must be present.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#83"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#138">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>number of free tools that are not open source</skos:prefLabel>
+  <dct:description>Indicator for the adoption of a format, expressed as the number of free tools that are not open source that support a format</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#48"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVEINTEGER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#139">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>number of free tools that are open source</skos:prefLabel>
+  <dct:description>Indicator for the adoption of a format, expressed as the number of free tools that are open source  that support a format</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#48"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVEINTEGER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#140">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>number of proprietary tools</skos:prefLabel>
+  <dct:description>Indicator for the adoption of a format, expressed as the number of proprietary tools that support a format</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#48"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVEINTEGER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#141">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>number of tools</skos:prefLabel>
+  <dct:description>Indicator for the adoption of a format, expressed as the total number of all tools that support a format</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#48"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVEINTEGER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#156">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>format supported by web browsers</skos:prefLabel>
+  <dct:description>Indicates whether the format can be natively displayed by browsers.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#48"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#162">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>format ubiquity</skos:prefLabel>
+  <dct:description>Ubiquity or popularity of the outcome format.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#48"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>ubiquitous/widespread/specialised/obsolete</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#107">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>status of software vendor</skos:prefLabel>
+  <dct:description>Business status of the action vendor</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#34"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>in business/no longer in same business/out of business</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#159">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>format IPR protection</skos:prefLabel>
+  <dct:description>Existence of rights applying to the outcome format.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#59"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>open/ipr_protected/proprietary</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#134">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>automated QA supported</skos:prefLabel>
+  <dct:description>Indicates whether results of an action support automated QA with current means</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#45"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#55">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>colour model</skos:prefLabel>
+  <dct:description>Colour model of the decompressed image data.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#20"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>WhiteIsZero/BlackIsZero/RGB/Palette/Transparency/CMYK/YCbCr/CIELab</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#56">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>colour model preserved</skos:prefLabel>
+  <dct:description>Indicates whether the colour model has been preserved.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#20"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#340">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>bibliography retained</skos:prefLabel>
+  <dct:description>Indicates whether the bibliography used in the document has been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#65"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#341">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>footers retained</skos:prefLabel>
+  <dct:description>Indicates whether footers used in the document have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#65"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#342">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>headers retained</skos:prefLabel>
+  <dct:description>Indicates whether headers used in the document have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#65"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#343">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>intendations retained</skos:prefLabel>
+  <dct:description>Indicates whether intendations used in the document have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#65"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#344">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>line spacings retained</skos:prefLabel>
+  <dct:description>Indicates whether line spacings used in the document have been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#65"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#345">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>number of pages equal</skos:prefLabel>
+  <dct:description>Indicates whether the documents page count is equal</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#65"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#346">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>page numberings retained</skos:prefLabel>
+  <dct:description>Indicates whether page numberings used in the document have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#65"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#347">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>paragraphs retained</skos:prefLabel>
+  <dct:description>Indicates whether paragraphs used in the document have been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#65"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#348">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>table of contents retained</skos:prefLabel>
+  <dct:description>Indicates whether table of contents used in the document have been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#65"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#349">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>text paging retained</skos:prefLabel>
+  <dct:description>Indicates whether text paging (how text is distributed on pages) of the document has been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#65"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#350">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>titles and headlines retained</skos:prefLabel>
+  <dct:description>Indicates whether titles and headlines used in the document have been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#65"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#393">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>format identifier</skos:prefLabel>
+  <dct:description>Identifier of the (file) format, e.g. PRONOM identifier</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#88"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#FREETEXT" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#142">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>format backwards compatbility</skos:prefLabel>
+  <dct:description>Indicates whether a format is backwards compatible to previous versions.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#49"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#160">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>format speed of change</skos:prefLabel>
+  <dct:description>Stability of the outcome format with respect to changes.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#49"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>less than 1 year/1-2 years/3-5 years/more than 5 years</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#161">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>format standardization</skos:prefLabel>
+  <dct:description>Standardization of the outcome format.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#49"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>international standard/de facto standard/none</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#132">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF:bits per sample correct</skos:prefLabel>
+  <dct:description>Indicates whether bits per sample extracted from EXIF metadata is equal to bits per sample determined from image data</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#250">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: all gps data retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#251">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: all tiff data retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#252">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: aperture value retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#253">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: artist retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#254">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: bits per sample retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#255">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: brightness value retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#256">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: cfa pattern retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#257">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: compression retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#258">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: contrast retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#259">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: exposure bias value retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#260">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: exposure index retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#261">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: exposure mode retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#262">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: exposure program retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#263">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: exposure time retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#264">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: f number retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#265">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: flash retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#266">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: focal lenght in 35mm film retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#267">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: focal length retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#268">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: image description retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#269">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: image height retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#270">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: image width retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#271">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: iso-speed value retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#272">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: light source retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#273">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: make retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#274">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: metering mode retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#275">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: model retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#276">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: oECF retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#277">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: photometric interpretation retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#278">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: resolution unit retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#279">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: samples per pixel retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#280">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: saturation retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#281">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: sensing method retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#282">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: sharpness retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#283">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: shutter speed value retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#284">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: software retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#285">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: spectral sensivity retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#286">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: subject distance retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#287">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: version retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#288">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: white balance retained</skos:prefLabel>
+  <dct:description>Indicates whether the specific type of EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#289">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>EXIF: all metadata retained</skos:prefLabel>
+  <dct:description>Indicates whether all EXIF metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#2"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#390">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>image width of video</skos:prefLabel>
+  <dct:description>The width of the video track</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#87"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVEINTEGER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#391">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>The height of the video track</skos:prefLabel>
+  <dct:description>The height of the video track</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#87"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVEINTEGER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#392">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>video bitrate</skos:prefLabel>
+  <dct:description>The bitrate of a video stream measures in kbit/sec</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#87"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVEINTEGER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#154">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>format facilitates zooming</skos:prefLabel>
+  <dct:description>Indicates where the format provides specific support for zooming</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#57"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#157">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>format supported by OCR software</skos:prefLabel>
+  <dct:description>Indicates whether tools exists which can apply optical character recognition directly to the outcome format</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#57"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#163">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>format supports usage restrictions</skos:prefLabel>
+  <dct:description>Indicates whether usage restrictions can be applied to the outcome format.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#57"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#167">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>format facilitates PDF creation</skos:prefLabel>
+  <dct:description>Indicates whether it is commonly easy to create a pdf from the format.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#57"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#62">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>image orientation</skos:prefLabel>
+  <dct:description>Orientation of the image in relation to the placement of its rows and columns when it was saved to disk i.e. it denotes whether the image has been rotated or flipped.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#23"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>Horizontal (normal)/Mirror horizontal/Rotate 180/Mirror vertical/Mirror horizontal and rotate 270 CW/Rotate 90 CW/Mirror horizontal and rotate 90 CW/Rotate 270 CW</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#63">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>image orientation preserved</skos:prefLabel>
+  <dct:description>Indicates whether orientation of the image has been preserved</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#23"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#1">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>image distance SSIM</skos:prefLabel>
+  <dct:description>Distance between two images measured using SSIM. See ....</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#1"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#NUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#2">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>image content is equal</skos:prefLabel>
+  <dct:description>true iff two images are identical, false otherwise</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#1"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#3">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>image distance RMSE</skos:prefLabel>
+  <dct:description>Distance between two images measured using RMSE. See ...</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#1"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#4">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>image distance absolute error AE</skos:prefLabel>
+  <dct:description>number of different pixels</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#1"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#5">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>image distance mean absolute error MAE</skos:prefLabel>
+  <dct:description>average channel error distance</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#1"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#6">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>image distance mean error squared MSE</skos:prefLabel>
+  <dct:description>average of the channel error squared</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#1"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#7">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>image distance peak absolute error PAE</skos:prefLabel>
+  <dct:description>The highest difference of any single pixel</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#1"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#8">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>image peak signal to noise ratio PSNR</skos:prefLabel>
+  <dct:description>The ratio of mean square difference to the maximum mean square that can exist between any two images</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#1"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#9">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>image aspect ratio retained</skos:prefLabel>
+  <dct:description>Indicates whether the aspect ratio of an image has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#1"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#291">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>capture device metadata element retained</skos:prefLabel>
+  <dct:description>Device used to create the image data has been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#5"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#292">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>date and time of creation metadata element retained</skos:prefLabel>
+  <dct:description>Date and time of creation of image has been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#5"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#293">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>image width metadata element retained</skos:prefLabel>
+  <dct:description>Image width metadata element has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#5"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#294">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>image height metadata element retained</skos:prefLabel>
+  <dct:description>Image height metadata element has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#5"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#295">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>image orientation metadata element retained</skos:prefLabel>
+  <dct:description>Orientation metadata element has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#5"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#296">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>producer metadata element retained</skos:prefLabel>
+  <dct:description>Producer metadata element has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#5"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#297">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>software metadata element retained</skos:prefLabel>
+  <dct:description>Metadata element on software used to write the image has been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#5"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#298">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>X resolution metadata element retained</skos:prefLabel>
+  <dct:description>Metadata element X resolution (image resolution in width direction) has been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#5"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#299">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>Y resolution metadata element retained</skos:prefLabel>
+  <dct:description>Metadata element Y resolution (image resolution in height direction) has been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#5"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#46">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>Input object validation performed</skos:prefLabel>
+  <dct:description>Indicates if the action validates the input-object before processing.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#17"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#94">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>modular design</skos:prefLabel>
+  <dct:description>Assessment of the action-tool design in terms of modularity.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#29"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>yes/no/not observable</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#95">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>plugin system</skos:prefLabel>
+  <dct:description>Indicates if and in what terms the action-tool implements plug-ins.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#29"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>yes - open specification/yes - closed specification/no/not observable</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#14">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>other yearly execution costs</skos:prefLabel>
+  <dct:description>Execution costs of an action which do not fit to a regular running cost category, measured in €/year</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#9"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#15">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>Running hardware costs</skos:prefLabel>
+  <dct:description>Running hardware costs arising when using an action, measured in €/year (e.g. server rental costs).</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#9"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#17">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>Yearly running licence costs</skos:prefLabel>
+  <dct:description>Running software licence costs of an action in € per year.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#9"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#18">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>Running licence costs per object</skos:prefLabel>
+  <dct:description>Software licence costs for running an action on one object (in € per object)</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#9"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#19">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>Running personell costs</skos:prefLabel>
+  <dct:description>Running costs for operating an action per year (in €)</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#9"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#20">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>Total running costs</skos:prefLabel>
+  <dct:description>Total sum of costs of operating an action (in €)</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#9"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#21">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>Running costs per object</skos:prefLabel>
+  <dct:description>Running operational costs of an action in € per object.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#9"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#117">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>compression type</skos:prefLabel>
+  <dct:description>Type of compression used in the outcome object</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#39"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>none/lossless/lossy</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#118">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>compression algorithm</skos:prefLabel>
+  <dct:description></dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#39"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#FREETEXT" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#119">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>compression algorithm covered by patent</skos:prefLabel>
+  <dct:description>Indicates whether the compression algorithm is covered by a patent and thus licence fee might occurr</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#39"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#66">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>retain original file name</skos:prefLabel>
+  <dct:description>Indicates if an action is able to retain the filename of the input-file for the output-file.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#26"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#32">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>.Net API supported</skos:prefLabel>
+  <dct:description>Is a .Net API natively supported?</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#12"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#33">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>batchprocessing supported</skos:prefLabel>
+  <dct:description>Is there support for batch processing?</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#12"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#34">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>directory watch supported</skos:prefLabel>
+  <dct:description>Is directory watch supported, i.e. can the software automatically monitor the content of a certain folder in the file system and automatically process anything appearing there?</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#12"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#35">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>Java API supported</skos:prefLabel>
+  <dct:description>Is a Java native API supported?</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#12"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#36">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>Other API supported</skos:prefLabel>
+  <dct:description>Are any other APIs supported?</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#12"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#39">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>handling of not allowed image compressions</skos:prefLabel>
+  <dct:description>The way the action handles illegal image compressions</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#14"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>convert/remove/keep</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#40">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>handling of not allowed image formats</skos:prefLabel>
+  <dct:description>The way the action handles illegal image formats</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#14"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>convert/remove/keep</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#41">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>handling of not allowed JavaScript</skos:prefLabel>
+  <dct:description>The way the action handles illegal Javascript elements</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#14"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>convert/remove/keep</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#42">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>handling of not allowed moving images</skos:prefLabel>
+  <dct:description>The way the action handles illegal video elements</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#14"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>convert/remove/keep</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#213">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>PC gaming hardware audible controller feedback</skos:prefLabel>
+  <dct:description>Indicates personal computer gaming hardware audible controller feedback (if applicable).</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#76"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/not supported/supported</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#214">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>PC gaming hardware force controller feedback</skos:prefLabel>
+  <dct:description>Indicates personal computer gaming hardware controller force feedback (if applicable).</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#76"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/not supported/supporte</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#215">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>PC gaming hardware original feel</skos:prefLabel>
+  <dct:description>Indicates if and in which way standard pc gaming hardware exists which resembles the feel of the original.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#76"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>controllers resembling original controller not available/controllers resembling original controller not supported/controllers resembling original controller supported</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#216">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>PC gaming hardware original look</skos:prefLabel>
+  <dct:description>Indicates if and in which way standard pc gaming hardware exists which resembles the look of the original.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#76"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>controllers resembling original controller not available/controllers resembling original controller not supported/controllers resembling original controller supported</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#217">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>PC gaming hardware response delay</skos:prefLabel>
+  <dct:description>Indicates personal computer gaming hardware response delay (if applicable).</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#76"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/considerable delay/short delay/delay not noticeable</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#218">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>PC gaming hardware visual controller feedback</skos:prefLabel>
+  <dct:description>Indicates personal computer gaming hardware visual controller feedback (if applicable).</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#76"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/not supported/supported</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#136">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>comparative preservation watch and planning costs</skos:prefLabel>
+  <dct:description>Effects of a preservation action on preservation watch and planning costs: Do they increase or decrease?</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#47"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>increase/unchanged/decrease</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#232">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>lag for network play</skos:prefLabel>
+  <dct:description>Indicates the lag occuring at network play.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#80"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/considerable delay/short delay/delay not noticeable</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#233">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>supported network protocols</skos:prefLabel>
+  <dct:description>Indicates whether network protocols are supported by the game.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#80"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/not supported/supported</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#234">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>possibility of using original servers</skos:prefLabel>
+  <dct:description>Indicates it the use of the original servers is supported at network play.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#80"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/not supported/supported</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#13">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>ISO standardized format</skos:prefLabel>
+  <dct:description>Is this format a published ISO standard?</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#7"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#59">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>X sampling frequency preserved</skos:prefLabel>
+  <dct:description>Indicates whether X sampling frequency has been preserved.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#22"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#60">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>Y sampling frequency preserved</skos:prefLabel>
+  <dct:description>Indicates whether Y sampling frequency has been preserved.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#22"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#61">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>sampling frequency unit</skos:prefLabel>
+  <dct:description>The unit of measurement for X Sampling Frequency and Y Sampling Frequency.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#22"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>none/inch/cm</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#64">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>output object validation performed</skos:prefLabel>
+  <dct:description>Indicates if the action validates the output-object after processing.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#24"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#99">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>ease of integration</skos:prefLabel>
+  <dct:description>Assessment of how easy it is to integrate an action into a particular server environment.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#32"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>good/acceptable/poor/not possible</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#100">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>multiple platform support</skos:prefLabel>
+  <dct:description>Indicates if an action is capable of running on different platforms</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#32"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#101">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>Linux supported</skos:prefLabel>
+  <dct:description>Indicates if an action is capable of running on Linux</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#32"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#102">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>MacOS supported</skos:prefLabel>
+  <dct:description>Indicates if an action is capable of running on MacOS</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#32"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#103">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>Windows supported</skos:prefLabel>
+  <dct:description>Indicates if an action is capable of running on Windows</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#32"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#149">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>custom metadata support</skos:prefLabel>
+  <dct:description>Indicates whether additionaly metadata can be embedded in the outcome format.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#53"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#150">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>image metadata support</skos:prefLabel>
+  <dct:description>Indicates whether image metadata can be embedded in the outcome format.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#53"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#151">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>image previews embeddable</skos:prefLabel>
+  <dct:description>Indicate whether a preview image can be embedded in the outcome format.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#53"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#115">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>ease of use</skos:prefLabel>
+  <dct:description>Assessment of how easy it is to use an action in operations</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#38"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>good/acceptable/poor</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#135">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>comparative archival storage costs</skos:prefLabel>
+  <dct:description>Effects of a preservation action on archival storage costs: Do they increase or decrease?</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#46"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>increase/unchanged/decrease</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#137">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>quantitative archival storage costs</skos:prefLabel>
+  <dct:description>Effects of a preservation action on archival storage costs, expressed as archival storage costs per object over a time period of 10 years, measured in  €.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#46"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#181">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>video game playable</skos:prefLabel>
+  <dct:description>Indicates whether the game is playable.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#69"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#182">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>video game starts</skos:prefLabel>
+  <dct:description>Indicates whether the game starts. A game starts successfully if the start screen of the game shows up. A black screen after a start attempt is not enough to evaluate this property to true.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#69"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#183">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>speed performance of game retained</skos:prefLabel>
+  <dct:description>Indicates whether the speed performance of the game has been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#69"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#30">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>TCO of action</skos:prefLabel>
+  <dct:description>Total costs of setting up and operating an action (in €)</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#10"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#44">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>coverage of objects</skos:prefLabel>
+  <dct:description>Objects supported by the action as percentage of overall objects of this content that need to be supported</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#15"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#48">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>Number of input formats supported</skos:prefLabel>
+  <dct:description>Number of input formats supported by an action</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#15"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVEINTEGER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#49">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>Number of output formats supported</skos:prefLabel>
+  <dct:description>Number of output formats supported by an action</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#15"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVEINTEGER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#133">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>number of objects supported</skos:prefLabel>
+  <dct:description>Total number of objects supported by an action</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#15"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVEINTEGER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#169">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>bits per sample equal</skos:prefLabel>
+  <dct:description>Bits per component (channel) for each pixel</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#61"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#170">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>bits per sample retained</skos:prefLabel>
+  <dct:description>Number of bits per component (channel) equal or higher compared with original.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#61"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#143">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>format complexity</skos:prefLabel>
+  <dct:description>Indicator of the complexity of a format as judged by experts in the domain</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#50"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>high/medium/low</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#158">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>format readable as plain text</skos:prefLabel>
+  <dct:description>Indicates whether the outcome format is human readable as plain text.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#50"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#171">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database character encoding</skos:prefLabel>
+  <dct:description>Character encoding used in given database representation.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#63"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#FREETEXT" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#172">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database time encoding</skos:prefLabel>
+  <dct:description>Time encoding used in given database representation.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#63"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#FREETEXT" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#173">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database number precision retained</skos:prefLabel>
+  <dct:description>Precision of number representation retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#63"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#174">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database strings encoding retained</skos:prefLabel>
+  <dct:description>Encoding of strings have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#63"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#219">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>PC standard hardware audible controller feedback</skos:prefLabel>
+  <dct:description>Indicates personal computer standard hardware audible controller feedback (if applicable).</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#75"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/not supported/supported</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#220">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>PC standard hardware force controller feedback</skos:prefLabel>
+  <dct:description>Indicates personal computer standard hardware controller force feedback (if applicable).</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#75"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/not supported/supported</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#221">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>PC standard hardware response delay</skos:prefLabel>
+  <dct:description>Indicates personal computer standard hardware response delay (if applicable).</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#75"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/considerable delay/short delay/delay not noticeable</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#222">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>PC standard hardware support</skos:prefLabel>
+  <dct:description>Indicates if and in which way personal computer standard hardware is supported.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#75"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>supported and resemble look of original controller/supported/not supported</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#223">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>PC standard hardware usability</skos:prefLabel>
+  <dct:description>Indicates personal computer standard hardware usability (if applicable).</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#75"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/not acceptable/fairly playable/well playable/perfectly playable</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#224">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>PC standard hardware visual controller feedback</skos:prefLabel>
+  <dct:description>Indicates personal computer standard hardware visual controller feedback (if applicable).</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#75"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/not supported/supported</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#152">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>error awareness</skos:prefLabel>
+  <dct:description>Indicates the presence of features built into the format that allow the detection of and recovery from errors (such as checksums)</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#54"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>recoverable/detectable/none</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#120">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>validity</skos:prefLabel>
+  <dct:description>Indicates whether the format of the object is valid.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#40"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#121">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>well-formedness</skos:prefLabel>
+  <dct:description>Indicates whether the format of the object is well formed.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#40"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#122">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>conforms</skos:prefLabel>
+  <dct:description>Indicates whether the format of the result conforms to the output format specified by the action.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#40"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#124">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>level of searchability</skos:prefLabel>
+  <dct:description>Indicates if and in which way the document is searchable.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#42"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>full/partial/no</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#125">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>text position identifiable</skos:prefLabel>
+  <dct:description>Indicates whether it is possible to determine the text position in the output representation</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#42"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#155">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>format licence costs incurred</skos:prefLabel>
+  <dct:description>Indicates whether licence costs occur at using the outcome format.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#58"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#68">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>byte-stream media support</skos:prefLabel>
+  <dct:description>Indicator for the mode in which an action supports byte stream media</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#27"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/not supported/supported as stand-alone file/supported encapsulated in file</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#69">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>cd-rom support</skos:prefLabel>
+  <dct:description>Indicates whether an action is able to access and use the cd-rom drive.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#27"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#70">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>displays box artwork</skos:prefLabel>
+  <dct:description>Indicates whether an action is capable of displaying the box artwork.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#27"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#71">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>displays context details</skos:prefLabel>
+  <dct:description>Indicates whether an action is capable of displaying the context details.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#27"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#72">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>displays description of original media</skos:prefLabel>
+  <dct:description>Indicates whether an action is capable of displaying the description of the original media.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#27"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#73">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>displays manual</skos:prefLabel>
+  <dct:description>Indicates whether an action is capable of displaying the manual</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#27"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#74">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>displays necessary system configuration</skos:prefLabel>
+  <dct:description>Indicates whether an action is capable of displaying the necessary system configuration.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#27"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#75">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>displays original media</skos:prefLabel>
+  <dct:description>Indicates whether an action is capable of displaying the original media.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#27"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#76">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>displays originally supplied additional itmes</skos:prefLabel>
+  <dct:description>Indicates whether an action is capable of displaying the originally suplied additional items (like special controllers, accessories, etc.).</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#27"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#77">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>displays reference to console video game system</skos:prefLabel>
+  <dct:description>Indicates whether an action is capable of displaying the reference to the console video game system.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#27"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#78">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>displays reference to preferred emulator</skos:prefLabel>
+  <dct:description>Indicates whether an action is capable of displaying the reference to the preferred emulator.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#27"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>yes - with system configuration/yes - without system configuration/no</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#79">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>displays region lock-out information</skos:prefLabel>
+  <dct:description>Indicates whether an action is capable of displaying the region lock-out information.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#27"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#80">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>displays TV standard information</skos:prefLabel>
+  <dct:description>Indicates whether an action is capable of displaying the TV standard information.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#27"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#81">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>displays video display frequency information</skos:prefLabel>
+  <dct:description>Indicates whether an action is capable of displaying the display frequency information.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#27"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#82">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>game start mode</skos:prefLabel>
+  <dct:description>indicates in which way video games can be started by an action.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#27"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>command line/user interface/ command line and user interface</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#83">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>keyboard support</skos:prefLabel>
+  <dct:description>Indicates whether an action is able to access and use the keyboard.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#27"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#84">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>mouse support</skos:prefLabel>
+  <dct:description>Indicates whether an action is able to access and use the mouse.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#27"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#85">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>necessary accessories supported</skos:prefLabel>
+  <dct:description>Indicates in which way necessary accessories (e.g. special controller mandatory for playing a video game) are supported by an action.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#27"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/Y/N</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#86">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>original accessories supported</skos:prefLabel>
+  <dct:description>Indicates in which way original accessories (special controller, etc.) are supported by an action.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#27"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/not supported/supported with special hardware/supported without special hardware</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#87">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>original media support</skos:prefLabel>
+  <dct:description>The way an action supports original media.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#27"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/not supported/supported with special hardware/supported without special hardware</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#88">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>OS communication type</skos:prefLabel>
+  <dct:description>The way an action communicates with the operating system.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#27"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>native/none/via network/via virtual media</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#89">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>OS pre-installed</skos:prefLabel>
+  <dct:description>Indicates whether there is an OS preinstalled in an action (in an emulator)</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#27"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#90">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>recreation level</skos:prefLabel>
+  <dct:description>Indicates on which levels an action operates to be able to run the video game.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#27"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>high level and no BIOS is needed/low level and no BIOS is needed/high level and BIOS is needed/low level and BIOS is needed</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#91">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>sound support</skos:prefLabel>
+  <dct:description>Indicates whether sound output is supported by an action</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#27"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#92">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>supported media types</skos:prefLabel>
+  <dct:description>Media types supported by an action</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#27"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/neither byte-stream nor original media supported/original media but no byte stream supported/byte stream but not original media supported/byte stream and original media supported</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#16">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>feature development costs</skos:prefLabel>
+  <dct:description>Costs for developing new features which are not available in the software but required for successful operations (€)</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#8"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#22">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>Initial hardware costs</skos:prefLabel>
+  <dct:description>Initial hardware costs arising when deploying an action (e.g. new hardware needs to be acquired to get software running) measured in €</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#8"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#23">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>Other initial setup costs</skos:prefLabel>
+  <dct:description>Setup costs of an action which do not fit to any other given setup costs, in €</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#8"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#24">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>Initial customization costs</skos:prefLabel>
+  <dct:description>Costs for customizing an action (e.g. performance-tuning), in €</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#8"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#25">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>Initial integration costs</skos:prefLabel>
+  <dct:description>Costs for integrating an action in the current environment, in €</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#8"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#26">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>Initial software licence costs</skos:prefLabel>
+  <dct:description>Initial software licence costs of an action, in €</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#8"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#27">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>Costs of external expertise for action setup</skos:prefLabel>
+  <dct:description>Cost for any external expertise required to setup an action (in €)</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#8"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#28">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>Software training costs</skos:prefLabel>
+  <dct:description>Costs for training staff in operating an action (in €)</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#8"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#29">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>Total setup costs</skos:prefLabel>
+  <dct:description>Total sum of costs needed to setup an action (in €)</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#8"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#197">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>additional supported items</skos:prefLabel>
+  <dct:description>Indicates if additional items (like game boards used in role-playing games) are supported by the game emulation itself (and therefore are not required physical), or if they are not supported and therefore are required to be physically present - otherwise the game cannot be played.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#72"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/not supported/supported</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#210">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>overlay response delay</skos:prefLabel>
+  <dct:description>Indicates overlay response delay (if applicable).</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#72"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/considerable delay/short delay/delay not noticeable</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#211">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>screen overlay support</skos:prefLabel>
+  <dct:description>Indicates whether overlays are supported</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#72"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/not supported but necessary for game play/not supported and not necessary for game play/supported but not necessary for game play/supported and necessary for game play</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#212">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>screen overlay usability</skos:prefLabel>
+  <dct:description>Indicates overlay usability (if applicable).</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#72"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/not usable/usable</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#184">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>frame rate preserved</skos:prefLabel>
+  <dct:description></dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#71"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#185">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>frame rate deviation</skos:prefLabel>
+  <dct:description></dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#71"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#186">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>quality of special effects supported by hardware</skos:prefLabel>
+  <dct:description>Indicates the quality of hardware supported special effects.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#71"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>no objects displayed/not applicable/severe differences to original/small differences to original/no differences noticeable</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#187">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>quality of 2d object layer placement</skos:prefLabel>
+  <dct:description>Indicates how good 2D object layer placement is working.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#71"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>no 2D objects displayed/not applicable/severe errors on whole image/errors noticeable but do not affect gameplay/no errors noticeable</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#188">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>quality of 2D object position placement</skos:prefLabel>
+  <dct:description>Indicates how good 2D object position placement is working.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#71"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>no 2D objects displayed/not applicable/severe errors on whole image/errors noticeable but do not affect gameplay/no errors noticeable</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#189">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>quality of 3D object calculation</skos:prefLabel>
+  <dct:description>Indicates how good 3D object calculation is working.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#71"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>no 3D objects displayed/not applicable/severe errors on whole image/errors noticeable but do not affect gameplay/no errors noticeable</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#190">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>quality of 3D object clipping</skos:prefLabel>
+  <dct:description>Indicates how good 3D object clipping is working.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#71"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>no 3D objects displayed/not applicable/severe errors on whole image/errors noticeable but do not affect gameplay/no errors noticeable</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#191">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>3D texture quality</skos:prefLabel>
+  <dct:description>Indicates the quality of 3D texture quality.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#71"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>no 3D objects displayed/not applicable/severe errors on whole image/errors noticeable but do not affect gameplay/no errors noticeable</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#192">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>degree to which screen overlay is supported</skos:prefLabel>
+  <dct:description>Indicates in which way screen overlays are supported.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#71"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/not supported/supported manually by loading image/supported by auto-detection/supported through encapsulation</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#193">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>colour quality retained</skos:prefLabel>
+  <dct:description>Indicates whether all graphics colour characteristics have been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#71"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#168">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>OCR text retained</skos:prefLabel>
+  <dct:description>Indicates whether the OCR text extracted from an image has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#60"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#147">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>format documentation availability</skos:prefLabel>
+  <dct:description>Availability of the documentation for a format</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#52"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>yes-free/yes-pay/no</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#148">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>format documentation quality</skos:prefLabel>
+  <dct:description>Judgement of the quality of documentation available for a format</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#52"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>complete/fragmentary/useless</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#47">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>Macros supported</skos:prefLabel>
+  <dct:description>Indicates if the action supports macros.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#18"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#65">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>error handling advice provided</skos:prefLabel>
+  <dct:description>Indicate whether reported error contain a handling advice/suggestion.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#25"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#67">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>error message understandability</skos:prefLabel>
+  <dct:description>Indicates tho which degree reported errors are understandable to human users.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#25"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>good/acceptable/poor/no</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#105">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>error correction</skos:prefLabel>
+  <dct:description>Indicates whether the action-tools is able to correct errors in content</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#25"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#106">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>error tolerance</skos:prefLabel>
+  <dct:description>Indicates whether the action-tool is able to tolerate errors in content</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#25"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#97">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>average memory used per Megabyte</skos:prefLabel>
+  <dct:description>Memory used per megabyte of input, measured in megabyte.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#31"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#98">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>maximum peak memory used</skos:prefLabel>
+  <dct:description>Maximum of the peak memory used in processing, measured in megabytes.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#31"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#57">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>colour profile</skos:prefLabel>
+  <dct:description>ICC profile data</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#21"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#FREETEXT" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#58">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>colour profile retained</skos:prefLabel>
+  <dct:description>Indicates whether the colour profile has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#21"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#198">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>audible feedback</skos:prefLabel>
+  <dct:description>Indicates original special controller audible feedback (if applicable).</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#73"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/not supported/supported</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#199">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>force feedback</skos:prefLabel>
+  <dct:description>Indicates original special controller force feedback (if applicable).</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#73"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/not supported/supported</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#203">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>special controller supported</skos:prefLabel>
+  <dct:description>Indicates if and under what circumstances original special controller are supported.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#73"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/not supported/supported with special hardware/supported with special software/native supported</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#204">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>special controller visual feedback</skos:prefLabel>
+  <dct:description>Indicates original special controller visual feedback (if applicable).</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#73"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/not supported/supported</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#194">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>music qualiy of the video game retained</skos:prefLabel>
+  <dct:description>Indicates whether the music quality of the video game has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#70"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#195">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>sound quality of the video game retained</skos:prefLabel>
+  <dct:description>Indicates whether the sound quality of the video game has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#70"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#196">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>speech quality of the video game retained</skos:prefLabel>
+  <dct:description>Indicates whether the speech quality of the video game has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#70"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#351">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>date of creation of document retained</skos:prefLabel>
+  <dct:description>Indicates whether the date the document was created has been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#66"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#352">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>creating author of document retained</skos:prefLabel>
+  <dct:description>Indicates whether the author who created the document has been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#66"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#353">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>description of content of document retained</skos:prefLabel>
+  <dct:description>Indicates whether the description of the document has been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#66"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#354">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>document language retained</skos:prefLabel>
+  <dct:description>Indicates whether the language the document is written in has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#66"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#355">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>document subject retained</skos:prefLabel>
+  <dct:description>Indicates whether the document's subject has been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#66"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#356">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>document title retained</skos:prefLabel>
+  <dct:description>Indicates whether the document's title has been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#66"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#108">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>stability judgement</skos:prefLabel>
+  <dct:description>Judgement of the stability of an action</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#35"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>stable/largely stable/unstable</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#37">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>Amount of logging</skos:prefLabel>
+  <dct:description>Number of characters of activity log produced upon running an action on one content object</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#13"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVEINTEGER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#38">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>Format of logging</skos:prefLabel>
+  <dct:description>The format of logging output produced by an action</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#13"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>text/xml/premis/database/none</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#43">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>error reporting</skos:prefLabel>
+  <dct:description>Indicates whether errors at action execution are reported.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#13"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#205">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>standard controller audible feedback</skos:prefLabel>
+  <dct:description>Indicates original standard controller audible feedback (if applicable).</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#74"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/not supported/supported</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#206">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>standard controller force feedback</skos:prefLabel>
+  <dct:description>Indicates original standard controller force feedback (if applicable).</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#74"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/not supported/supported</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#207">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>standard controller response delay</skos:prefLabel>
+  <dct:description>Indicates original standard controller response delay (if applicable).</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#74"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/considerable delay/short delay/delay not noticeable</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#208">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>standard controller support</skos:prefLabel>
+  <dct:description>Indicates if and under what circumstances original standard controller are supported.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#74"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/not supported/supported with special hardware/supported with special software/native supported</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#209">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>standard controller visual feedback</skos:prefLabel>
+  <dct:description>Indicates original standard controller visual feedback (if applicable).</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#74"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/not supported/supported</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#126">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>valid DC/MODS</skos:prefLabel>
+  <dct:description>Indicates if  METS-metadata contains valid DC/MODS data.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#43"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#127">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>valid MIX metadata</skos:prefLabel>
+  <dct:description>Indicates if  METS-metadata contains valid MIX data.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#43"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#129">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>valid PREMIS metadata</skos:prefLabel>
+  <dct:description>Indicates if  METS-metadata contains valid PREMIS data.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#43"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#382">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>percentage of comments preserved in documents</skos:prefLabel>
+  <dct:description>Percentage of comments preserved in documents.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#67"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#383">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>percentage of forms preserved in documents</skos:prefLabel>
+  <dct:description>Percentage of forms entirely preserved in documents.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#67"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#384">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>percentage of references preserved in documents</skos:prefLabel>
+  <dct:description>Percentage of references entirely preserved in documents.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#67"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#385">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>percentage of scripts preserved in documents</skos:prefLabel>
+  <dct:description>Percentage of scripts entirely preserved in documents.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#67"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#386">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>percentage of urls preserved in documents</skos:prefLabel>
+  <dct:description>Percentage of URLs entirely preserved in documents.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#67"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#45">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>XMP sidecar support</skos:prefLabel>
+  <dct:description>Indicates if the action is able to handle XMP sidecar files.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#16"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#123">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>comparative file size</skos:prefLabel>
+  <dct:description>Factor for relative output file size, calculated as: (size of output file / size of input file)</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#41"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#245">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>archival client machine information documented</skos:prefLabel>
+  <dct:description>Indicates whether documentation of the client machine which executed the archival process is present.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#84"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#246">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>archival process connection url documented</skos:prefLabel>
+  <dct:description>Indicates whether the connection-url used to connect to the database for executing the archival process is documented.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#84"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#247">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>archival process execution user documented</skos:prefLabel>
+  <dct:description>Indicates whether the executing user of the archival process is documented.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#84"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#248">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>archival process execution location present</skos:prefLabel>
+  <dct:description>Indicates whether the execution location of the archival process is documented.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#84"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#249">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>archival process start time present</skos:prefLabel>
+  <dct:description>Indicates whether the start of the archival process is documented.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#84"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#153">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>identification possibilities</skos:prefLabel>
+  <dct:description>Possibilies to identify the outcome format (cf. PRONOM)</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#55"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>automatic_specific/automatic_generic/automatic_tentative/manual/none</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#164">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>format validation support</skos:prefLabel>
+  <dct:description>Possibilies to validate conformance to a format.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#55"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>automatic/manual/none</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#322">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database data owner retained</skos:prefLabel>
+  <dct:description>Owner of the data in the database</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#62"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#323">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database name retained</skos:prefLabel>
+  <dct:description>Name of the database</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#62"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#324">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database purpose retained</skos:prefLabel>
+  <dct:description>Purpose of the database</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#62"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#325">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database descriptive metadata for foreign keys retained</skos:prefLabel>
+  <dct:description>Indicates whether database descriptive metadata for foreign keys have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#62"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#326">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database descriptive metadata for indexes retained</skos:prefLabel>
+  <dct:description>Indicates whether database descriptive metadata for indexes have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#62"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#327">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database descriptive metadata for primary keys retained</skos:prefLabel>
+  <dct:description>Indicates whether database descriptive metadata for primary keys have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#62"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#328">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database descriptive metadata for privileges retained</skos:prefLabel>
+  <dct:description>Indicates whether database descriptive metadata for privileges have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#62"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#329">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database descriptive metadata for roles retained</skos:prefLabel>
+  <dct:description>Indicates whether database descriptive metadata for roles have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#62"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#330">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database descriptive metadata for routines retained</skos:prefLabel>
+  <dct:description>Indicates whether database descriptive metadata for routines have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#62"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#331">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database descriptive metadata for schemas retained</skos:prefLabel>
+  <dct:description>Indicates whether database descriptive metadata for schemas have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#62"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#332">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database descriptive metadata for sequences retained</skos:prefLabel>
+  <dct:description>Indicates whether database descriptive metadata for sequences have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#62"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#333">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database descriptive metadata for tables retained</skos:prefLabel>
+  <dct:description>Indicates whether database descriptive metadata for tables have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#62"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#334">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database change history and changelog retained</skos:prefLabel>
+  <dct:description>Indicates whether database change history and changelog have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#62"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#335">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database explicit audit trail retained</skos:prefLabel>
+  <dct:description>Indicates whether database explicit audit trail has been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#62"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#336">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database implicit audit trail retained</skos:prefLabel>
+  <dct:description>Indicates whether database implicit audit trail has been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#62"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#337">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database descriptive metadata for triggers retained</skos:prefLabel>
+  <dct:description>Indicates whether database descriptive metadata for triggers have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#62"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#338">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database descriptive metadata for users retained</skos:prefLabel>
+  <dct:description>Indicates whether database descriptive metadata for users have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#62"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#339">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database descriptive metadata for views retained</skos:prefLabel>
+  <dct:description>Indicates whether database descriptive metadata for views have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#62"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#144">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>format support for column type datetime</skos:prefLabel>
+  <dct:description>Indicates whether the outcome format supports the database column type DateTime.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#51"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#145">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>format support for column type number</skos:prefLabel>
+  <dct:description>Indicates whether the outcome format supports the database column type Number.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#51"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#146">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>format support for column type string</skos:prefLabel>
+  <dct:description>Indicates whether the outcome format supports the database column type String.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#51"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#165">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>format stores interpreted data</skos:prefLabel>
+  <dct:description>Indicates whether the format contains interpreted data (as opposed to original raw data plus interpretation instructions)</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#56"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#166">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>format reinterpretation quality loss</skos:prefLabel>
+  <dct:description>Indicates whether a quality loss occurs at reinterpretating the content stored in a format</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#56"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>minimal/acceptable/not acceptable</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#300">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>DC: all metadata retained</skos:prefLabel>
+  <dct:description>Indicates whether all DC metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#4"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#225">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>game music synchronicity</skos:prefLabel>
+  <dct:description>Indicates to which degree music appears synchronous to the related video.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#78"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/severe errors apparent/small error noticeable/no error noticeable</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#226">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>game sound synchronicity</skos:prefLabel>
+  <dct:description>Indicates to which degree sound appears synchronous to the related video.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#78"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/severe errors apparent/small error noticeable/no error noticeable</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#227">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>game speech synchronicity</skos:prefLabel>
+  <dct:description>Indicates to which degree speech appears synchronous to the related video.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#78"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/severe errors apparent/small error noticeable/no error noticeable</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#93">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>ease of customization</skos:prefLabel>
+  <dct:description>How easy is it to customize an action?</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#28"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>good/acceptable/poor/not possible</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#96">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>maximum number of files in batch processing</skos:prefLabel>
+  <dct:description>Maximum number of files supported at one batch run.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#30"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVEINTEGER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#50">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>image width in pixels</skos:prefLabel>
+  <dct:description>The horizontal width of a digital image in pixel</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#19"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVEINTEGER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#51">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>image width equal</skos:prefLabel>
+  <dct:description>true iff image width has been preserved.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#19"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#52">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>image height in pixels</skos:prefLabel>
+  <dct:description>The vertical height of a digital image in pixel</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#19"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVEINTEGER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#53">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>image height equal</skos:prefLabel>
+  <dct:description>true iff image height has been preserved.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#19"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#54">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>image resolution as string (width x height) as string</skos:prefLabel>
+  <dct:description>Width and height of an image in number of pixels represented as string (e.g. 1024x768).</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#19"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#FREETEXT" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#357">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>document character set retained</skos:prefLabel>
+  <dct:description>Character set used in the document.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#64"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#358">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>document font encoding retained</skos:prefLabel>
+  <dct:description>Font encoding used in the document.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#64"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#359">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>document font text marks</skos:prefLabel>
+  <dct:description>Indicates if font text marks exist in the document.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#64"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#360">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>number of characters in document</skos:prefLabel>
+  <dct:description>Number of characters the document consists of.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#64"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVEINTEGER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#361">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>percentage of diacritics retained</skos:prefLabel>
+  <dct:description>Percentage of retained diacritics</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#64"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#362">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>percentage of equation captions retained</skos:prefLabel>
+  <dct:description>Percentage of retained equation captions</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#64"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#363">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>percentage of equation positions retained</skos:prefLabel>
+  <dct:description>Percentage of retained equation positions</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#64"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#364">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>percentage of equation sizes retained</skos:prefLabel>
+  <dct:description>Percentage of retained equation sizes</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#64"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#365">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>percentage of equation structures retained</skos:prefLabel>
+  <dct:description>Percentage of retained equation structures</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#64"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#366">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>number of equations in document</skos:prefLabel>
+  <dct:description>Total number of equations in document</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#64"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVEINTEGER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#367">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>percentage of retained figure captions</skos:prefLabel>
+  <dct:description>Percentage of retained figure captions in document</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#64"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#368">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>percentage of figures with color depth retained</skos:prefLabel>
+  <dct:description>Percentage of figures with retained colour depth</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#64"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#369">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>percentage of figures with positions retained</skos:prefLabel>
+  <dct:description>Percentage of figures with their position retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#64"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#370">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>percentage of figures with resolution retained</skos:prefLabel>
+  <dct:description>Percentage of retained with their resolution retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#64"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#371">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>percentage of figures with size retained</skos:prefLabel>
+  <dct:description>Percentage of figures with their size retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#64"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#372">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>number of figures in document</skos:prefLabel>
+  <dct:description>Total number of figures in document.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#64"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVEINTEGER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#373">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>font colors retained</skos:prefLabel>
+  <dct:description>Indicates whether the colour of the font has been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#64"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#374">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>font size retained</skos:prefLabel>
+  <dct:description>Indicates whether the size of the font has been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#64"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#375">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>font style retained</skos:prefLabel>
+  <dct:description>Indicates whether the style of the font has been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#64"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#376">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>umlauts retained</skos:prefLabel>
+  <dct:description>Indicates whether umlauts have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#64"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#377">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>percent of pages with orientation retained</skos:prefLabel>
+  <dct:description>Percentage of pages with orientation (landscape, portrait) retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#64"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#378">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>percentage of pages with size retained</skos:prefLabel>
+  <dct:description>Percentage of pages with size (A4, letter, ...) retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#64"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#379">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>watermark in document retained</skos:prefLabel>
+  <dct:description>Indicates whether the watermark embedded into document has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#64"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#380">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>percentage of pages with background preserved</skos:prefLabel>
+  <dct:description>Percentage of pages with their background (colour, image, ...) preserved</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#64"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#381">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>document text equal</skos:prefLabel>
+  <dct:description>Indicates whether the document represented as one string is equal</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#64"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#111">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>configuration methods</skos:prefLabel>
+  <dct:description>Means available for configuring an action</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#36"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>internal only/external parameter/configuration file</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#114">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>ease of adminstration</skos:prefLabel>
+  <dct:description>Assessment of how easy it is to administer an action</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#36"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>good/acceptable/poor</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#116">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>object-specific configuration</skos:prefLabel>
+  <dct:description>Indicator how the action manages object-level specific configuration settings</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#36"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>internal only/external parameter/configuration file/object encapsulated config</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#200">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>response delay to overlay</skos:prefLabel>
+  <dct:description>Overlay response delay</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#77"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/considerable delay/short delay/delay not noticeable</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#201">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>input overlay supported</skos:prefLabel>
+  <dct:description>Indicates whether input overlay is supported</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#77"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#202">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>input overlay usable</skos:prefLabel>
+  <dct:description>Degree to which input overlay is usable</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#77"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>not applicable/not usable/usable</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#290">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>IPTC: all metadata retained</skos:prefLabel>
+  <dct:description>Indicates whether all IPTC metadata has been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#3"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#228">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>box artwork available for video game</skos:prefLabel>
+  <dct:description>Indicates whether box artwork is available.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#79"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#229">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>documentation of video game available</skos:prefLabel>
+  <dct:description>Indicates whether the manual is available.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#79"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#230">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>documentation of original video game media available</skos:prefLabel>
+  <dct:description>Indicates whether information about the original game media is available.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#79"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#231">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>system requirements specification available</skos:prefLabel>
+  <dct:description>Indicates whether an actual systems requirements specification is available.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#79"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#104">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>community activity</skos:prefLabel>
+  <dct:description>Indicates if an action is used and supported by an active community</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#33"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#109">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>support available</skos:prefLabel>
+  <dct:description>Indicates whether community support is available for an action</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#33"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#110">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>action under development</skos:prefLabel>
+  <dct:description>Indicates whether the action-tool is still being further developed by an active community</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#33"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#31">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>licencing schema</skos:prefLabel>
+  <dct:description>This denotes the licencing schema of an action - TBD! more than one measure? e.g. open/closed, redistribute or not, etc. also possible: list of known licences</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#11"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#175">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>software licence source code</skos:prefLabel>
+  <dct:description>Indicates if and in which way the source code of the software is accessible.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#11"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>openSource/closedSource</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#179">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>installation of video game necessary</skos:prefLabel>
+  <dct:description>Indicates whether it is necessary to install the game, before being able to play it.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#68"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#180">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>configuration of video game</skos:prefLabel>
+  <dct:description>The way game configuration takes place.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#68"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>manual/pre-configured/not needed</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#128">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>valid EXIF metadata</skos:prefLabel>
+  <dct:description>Indicates if XMP-metadata contains valid EXIF data.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#44"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#130">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>valid IPTC metadata</skos:prefLabel>
+  <dct:description>Indicates if  XMP-metadata contains valid IPTC data.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#44"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#131">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>valid Doublin Core (DC) metadata</skos:prefLabel>
+  <dct:description>Indicates if XMP-metadata contains valid Dublin Core data.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#44"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#10">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>elapsed time per MB</skos:prefLabel>
+  <dct:description>elapsed processing time per Megabyte of input data, measured in milliseconds</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#6"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#11">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>elapsed time per object</skos:prefLabel>
+  <dct:description>elapsed processing time per object processed, measured in milliseconds</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#6"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#12">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>cpu time per MB</skos:prefLabel>
+  <dct:description>time of the CPU consumed by the process for each MB of input data, measured in milliseconds</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#6"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#241">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>datetime elements conform to SQL-99</skos:prefLabel>
+  <dct:description>Indicates if datetime representations accord to SQL-99 standard.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#82"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#112">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>documentation availability</skos:prefLabel>
+  <dct:description>Availability of documentation to support the operations of an action</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#37"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>yes-free/yes-pay/no</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#113">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>documentation quality</skos:prefLabel>
+  <dct:description>Quality of documentation to support the operations of an action</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#37"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#ORDINAL" />
+  <restriction>complete/fragmentary/useless</restriction>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#387">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>audio sampling frequency</skos:prefLabel>
+  <dct:description>Number of samples per second measured in hz/sec</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#86"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVENUMBER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#388">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>number of audio channels</skos:prefLabel>
+  <dct:description>Number of channels in an audio file</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#86"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVEINTEGER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#389">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>audio bitrate</skos:prefLabel>
+  <dct:description>The bitrate of an audio stream measured in kbit/sec</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#86"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#POSITIVEINTEGER" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#394">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>audio length identical</skos:prefLabel>
+  <dct:description>Indicates whether the length of the audio file is identical</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#86"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#395">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>content retained</skos:prefLabel>
+  <dct:description></dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#86"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#396">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>channel mapping retained</skos:prefLabel>
+  <dct:description></dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#86"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#397">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>audio sampling rate retained</skos:prefLabel>
+  <dct:description></dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#86"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#398">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>audio bit depth retained</skos:prefLabel>
+  <dct:description></dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#86"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#399">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>number of audio channels retained</skos:prefLabel>
+  <dct:description></dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#86"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#301">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>bitstreams of database blobs retained</skos:prefLabel>
+  <dct:description>Indicates whether bitstreams of database binary large objects (blobs) have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#85"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#302">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>content of database blobs retained</skos:prefLabel>
+  <dct:description>Indicates whether content of database binary large objects (blobs) have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#85"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#303">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database blobs format metadata retained</skos:prefLabel>
+  <dct:description>Indicates whether format metadata of database binary large objects (blobs) have been retained.</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#85"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#304">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database candidate keys (indexes) retained</skos:prefLabel>
+  <dct:description>Indicates whether candidate keys (indexes) have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#85"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#305">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database check constraints retained</skos:prefLabel>
+  <dct:description>Indicates whether database check constraints have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#85"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#306">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database columns datatypes retained</skos:prefLabel>
+  <dct:description>Indicates whether datatypes of database columns have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#85"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#307">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database foreign keys retained</skos:prefLabel>
+  <dct:description>Indicates whether database foreign keys have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#85"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#308">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database primary keys retained</skos:prefLabel>
+  <dct:description>Indicates whether database primary keys have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#85"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#309">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database privileges retained</skos:prefLabel>
+  <dct:description>Indicates whether database privileges have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#85"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#310">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database roles retained</skos:prefLabel>
+  <dct:description>Indicates whether database roles have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#85"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#311">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database routines retained</skos:prefLabel>
+  <dct:description>Indicates whether database routines have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#85"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#312">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database schemas retained</skos:prefLabel>
+  <dct:description>Indicates whether database schemas have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#85"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#313">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database sequences retained</skos:prefLabel>
+  <dct:description>Indicates whether database sequences have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#85"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#314">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database strings retained</skos:prefLabel>
+  <dct:description>Indicates whether database strings have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#85"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#315">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database system tables retained</skos:prefLabel>
+  <dct:description>Indicates whether database system tables have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#85"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#316">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database table column counts equal</skos:prefLabel>
+  <dct:description>Indicates whether the total number of columns of all tables is the same</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#85"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#317">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database table row counts equal</skos:prefLabel>
+  <dct:description>Indicates whether the total number of rows of all tables is the same</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#85"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#318">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database triggers retained</skos:prefLabel>
+  <dct:description>Indicates whether database triggers have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#85"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#319">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database user defined datatypes retained</skos:prefLabel>
+  <dct:description>Indicates whether database user defined datatypes (UDT) have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#85"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#320">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database users retained</skos:prefLabel>
+  <dct:description>Indicates whether database users have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#85"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+<rdf:Description rdf:about="http://purl.org/DP/quality/measures#321">
+  <rdf:type rdf:resource="http://purl.org/DP/quality#Measure"/>
+  <skos:prefLabel>database views retained</skos:prefLabel>
+  <dct:description>Indicates whether database views have been retained</dct:description>
+  <attribute rdf:resource="http://purl.org/DP/quality/attributes#85"/>
+  <scale rdf:resource="http://purl.org/DP/quality/scales#BOOLEAN" />
+</rdf:Description>
+
+
+</rdf:RDF>     <!-- Generated with csvmod2rdf 0.3.1  -->

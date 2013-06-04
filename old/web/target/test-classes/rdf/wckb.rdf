@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE rdf:RDF [
+	 <!ENTITY kb 'http://watch.scape-project.eu/kb#'>
+	 <!ENTITY rdf 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'>
+	 <!ENTITY rdfs 'http://www.w3.org/2000/01/rdf-schema#'>
+]>
+<rdf:RDF xmlns:kb="&kb;"
+	 xmlns:rdf="&rdf;"
+	 xmlns:rdfs="&rdfs;">
+<kb:Entity rdf:about="&kb;wckb_Class18"
+	 kb:name="entity_cp1"
+	 rdfs:label="wckb_Class18">
+	<kb:instance_of_enititytype rdf:resource="&kb;wckb_Class19"/>
+</kb:Entity>
+<kb:EntityType rdf:about="&kb;wckb_Class19"
+	 kb:name="Content Profile"
+	 rdfs:label="wckb_Class19">
+	<kb:description>A Content Profile describes a collection of digital objects and summarizes its significant properties</kb:description>
+	<kb:described_by_property rdf:resource="&kb;wckb_Class20"/>
+	<kb:described_by_property rdf:resource="&kb;wckb_Class22"/>
+</kb:EntityType>
+<kb:Property rdf:about="&kb;wckb_Class20"
+	 kb:description="The size of the digital objects in the collection"
+	 kb:name="cp_size"
+	 rdfs:label="wckb_Class20">
+	<kb:has_datatype rdf:resource="&kb;wckb_Class21"/>
+	<kb:default_data_unit rdf:resource="&kb;wckb_Class30"/>
+</kb:Property>
+<kb:DataType rdf:about="&kb;wckb_Class21"
+	 kb:value="integer"
+	 rdfs:label="wckb_Class21"/>
+<kb:Property rdf:about="&kb;wckb_Class22"
+	 kb:description="Describes the number of objects in the collection."
+	 kb:name="cp_object_count"
+	 rdfs:label="wckb_Class22">
+	<kb:has_datatype rdf:resource="&kb;wckb_Class21"/>
+</kb:Property>
+<kb:PropertyValue rdf:about="&kb;wckb_Class25"
+	 kb:value="424242"
+	 rdfs:label="wckb_Class25">
+	<kb:instance_of_property rdf:resource="&kb;wckb_Class20"/>
+</kb:PropertyValue>
+<kb:PropertyValue rdf:about="&kb;wckb_Class26"
+	 kb:value="42"
+	 rdfs:label="wckb_Class26">
+	<kb:instance_of_property rdf:resource="&kb;wckb_Class22"/>
+</kb:PropertyValue>
+<kb:DataUnit rdf:about="&kb;wckb_Class30"
+	 kb:value="bytes"
+	 rdfs:label="wckb_Class30"/>
+</rdf:RDF>

@@ -1,0 +1,263 @@
+{{#partial "title"}}Scout - Browse - Value{{/partial}} {{#partial
+"NavBrowseClass"}}active{{/partial}} {{#partial "content"}}
+<div class="container">
+	{{#if propertyValue}}
+	{{#propertyValue}}
+	<ul class="breadcrumb">
+		<li><a href="{{mustacheletPath}}/browse">Categories</a> <span
+			class="divider">/</span></li>
+		<li><a href="{{mustacheletPath}}/browse/type/{{entity.type.id}}">{{entity.type.name}}</a>
+			<span class="divider">/</span></li>
+		<li><a href="{{mustacheletPath}}/browse/entity/{{entity.id}}">{{entity.name}}</a>
+			<span class="divider">/</span></li>
+		<li class="active">{{property.name}}</li>
+	</ul>
+	<div class="page-header">
+		<h1>{{property.name}} <small>{{property.description}}</small></h1>
+	</div>
+	<br />
+	<div class="container jtextfill"
+		style="min-height: 75px; margin: 5px; padding: 0">
+		<span class="dyntextval" style="height: 75px; white-space: nowrap;">{{#value-render
+			this}}{{/value-render}}</span>
+	</div>
+	<p>
+		<strong>Data type:</strong> {{property.datatype.description}}{{#if
+		property.renderingHint}} <small>({{property.renderingHint.description}})</small>{{/if}}.
+	</p>
+	<p>
+		<strong>Property history:</strong> There are <a href="#history">{{propertyValueVersionCount}}
+			different values</a> of this property, this is number {{version}} (starts
+		at 0).
+	</p>
+	<p>
+		<strong>Value provenance:</strong> Current value was measured <a
+			href="#provenance">{{versionMeasurementCount}} times by
+			{{versionSourceCount}} different sources</a>.
+	</p>
+
+	<br />
+	<h2 id="history">Property history</h2>
+	<p>This property has changed in time as represented in the chart
+		below. Click on the chart dots for more information.</p>
+	<div id="historyGraph">Loading property history...</div>
+
+	<h2 id="provenance">Value provenance</h2>
+	<p>The current value for this property was measured on the
+		following dates.</p>
+	<div id="versionMeasurementList">Loading version provenance...</div>
+
+	{{/propertyValue}} {{^propertyValue}}
+	<div class="alert alert-error">
+		<b>Not found!</b> Could not find property value of category
+		{{typeName}}, entity {{entityName}}, property {{propertyName}} and
+		version {{version}}.
+	</div>
+	{{/propertyValue}}
+	{{/if}}
+	{{#unless propertyValue}}
+	<div class="alert alert-error">
+		<b>Not found!</b> Could not find value {{id}}.
+	</div>
+	{{/unless}}
+</div>
+{{/partial}} {{#partial "scripts"}}
+<script src="{{contextPath}}/jquery-textfill/jquery-textfill.js"
+	type="text/javascript"></script>
+<script>
+	$('.jtextfill').textfill({maxFontPixels: 100});
+	
+	var api = "/api/measurement.json/list?value={{id}}"
+	var paginator = Paginator({{versionMeasurementCount}}, api, 20, 'version_measurement_list.hbs', '#versionMeasurementList', '{{contextPath}}', '{{mustacheletPath}}');
+	paginator.init();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/2.3.5/highcharts.js" type="text/javascript"/>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/2.3.5/modules/exporting.js" type="text/javascript"/>
+<!-- Additional files for the Highslide popup effect -->
+<script type="text/javascript"
+	src="http://www.highcharts.com/highslide/highslide-full.min.js"></script>
+<script type="text/javascript"
+	src="http://www.highcharts.com/highslide/highslide.config.js"
+	charset="utf-8"></script>
+<link rel="stylesheet" type="text/css"
+	href="http://www.highcharts.com/highslide/highslide.css" />
+<script type="text/javascript">
+$(function () {
+    var chart;
+    $(document).ready(function() {
+    	// static variables
+    	var datatype = "{{propertyValue.property.datatype}}";
+    	var renderingHint =  "{{propertyValue.property.renderingHint}}";
+    	
+    	var yFormatter = function(value) {
+    		console.log("value: "+value);
+    		var ret;
+    		 if(datatype == 'STRING_DICTIONARY') {
+     	    	ret = value;
+     	    } else if(datatype == 'INTEGER' || datatype == 'LONG' ||datatype == 'FLOAT' || datatype == 'DOUBLE' || datatype == 'DATE') {
+     	    	ret = ValueRenderer.render(value, datatype, renderingHint);
+     	    } else {
+     	    	// value is version
+     	    	ret = "version "+value;
+     	    }
+    		 console.log("formatted: "+ret);
+    		 return ret;
+    	};
+    	
+        // define the options
+        var options = {
+    
+            chart: {
+                renderTo: 'historyGraph'
+            },
+    
+            title: {
+                text: null
+            },
+    
+            subtitle: {
+                text: null
+            },
+    
+            xAxis: {
+                type: 'datetime'
+            },
+    
+            yAxis: [{ // left y axis
+                title: {
+                    text: null
+                },
+                labels: {
+                    align: 'left',
+                    x: 3,
+                    y: 16,
+                    formatter: function() {
+                        return yFormatter(this.value);
+                    }
+                },
+                showFirstLabel: false
+            }, { // right y axis
+                linkedTo: 0,
+                gridLineWidth: 0,
+                opposite: true,
+                title: {
+                    text: null
+                },
+                labels: {
+                    align: 'right',
+                    x: -3,
+                    y: 16,
+                    formatter: function() {
+                    	return yFormatter(this.value);
+                    }
+                },
+                showFirstLabel: false
+            }],
+    
+            tooltip: {
+                shared: true,
+                crosshairs: true
+            },
+    
+            plotOptions: {
+                series: {
+                    cursor: 'pointer',
+                    point: {
+                        events: {
+                            click: function() {
+                                hs.htmlExpand(null, {
+                                    pageOrigin: {
+                                        x: this.pageX,
+                                        y: this.pageY
+                                    },
+                                    headingText: this.name,
+                                    maincontentText: 'Taken at ' + moment(this.x).format('dddd, D MMMM YYYY, h:mm:ss a') +'<br/> '+
+                                        'From source ???', 
+                                });
+                            }
+                        }
+                    },
+                    marker: {
+                        lineWidth: 1
+                    }
+                }
+            },
+        };
+    
+        var api = "{{contextPath}}/api/measurement.json/list?entity={{propertyValue.entity.id}}&property={{propertyValue.property.id}}&significant=true";
+        
+        var getMeasurements = function(api, start, max) {
+        	var apiRequest = api + "&start="+start+"&max="+max;
+        	
+        	$.getJSON(apiRequest, function(data) {
+            	var measurements = [];
+            	var myseries = {};
+            	var datatype = '{{propertyValue.property.datatype}}';
+            	
+            	for (var i = 0; i < data.length; i++) {
+            	    var measurement = data[i];
+            	    var date = new Date(measurement.timestamp);
+            	    var value = measurement.propertyValue.value;
+            	    var version = measurement.propertyValue.version;
+            	    if(datatype == 'STRING_DICTIONARY') {
+            	    	for(var j = 0; j < value.length; j++) {
+            	    		var keySeries = myseries[value[j].key];
+            	    		if(!keySeries) {
+            	    			keySeries = {measurements: []};
+            	    			myseries[value[j].key] = keySeries;
+            	    		}
+            	    		var realValue = value[j].value;
+            	    		var intValue = parseInt(realValue);
+            	    		if(intValue == NaN) {
+            	    			keySeries.measurements.push({name: realValue, x: date, y: version});
+            	    		} else {
+            	    			keySeries.measurements.push({name: realValue, x: date, y: intValue});
+            	    		}
+            	    		
+            	    	}
+            	    } else if(datatype == 'INTEGER' || datatype == 'LONG' ||datatype == 'FLOAT' || datatype == 'DOUBLE') {
+            	    	measurements.push({name: ValueRenderer.renderValue(measurement.propertyValue), x: date, y: value});	
+            	    } else if(datatype == 'DATE') {
+            	    	var dateValue = new Date(value);
+            	    	measurements.push({name: ValueRenderer.renderValue(measurement.propertyValue), x: date, y: dateValue});	
+            	    } else {
+            	    	measurements.push({name: ValueRenderer.renderValue(measurement.propertyValue), x: date, y: version});
+            	    }
+            	    
+            	}
+            	// Define date series
+            	if(datatype == 'STRING_DICTIONARY') {
+            		options.series = [];
+            		for(var key in myseries) {
+            			var measurements = myseries[key].measurements;
+            			options.series.push({
+            				name: key,
+            				data: measurements,
+            				 lineWidth: 4,
+                             marker: {
+                                 radius: 4
+                             },
+            			});
+            		}
+            	} else {
+            		options.series = [{
+                        name: 'All measurements',
+                        data: measurements,
+                        lineWidth: 4,
+                        marker: {
+                            radius: 4
+                        },
+                    }];
+            	}
+            	chart = new Highcharts.Chart(options);
+            });
+        };
+    	
+        getMeasurements(api, 0, 100);
+        
+    
+	});
+});
+</script>
+{{/partial}} {{>base}}

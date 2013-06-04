@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>
+    {{#block "title"}}Scout: a preservation watch system{{/block}}
+  </title>
+  <!-- Bootstrap -->
+  <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css" rel="stylesheet">
+  {{#block "headstyles"}}
+  {{/block}}
+  
+  {{#block "headscripts"}}
+  {{/block}}
+</head>
+<body>
+  {{> header}}
+  {{#block "content"}}
+    Define #partial content.
+  {{/block}}
+  {{> jslibs}}
+  {{#block "scripts"}}
+  {{/block}}
+  {{> footer}}
+</body>
+</html>

@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!--
+  Digital Preservation: Control Policy - Qualifiers
+
+  Changes:
+  - separated from control policies
+-->    
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+<rdf:RDF xmlns="http://purl.org/DP/control-policy#"
+     xml:base="http://purl.org/DP/control-policy/"
+     xmlns:dct="http://purl.org/dc/terms/"
+     xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <owl:Ontology rdf:about="http://purl.org/DP/control-policy/qualifiers"/>
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Qualifiers
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+  <rdf:Description rdf:about="http://purl.org/DP/control-policy/qualifiers#scheme">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
+    <dct:title>Qualifiers</dct:title>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/control-policy/qualifiers#EQ">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <skos:prefLabel>equal</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://purl.org/DP/control-policy/qualifiers#scheme"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/control-policy/qualifiers#GT">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <skos:prefLabel>greater than</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://purl.org/DP/control-policy/qualifiers#scheme"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/control-policy/qualifiers#LT">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <skos:prefLabel>less than</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://purl.org/DP/control-policy/qualifiers#scheme"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/control-policy/qualifiers#GE">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <skos:prefLabel>greater than or equal to</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://purl.org/DP/control-policy/qualifiers#scheme"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/control-policy/qualifiers#LE">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <skos:prefLabel>less than or equal to</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://purl.org/DP/control-policy/qualifiers#scheme"/>
+  </rdf:Description>
+
+</rdf:RDF>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+	<display-name>Watch Component</display-name>
+	<servlet>
+		<servlet-name>jersey</servlet-name>
+		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+		<init-param>
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>eu.scape_project.watch.rest.resource</param-value>
+		</init-param>
+		<init-param>
+			<param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
+			<param-value>com.sun.jersey.api.container.filter.PostReplaceFilter</param-value>
+		</init-param>
+		<!-- REMOVE TRACE WHEN IN PRODUCTION <init-param> <param-name>com.sun.jersey.config.feature.Trace</param-name> 
+			<param-value>true</param-value> </init-param> -->
+		<init-param>
+			<param-name>api.version</param-name>
+			<param-value>0.1</param-value>
+		</init-param>
+		<init-param>
+			<param-name>swagger.version</param-name>
+			<param-value>1.0</param-value>
+		</init-param>
+		<init-param>
+			<param-name>swagger.api.basepath</param-name>
+			<param-value>http://localhost:8080/api</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>templateservice</servlet-name>
+		<servlet-class>eu.scape_project.watch.web.TemplateService</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>jersey</servlet-name>
+		<url-pattern>/api/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>templateservice</servlet-name>
+		<url-pattern>/web/*</url-pattern>
+	</servlet-mapping>
+	<listener>
+		<listener-class>eu.scape_project.watch.listener.ApplicationListener</listener-class>
+	</listener>
+	<filter>
+		<filter-name>ApiOriginFilter</filter-name>
+		<filter-class>eu.scape_project.watch.utils.ApiOriginFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>ApiOriginFilter</filter-name>
+		<url-pattern>/api/*</url-pattern>
+	</filter-mapping>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/web/error/404</location>
+	</error-page>
+</web-app>

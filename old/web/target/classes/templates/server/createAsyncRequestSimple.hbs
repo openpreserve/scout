@@ -1,0 +1,271 @@
+{{#partial "title"}}Scout - Create Request{{/partial}} {{#partial
+"content"}}
+<form id="trigger_form" class="container form-horizontal" method="POST">
+	<legend>New trigger</legend>
+
+	<div id="content">
+	<div class="control-group">
+		<label class="control-label" for="description">Name</label>
+		<div class="controls">
+			<input id="description" name="description" type="text"
+				class="input-xxlarge validation" placeholder="Label to identify your trigger"
+				required data-validation-required-message="Trigger must have a name">
+		</div>
+	</div>
+
+	<h4>Initiators</h4>
+	<div class="control-group">
+		<label class="control-label" for="periodDaily">Schedule</label>
+		<div class="controls">
+			<label class="radio inline"> <input type="radio"
+				name="periodOptions" id="periodDaily" value="daily" checked>daily
+			</label> <label class="radio inline"> <input type="radio"
+				name="periodOptions" id="periodWeekly" value="weekly">weekly
+			</label> <label class="radio inline"> <input type="radio"
+				name="periodOptions" id="periodMontly" value="monthly">monthly
+			</label> <label class="radio inline"> <input type="radio"
+				name="periodOptions" id="periodQuarterly" value="quarterly">quaterly
+			</label> <label class="radio inline"> <input type="radio"
+				name="periodOptions" id="periodYearly" value="yearly">yearly
+			</label> <label class="radio inline"> <input type="radio"
+				name="periodOptions" id="periodNever" value="never">never
+			</label>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="addCategory">Categories</label>
+		<div class="controls">
+			<a id="addCategory" class="btn btn-link">add category</a>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="addEntity">Entities</label>
+		<div class="controls">
+			<a id="addEntity" class="btn btn-link">add entity</a>
+		</div>
+	</div>
+
+	<div class="control-group">
+		<label class="control-label" for="addProperty">Properties</label>
+		<div class="controls">
+			<a id="addProperty" class="btn btn-link">add property</a>
+		</div>
+	</div>
+
+	<h4>Question</h4>
+	<div id="question_template" class="row-fluid">
+		
+	</div>
+
+	<h4>Preservation plan</h4>
+	<div class="control-group">
+		<label class="control-label" for="plan">Plan Id</label>
+		<div class="controls">
+			<input id="plan" name="plan" type="text" class="input-xxlarge"
+				placeholder="The plato preservation plan id">
+
+		</div>
+	</div>
+
+	<h4>Notifications</h4>
+	<div class="control-group">
+		<label class="control-label" for="email">Email</label>
+		<div class="controls">
+			<input id="email" name="email" type="text" class="input-xxlarge validation"
+				placeholder="The email where to send notification"
+				required data-validation-required-message="Must define a notification email">
+
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls">
+			<button id="createTriggerButton" type="submit" class="btn btn-large btn-success">
+				<i class="icon-plus icon-white"></i> Create trigger
+			</button>
+		</div>
+	</div>
+	</div>
+</form>
+{{/partial}} {{#partial "scripts"}}
+<script type="text/javascript">
+	$(function () { $(".validation").jqBootstrapValidation(); } );
+</script>
+<script type="text/javascript">
+	var lookupParameter = function(parameters, parameterId) {
+		for (var i = 0; i < parameters.length; i++) {
+			if(parameters[i].id == parameterId) {
+				return parameters[i];
+			}
+		}
+	};
+	
+	var getTemplateId = function() {
+		var templateId;
+		var params = $.deparam.querystring(true);
+		if (params && params.template) {
+			templateId = params.template;
+		}
+		return templateId;
+	};
+	
+	var parseBindings = function(form) {
+		var form_inputs = form.serializeArray();
+		var postdata = {};
+	    var bindings = new Array();
+	    var i = 0;
+	    
+	    $.each(form_inputs, function(index, field) {
+	    	var key = field.name;
+	    	var value = field.value;
+	    	
+	    	try {
+		    	if(key.indexOf("node_") == 0) {
+		    		var sparqlKey = key.substring(5);
+		    		bindings[i++] = {name: 'binding', value: sparqlKey+'|'+value};
+		    	} else if(key.indexOf("long-storagevolume-number_") == 0) {
+		    		var sparqlKey = key.substring(26);
+		    		var number = value;
+		    		var unit = form_inputs[index+1].value;
+		    		
+		    		if(unit == 'MB') {
+		    			number = number*1048576;
+		    		} else if(unit == 'GB') {
+		    			number = number*1073741824;
+		    		} else if(unit == 'TB') {
+		    			number = number*1099511627776;
+		    		}
+		    		
+		    		bindings[i++] = {name: 'binding', value: sparqlKey+'|'+number};
+		    	} else if(key.indexOf("long-storagevolume-unit_") == 0) {
+		    		// parsed in above condition
+		    	} else {
+		    		postdata[key] = value;
+		    		// console.log('Parameter not supported: '+key);
+		    	}
+	    	} catch(error) {
+	    		console.log('Could not parse parameter: '+error);
+	    	}
+	    });
+	    
+	    postdata['binding'] = bindings;
+	    return postdata;
+	};
+	
+	var overrideTriggerForm = function(e) {
+	    var form = $(this);
+	    var bindings = parseBindings(form);
+	    search(bindings);
+	    
+	    return false;
+	 };
+
+	var createTrigger = function(templateId) {
+		return function(e) {
+			var button = $(this);
+			if(!button.hasClass('disabled')) {
+				var form = $("#trigger_form");
+				var postdata = parseBindings(form);
+				
+				postdata['template'] = templateId;
+				var jqxhr = $.post("", postdata, function() {
+					console.log("created trigger");
+					document.location = "{{mustacheletPath}}/dashboard";
+				});
+				
+				jqxhr.fail(function() {
+					// TODO alert that it failed
+					console.log("Failed to create trigger :(");
+				});
+			}
+			return false;
+		};
+	};
+
+	var injectFragmentData = function() {
+		var params = $.deparam.querystring(true);
+		var templateId = params.template;
+		var bindings;
+		if (params.binding instanceof Array) {
+			bindings = params.binding;
+		} else {
+			var bindings = new Array();
+			bindings[0] = params.binding;
+		}
+		
+		
+		if(templateId) {
+			var apiRequest = "{{contextPath}}/api/questiontemplate.json/"+templateId;
+			
+			$.getJSON(apiRequest, function(questionTemplate) {
+				var template = Handlebars.templates['questionTemplateForTrigger.hbs'];
+				var html = template(questionTemplate);
+				$('#question_template').html(html);
+				
+				$('#description').val(questionTemplate.title);
+				
+				// inject bindings
+				for (var i = 0; i < bindings.length; i++) {
+					var split = bindings[i].split("|");
+					var parameterId = split[0];
+					var parameter = lookupParameter(questionTemplate.parameters, parameterId);
+					var value = split[1];
+					
+					console.log(parameter.label+": "+value);
+					if(parameter.parameterType == "NODE") {
+						$('input[name="node_'+parameterId+'"]').val(value);
+					} else if(parameter.parameterType == "LITERAL") {
+						if(parameter.literalFilterDatatype == "LONG") {
+							var number = parseInt(value);
+							if(parameter.literalFilterRenderingHint == "STORAGE_VOLUME") {
+								var baseNumber = 0;
+								var unit = "MB";
+								if(number % 1099511627776==0) {
+									baseNumber = number/1099511627776;
+									unit = "TB";
+								} else if(number % 1073741824==0) {
+									baseNumber = number/1073741824;
+									unit = "GB";
+								} else if(number % 1048576==0) {
+									baseNumber = number/1048576;
+									unit = "MB";
+								} else {
+									// TODO support Byte
+								}
+								
+								$('input[name="long-storagevolume-number_'+parameterId+'"]').val(baseNumber);
+								$('select[name="long-storagevolume-unit_'+parameterId+'"]').val(unit);
+								
+							} else {
+								// TODO alert
+							}
+						} else {
+							// TODO alert
+						}
+					} else {
+						// TODO alert
+					}
+				}
+			});
+	
+			
+		} else {
+			var template = Handlebars.templates['questionTemplateList.hbs'];
+			// TODO fetch template list and add as an input to the temaplate
+			var context = {
+					mustacheletPath: "{{mustacheletPath}}"
+			};
+			var html = template(context);
+			$('#content').html(html);
+		}
+	};
+
+	$(document).ready(function() {
+		injectFragmentData();
+		$("#trigger_form").submit(overrideTriggerForm);
+		var templateId = getTemplateId();
+		$('#createTriggerButton').click(createTrigger(templateId));
+	});
+</script>
+{{/partial}} {{> base}}
+
+

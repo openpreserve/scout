@@ -1,0 +1,147 @@
+{{#partial "title"}}Scout - Create Request{{/partial}} {{#partial
+"content"}}
+<form class="container form-horizontal" method="POST">
+	<legend>New trigger</legend>
+
+	<div class="control-group">
+		<label class="control-label" for="description">Name</label>
+		<div class="controls">
+			<input id="description" name="description" type="text"
+				class="input-xxlarge" placeholder="Label to identify your trigger">
+		</div>
+	</div>
+
+	<h4>Initiators</h4>
+	<div class="control-group">
+		<label class="control-label" for="periodDaily">Schedule</label>
+		<div class="controls">
+			<label class="radio inline"> <input type="radio"
+				name="periodOptions" id="periodDaily" value="daily">daily
+			</label> <label class="radio inline"> <input type="radio"
+				name="periodOptions" id="periodWeekly" value="weekly">weekly
+			</label> <label class="radio inline"> <input type="radio"
+				name="periodOptions" id="periodMontly" value="monthly">monthly
+			</label> <label class="radio inline"> <input type="radio"
+				name="periodOptions" id="periodQuarterly" value="quarterly">every
+				3 months
+			</label> <label class="radio inline"> <input type="radio"
+				name="periodOptions" id="periodYearly" value="yearly">yearly
+			</label> <label class="radio inline"> <input type="radio"
+				name="periodOptions" id="periodNever" value="never" checked>never
+			</label>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="addCategory">Categories</label>
+		<div class="controls">
+			<a id="addCategory" class="btn btn-link">add category</a>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="addEntity">Entities</label>
+		<div class="controls">
+			<a id="addEntity" class="btn btn-link">add entity</a>
+		</div>
+	</div>
+
+	<div class="control-group">
+		<label class="control-label" for="addProperty">Properties</label>
+		<div class="controls">
+			<a id="addProperty" class="btn btn-link">add property</a>
+		</div>
+	</div>
+
+	<h4>Question</h4>
+	<div class="row-fluid">
+		<div class="well span2">
+			<p>
+				<strong>Target</strong>
+			</p>
+			<label class="radio"> <input type=radio name="target"
+				value="entity_type" checked="true"> Category
+			</label> <label class="radio"> <input type=radio name="target"
+				value="property"> Property
+			</label> <label class="radio"> <input type=radio name="target"
+				value="entity"> Entity
+			</label> <label class="radio"> <input type=radio name="target"
+				value="property_value"> Value
+			</label> <label class="radio"> <input type=radio name="target"
+				value="measurement"> Measurement
+			</label> <br />
+			<p>
+				<strong>Snippets</strong>
+			</p>
+			<div class="btn-group btn-group-vertical">
+				<button class="btn">Relations</button>
+				<button class="btn">Resources</button>
+			</div>
+		</div>
+
+		<div class="well span10">
+			<div class="pull-right">
+				<a href="#">Help</a>
+			</div>
+			<p>
+				<strong>SPARQL</strong>
+			</p>
+			<pre style="margin: 0;">SELECT ?s WHERE { <span
+					id="sparql-class-declaration"></span> .
+<textarea id="query" name="query" rows="8" class="span12"
+					style="margin: 0;"></textarea>}</pre>
+
+		</div>
+	</div>
+
+	<h4>Preservation plan</h4>
+	<div class="control-group">
+		<label class="control-label" for="plan">Plan Id</label>
+		<div class="controls">
+			<input id="plan" name="plan" type="text" class="input-xxlarge"
+				placeholder="The plato preservation plan id">
+
+		</div>
+	</div>
+
+	<h4>Notifications</h4>
+	<div class="control-group">
+		<label class="control-label" for="email">Email</label>
+		<div class="controls">
+			<input id="email" name="email" type="text" class="input-xxlarge"
+				placeholder="The email where to send notification">
+
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls">
+			<button type="submit" class="btn btn-large btn-success">
+				<i class="icon-plus icon-white"></i> Create trigger
+			</button>
+		</div>
+	</div>
+</form>
+{{/partial}} {{#partial "scripts"}}
+<script type="text/javascript">
+	var injectFragmentData = function() {
+		var params = $.deparam.fragment(true);
+		var target = params.target;
+		var query = params.query;
+
+		if (target) {
+			var targetInput = $('input[value="' + target + '"]');
+			if (targetInput) {
+				targetInput.prop('checked', true);
+			}
+		}
+
+		if (query) {
+			$('#query').val(query);
+		}
+	};
+
+	$(document).ready(function() {
+		injectFragmentData();
+	});
+</script>
+{{/partial}} {{> base}}
+
+

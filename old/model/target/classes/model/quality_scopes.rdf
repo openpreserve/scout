@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!--
+  Digital Preservation: Quality Model - Scopes
+
+  Changes:
+-->
+<rdf:RDF xmlns="http://purl.org/DP/quality/scopes#"
+  xml:base="http://purl.org/DP/quality/scopes/"
+  xmlns:dct="http://purl.org/dc/terms/"
+  xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+  xmlns:owl="http://www.w3.org/2002/07/owl#"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Scopes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+  <rdf:Description rdf:about="http://purl.org/DP/quality/scopes#scheme">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
+    <dct:title>SCOPES</dct:title>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/quality/scopes#OBJECT">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <skos:prefLabel>object</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://purl.org/DP/quality/scopes#scheme"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/quality/scopes#ALTERNATIVEACTION">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <skos:prefLabel>alternative action</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://purl.org/DP/quality/scopes#scheme"/>
+  </rdf:Description>
+</rdf:RDF>     

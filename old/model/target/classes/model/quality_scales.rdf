@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!--
+  Digital Preservation: Quality Model - Scales
+
+  Changes:
+-->
+<rdf:RDF xmlns="http://purl.org/DP/quality#"
+  xml:base="http://purl.org/DP/quality/"
+  xmlns:dct="http://purl.org/dc/terms/"
+  xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+  xmlns:owl="http://www.w3.org/2002/07/owl#"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Scales
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+  <rdf:Description rdf:about="http://purl.org/DP/quality/scales#scheme">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
+    <dct:title>SCALES</dct:title>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/quality/scales#BOOLEAN">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <skos:prefLabel>Boolean</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://purl.org/DP/quality/scales#scheme"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/quality/scales#FREETEXT">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <skos:prefLabel>Free Text</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://purl.org/DP/quality/scales#scheme"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/quality/scales#NUMBER">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <skos:prefLabel>Number</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://purl.org/DP/quality/scales#scheme"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/quality/scales#POSITIVENUMBER">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <skos:prefLabel>Positive Number</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://purl.org/DP/quality/scales#scheme"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/quality/scales#POSITIVINTEGER">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <skos:prefLabel>Positiv Integer</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://purl.org/DP/quality/scales#scheme"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/quality/scales#ORDINAL">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <skos:prefLabel>Ordinal</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://purl.org/DP/quality/scales#scheme"/>
+  </rdf:Description>
+</rdf:RDF>     

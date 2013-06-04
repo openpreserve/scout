@@ -1,0 +1,24 @@
+PREFIX pronom: <http://reference.data.gov.uk/technical-registry/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT ?name ?version ?mime ?puid ?ext ?formatType ?desc ?byteOrder ?released ?withdrawn ?internalSignature ?byteSequence ?byteSequencePosition ?byteSequenceOffset ?byteString WHERE {
+ 
+ ?s rdfs:label ?name .
+ ?s rdf:type pronom:file-format .
+
+ OPTIONAL {?s pronom:version ?version .}
+ OPTIONAL {?s pronom:PUID ?puid .}
+ OPTIONAL {?s pronom:extension ?ext .}
+ OPTIONAL {?s pronom:formatType ?formatType .}
+ OPTIONAL {?s pronom:MIMETYPE ?mime .}
+ OPTIONAL {?s pronom:description ?desc .}
+ OPTIONAL {?s pronom:byteOrder ?byteOrder .}
+ OPTIONAL {?s pronom:releaseDate ?released .}
+ OPTIONAL {?s pronom:withdrawnDate ?withdrawn .}
+ OPTIONAL {?s pronom:internalSignature ?internalSignature .}
+ OPTIONAL {?s pronom:byteSequence ?byteSequence .}
+ OPTIONAL {?s pronom:byteSequencePosition ?byteSequencePosition .}
+ OPTIONAL {?s pronom:byteSequenceOffset ?byteSequenceOffset .}
+ OPTIONAL {?s pronom:byteString ?byteString .}
+}

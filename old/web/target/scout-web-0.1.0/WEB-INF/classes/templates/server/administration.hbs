@@ -1,0 +1,91 @@
+{{#partial "title"}}Scout - Administration{{/partial}} {{#partial
+"NavAdministrationClass"}}active{{/partial}} {{#partial "content"}}
+<div class="container">
+	<h1>Administration</h1>
+	<p>Private page to manage the configurations of scout.</p>
+
+	<h2>Source Adaptors</h2>
+	<p>All configured source adaptors that fetch information from
+		external sources using plug-ins.</p>
+	<table class="table table-hover table-striped">
+		<thead>
+			<tr>
+				<th>Instance</th>
+				<th>Plug-in name</th>
+				<th>Plug-in version</th>
+				<th>Source</th>
+				<th style="width: 20px">Active</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#sourceAdaptors}}
+			<tr>
+				<td>{{instance}}</td>
+				<td>{{name}}</td>
+				<td>{{version}}</td>
+				<td>{{#with source}}<a href="{{mustacheletPath}}/browse/source/{{id}}">{{name}}</a>{{/with}}
+				</td>
+				<td>{{#active}}<i class="icon-ok"></i>{{/active}}
+				</td>
+				<td>
+					<div class="btn-group">
+						<a class="btn btn-small dropdown-toggle" data-toggle="dropdown"
+							href="#"> <i class="icon-wrench"></i> <!-- <span class="caret"></span> -->
+						</a>
+						<ul class="dropdown-menu">
+							<li><a href="{{mustacheletPath}}/browse/adaptor/{{id}}">Browse</a></li>
+							<li class="divider"></li>
+							<li><a href="#edit/{{id}}">Edit</a></li> {{#active}}
+							<li><a href="?operation=deactivateAdaptor&adaptor={{id}}">Deactivate</a></li>{{/active}}
+							{{^active}}
+							<li><a href="?operation=activateAdaptor&adaptor={{id}}">Activate</a></li>{{/active}}
+							<li><a href="?operation=removeAdaptor&adaptor={{id}}">Remove</a></li>
+						</ul>
+					</div>
+				</td>
+			</tr>
+			{{/sourceAdaptors}}
+		</tbody>
+	</table>
+	{{^sourceAdaptors}}
+	<div class="alert alert-warning">
+		<b>Empty!</b> There are no defined source adaptors.
+	</div>
+	{{/sourceAdaptors}} <a class="btn btn-primary"
+		href="{{mustacheletPath}}/adaptor/new">New source adaptor</a>
+	<h2>Installed plug-ins</h2>
+	<p>
+		All installed plug-ins. To install a new plugin just drop the plug-in
+		jar into the correct folder under
+		<code>{{pluginDirectory}}</code>
+		.
+	</p>
+	<table class="table table-hover table-striped">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Version</th>
+				<th>Description</th>
+				<th>Type</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#plugins}}
+			<tr>
+				<td>{{name}}</td>
+				<td>{{version}}</td>
+				<td>{{description}}</td>
+				<td>{{type}}</td>
+			</tr>
+			{{/plugins}}
+		</tbody>
+	</table>
+	{{^plugins}}
+	<div class="alert alert-warning">
+		<b>Empty!</b> There are no installed plug-ins.
+	</div>
+	{{/plugins}}
+	
+</div>
+{{/partial}} {{>base}}

@@ -1,0 +1,49 @@
+<p>
+	{{title}}
+	<span class="help-block">{{description}}</span>
+</p>
+{{#if parameters}}
+	{{#each parameters}}
+	<div class="control-group">
+		<label class="control-label">{{label}}</label>
+		<div class="controls">
+			{{#compare parameterType '==' 'NODE'}}
+			<input type="text" name="node_{{id}}"
+				class="input-xlarge validation"
+				required
+				data-validator-required-message="This field is mandatory"
+				pattern="[a-zA-Z0-9\-\_]{27}"
+				data-validation-pattern-message="Please just put the ID, it must have 27 characters and be valid"
+				placeholder="The ID from the URL"></input>
+			{{/compare}}
+			{{#compare parameterType '==' 'LITERAL'}}
+			{{#compare literalFilterDatatype '==' 'LONG'}}
+			{{#compare literalFilterRenderingHint '==' 'STORAGE_VOLUME'}}
+			<div class="">
+				<input name="long-storagevolume-number_{{id}}" class="input-mini validation"
+					type="number" min="1" required
+					data-validator-required-message="This field is mandatory"
+					data-validation-number-message="Must insert a valid number"
+					data-validation-min-message="Too low, must be higher than 0" />
+					<select class="input-mini validation" name="long-storagevolume-unit_{{id}}">
+					<option value="MB">MB</option>
+					<option value="GB">GB</option>
+					<option value="TB">TB</option>
+				</select>
+			</div>
+			{{/compare}}
+			{{#compare literalFilterRenderingHint '!=' 'STORAGE_VOLUME'}}
+			<div class="alert">No long besides storage size yet
+				implemented</div>
+			{{/compare}}
+			{{/compare}}
+			{{#compare literalFilterDatatype '!=' 'LONG'}}
+			<div class="alert">literal not yet implemented</div>
+			{{/compare}} {{/compare}}
+			<p class="help-block">
+				<small>{{description}}</small>
+			</p>
+		</div>
+	</div>
+	{{/each}}
+{{/if}}

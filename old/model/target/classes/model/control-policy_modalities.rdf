@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!--
+  Digital Preservation: Control Policy - Modalities
+
+  Changes:
+  - separated from control policies
+-->    
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+<rdf:RDF xmlns="http://purl.org/DP/control-policy#"
+     xml:base="http://purl.org/DP/control-policy/"
+     xmlns:dct="http://purl.org/dc/terms/"
+     xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <owl:Ontology rdf:about="http://purl.org/DP/control-policy/modalities"/>
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Modalities
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+  <rdf:Description rdf:about="http://purl.org/DP/control-policy/modalities#scheme">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
+    <dct:title>Modalities</dct:title>
+    <rdfs:seeAlso rdf:resource="http://tools.ietf.org/html/rfc2119"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/control-policy/modalities#MUST">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <skos:prefLabel>MUST</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://purl.org/DP/control-policy/modalities#scheme"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/control-policy/modalities#SHOULD">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <skos:prefLabel>SHOULD</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://purl.org/DP/control-policy/modalities#scheme"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/control-policy/modalities#MAY">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <skos:prefLabel>MAY</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://purl.org/DP/control-policy/modalities#scheme"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/control-policy/modalities#SHOULD_NOT">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <skos:prefLabel>SHOULD NOT</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://purl.org/DP/control-policy/modalities#scheme"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/DP/control-policy/modalities#MUST_NOT">
+    <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <skos:prefLabel>MUST NOT</skos:prefLabel>
+    <skos:inScheme rdf:resource="http://purl.org/DP/control-policy/modalities#scheme"/>
+  </rdf:Description>
+
+</rdf:RDF>

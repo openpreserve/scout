@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- xmlns="http://ifs.tuwien.ac.at/dp/c3po" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+<profile  xmlns="http://ifs.tuwien.ac.at/dp/c3po" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" collection="default" date="Tue Oct 09 09:46:57 WEST 2012" count="39">
+  <partition count="39">
+    <filter>
+      <parameters>
+        <parameter>
+          <name>collection</name>
+          <value>default</value>
+        </parameter>
+      </parameters>
+    </filter>
+    <properties>
+      <property id="format_version" type="STRING" count="20">
+        <item id="Conflicted" value="19"/>
+        <item id="1.02" value="9"/>
+        <item id="1.0" value="8"/>
+        <item id="1.01" value="1"/>
+        <item id="1.1" value="1"/>
+        <item id="1.2" value="1"/>
+      </property>
+      <property id="puid" type="STRING" count="39">
+        <item id="fmt/10" value="19"/>
+        <item id="fmt/44" value="9"/>
+        <item id="fmt/101" value="7"/>
+        <item id="fmt/11" value="1"/>
+        <item id="fmt/12" value="1"/>
+        <item id="fmt/13" value="1"/>
+        <item id="fmt/43" value="1"/>
+      </property>
+      <property id="format" type="STRING" count="39">
+        <item id="Tagged Image File Format" value="19"/>
+        <item id="JPEG File Interchange Format" value="10"/>
+        <item id="Extensible Markup Language" value="7"/>
+        <item id="Portable Network Graphics" value="3"/>
+      </property>
+      <property id="mimetype" type="STRING" count="39">
+        <item id="image/tiff" value="19"/>
+        <item id="image/jpeg" value="10"/>
+        <item id="text/xml" value="7"/>
+        <item id="image/png" value="3"/>
+      </property>
+      <property id="size" type="INTEGER" count="39" sum="1.7857186E7" min="403" max="3895490" avg="457876.5641025641" var="3.9775088834301514E11" sd="630674.9466587484"/>
+      <property id="lastmodified" type="DATE" count="39">
+        <item id="2012" value="39"/>
+      </property>
+      <property id="checksum_md5" type="STRING" count="39"/>
+      <property id="lastmodified_fs" type="DATE" count="39">
+        <item id="2012" value="39"/>
+      </property>
+      <property id="original" type="STRING" count="39"/>
+      <property id="wellformed" type="BOOL" count="35">
+        <item value="true" count="35"/>
+        <item value="false" count="0"/>
+      </property>
+      <property id="valid" type="BOOL" count="35">
+        <item value="true" count="35"/>
+        <item value="false" count="0"/>
+      </property>
+      <property id="byteorder" type="STRING" count="28">
+        <item id="little endian" value="19"/>
+        <item id="Unknown" value="11"/>
+        <item id="big endian" value="9"/>
+      </property>
+      <property id="compression_scheme" type="STRING" count="32">
+        <item id="JPEG" value="18"/>
+        <item id="JPEG (old-style)" value="10"/>
+        <item id="Unknown" value="7"/>
+        <item id="Deflate/Inflate" value="3"/>
+        <item id="Uncompressed" value="1"/>
+      </property>
+      <property id="image_width" type="INTEGER" count="32" sum="35271" min="39" max="1440" avg="1102.21875" var="131417.3583984375" sd="362.515321605084"/>
+      <property id="image_height" type="INTEGER" count="32" sum="27263" min="32" max="1024" avg="851.96875" var="80637.7802734375" sd="283.96792120490915"/>
+      <property id="colorspace" type="STRING" count="28">
+        <item id="RGB" value="19"/>
+        <item id="Unknown" value="11"/>
+        <item id="YCbCr" value="9"/>
+      </property>
+      <property id="referenceBlackWhite" type="STRING" count="19"/>
+      <property id="YCbCrSubSampling" type="STRING" count="28"/>
+      <property id="orientation" type="STRING" count="20"/>
+      <property id="sampling_frequency_unit" type="STRING" count="29"/>
+      <property id="sampling_frequency_x" type="FLOAT" count="29" sum="2844" min="72" max="100" avg="98.06896551724138" var="50.34007134363853" sd="7.095073737716792"/>
+      <property id="sampling_frequency_y" type="FLOAT" count="29" sum="2844" min="72" max="100" avg="98.06896551724138" var="50.34007134363853" sd="7.095073737716792"/>
+      <property id="bitspersample" type="STRING" count="29"/>
+      <property id="samplesperpixel" type="INTEGER" count="28" sum="84" min="3" max="3" avg="3" var="0" sd="0"/>
+      <property id="charset" type="STRING" count="7">
+        <item id="Unknown" value="32"/>
+        <item id="UTF-8" value="7"/>
+      </property>
+      <property id="markupbasis" type="STRING" count="7"/>
+      <property id="markupBasisVersion" type="STRING" count="7"/>
+      <property id="creating_application_name" type="STRING" count="2"/>
+      <property id="created" type="DATE" count="2">
+        <item id="2008" value="1"/>
+        <item id="2010" value="1"/>
+      </property>
+      <property id="lightsource" type="STRING" count="9"/>
+      <property id="scanner_softwarename" type="STRING" count="2"/>
+      <property id="icc_profile_name" type="STRING" count="1">
+        <item id="Unknown" value="38"/>
+        <item id="sRGB IEC61966-2.1" value="1"/>
+      </property>
+      <property id="icc_profile_version" type="STRING" count="1">
+        <item id="Unknown" value="38"/>
+        <item id="2.1.0" value="1"/>
+      </property>
+    </properties>
+    <samples type="size'o'matic 3000">
+      <sample uid="http://localhost:8080/roda-core/get/roda:20/F0">
+        <record name="format_version" value="1.0" tool="Jhove 1.5"/>
+        <record name="puid" value="fmt/101" tool="Droid 3.0"/>
+        <record name="format" value="Extensible Markup Language" tool="Jhove 1.5"/>
+        <record name="mimetype" value="text/xml" tool="Jhove 1.5"/>
+        <record name="size" value="403" tool="Jhove 1.5"/>
+        <record name="lastmodified" value="Fri Aug 17 18:31:09 WEST 2012" tool="Exiftool 7.74"/>
+        <record name="checksum_md5" value="30096d2ffc23ef98f9eb99e6805446ed" tool="OIS File Information 0.1"/>
+        <record name="lastmodified_fs" value="Fri Aug 17 18:31:09 WEST 2012" tool="OIS File Information 0.1"/>
+        <record name="original" value="true" tool="RODA 1.0.0"/>
+        <record name="wellformed" value="true" tool="Jhove 1.5"/>
+        <record name="valid" value="true" tool="Jhove 1.5"/>
+        <record name="charset" value="UTF-8" tool="Jhove 1.5"/>
+        <record name="markupbasis" value="XML" tool="Jhove 1.5"/>
+        <record name="markupBasisVersion" value="1.0" tool="Jhove 1.5"/>
+      </sample>
+      <sample uid="http://localhost:8080/roda-core/get/roda:23/F1">
+        <record name="format_version" value="4.0" tool="Jhove 1.5"/>
+        <record name="format_version" value="3" tool="Droid 3.0"/>
+        <record name="format_version" value="5" tool="Droid 3.0"/>
+        <record name="format_version" value="6" tool="Droid 3.0"/>
+        <record name="puid" value="fmt/10" tool="Droid 3.0"/>
+        <record name="format" value="Tagged Image File Format" tool="Jhove 1.5"/>
+        <record name="mimetype" value="image/tiff" tool="Jhove 1.5"/>
+        <record name="size" value="3895490" tool="Jhove 1.5"/>
+        <record name="lastmodified" value="Fri Aug 17 18:30:56 WEST 2012" tool="Exiftool 7.74"/>
+        <record name="checksum_md5" value="922784f2fa752681c0b9774848a003d9" tool="OIS File Information 0.1"/>
+        <record name="lastmodified_fs" value="Fri Aug 17 18:30:56 WEST 2012" tool="OIS File Information 0.1"/>
+        <record name="original" value="false" tool="RODA 1.0.0"/>
+        <record name="wellformed" value="true" tool="Jhove 1.5"/>
+        <record name="valid" value="true" tool="Jhove 1.5"/>
+        <record name="byteorder" value="little endian" tool="Jhove 1.5"/>
+        <record name="compression_scheme" value="Uncompressed" tool="Jhove 1.5"/>
+        <record name="image_width" value="1440" tool="Jhove 1.5"/>
+        <record name="image_height" value="900" tool="Jhove 1.5"/>
+        <record name="colorspace" value="RGB" tool="Jhove 1.5"/>
+        <record name="referenceBlackWhite" value="0.0 255.0 0.0 255.0 0.0 255.0" tool="Jhove 1.5"/>
+        <record name="orientation" value="normal*" tool="Jhove 1.5"/>
+        <record name="sampling_frequency_unit" value="in." tool="Jhove 1.5"/>
+        <record name="sampling_frequency_x" value="72.0" tool="Jhove 1.5"/>
+        <record name="sampling_frequency_y" value="72.0" tool="Jhove 1.5"/>
+        <record name="bitspersample" value="8 8 8" tool="Jhove 1.5"/>
+        <record name="samplesperpixel" value="3" tool="Jhove 1.5"/>
+      </sample>
+      <sample uid="http://localhost:8080/roda-core/get/roda:32/F7">
+        <record name="format_version" value="6.0" tool="Jhove 1.5"/>
+        <record name="format_version" value="3" tool="Droid 3.0"/>
+        <record name="format_version" value="4" tool="Droid 3.0"/>
+        <record name="format_version" value="5" tool="Droid 3.0"/>
+        <record name="puid" value="fmt/10" tool="Droid 3.0"/>
+        <record name="format" value="Tagged Image File Format" tool="Jhove 1.5"/>
+        <record name="mimetype" value="image/tiff" tool="Jhove 1.5"/>
+        <record name="size" value="428189" tool="Jhove 1.5"/>
+        <record name="lastmodified" value="Mon Sep 10 12:32:39 WEST 2012" tool="Exiftool 7.74"/>
+        <record name="checksum_md5" value="47fd87d5b07dcc9a3a7825c73cd8ef84" tool="OIS File Information 0.1"/>
+        <record name="lastmodified_fs" value="Mon Sep 10 12:32:39 WEST 2012" tool="OIS File Information 0.1"/>
+        <record name="original" value="false" tool="RODA 1.0.0"/>
+        <record name="wellformed" value="true" tool="Jhove 1.5"/>
+        <record name="valid" value="true" tool="Jhove 1.5"/>
+        <record name="byteorder" value="little endian" tool="Jhove 1.5"/>
+        <record name="compression_scheme" value="JPEG" tool="Jhove 1.5"/>
+        <record name="image_width" value="1024" tool="Jhove 1.5"/>
+        <record name="image_height" value="768" tool="Jhove 1.5"/>
+        <record name="colorspace" value="RGB" tool="Jhove 1.5"/>
+        <record name="referenceBlackWhite" value="0.0 255.0 0.0 255.0 0.0 255.0" tool="Jhove 1.5"/>
+        <record name="YCbCrSubSampling" value="2 2" tool="Jhove 1.5"/>
+        <record name="orientation" value="normal*" tool="Jhove 1.5"/>
+        <record name="sampling_frequency_unit" value="no absolute unit of measurement" tool="Jhove 1.5"/>
+        <record name="sampling_frequency_x" value="100.0" tool="Jhove 1.5"/>
+        <record name="sampling_frequency_y" value="100.0" tool="Jhove 1.5"/>
+        <record name="bitspersample" value="8 8 8" tool="Jhove 1.5"/>
+        <record name="samplesperpixel" value="3" tool="Jhove 1.5"/>
+      </sample>
+      <sample uid="http://localhost:8080/roda-core/get/roda:32/F5">
+        <record name="format_version" value="6.0" tool="Jhove 1.5"/>
+        <record name="format_version" value="3" tool="Droid 3.0"/>
+        <record name="format_version" value="4" tool="Droid 3.0"/>
+        <record name="format_version" value="5" tool="Droid 3.0"/>
+        <record name="puid" value="fmt/10" tool="Droid 3.0"/>
+        <record name="format" value="Tagged Image File Format" tool="Jhove 1.5"/>
+        <record name="mimetype" value="image/tiff" tool="Jhove 1.5"/>
+        <record name="size" value="403831" tool="Jhove 1.5"/>
+        <record name="lastmodified" value="Mon Sep 10 12:32:01 WEST 2012" tool="Exiftool 7.74"/>
+        <record name="checksum_md5" value="a986d6b02f6cee43c7c2fc1704f7b69f" tool="OIS File Information 0.1"/>
+        <record name="lastmodified_fs" value="Mon Sep 10 12:32:01 WEST 2012" tool="OIS File Information 0.1"/>
+        <record name="original" value="false" tool="RODA 1.0.0"/>
+        <record name="wellformed" value="true" tool="Jhove 1.5"/>
+        <record name="valid" value="true" tool="Jhove 1.5"/>
+        <record name="byteorder" value="little endian" tool="Jhove 1.5"/>
+        <record name="compression_scheme" value="JPEG" tool="Jhove 1.5"/>
+        <record name="image_width" value="1024" tool="Jhove 1.5"/>
+        <record name="image_height" value="768" tool="Jhove 1.5"/>
+        <record name="colorspace" value="RGB" tool="Jhove 1.5"/>
+        <record name="referenceBlackWhite" value="0.0 255.0 0.0 255.0 0.0 255.0" tool="Jhove 1.5"/>
+        <record name="YCbCrSubSampling" value="2 2" tool="Jhove 1.5"/>
+        <record name="orientation" value="normal*" tool="Jhove 1.5"/>
+        <record name="sampling_frequency_unit" value="no absolute unit of measurement" tool="Jhove 1.5"/>
+        <record name="sampling_frequency_x" value="100.0" tool="Jhove 1.5"/>
+        <record name="sampling_frequency_y" value="100.0" tool="Jhove 1.5"/>
+        <record name="bitspersample" value="8 8 8" tool="Jhove 1.5"/>
+        <record name="samplesperpixel" value="3" tool="Jhove 1.5"/>
+      </sample>
+      <sample uid="http://localhost:8080/roda-core/get/roda:32/F6">
+        <record name="format_version" value="6.0" tool="Jhove 1.5"/>
+        <record name="format_version" value="3" tool="Droid 3.0"/>
+        <record name="format_version" value="4" tool="Droid 3.0"/>
+        <record name="format_version" value="5" tool="Droid 3.0"/>
+        <record name="puid" value="fmt/10" tool="Droid 3.0"/>
+        <record name="format" value="Tagged Image File Format" tool="Jhove 1.5"/>
+        <record name="mimetype" value="image/tiff" tool="Jhove 1.5"/>
+        <record name="size" value="429641" tool="Jhove 1.5"/>
+        <record name="lastmodified" value="Mon Sep 10 12:32:20 WEST 2012" tool="Exiftool 7.74"/>
+        <record name="checksum_md5" value="05442b8920e7ad72be8507cd49a0fa5f" tool="OIS File Information 0.1"/>
+        <record name="lastmodified_fs" value="Mon Sep 10 12:32:20 WEST 2012" tool="OIS File Information 0.1"/>
+        <record name="original" value="false" tool="RODA 1.0.0"/>
+        <record name="wellformed" value="true" tool="Jhove 1.5"/>
+        <record name="valid" value="true" tool="Jhove 1.5"/>
+        <record name="byteorder" value="little endian" tool="Jhove 1.5"/>
+        <record name="compression_scheme" value="JPEG" tool="Jhove 1.5"/>
+        <record name="image_width" value="1024" tool="Jhove 1.5"/>
+        <record name="image_height" value="768" tool="Jhove 1.5"/>
+        <record name="colorspace" value="RGB" tool="Jhove 1.5"/>
+        <record name="referenceBlackWhite" value="0.0 255.0 0.0 255.0 0.0 255.0" tool="Jhove 1.5"/>
+        <record name="YCbCrSubSampling" value="2 2" tool="Jhove 1.5"/>
+        <record name="orientation" value="normal*" tool="Jhove 1.5"/>
+        <record name="sampling_frequency_unit" value="no absolute unit of measurement" tool="Jhove 1.5"/>
+        <record name="sampling_frequency_x" value="100.0" tool="Jhove 1.5"/>
+        <record name="sampling_frequency_y" value="100.0" tool="Jhove 1.5"/>
+        <record name="bitspersample" value="8 8 8" tool="Jhove 1.5"/>
+        <record name="samplesperpixel" value="3" tool="Jhove 1.5"/>
+      </sample>
+    </samples>
+    <elements>
+      <element uid="http://localhost:8080/roda-core/get/roda:32/F0"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:32/F3"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:28/F0"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:32/F9"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:32/F4"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:32/F7"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:32/F2"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:32/F5"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:32/F6"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:32/F8"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:28/F3"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:28/F9"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:32/F1"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:28/F5"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:28/F7"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:28/F6"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:20/F0"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:28/F4"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:3/F0"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:3/F9"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:20/F1"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:28/F8"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:28/F2"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:28/F1"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:3/F7"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:3/F6"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:3/F5"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:3/F1"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:3/F3"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:3/F2"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:3/F4"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:3/F8"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:23/F0"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:12/F0"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:12/F2"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:15/F0"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:12/F4"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:12/F3"/>
+      <element uid="http://localhost:8080/roda-core/get/roda:23/F1"/>
+    </elements>
+  </partition>
+</profile>

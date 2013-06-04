@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE rdf:RDF [
+	 <!ENTITY kb 'http://watch.scape-project.eu/kb#'>
+	 <!ENTITY rdf 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'>
+	 <!ENTITY rdfs 'http://www.w3.org/2000/01/rdf-schema#'>
+]>
+<rdf:RDF xmlns:kb="&kb;"
+	 xmlns:rdf="&rdf;"
+	 xmlns:rdfs="&rdfs;">
+<rdfs:Class rdf:about="&kb;DataType"
+	 rdfs:label="DataType">
+	<rdfs:subClassOf rdf:resource="&rdfs;Resource"/>
+</rdfs:Class>
+<rdfs:Class rdf:about="&kb;DataUnit"
+	 rdfs:label="DataUnit">
+	<rdfs:subClassOf rdf:resource="&rdfs;Resource"/>
+</rdfs:Class>
+<rdfs:Class rdf:about="&kb;Entity"
+	 rdfs:label="Entity">
+	<rdfs:subClassOf rdf:resource="&rdfs;Resource"/>
+</rdfs:Class>
+<rdfs:Class rdf:about="&kb;EntityType"
+	 rdfs:label="EntityType">
+	<rdfs:subClassOf rdf:resource="&rdfs;Resource"/>
+</rdfs:Class>
+<rdfs:Class rdf:about="&kb;Measurement"
+	 rdfs:label="Measurement">
+	<rdfs:subClassOf rdf:resource="&rdfs;Resource"/>
+</rdfs:Class>
+<rdfs:Class rdf:about="&kb;Property"
+	 rdfs:label="Property">
+	<rdfs:subClassOf rdf:resource="&rdfs;Resource"/>
+</rdfs:Class>
+<rdfs:Class rdf:about="&kb;PropertyValue"
+	 rdfs:label="PropertyValue">
+	<rdfs:subClassOf rdf:resource="&rdfs;Resource"/>
+</rdfs:Class>
+<rdfs:Class rdf:about="&kb;Source"
+	 rdfs:label="Source">
+	<rdfs:subClassOf rdf:resource="&rdfs;Resource"/>
+</rdfs:Class>
+<rdfs:Class rdf:about="&kb;SourceAdaptor"
+	 rdfs:label="SourceAdaptor">
+	<rdfs:subClassOf rdf:resource="&rdfs;Resource"/>
+</rdfs:Class>
+<rdf:Property rdf:about="&kb;configuration"
+	 rdfs:label="configuration">
+	<rdfs:domain rdf:resource="&kb;SourceAdaptor"/>
+	<rdfs:range rdf:resource="&rdfs;Literal"/>
+</rdf:Property>
+<rdf:Property rdf:about="&kb;default_data_unit"
+	 rdfs:label="default_data_unit">
+	<rdfs:range rdf:resource="&kb;DataUnit"/>
+	<rdfs:domain rdf:resource="&kb;Property"/>
+</rdf:Property>
+<rdf:Property rdf:about="&kb;described_by_property"
+	 rdfs:label="described_by_property">
+	<rdfs:domain rdf:resource="&kb;EntityType"/>
+	<rdfs:range rdf:resource="&kb;Property"/>
+</rdf:Property>
+<rdf:Property rdf:about="&kb;described_by_propertyvalue"
+	 rdfs:label="described_by_propertyvalue">
+	<rdfs:domain rdf:resource="&kb;Entity"/>
+	<rdfs:range rdf:resource="&kb;PropertyValue"/>
+</rdf:Property>
+<rdf:Property rdf:about="&kb;description"
+	 rdfs:label="description">
+	<rdfs:domain rdf:resource="&kb;EntityType"/>
+	<rdfs:domain rdf:resource="&kb;Property"/>
+	<rdfs:domain rdf:resource="&kb;Source"/>
+	<rdfs:range rdf:resource="&rdfs;Literal"/>
+</rdf:Property>
+<rdf:Property rdf:about="&kb;fetches"
+	 rdfs:label="fetches">
+	<rdfs:range rdf:resource="&kb;Source"/>
+	<rdfs:domain rdf:resource="&kb;SourceAdaptor"/>
+</rdf:Property>
+<rdf:Property rdf:about="&kb;has_datatype"
+	 rdfs:label="has_datatype">
+	<rdfs:range rdf:resource="&kb;DataType"/>
+	<rdfs:domain rdf:resource="&kb;Property"/>
+</rdf:Property>
+<rdf:Property rdf:about="&kb;instance_of_enititytype"
+	 rdfs:label="instance_of_enititytype">
+	<rdfs:domain rdf:resource="&kb;Entity"/>
+	<rdfs:range rdf:resource="&kb;EntityType"/>
+</rdf:Property>
+<rdf:Property rdf:about="&kb;instance_of_property"
+	 rdfs:label="instance_of_property">
+	<rdfs:range rdf:resource="&kb;Property"/>
+	<rdfs:domain rdf:resource="&kb;PropertyValue"/>
+</rdf:Property>
+<rdf:Property rdf:about="&kb;is_fetched_by"
+	 rdfs:label="is_fetched_by">
+	<rdfs:domain rdf:resource="&kb;Source"/>
+	<rdfs:range rdf:resource="&kb;SourceAdaptor"/>
+</rdf:Property>
+<rdf:Property rdf:about="&kb;name"
+	 rdfs:label="name">
+	<rdfs:domain rdf:resource="&kb;Entity"/>
+	<rdfs:domain rdf:resource="&kb;EntityType"/>
+	<rdfs:domain rdf:resource="&kb;Property"/>
+	<rdfs:domain rdf:resource="&kb;Source"/>
+	<rdfs:range rdf:resource="&rdfs;Literal"/>
+</rdf:Property>
+<rdf:Property rdf:about="&kb;taken_by"
+	 rdfs:label="taken_by">
+	<rdfs:domain rdf:resource="&kb;Measurement"/>
+	<rdfs:range rdf:resource="&kb;SourceAdaptor"/>
+</rdf:Property>
+<rdf:Property rdf:about="&kb;timestamp"
+	 rdfs:comment="the long value of the timestamp"
+	 rdfs:label="timestamp">
+	<rdfs:domain rdf:resource="&kb;Measurement"/>
+	<rdfs:range rdf:resource="&rdfs;Literal"/>
+</rdf:Property>
+<rdf:Property rdf:about="&kb;validated_by"
+	 rdfs:label="validated_by">
+	<rdfs:range rdf:resource="&kb;Measurement"/>
+	<rdfs:domain rdf:resource="&kb;PropertyValue"/>
+</rdf:Property>
+<rdf:Property rdf:about="&kb;value"
+	 rdfs:label="value">
+	<rdfs:domain rdf:resource="&kb;DataType"/>
+	<rdfs:domain rdf:resource="&kb;DataUnit"/>
+	<rdfs:domain rdf:resource="&kb;PropertyValue"/>
+	<rdfs:range rdf:resource="&rdfs;Literal"/>
+</rdf:Property>
+<rdf:Property rdf:about="&kb;version"
+	 rdfs:comment="The version of the Source Adaptor"
+	 rdfs:label="version">
+	<rdfs:domain rdf:resource="&kb;SourceAdaptor"/>
+	<rdfs:range rdf:resource="&rdfs;Literal"/>
+</rdf:Property>
+</rdf:RDF>

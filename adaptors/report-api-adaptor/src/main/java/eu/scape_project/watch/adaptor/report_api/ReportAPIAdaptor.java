@@ -1,8 +1,13 @@
 package eu.scape_project.watch.adaptor.report_api;
 
 import info.lc.xmlns.premis_v2.EventComplexType;
+import info.lc.xmlns.premis_v2.EventOutcomeDetailComplexType;
+import info.lc.xmlns.premis_v2.EventOutcomeInformationComplexType;
+import info.lc.xmlns.premis_v2.ExtensionComplexType;
 
 import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,14 +17,23 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.openarchives.oai._2.RecordType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.w3c.util.DateParser;
 import org.w3c.util.InvalidDateException;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import eu.scape_project.watch.common.DefaultResult;
@@ -56,7 +70,7 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 	/**
 	 * The current version of this plugin.
 	 */
-	private static final String VERSION = "0.0.1";
+	private static final String VERSION = "0.0.2";
 
 	/**
 	 * The name of this plugin.
@@ -107,6 +121,9 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 	 * The repository name returned by harvester verb "Identify".
 	 */
 	private String repositoryName;
+
+	private Entity entity = null;
+	private EntityType entityType = null;
 
 	/**
 	 * A map of property values collected from the repository.
@@ -221,7 +238,7 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 			LOG.error("Couldn't initialize harvester - " + e.getMessage(), e);
 		}
 
-		initializeProperties();
+		// initializeProperties();
 	}
 
 	@Override
@@ -229,7 +246,11 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 		LOG.debug("hasNext()");
 
 		if (this.iterator == null) {
-			calculateIngestAverageTime();
+
+			updateIngestAverageTime();
+			updatePlanExecutionDetailProperties();
+
+			this.iterator = getProperties().values().iterator();
 		}
 
 		try {
@@ -283,6 +304,21 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 		throw new PluginException("This method is not supported anymore!");
 	}
 
+	private Entity getEntity() {
+		if (this.entity == null) {
+			this.entity = new Entity(getEntityType(), this.repositoryName);
+		}
+		return this.entity;
+	}
+
+	private EntityType getEntityType() {
+		if (this.entityType == null) {
+			this.entityType = new EntityType(ENTITY_TYPE_REPOSITORY_NAME,
+					ENTITY_TYPE_REPOSITORY_DESCRIPTION);
+		}
+		return this.entityType;
+	}
+
 	/**
 	 * Initializes the default and current configuration.
 	 */
@@ -300,45 +336,42 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 		this.config = new HashMap<String, String>();
 	}
 
-	private void initializeProperties() {
-		LOG.debug("initializeProperties()");
-
-		if (getProperties().containsKey(PROPERTY_INGEST_AVG_TIME_NAME)) {
-			LOG.debug("Property " + PROPERTY_INGEST_AVG_TIME_NAME
-					+ " already exists.");
-		} else {
-
-			if (this.repositoryName == null) {
-				LOG.debug("Couldn't add properties because repository identity is not available yet.");
-			} else {
-
-				EntityType type = new EntityType(ENTITY_TYPE_REPOSITORY_NAME,
-						ENTITY_TYPE_REPOSITORY_DESCRIPTION);
-				Entity entity = new Entity(type, this.repositoryName);
-				try {
-
-					Property property = new Property(type,
-							PROPERTY_INGEST_AVG_TIME_NAME,
-							PROPERTY_INGEST_AVG_TIME_DESCRIPTION,
-							DataType.FLOAT);
-
-					this.properties.put(property.getName(), new PropertyValue(
-							entity, property, 0f));
-
-					LOG.info("Added property " + property.getName()
-							+ " with ID " + property.getId()
-							+ " to table of properties");
-
-				} catch (UnsupportedDataTypeException e) {
-					LOG.error("Couln't create property - " + e.getMessage(), e);
-				} catch (InvalidJavaClassForDataTypeException e) {
-					LOG.error("Couln't create property - " + e.getMessage(), e);
-				}
-			}
-
-		}
-
-	}
+	// private void initializeProperties() {
+	// LOG.debug("initializeProperties()");
+	//
+	// if (getProperties().containsKey(PROPERTY_INGEST_AVG_TIME_NAME)) {
+	// LOG.debug("Property " + PROPERTY_INGEST_AVG_TIME_NAME
+	// + " already exists.");
+	// } else {
+	//
+	// if (this.repositoryName == null) {
+	// LOG.debug("Couldn't add properties because repository identity is not available yet.");
+	// } else {
+	//
+	// try {
+	//
+	// Property property = new Property(getEntityType(),
+	// PROPERTY_INGEST_AVG_TIME_NAME,
+	// PROPERTY_INGEST_AVG_TIME_DESCRIPTION,
+	// DataType.FLOAT);
+	//
+	// this.properties.put(property.getName(), new PropertyValue(
+	// getEntity(), property, 0f));
+	//
+	// LOG.info("Added property " + property.getName()
+	// + " with ID " + property.getId()
+	// + " to table of properties");
+	//
+	// } catch (UnsupportedDataTypeException e) {
+	// LOG.error("Couln't create property - " + e.getMessage(), e);
+	// } catch (InvalidJavaClassForDataTypeException e) {
+	// LOG.error("Couln't create property - " + e.getMessage(), e);
+	// }
+	// }
+	//
+	// }
+	//
+	// }
 
 	private HashMap<String, PropertyValue> getProperties() {
 		LOG.debug("getProperties()");
@@ -436,11 +469,11 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 	/**
 	 * 
 	 */
-	private void calculateIngestAverageTime() {
-		LOG.debug("calculateIngestAverageTime()");
+	private void updateIngestAverageTime() {
+		LOG.debug("updateIngestAverageTime()");
 
 		if (this.harvester == null) {
-			LOG.warn("Cannot calculate IngestAverageTime because Harvester is null");
+			LOG.warn("Cannot update IngestAverageTime because Harvester is null");
 		} else {
 
 			try {
@@ -546,32 +579,18 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 				}
 
 				if (numOfValidIntervals > 0) {
-					PropertyValue propertyValue = this.properties
-							.get(PROPERTY_INGEST_AVG_TIME_NAME);
-					try {
 
-						LOG.debug(
-								"Calculating average - total duration={}ms, number of intervals={}",
-								totalDurationMillis, numOfValidIntervals);
+					LOG.debug(
+							"Calculating average - total duration={}ms, number of intervals={}",
+							totalDurationMillis, numOfValidIntervals);
 
-						float average = (float) totalDurationMillis
-								/ numOfValidIntervals;
+					float average = (float) totalDurationMillis
+							/ numOfValidIntervals;
 
-						LOG.debug("Average duration={}ms", average);
+					LOG.debug("Average duration={}ms", average);
 
-						propertyValue.setValue(average, Float.class);
-
-						LOG.info("Property "
-								+ propertyValue.getProperty().getName()
-								+ " has new value: " + propertyValue.getValue());
-
-						this.iterator = this.properties.values().iterator();
-
-					} catch (UnsupportedDataTypeException e) {
-						LOG.error("Couldn't set value - " + e.getMessage(), e);
-					} catch (InvalidJavaClassForDataTypeException e) {
-						LOG.error("Couldn't set value - " + e.getMessage(), e);
-					}
+					addFloatProperty(PROPERTY_INGEST_AVG_TIME_NAME,
+							PROPERTY_INGEST_AVG_TIME_DESCRIPTION, average);
 
 				} else {
 					LOG.debug("Not calculating average because there's no valid intervals");
@@ -582,6 +601,338 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 			}
 
 		}
+	}
+
+	private void updatePlanExecutionDetailProperties() {
+		LOG.debug("updatePlanExecutionDetailProperties()");
+
+		if (this.repositoryName == null) {
+			LOG.debug("Couldn't add properties because repository identity is not available yet.");
+		} else {
+
+			Map<String, List<String>> aggregatedProperties = getAgregatedPlanExecutionDetails();
+
+			for (String propertyName : aggregatedProperties.keySet()) {
+
+				List<String> values = aggregatedProperties.get(propertyName);
+
+				if (values != null && values.size() > 0) {
+
+					String firstValue = values.get(0);
+
+					if (NumberUtils.isNumber(firstValue)) {
+
+						float min = Float.MAX_VALUE;
+						float max = Float.MIN_VALUE;
+						float total = 0;
+						for (String value : values) {
+							float number = NumberUtils.createFloat(value);
+							min = min > number ? number : min;
+							max = max < number ? number : max;
+							total += number;
+						}
+						float average = total / values.size();
+
+						addFloatProperty("Minimum "
+								+ getPropertyName(propertyName),
+								getPropertyName(propertyName), min);
+
+						addFloatProperty("Maximum "
+								+ getPropertyName(propertyName),
+								getPropertyName(propertyName), max);
+
+						addFloatProperty("Average "
+								+ getPropertyName(propertyName),
+								getPropertyName(propertyName), average);
+
+					} else {
+
+						Map<String, Integer> hist = new HashMap<String, Integer>();
+						for (String value : values) {
+							Integer count = hist.get(value);
+							if (count == null) {
+								count = 0;
+							}
+							count++;
+							hist.put(value, count);
+						}
+
+						addHistogramProperty(getPropertyName(propertyName),
+								getPropertyDescription(propertyName), hist);
+					}
+
+				}
+			}
+
+		}
+	}
+
+	private void addFloatProperty(String name, String description, float value) {
+
+		try {
+			Property property = new Property(getEntityType(), name,
+					description, DataType.FLOAT);
+
+			getProperties().put(property.getName(),
+					new PropertyValue(getEntity(), property, value));
+
+			LOG.info("Added property " + property.getName() + " with ID "
+					+ property.getId() + " to table of properties");
+
+		} catch (UnsupportedDataTypeException e) {
+			LOG.error(
+					"Couln't add property '" + name + "' - " + e.getMessage(),
+					e);
+		} catch (InvalidJavaClassForDataTypeException e) {
+			LOG.error(
+					"Couln't add property '" + name + "' - " + e.getMessage(),
+					e);
+		}
+
+	}
+
+	private void addHistogramProperty(String name, String description,
+			Map<String, Integer> value) {
+
+		try {
+			Property property = new Property(getEntityType(), name,
+					description, DataType.STRING_DICTIONARY);
+
+			getProperties().put(property.getName(),
+					new PropertyValue(getEntity(), property, value));
+
+			LOG.info("Added property " + property.getName() + " with ID "
+					+ property.getId() + " to table of properties");
+
+		} catch (UnsupportedDataTypeException e) {
+			LOG.error(
+					"Couln't add property '" + name + "' - " + e.getMessage(),
+					e);
+		} catch (InvalidJavaClassForDataTypeException e) {
+			LOG.error(
+					"Couln't add property '" + name + "' - " + e.getMessage(),
+					e);
+		}
+
+	}
+
+	private String getPropertyName(String propertyName) {
+		if ("action.efficiency.timeBehaviour.timePerSample"
+				.equals(propertyName)) {
+			propertyName = "preservation action execution time";
+		}
+		return propertyName;
+	}
+
+	private String getPropertyDescription(String propertyName) {
+		String description = propertyName;
+		if ("action.efficiency.timeBehaviour.timePerSample"
+				.equals(propertyName)) {
+			description = propertyName;
+		}
+		return description;
+	}
+
+	private Map<String, List<String>> getAgregatedPlanExecutionDetails() {
+
+		Map<String, List<String>> aggregatedProperties = new HashMap<String, List<String>>();
+
+		try {
+
+			Iterator<RecordType> recordIterator = this.harvester
+					.getRecordIterator(null, null, "PlanExecuted",
+							"premis-event-v2");
+
+			while (recordIterator.hasNext()) {
+				RecordType record = recordIterator.next();
+
+				LOG.debug("Processing record "
+						+ record.getHeader().getIdentifier());
+
+				@SuppressWarnings("unchecked")
+				JAXBElement<EventComplexType> premisEventElement = (JAXBElement<EventComplexType>) record
+						.getMetadata().getAny();
+				EventComplexType premisEvent = premisEventElement.getValue();
+
+				Map<String, String> planExecutionDetails = getPlanExecutionDetails(premisEvent
+						.getEventOutcomeInformation());
+
+				for (String property : planExecutionDetails.keySet()) {
+
+					List<String> values = aggregatedProperties.get(property);
+					if (values == null) {
+						values = new ArrayList<String>();
+						aggregatedProperties.put(property, values);
+					}
+
+					values.add(planExecutionDetails.get(property));
+				}
+			}
+
+		} catch (IOException e) {
+			LOG.error(
+					"Couln't harvest PlanExecuted events - " + e.getMessage(),
+					e);
+		} catch (ParserConfigurationException e) {
+			LOG.error(
+					"Couln't harvest PlanExecuted events - " + e.getMessage(),
+					e);
+		} catch (TransformerException e) {
+			LOG.error(
+					"Couln't harvest PlanExecuted events - " + e.getMessage(),
+					e);
+		} catch (JAXBException e) {
+			LOG.error(
+					"Couln't harvest PlanExecuted events - " + e.getMessage(),
+					e);
+		} catch (SAXException e) {
+			LOG.error(
+					"Couln't harvest PlanExecuted events - " + e.getMessage(),
+					e);
+		}
+
+		return aggregatedProperties;
+	}
+
+	private Map<String, String> getPlanExecutionDetails(
+			List<EventOutcomeInformationComplexType> eventOutcomeInformation) {
+
+		Map<String, String> planExecutionDetailProperties = new HashMap<String, String>();
+
+		try {
+
+			if (eventOutcomeInformation != null
+					&& eventOutcomeInformation.size() > 0) {
+
+				EventOutcomeInformationComplexType outcomeInfo = eventOutcomeInformation
+						.get(0);
+
+				LOG.debug("eventOutcomeInformation[0]: " + outcomeInfo);
+
+				EventOutcomeDetailComplexType eventOutcomeDetail = null;
+
+				if (outcomeInfo.getContent() != null) {
+
+					for (JAXBElement<?> content : outcomeInfo.getContent()) {
+
+						if ("eventOutcomeDetail".equals(content.getName()
+								.getLocalPart())) {
+
+							eventOutcomeDetail = (EventOutcomeDetailComplexType) content
+									.getValue();
+						} else {
+							LOG.debug("Ignoring content value with name "
+									+ content.getName());
+						}
+					}
+
+				}
+
+				LOG.debug("eventOutcomeInformation[0].eventOutcomeDetail: "
+						+ eventOutcomeDetail);
+
+				if (eventOutcomeDetail != null) {
+
+					List<ExtensionComplexType> detailExtensions = eventOutcomeDetail
+							.getEventOutcomeDetailExtension();
+
+					if (detailExtensions != null && detailExtensions.size() > 0) {
+
+						List<Object> extension = detailExtensions.get(0)
+								.getAny();
+
+						if (extension != null && extension.size() > 0) {
+
+							Object object = extension.get(0);
+
+							LOG.debug("eventOutcomeInformation[0].eventOutcomeDetail[0].eventOutcomeDetailExtension[0]: "
+									+ object);
+
+							if (object != null && object instanceof Node) {
+								Node nodeP = (Node) object;
+
+								if (nodeP.getFirstChild() != null) {
+
+									LOG.debug("planExecutionDetails text => "
+											+ nodeP.getFirstChild()
+													.getTextContent());
+
+									Document planExecutionDetails = loadXMLFromString(nodeP
+											.getFirstChild().getTextContent());
+
+									NodeList elementsQA = planExecutionDetails
+											.getElementsByTagName("qa");
+
+									LOG.debug("<planExecutionDetails> has "
+											+ elementsQA.getLength()
+											+ " elements");
+
+									for (int i = 0; i < elementsQA.getLength(); i++) {
+										Node elementQA = elementsQA.item(i);
+										Node property = elementQA
+												.getAttributes().getNamedItem(
+														"property");
+										String value = elementQA
+												.getTextContent();
+
+										planExecutionDetailProperties.put(
+												property.getNodeValue(), value);
+
+										LOG.debug(String.format(
+												"QA property %s=%s",
+												property.getNodeValue(), value));
+									}
+
+								} else {
+									LOG.debug("extension Node first child is null");
+								}
+
+							} else {
+
+								LOG.debug("eventOutcomeInformation[0].eventOutcomeDetail[0].eventOutcomeDetailExtension[0] is null or isn't a Node");
+							}
+
+						} else {
+							LOG.debug("eventOutcomeInformation[0].eventOutcomeDetail[0].eventOutcomeDetailExtension has no sub-elements");
+						}
+
+					} else {
+						LOG.debug("eventOutcomeInformation[0].eventOutcomeDetail[0].eventOutcomeDetailExtension has no sub-elements");
+					}
+
+				}
+
+			} else {
+				LOG.debug("eventOutcomeInformation has no sub-elements");
+			}
+
+		} catch (DOMException e) {
+			LOG.error(
+					"Couldn't parse planExecutionDetails from event outcome details - "
+							+ e.getMessage(), e);
+		} catch (ParserConfigurationException e) {
+			LOG.error(
+					"Couldn't parse planExecutionDetails from event outcome details - "
+							+ e.getMessage(), e);
+		} catch (SAXException e) {
+			LOG.error(
+					"Couldn't parse planExecutionDetails from event outcome details - "
+							+ e.getMessage(), e);
+		} catch (IOException e) {
+			LOG.error(
+					"Couldn't parse planExecutionDetails from event outcome details - "
+							+ e.getMessage(), e);
+		}
+
+		return planExecutionDetailProperties;
+	}
+
+	private Document loadXMLFromString(String xml)
+			throws ParserConfigurationException, SAXException, IOException {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = factory.newDocumentBuilder();
+		InputSource is = new InputSource(new StringReader(xml));
+		return builder.parse(is);
 	}
 
 	class SIPIngestTime {

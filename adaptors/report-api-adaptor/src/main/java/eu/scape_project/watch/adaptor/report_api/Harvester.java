@@ -18,8 +18,6 @@ import javax.xml.transform.TransformerException;
 import org.apache.commons.lang.StringUtils;
 import org.openarchives.oai._2.OAIPMHtype;
 import org.openarchives.oai._2.RecordType;
-import org.openarchives.oai._2_0.oai_dc.OaiDcType;
-import org.purl.dc.elements._1.ElementType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;

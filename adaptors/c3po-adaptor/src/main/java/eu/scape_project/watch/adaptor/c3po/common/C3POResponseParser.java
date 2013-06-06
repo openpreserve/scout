@@ -3,6 +3,7 @@ package eu.scape_project.watch.adaptor.c3po.common;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.dom4j.Document;
@@ -43,11 +44,12 @@ public class C3POResponseParser {
       return null;
     }
 
-    final List<?> nodes = this.doc.getRootElement().selectNodes("collection");
     final List<String> result = new ArrayList<String>();
 
-    for (Object o : nodes) {
-      final Element c = (Element) o;
+    final Iterator iterator = this.doc.getRootElement().elementIterator();
+
+    while (iterator.hasNext()) {
+      final Element c = (Element) iterator.next();
       result.add(c.attributeValue("name"));
     }
 

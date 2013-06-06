@@ -37,24 +37,28 @@ public class ObjectsMaxSizeCommand extends Command {
    */
   @Override
   public PropertyValue execute() {
-    final PropertyValue pv = new PropertyValue();
-    try {
-      final double dSize = Double.parseDouble(this.getReader().getObjectsMaxSize());
-      final long size = Math.round(dSize);
+    PropertyValue pv = null;
+    final String objectsMaxSize = this.getReader().getObjectsMaxSize();
+    if (objectsMaxSize != null) {
+      try {
+        final double dSize = Double.parseDouble(objectsMaxSize);
+        final long size = Math.round(dSize);
 
-      final Property property = this.getProperty(CP_OBJECTS_MAX_SIZE, "The size of the largest object");
-      property.setRenderingHint(RenderingHint.STORAGE_VOLUME);
-      property.setDatatype(DataType.LONG);
-      
-      pv.setProperty(property);
-      pv.setValue(size, Long.class);
+        final Property property = this.getProperty(CP_OBJECTS_MAX_SIZE, "The size of the largest object");
+        property.setRenderingHint(RenderingHint.STORAGE_VOLUME);
+        property.setDatatype(DataType.LONG);
 
-    } catch (final NumberFormatException e) {
-      LOG.error("Could not parse max size from profile", e);
-    } catch (final UnsupportedDataTypeException e) {
-      LOG.error("Data type is not supported. Could not set property value", e);
-    } catch (final InvalidJavaClassForDataTypeException e) {
-      LOG.error("Invalid Java Class. Could not set property value", e);
+        pv = new PropertyValue();
+        pv.setProperty(property);
+        pv.setValue(size, Long.class);
+
+      } catch (final NumberFormatException e) {
+        LOG.error("Could not parse max size from profile", e);
+      } catch (final UnsupportedDataTypeException e) {
+        LOG.error("Data type is not supported. Could not set property value", e);
+      } catch (final InvalidJavaClassForDataTypeException e) {
+        LOG.error("Invalid Java Class. Could not set property value", e);
+      }
     }
 
     return pv;

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<profile xmlns="http://ifs.tuwien.ac.at/dp/c3po" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" collection="bs " date="Tue Jun 04 18:06:34 CEST 2013" count="10">
+  <partition count="10">
+    <filter id="645b1b4f-c7a0-43a6-aa7a-18e990b0980b">
+      <parameters>
+        <parameter>
+          <name>collection</name>
+          <value>bs</value>
+        </parameter>
+      </parameters>
+    </filter>
+    <properties>
+      <property id="baseurl" type="STRING" count="10"/>
+      <property id="browser_desc" type="STRING" count="10"/>
+      <property id="browser_id" type="STRING" count="10"/>
+      <property id="opera" type="STRING" count="10"/>
+      <property id="dissimilarities" type="STRING" count="10">
+        <item id="1" value="9"/>
+        <item id="0" value="1"/>
+      </property>
+    </properties>
+    <samples type="size'o'matic 3000"/>
+    <elements/>
+  </partition>
+</profile>

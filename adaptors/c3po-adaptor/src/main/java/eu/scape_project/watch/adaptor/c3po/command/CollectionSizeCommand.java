@@ -38,18 +38,22 @@ public class CollectionSizeCommand extends Command {
    */
   @Override
   public PropertyValue execute() {
-    final PropertyValue pv = new PropertyValue();
+    PropertyValue pv = null;
     try {
-      final double dSize = Double.parseDouble(this.getReader().getCollectionSize());
-      final long size = Math.round(dSize);
-      
-      final Property property = this.getProperty(CP_COLLECTION_SIZE, "The overall size");
-      property.setRenderingHint(RenderingHint.STORAGE_VOLUME);
-      property.setDatatype(DataType.LONG);
-      
-      pv.setProperty(property);
-      pv.setValue(size, Long.class);
-      
+      String collectionSize = this.getReader().getCollectionSize();
+      if (collectionSize != null) {
+        final double dSize = Double.parseDouble(collectionSize);
+        final long size = Math.round(dSize);
+
+        final Property property = this.getProperty(CP_COLLECTION_SIZE, "The overall size");
+        property.setRenderingHint(RenderingHint.STORAGE_VOLUME);
+        property.setDatatype(DataType.LONG);
+
+        pv = new PropertyValue();
+        pv.setProperty(property);
+        pv.setValue(size, Long.class);
+      }
+
     } catch (final NumberFormatException e) {
       LOG.error("Could not parse collection size from profile", e);
     } catch (final UnsupportedDataTypeException e) {
@@ -60,5 +64,4 @@ public class CollectionSizeCommand extends Command {
 
     return pv;
   }
-
 }

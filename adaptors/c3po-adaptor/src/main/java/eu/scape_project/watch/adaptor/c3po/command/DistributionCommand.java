@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.ComparatorUtils;
+import org.apache.jena.atlas.data.DistinctDataBag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,35 +66,40 @@ public class DistributionCommand extends Command {
    */
   @Override
   public PropertyValue execute() {
-    final PropertyValue pv = new PropertyValue();
+    PropertyValue pv = null;
     final Property property = this.getProperty(String.format(CP_DISTRIBUTION, this.name),
       String.format("The %s distribution of the objects", this.name));
 
     final Map<String, String> distribution = this.getReader().getDistribution(this.name);
-    final List<DictionaryItem> values = new ArrayList<DictionaryItem>();
 
-    for (Map.Entry<String, String> e : distribution.entrySet()) {
-      values.add(new DictionaryItem(e.getKey(), e.getValue()));
-    }
+    if (distribution != null) {
+      
+      final List<DictionaryItem> values = new ArrayList<DictionaryItem>();
 
-    Collections.sort(values, new Comparator<DictionaryItem>() {
-
-      @Override
-      public int compare(DictionaryItem item1, DictionaryItem item2) {
-        return Strings.compareNatural(item2.getValue(), item1.getValue()); // descending
+      for (Map.Entry<String, String> e : distribution.entrySet()) {
+        values.add(new DictionaryItem(e.getKey(), e.getValue()));
       }
 
-    });
+      Collections.sort(values, new Comparator<DictionaryItem>() {
 
-    try {
-      property.setDatatype(DataType.STRING_DICTIONARY);
-      pv.setProperty(property);
-      pv.setValue(values, List.class);
+        @Override
+        public int compare(DictionaryItem item1, DictionaryItem item2) {
+          return Strings.compareNatural(item2.getValue(), item1.getValue()); // descending
+        }
 
-    } catch (final UnsupportedDataTypeException e) {
-      LOG.error("Data type is not supported. Could not set property value", e);
-    } catch (final InvalidJavaClassForDataTypeException e) {
-      LOG.error("Invalid Java Class. Could not set property value", e);
+      });
+
+      try {
+        property.setDatatype(DataType.STRING_DICTIONARY);
+        pv = new PropertyValue();
+        pv.setProperty(property);
+        pv.setValue(values, List.class);
+
+      } catch (final UnsupportedDataTypeException e) {
+        LOG.error("Data type is not supported. Could not set property value", e);
+      } catch (final InvalidJavaClassForDataTypeException e) {
+        LOG.error("Invalid Java Class. Could not set property value", e);
+      }
     }
 
     return pv;

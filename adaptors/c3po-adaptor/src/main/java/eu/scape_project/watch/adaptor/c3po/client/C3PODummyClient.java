@@ -54,7 +54,7 @@ public class C3PODummyClient implements C3POClientInterface {
     InputStream is = null;
     if (uuid.equals(JOB_UUID)) {
       final Random r = new Random();
-      final int suffix = r.nextInt(42) % 3; // ooo magic...
+      final int suffix = r.nextInt(42) % 4; // ooo magic...
       is = C3PODummyClient.class.getClassLoader().getResourceAsStream(String.format(DUMMY_FORMAT, suffix));
     }
 

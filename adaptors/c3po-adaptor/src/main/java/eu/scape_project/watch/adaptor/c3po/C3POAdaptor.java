@@ -111,6 +111,7 @@ public class C3POAdaptor implements AdaptorPluginInterface {
 
     final String formatDistr = "Format";
     final String compressionSchemeDistr = "compression_scheme";
+    final String dissimilaritiesDistr = "dissimilarities";
 
     this.commands = new HashMap<String, Command>();
     this.commands.put(CP_COLLECTION_SIZE, new CollectionSizeCommand());
@@ -121,6 +122,7 @@ public class C3POAdaptor implements AdaptorPluginInterface {
     this.commands.put(String.format(CP_DISTRIBUTION, formatDistr), new DistributionCommand(formatDistr));
     this.commands.put(String.format(CP_DISTRIBUTION, "Compression scheme"), new DistributionCommand(
       compressionSchemeDistr));
+    this.commands.put(String.format(CP_DISTRIBUTION, "Dissimilarities"), new DistributionCommand(dissimilaritiesDistr));
   }
 
   /**
@@ -336,7 +338,7 @@ public class C3POAdaptor implements AdaptorPluginInterface {
       this.source = new C3PODummyClient();
     } else if (endpoint.endsWith("/c3po")) {
       this.source = new C3POClient(endpoint);
-    }else {
+    } else {
       this.source = new C3POFileClient(endpoint);
     }
 
@@ -370,8 +372,10 @@ public class C3POAdaptor implements AdaptorPluginInterface {
       for (String c : this.commands.keySet()) {
         final Command cmd = this.commands.get(c);
         final PropertyValue pv = cmd.execute();
-        pv.setEntity(e);
-        values.add(pv);
+        if (pv != null) {
+          pv.setEntity(e);
+          values.add(pv);
+        }
       }
     }
 

@@ -15,12 +15,14 @@ import eu.scape_project.watch.adaptor.c3po.common.C3POResponseParser;
 import eu.scape_project.watch.utils.exceptions.PluginException;
 
 /**
- * C3PO client interface which can connect to a defined folder on the web and download collection profiles. 
- * That folder is expected to contain collections.xml file which contains a list of collections. It should also contain 
- * collection profiles (xml files) for each collection defined in collections.xml.  
+ * C3PO client interface which can connect to a defined folder on the web and
+ * download collection profiles. That folder is expected to contain
+ * collections.xml file which contains a list of collections. It should also
+ * contain collection profiles (xml files) for each collection defined in
+ * collections.xml.
  * 
  * @author Kresimir Duretec <duretec@ifs.tuwien.ac.at>
- *
+ * 
  */
 public class C3POFileClient extends C3POClient {
 
@@ -28,7 +30,7 @@ public class C3POFileClient extends C3POClient {
    * A default logger.
    */
   private static final Logger LOG = LoggerFactory.getLogger(C3POFileClient.class);
-  
+
   /**
    * Creates a client and sets the endpoint.
    * 
@@ -38,7 +40,7 @@ public class C3POFileClient extends C3POClient {
   public C3POFileClient(final String url) {
     this.apiEndpoint = url;
   }
-  
+
   /**
    * {@inheritDoc}
    */
@@ -47,7 +49,14 @@ public class C3POFileClient extends C3POClient {
     final List<String> result = new ArrayList<String>();
 
     try {
-      final String response = this.submitRequest("/collections.xml");
+      String response = this.submitRequest("/collections.xml");
+
+      LOG.info("Collections xml: " + response);
+
+      if (!response.startsWith("<?xml")) {
+        response = "<?xml version=\"1.0\"?>\n" + response;
+      }
+
       final C3POResponseParser reader = new C3POResponseParser();
       final List<String> collections = reader.getCollectionsFromResponse(IOUtils.toInputStream(response));
 
@@ -73,7 +82,7 @@ public class C3POFileClient extends C3POClient {
    */
   @Override
   public InputStream getCollectionProfile(final String identifier, final Map<String, String> parameters)
-      throws PluginException {
+    throws PluginException {
     try {
       final String response = this.submitRequest("/" + identifier + ".xml", LONG_TIMEOUT_INTERVAL);
 
@@ -93,4 +102,3 @@ public class C3POFileClient extends C3POClient {
     }
   }
 }
-

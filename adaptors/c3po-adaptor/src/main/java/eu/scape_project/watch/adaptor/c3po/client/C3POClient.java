@@ -64,8 +64,9 @@ public class C3POClient implements C3POClientInterface {
    */
   protected int port;
 
-  
-  public C3POClient() {} 
+  public C3POClient() {
+  }
+
   /**
    * Creates a client and sets the endpoint.
    * 
@@ -112,6 +113,7 @@ public class C3POClient implements C3POClientInterface {
 
     try {
       final String response = this.submitRequest("/collections");
+
       final C3POResponseParser reader = new C3POResponseParser();
       final List<String> collections = reader.getCollectionsFromResponse(IOUtils.toInputStream(response));
 
@@ -137,7 +139,7 @@ public class C3POClient implements C3POClientInterface {
    */
   @Override
   public InputStream getCollectionProfile(final String identifier, final Map<String, String> parameters)
-      throws PluginException {
+    throws PluginException {
     try {
       final String response = this.submitRequest("/export/profile?collection=" + identifier, LONG_TIMEOUT_INTERVAL);
 

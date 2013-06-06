@@ -37,24 +37,28 @@ public class ObjectsMinSizeCommand extends Command {
    */
   @Override
   public PropertyValue execute() {
-    final PropertyValue pv = new PropertyValue();
-    try {
-      final double dSize = Double.parseDouble(this.getReader().getObjectsMinSize());
-      final long size = Math.round(dSize);
-      
-      final Property property = this.getProperty(CP_OBJECTS_MIN_SIZE, "The size of the smallest object");
-      property.setRenderingHint(RenderingHint.STORAGE_VOLUME);
-      property.setDatatype(DataType.LONG);
-      
-      pv.setProperty(property);
-      pv.setValue(size, Long.class);
+    PropertyValue pv = null;
+    final String objectsMinSize = this.getReader().getObjectsMinSize();
+    if (objectsMinSize != null) {
+      try {
+        final double dSize = Double.parseDouble(objectsMinSize);
+        final long size = Math.round(dSize);
 
-    } catch (final NumberFormatException e) {
-      LOG.error("Could not parse min size from profile", e);
-    } catch (final UnsupportedDataTypeException e) {
-      LOG.error("Data type is not supported. Could not set property value", e);
-    } catch (final InvalidJavaClassForDataTypeException e) {
-      LOG.error("Invalid Java Class. Could not set property value", e);
+        final Property property = this.getProperty(CP_OBJECTS_MIN_SIZE, "The size of the smallest object");
+        property.setRenderingHint(RenderingHint.STORAGE_VOLUME);
+        property.setDatatype(DataType.LONG);
+
+        pv = new PropertyValue();
+        pv.setProperty(property);
+        pv.setValue(size, Long.class);
+
+      } catch (final NumberFormatException e) {
+        LOG.error("Could not parse min size from profile", e);
+      } catch (final UnsupportedDataTypeException e) {
+        LOG.error("Data type is not supported. Could not set property value", e);
+      } catch (final InvalidJavaClassForDataTypeException e) {
+        LOG.error("Invalid Java Class. Could not set property value", e);
+      }
     }
 
     return pv;

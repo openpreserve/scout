@@ -36,20 +36,24 @@ public class ObjectsCountCommand extends Command {
    */
   @Override
   public PropertyValue execute() {
-    final PropertyValue pv = new PropertyValue();
-    try {
-      final Property property = this.getProperty(CP_OBJECTS_COUNT, "The overall number of objects");
-      property.setDatatype(DataType.LONG);
-      
-      pv.setProperty(property);
-      pv.setValue(Long.parseLong(this.getReader().getObjectsCount()), Long.class);
+    PropertyValue pv = null;
+    String objectsCount = this.getReader().getObjectsCount();
+    if (objectsCount != null) {
+      try {
+        final Property property = this.getProperty(CP_OBJECTS_COUNT, "The overall number of objects");
+        property.setDatatype(DataType.LONG);
 
-    } catch (final NumberFormatException e) {
-      LOG.error("Could not parse objects count from profile", e);
-    } catch (final UnsupportedDataTypeException e) {
-      LOG.error("Data type is not supported. Could not set property value", e);
-    } catch (final InvalidJavaClassForDataTypeException e) {
-      LOG.error("Invalid Java Class. Could not set property value", e);
+        pv = new PropertyValue();
+        pv.setProperty(property);
+        pv.setValue(Long.parseLong(objectsCount), Long.class);
+
+      } catch (final NumberFormatException e) {
+        LOG.error("Could not parse objects count from profile", e);
+      } catch (final UnsupportedDataTypeException e) {
+        LOG.error("Data type is not supported. Could not set property value", e);
+      } catch (final InvalidJavaClassForDataTypeException e) {
+        LOG.error("Invalid Java Class. Could not set property value", e);
+      }
     }
 
     return pv;

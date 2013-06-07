@@ -10,7 +10,6 @@ import java.util.Random;
 import eu.scape_project.watch.adaptor.c3po.common.DummyReader;
 import eu.scape_project.watch.adaptor.c3po.common.ProfileVersionReader;
 
-
 /**
  * A dummy client that always returns the same job uuid and returns a random
  * collection profile for its only collection named 'coll-0-test'.
@@ -55,6 +54,7 @@ public class C3PODummyClient implements C3POClientInterface {
     if (uuid.equals(JOB_UUID)) {
       final Random r = new Random();
       final int suffix = r.nextInt(42) % 4; // ooo magic...
+      // final int suffix = 3;
       is = C3PODummyClient.class.getClassLoader().getResourceAsStream(String.format(DUMMY_FORMAT, suffix));
     }
 

@@ -193,7 +193,9 @@ public class DummyReader implements ProfileVersionReader {
   private String getAttributeValue(final Element element, final String name) {
     if (element != null) {
       final Attribute attribute = element.attribute(name);
-      return attribute.getValue();
+      if (attribute != null) {
+        return attribute.getValue();
+      }
     }
 
     return MISSING_VALUE;

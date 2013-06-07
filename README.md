@@ -5,13 +5,15 @@ content are available.
 
 ## Features
 
-Version 0.1.0 (alpha):
+Version 0.2.0:
 
 * Ontologic knowledge base backend
 * Information sources:
  * Content characterization profile (via C3PO adaptor)
  * File format information (via PRONOM adaptor)
  * Institutional policy information (using a policy model)
+ * Repository events (via Report API adaptor)
+ * Web Archive renderability analysis (via C3PO adaptor)
 * Web and REST interface with:
  * Browsing of knowledge base
  * Advanced query with SPARQL
@@ -21,7 +23,7 @@ Version 0.1.0 (alpha):
  * Email
 
 ## Roadmap
-Version 1.0.0 (final):
+Version 1.0.0:
 
 * Information sources:
  * Repository events (e.g. ingest, access, preservation action)

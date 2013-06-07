@@ -52,7 +52,8 @@ import eu.scape_project.watch.utils.exceptions.PluginException;
  * A watch conforming adaptor for a collection profile source called c3po.
  * 
  * @author Petar Petrov <me@petarpetrov.org>
- * @version 0.0.5
+ * @author Luis Faria <lfaria@keep.pt>
+ * @version 0.0.8
  */
 public class C3POAdaptor implements AdaptorPluginInterface {
 
@@ -64,7 +65,7 @@ public class C3POAdaptor implements AdaptorPluginInterface {
   /**
    * The current version of the adaptor.
    */
-  private static final String VERSION = "0.0.7";
+  private static final String VERSION = "0.0.8";
 
   /**
    * The current config of c3po.

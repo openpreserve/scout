@@ -41,7 +41,7 @@ public class CollectionSizeCommand extends Command {
     PropertyValue pv = null;
     try {
       String collectionSize = this.getReader().getCollectionSize();
-      if (collectionSize != null) {
+      if (collectionSize != null && !"cp_missing_value".equals(collectionSize)) {
         final double dSize = Double.parseDouble(collectionSize);
         final long size = Math.round(dSize);
 

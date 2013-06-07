@@ -39,7 +39,7 @@ public class ObjectsMaxSizeCommand extends Command {
   public PropertyValue execute() {
     PropertyValue pv = null;
     final String objectsMaxSize = this.getReader().getObjectsMaxSize();
-    if (objectsMaxSize != null) {
+    if (objectsMaxSize != null && !"cp_missing_value".equals(objectsMaxSize)) {
       try {
         final double dSize = Double.parseDouble(objectsMaxSize);
         final long size = Math.round(dSize);

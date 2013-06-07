@@ -89,6 +89,11 @@ public class ProductionProfileStrategy implements ProfileVersionReader {
   @Override
   public Map<String, String> getDistribution(final String name) {
     final Element property = this.getPropertyElement(name);
+    
+    if(property == null) {
+      return null;
+    }
+    
     final Map<String, String> distribution = new HashMap<String, String>();
     final List<?> items = property.elements();
 

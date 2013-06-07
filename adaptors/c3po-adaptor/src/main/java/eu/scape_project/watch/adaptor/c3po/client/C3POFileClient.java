@@ -49,13 +49,9 @@ public class C3POFileClient extends C3POClient {
     final List<String> result = new ArrayList<String>();
 
     try {
-      String response = this.submitRequest("/collections.xml");
+      final String response = this.submitRequest("/collections.xml");
 
-      LOG.info("Collections xml: " + response);
-
-      if (!response.startsWith("<?xml")) {
-        response = "<?xml version=\"1.0\"?>\n" + response;
-      }
+      LOG.trace("Collections xml: " + response);
 
       final C3POResponseParser reader = new C3POResponseParser();
       final List<String> collections = reader.getCollectionsFromResponse(IOUtils.toInputStream(response));

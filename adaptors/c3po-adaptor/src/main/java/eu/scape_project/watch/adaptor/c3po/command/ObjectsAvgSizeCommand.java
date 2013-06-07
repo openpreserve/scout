@@ -39,7 +39,7 @@ public class ObjectsAvgSizeCommand extends Command {
   public PropertyValue execute() {
     PropertyValue pv = null;
     final String objectsAvgSize = this.getReader().getObjectsAvgSize();
-    if (objectsAvgSize != null) {
+    if (objectsAvgSize != null && !"cp_missing_value".equals(objectsAvgSize)) {
       try {
         final double size = Double.parseDouble(objectsAvgSize);
 

@@ -39,7 +39,7 @@ public class ObjectsMinSizeCommand extends Command {
   public PropertyValue execute() {
     PropertyValue pv = null;
     final String objectsMinSize = this.getReader().getObjectsMinSize();
-    if (objectsMinSize != null) {
+    if (objectsMinSize != null && !"cp_missing_value".equals(objectsMinSize)) {
       try {
         final double dSize = Double.parseDouble(objectsMinSize);
         final long size = Math.round(dSize);

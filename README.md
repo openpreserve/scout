@@ -69,8 +69,7 @@ JAVA_OPTS="-Xmx512m -Xms128m $JAVA_OPTS"
  
  6. Install Scout Web Application into Apache Tomcat
 ```
-$ rm -rf [TOMCAT]/webapps/ROOT
-$ cp [SOURCES]/web/target/scout-web-0.1.0.war [TOMCAT]/webapps/ROOT.war
+$ cp [SOURCES]/web/target/scout-web-*.war [TOMCAT]/webapps/
 ```
  7. Create the following directories with write permissions by the user running the Apache Tomcat server
  ```

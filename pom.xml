@@ -212,7 +212,7 @@
 				<site>
 					<id>opf.jenkins.site</id>
 					<name>OPF Labs Maven Local Website</name>
-					<url>file:///var/www/projects/scape-pw</url>
+					<url>file:///var/www/projects/scape/scout</url>
 				</site>
 			</distributionManagement>
 		</profile>

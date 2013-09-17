@@ -44,28 +44,54 @@
 					</archive>
 					<webResources>
 						<resource>
-							<directory>swagger-ui-1.1.7/dist</directory>
+							<directory>jslibs/swagger-ui-1.1.7/dist</directory>
 							<targetPath>apidoc</targetPath>
 						</resource>
 						<resource>
-							<directory>jquery-textfill-v0.1</directory>
-							<targetPath>jquery-textfill</targetPath>
+							<directory>jslibs/jquery-textfill-v0.1</directory>
+							<targetPath>js/jquery-textfill</targetPath>
 						</resource>
 						<resource>
-							<directory>jquery-fileuploader</directory>
-							<targetPath>jquery-fileuploader</targetPath>
+							<directory>jslibs/jQuery-File-Upload-8.8.5</directory>
+							<includes>
+								<include>js/**</include>
+								<include>css/**</include>
+								<include>img/**</include>
+							</includes>
+							<targetPath>js/jquery-fileuploader</targetPath>
 						</resource>
 						<resource>
-							<directory>humanize.js-v0.0.1</directory>
-							<targetPath>humanize</targetPath>
+							<directory>jslibs/humanize.js-v0.0.1</directory>
+							<targetPath>js/humanize</targetPath>
 						</resource>
 						<resource>
-							<directory>jqBootstrapValidation-v1.3.6</directory>
-							<targetPath>jqBootstrapValidation</targetPath>
+							<directory>jslibs/jqBootstrapValidation-v1.3.6</directory>
+							<targetPath>js/jqBootstrapValidation</targetPath>
+						</resource>
+						<resource>
+							<directory>jslibs/JavaScript-Templates-2.4.0/</directory>
+							<includes>
+								<include>js/tmpl.min.js</include>
+							</includes>
+							<targetPath>js/JavaScript-Templates</targetPath>
+						</resource>
+						<resource>
+							<directory>jslibs/JavaScript-Load-Image-1.9.1/</directory>
+							<includes>
+								<include>js/load-image.js</include>
+							</includes>
+							<targetPath>js/JavaScript-Load-Image</targetPath>
+						</resource>
+						<resource>
+							<directory>jslibs/JavaScript-Canvas-to-Blob-2.0.7/</directory>
+							<includes>
+								<include>js/canvas-to-blob.min.js</include>
+							</includes>
+							<targetPath>js/JavaScript-Canvas-to-Blob</targetPath>
 						</resource>
 						<resource>
 							<directory>compiled-templates/</directory>
-							<targetPath>templates</targetPath>
+							<targetPath>js/templates</targetPath>
 						</resource>
 					</webResources>
 				</configuration>

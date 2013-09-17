@@ -1,6 +1,6 @@
 {{#partial "headstyles"}}
-    <link rel="stylesheet" href="{{contextPath}}/jquery-fileuploader/css/jquery.fileupload-ui.css">
-    <noscript><link rel="stylesheet" href="{{contextPath}}/jquery-fileuploader/css/jquery.fileupload-ui-noscript.css"></noscript>
+    <link rel="stylesheet" href="{{contextPath}}/js/jquery-fileuploader/css/jquery.fileupload-ui.css">
+    <noscript><link rel="stylesheet" href="{{contextPath}}/js/jquery-fileuploader/css/jquery.fileupload-ui-noscript.css"></noscript>
     <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 {{/partial}}
 {{#partial "title"}}Scout - Upload Policies{{/partial}}
@@ -122,29 +122,24 @@
     </tr>
 {% } %}
 </script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
-<script src="{{contextPath}}/jquery-fileuploader/js/vendor/jquery.ui.widget.js"></script>
 <!-- The Templates plugin is included to render the upload/download listings -->
-<script src="http://blueimp.github.com/JavaScript-Templates/tmpl.min.js"></script>
+<script src="{{contextPath}}/js/JavaScript-Templates/js/tmpl.min.js"></script>
 <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
-<script src="http://blueimp.github.com/JavaScript-Load-Image/load-image.min.js"></script>
+<script src="{{contextPath}}/js/JavaScript-Load-Image/js/load-image.js"></script>
 <!-- The Canvas to Blob plugin is included for image resizing functionality -->
-<script src="http://blueimp.github.com/JavaScript-Canvas-to-Blob/canvas-to-blob.min.js"></script>
-<!-- Bootstrap JS and Bootstrap Image Gallery are not required, but included for the demo -->
-<script src="http://blueimp.github.com/cdn/js/bootstrap.min.js"></script>
-<script src="http://blueimp.github.com/Bootstrap-Image-Gallery/js/bootstrap-image-gallery.min.js"></script>
+<script src="{{contextPath}}/js/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
+
 <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
-<script src="{{contextPath}}/jquery-fileuploader/js/jquery.iframe-transport.js"></script>
+<script src="{{contextPath}}/js/jquery-fileuploader/js/jquery.iframe-transport.js"></script>
 <!-- The basic File Upload plugin -->
-<script src="{{contextPath}}/jquery-fileuploader/js/jquery.fileupload.js"></script>
+<script src="{{contextPath}}/js/jquery-fileuploader/js/jquery.fileupload.js"></script>
 <!-- The File Upload file processing plugin -->
-<script src="{{contextPath}}/jquery-fileuploader/js/jquery.fileupload-fp.js"></script>
+<script src="{{contextPath}}/js/jquery-fileuploader/js/jquery.fileupload-process.js"></script>
 <!-- The File Upload user interface plugin -->
-<script src="{{contextPath}}/jquery-fileuploader/js/jquery.fileupload-ui.js"></script>
+<script src="{{contextPath}}/js/jquery-fileuploader/js/jquery.fileupload-ui.js"></script>
 <!-- The main application script -->
-<script src="{{contextPath}}/jquery-fileuploader/js/main.js"></script>
+<script src="{{contextPath}}/js/jquery-fileuploader/js/main.js"></script>
 <!-- The XDomainRequest Transport is included for cross-domain file deletion for IE8+ -->
-<!--[if gte IE 8]><script src="{{contextPath}}/jquery-fileuploader/js/cors/jquery.xdr-transport.js"></script><![endif]-->
+<!--[if gte IE 8]><script src="{{contextPath}}/js/jquery-fileuploader/js/cors/jquery.xdr-transport.js"></script><![endif]-->
 {{/partial}}
 {{> base}}

@@ -1,5 +1,6 @@
 package eu.scape_project.watch.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -18,19 +19,27 @@ import eu.scape_project.watch.web.annotations.TemplateSource;
 @Path("/dashboard")
 @TemplateSource("dashboard")
 public class Dashboard extends TemplateContext {
-  
-  @Inject
-  private HttpServletRequest request;
 
-  public List<Objective> getObjectives() {
-    final ServletContext context = this.request.getSession().getServletContext();
-    final PolicyModel policyModel = ContextUtil.getPolicyModel(context);
+	@Inject
+	private HttpServletRequest request;
 
-    return policyModel.listAllObjectives();
-  }
+	public List<Objective> getObjectives() {
+		final ServletContext context = this.request.getSession()
+				.getServletContext();
+		final PolicyModel policyModel = ContextUtil.getPolicyModel(context);
 
-  public List<AsyncRequest> getRequests() {
-    return DAO.ASYNC_REQUEST.list(0, getPageSize());
-  }
+		List<Objective> ret = null;
+		if (policyModel != null) {
+			ret = policyModel.listAllObjectives();
+		} else {
+			ret = new ArrayList<Objective>();
+		}
+		return ret;
+
+	}
+
+	public List<AsyncRequest> getRequests() {
+		return DAO.ASYNC_REQUEST.list(0, getPageSize());
+	}
 
 }

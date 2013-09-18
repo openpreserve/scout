@@ -10,136 +10,160 @@
 			<p>Use SPARQL to make your own query</p>
 		</div>
 	</div>
-	<div class="row-fluid">
-		<div class="well span2">
-			<p>
-				<strong>Target</strong>
-			</p>
-			<label class="radio"> <input type=radio name="target"
-				value="entity_type" checked="true"> Category
-			</label> <label class="radio"> <input type=radio name="target"
-				value="property"> Property
-			</label> <label class="radio"> <input type=radio name="target"
-				value="entity"> Entity
-			</label> <label class="radio"> <input type=radio name="target"
-				value="property_value"> Value
-			</label> <label class="radio"> <input type=radio name="target"
-				value="measurement"> Measurement
-			</label> <br />
-			<p>
-				<strong>Snippets</strong>
-			</p>
-			<div class="btn-group btn-group-vertical">
-				<button class="btn">Relations</button>
-				<button class="btn">Resources</button>
-			</div>
+	<div class="row">
+		<div class="container col-md-2">
+			<div class="well">
+				<p>
+					<strong>Target</strong>
+				</p>
+				<label class="radio"> <input type=radio name="target"
+					value="entity_type" checked="true"> Category
+				</label> <label class="radio"> <input type=radio name="target"
+					value="property"> Property
+				</label> <label class="radio"> <input type=radio name="target"
+					value="entity"> Entity
+				</label> <label class="radio"> <input type=radio name="target"
+					value="property_value"> Value
+				</label> <label class="radio"> <input type=radio name="target"
+					value="measurement"> Measurement
+				</label> <br />
+				<p>
+					<!-- 					<strong>Snippets</strong> -->
+					<!-- 				</p> -->
+					<!-- 				<div class="btn-group btn-group-vertical"> -->
+					<!-- 					<button class="btn">Relations</button> -->
+					<!-- 					<button class="btn">Resources</button> -->
+					<!-- 				</div> --></div>
 		</div>
 
-		<div class="well span10">
-			<div class="pull-right">
-				<a href="#">Help</a>
-			</div>
-			<p>
-				<strong>SPARQL</strong>
-			</p>
-			<pre style="margin: 0;">SELECT ?s WHERE { <span
-					id="sparql-class-declaration"></span> .
-<textarea id="query" rows="8" class="span12" style="margin: 0;"></textarea>}</pre>
+		<div class="container col-md-10">
+			<div class="well">
+				<div class="pull-right">
+					<a href="#">Help</a>
+				</div>
+				<p>
+					<strong>SPARQL</strong>
+				</p>
+				<pre style="margin: 0;">SELECT ?s WHERE { <span
+						id="sparql-class-declaration"></span> .
+<textarea id="query" rows="8" class="col-md-12" style="margin: 0;"></textarea>}</pre>
 
+			</div>
 		</div>
 	</div>
-	<div class="row-fluid">
+	<div class="row col-md-offset-2 col-md-3">
+		<button id="searchButton" type="button"
+			class="btn btn-large btn-primary"
+			data-loading-text="Loading...">
+			<i class="glyphicon glyphicon-search"></i> Search
+		</button>
 		<button id="createRequestButton"
 			class="btn btn-large btn-success disabled">
-			<i class="icon-plus icon-white"></i> Create trigger
-		</button>
-		<button id="searchButton" type="button"
-			class="btn btn-large btn-primary pull-right"
-			data-loading-text="Loading...">
-			<i class="icon-search icon-white"></i> Search
+			<i class="glyphicon glyphicon-plus"></i> Create trigger
 		</button>
 	</div>
 	<div class="row-fluid">
-		<div id="resultList" class="span12"></div>
+		<div id="resultList" class="col-md-12"></div>
 	</div>
 
 </div>
 {{/partial}} {{#partial "scripts"}}
 <script type="text/javascript">
+	$(document).ready(
+			function() {
 
-	$(document).ready(function() {
-		
-		var updateSparqlDeclaration = function() {
-			var value = $("input[name='target']:checked").val();
-			if (value == 'entity_type') {
-				$('#sparql-class-declaration').html("?s rdf:type watch:EntityType");
-			} else if (value == 'property') {
-				$('#sparql-class-declaration').html("?s rdf:type watch:Property");
-			} else if (value == 'entity') {
-				$('#sparql-class-declaration').html("?s rdf:type watch:Entity");
-			} else if (value == 'property_value') {
-				$('#sparql-class-declaration').html("?s rdf:type watch:PropertyValue");
-			} else if (value == 'measurement') {
-				$('#sparql-class-declaration').html("?s rdf:type watch:Measurement");
-			}
-		};
-		
-		$("input[name='target']").change(function() {
-			updateSparqlDeclaration();
-		});
-		
-		updateSparqlDeclaration();
-	});
+				var updateSparqlDeclaration = function() {
+					var value = $("input[name='target']:checked").val();
+					if (value == 'entity_type') {
+						$('#sparql-class-declaration').html(
+								"?s rdf:type watch:EntityType");
+					} else if (value == 'property') {
+						$('#sparql-class-declaration').html(
+								"?s rdf:type watch:Property");
+					} else if (value == 'entity') {
+						$('#sparql-class-declaration').html(
+								"?s rdf:type watch:Entity");
+					} else if (value == 'property_value') {
+						$('#sparql-class-declaration').html(
+								"?s rdf:type watch:PropertyValue");
+					} else if (value == 'measurement') {
+						$('#sparql-class-declaration').html(
+								"?s rdf:type watch:Measurement");
+					}
+				};
+
+				$("input[name='target']").change(function() {
+					updateSparqlDeclaration();
+				});
+
+				updateSparqlDeclaration();
+			});
 </script>
 <script type="text/javascript">
-var paginator;
-var search = function() {
-	var btn = $(this);
-	btn.button('loading');
+	var paginator;
+	var search = function() {
+		var btn = $(this);
+		btn.button('loading');
 
-	var target = $("input[name='target']:checked").val();
-	var query = $('#query').val();
-	
-	
-	var apiCountRequest = '{{contextPath}}/api/request.json/count/?target='+target+'&query='+encodeURIComponent(query);
-	var jqxhr = $.getJSON(apiCountRequest, function(count) {
-		var apiListRequest = '{{contextPath}}/api/request.json/list/?target='+target+'&query='+encodeURIComponent(query);
-		var template;
-		
-		if (target == 'entity_type') {
-			template = 'type_list.hbs';
-		} else if (target == 'property') {
-			template = 'property_list_for_query.hbs';
-		} else if (target == 'entity') {
-			template = 'entity_list_for_query.hbs';
-		} else if (target == 'property_value') {
-			template = 'value_list_for_query.hbs';
-		} else if (target == 'measurement') {
-			template = 'measurement_list_for_query.hbs';
-		}
-
-		paginator = Paginator(count, apiListRequest, 20, template, '#resultList', '{{contextPath}}', '{{mustacheletPath}}');
-		paginator.init();
-		btn.button('reset');
-		$('#createRequestButton').removeClass('disabled');
-	});
-
-	jqxhr.error(function() {
-		$('#resultList').html("<div class='alert alert-error'>Error parsing SPARQL query</div>");
-		btn.button('reset');
-	});
-};
-
-$(document).ready(function(){
-	var searchButton = $('#searchButton');
-	searchButton.button();
-	searchButton.click(search);
-	$('#createRequestButton').click(function(){
 		var target = $("input[name='target']:checked").val();
 		var query = $('#query').val();
-		
-		document.location = $.param.fragment("{{mustacheletPath}}/request/new/advanced", "target="+target+"&query="+query);
-	});
-});
+
+		var apiCountRequest = '{{contextPath}}/api/request.json/count/?target='
+				+ target + '&query=' + encodeURIComponent(query);
+		var jqxhr = $
+				.getJSON(
+						apiCountRequest,
+						function(count) {
+							var apiListRequest = '{{contextPath}}/api/request.json/list/?target='
+									+ target
+									+ '&query='
+									+ encodeURIComponent(query);
+							var template;
+
+							if (target == 'entity_type') {
+								template = 'type_list.hbs';
+							} else if (target == 'property') {
+								template = 'property_list_for_query.hbs';
+							} else if (target == 'entity') {
+								template = 'entity_list_for_query.hbs';
+							} else if (target == 'property_value') {
+								template = 'value_list_for_query.hbs';
+							} else if (target == 'measurement') {
+								template = 'measurement_list_for_query.hbs';
+							}
+
+							paginator = Paginator(count, apiListRequest, 20,
+									template, '#resultList', '{{contextPath}}',
+									'{{mustacheletPath}}');
+							paginator.init();
+							btn.button('reset');
+							$('#createRequestButton').removeClass('disabled');
+						});
+
+		jqxhr
+				.error(function() {
+					$('#resultList')
+							.html(
+									"<div class='alert alert-error'>Error parsing SPARQL query</div>");
+					btn.button('reset');
+				});
+	};
+
+	$(document).ready(
+			function() {
+				var searchButton = $('#searchButton');
+				searchButton.button();
+				searchButton.click(search);
+				$('#createRequestButton').click(
+						function() {
+							var target = $("input[name='target']:checked")
+									.val();
+							var query = $('#query').val();
+
+							document.location = $.param.fragment(
+									"{{mustacheletPath}}/request/new/advanced",
+									"target=" + target + "&query=" + query);
+						});
+			});
 </script>
 {{/partial}} {{> base}}

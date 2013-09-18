@@ -1,4 +1,8 @@
 {{#parameters}}
-<label>{{description}}{{#required}} (required){{/required}}{{#hidden}} (hidden){{/hidden}}</label>
-<input type="text" value="{{value}}" name="config.{{key}}">
+<div class="form-group">
+	<label for="config.{{key}}" class="col-lg-6">{{description}}{{#required}}
+		(required){{/required}}{{#hidden}} (hidden){{/hidden}}</label> <input
+		type="text" value="{{value}}" id="config.{{key}}"
+		name="config.{{key}}" class="form-control col-lg-6">
+</div>
 {{/parameters}}

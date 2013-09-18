@@ -16,6 +16,8 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
@@ -31,73 +33,74 @@ import eu.scape_project.watch.web.annotations.TemplateSource;
 @HttpMethod({ HttpMethod.Type.GET, HttpMethod.Type.POST })
 public class UploadObjective extends TemplateContext {
 
-  @Inject
-  private HttpServletResponse response;
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
-  @Inject
-  private HttpServletRequest request;
+	@Inject
+	private HttpServletResponse response;
 
-  private String uploadPath = System.getProperty("user.home") + File.separator + ".scout" + File.separator + "policies";
+	@Inject
+	private HttpServletRequest request;
 
-  public UploadObjective() {
-    File uploadDir = new File(this.uploadPath);
-    if (!uploadDir.exists()) {
-      uploadDir.mkdirs();
-    }
-  }
+	private String uploadPath = System.getProperty("user.home")
+			+ File.separator + ".scout" + File.separator + "policies";
 
-  @Controller(HttpMethod.Type.POST)
-  boolean redirectPostData() throws IOException, ServletException {
+	public UploadObjective() {
+		File uploadDir = new File(this.uploadPath);
+		if (!uploadDir.exists()) {
+			uploadDir.mkdirs();
+		}
+	}
 
-    if (!ServletFileUpload.isMultipartContent(request)) {
-      throw new IllegalArgumentException(
-          "Request is not multipart, please 'multipart/form-data' enctype for your form.");
-    }
+	@Controller(HttpMethod.Type.POST)
+	boolean redirectPostData() throws IOException, ServletException {
 
-    final JSONArray response = new JSONArray();
-    final ServletContext context = this.request.getSession().getServletContext();
-    final PolicyModel policyModel = ContextUtil.getPolicyModel(context);
-    final ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
-    final PrintWriter writer = this.response.getWriter();
-    this.response.setContentType("application/json");
+		if (!ServletFileUpload.isMultipartContent(request)) {
+			throw new IllegalArgumentException(
+					"Request is not multipart, please 'multipart/form-data' enctype for your form.");
+		}
 
-    try {
-      List<FileItem> items = uploadHandler.parseRequest(this.request);
-      for (FileItem item : items) {
-        if (!item.isFormField()) {
-          File file = new File(this.uploadPath, item.getName());
-          item.write(file);
-          JSONObject metadata = new JSONObject();
-          metadata.put("name", item.getName());
-          metadata.put("size", item.getSize());
-          metadata
-              .put("url", this.getContextPath() + this.getMustacheletPath() + "/policies?getfile=" + item.getName());
-          // metadata.put("thumbnail_url", "upload?getthumb=" + item.getName());
-          metadata.put("delete_url",
-              this.getContextPath() + this.getMustacheletPath() + "/policies?delfile=" + item.getName());
-          metadata.put("delete_type", "DELETE");
-          response.put(metadata);
+		final ServletContext context = this.request.getSession()
+				.getServletContext();
+		final PolicyModel policyModel = ContextUtil.getPolicyModel(context);
+		final ServletFileUpload uploadHandler = new ServletFileUpload(
+				new DiskFileItemFactory());
 
-          // process objectives
-          // TODO remove the delete when other way of updating is available
-          policyModel.deleteAllObjectives();
-          boolean loaded = policyModel.loadPolicies(file.getAbsolutePath());
-          System.out.println(String.format("Loaded file %s: %s", file.getAbsolutePath(), loaded + ""));
-        }
-      }
-    } catch (FileUploadException e) {
-      throw new RuntimeException(e);
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    } finally {
-      writer.write(response.toString());
-      writer.close();
-    }
+		try {
+			List<FileItem> items = uploadHandler.parseRequest(this.request);
+			for (FileItem item : items) {
+				if (!item.isFormField()) {
+					File file = new File(this.uploadPath, item.getName());
+					item.write(file);
 
-    return false;
-  }
+					// process objectives
+					policyModel.deleteAllObjectives();
+					boolean loaded = policyModel.loadPolicies(file
+							.getAbsolutePath());
+					log.info("Loaded file {}: {}", file.getAbsolutePath(),
+							loaded + "");
+					if (loaded) {
+						response.sendRedirect(getMustacheletPath()
+								+ "/dashboard");
+					} else {
+						response.sendRedirect(getMustacheletPath()
+								+ "/error/400?message=Could not load the selected policy&back=/upload/policy/new");
+					}
+				}
+			}
+		} catch (FileUploadException e) {
+			response.sendRedirect(getMustacheletPath()
+					+ "/error/500?message=Could not load the selected policy&back=/upload/policy/new&details="
+					+ e.getMessage());
 
-  public String getRedirect() {
-    return "/web";
-  }
+			response.sendError(500,
+					"Could not upload the file, " + e.getMessage());
+		} catch (Exception e) {
+			response.sendRedirect(getMustacheletPath()
+					+ "/error/500?message=An unexpected error occured when trying to load the policy&back=/upload/policy/new&details="
+					+ e.getMessage());
+		}
+
+		return false;
+	}
+
 }

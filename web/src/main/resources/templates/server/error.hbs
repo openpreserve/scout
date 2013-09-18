@@ -1,9 +1,26 @@
 {{#partial "title"}}Scout - Error{{/partial}}
 {{#partial "content"}}
-	<div class="hero-unit">
-  <h1>{{errorCode}} <small>error</small></h1>
+<div class="jumbotron">
+  {{#if PageMissing}}
+  <h1>Can't find that page!</h1>
   <p>Sorry, but we could not find the resource <strong>{{originalUri}}</strong>.<p>
   <small>Please try something else.</small>
+  {{/if}}
+  
+  {{#if ClientError}}
+  <h1>Hum, that doesn't seem right...</h1>
+  <p>{{message}}<p>
+  <br>
+  <a href="{{mustacheletPath}}{{back}}" class="btn-link">&larr; get back there</a>
+  {{/if}}
+  
+  {{#if InternalError}}
+  <h1>Oops, unexpected error</h1>
+  <p>{{message}}<p>
+  <small>{{details}}</small>
+  <br>
+  <a href="{{mustacheletPath}}{{back}}" class="btn-link">&larr; get back there</a>
+  {{/if}}
 </div>
 {{/partial}}
 {{> base}}

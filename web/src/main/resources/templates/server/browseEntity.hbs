@@ -3,10 +3,8 @@
 <div class="container">
 	{{#entity}}
 	<ul class="breadcrumb">
-		<li><a href="{{mustacheletPath}}/browse">Categories</a> <span
-			class="divider">/</span></li>
-		<li><a href="{{mustacheletPath}}/browse/type/{{type.id}}">{{type.name}}</a>
-			<span class="divider">/</span></li>
+		<li><a href="{{mustacheletPath}}/browse">Categories</a></li>
+		<li><a href="{{mustacheletPath}}/browse/type/{{type.id}}">{{type.name}}</a></li>
 		<li class="active">{{name}}</li>
 	</ul>
 	<div class="page-header">
@@ -34,7 +32,7 @@
 				<td>{{#value-render this short=true}}{{/value-render}}</td>
 				<td><a class="btn btn-small btn-link"
 					href="{{../mustacheletPath}}/browse/value/{{id}}"><i
-						class=" icon-eye-open"></i></a></td>
+						class="glyphicon glyphicon-th-list"></i></a></td>
 			</tr>
 			{{/values}}
 		</tbody>

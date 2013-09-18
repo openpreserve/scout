@@ -20,7 +20,7 @@
 		<tr>
 			<td>{{description}}</td>
 			<td><a class="btn btn-small btn-link"
-				href="{{mustacheletPath}}/browse/request/{{id}}"><i class=" icon-eye-open"></i></a></td>
+				href="{{mustacheletPath}}/browse/request/{{id}}"><i class="glyphicon glyphicon-th-list"></i></a></td>
 		</tr>{{/each}}
 		</tbody>
 	</table>
@@ -30,7 +30,7 @@
 		You have no triggers defined, create one now!
 	</div>
 	{{/unless}}
-	<a class="btn btn-success" href="{{mustacheletPath}}/request/new/advanced"><i class="icon-plus icon-white"></i> Create trigger</a>
+	<a class="btn btn-success" href="{{mustacheletPath}}/request/new/advanced"><i class="glyphicon glyphicon-plus"></i> Create trigger</a>
 </div>
 <br/>
 <div class="container">
@@ -68,6 +68,6 @@
         <b>Empty!</b> There are no defined policies.
     </div>
     {{/unless}}
-     <a class="btn btn-success" href="{{mustacheletPath}}/upload/policy/new"><i class="icon-plus icon-white"></i>Upload policies</a>
+     <a class="btn btn-success" href="{{mustacheletPath}}/upload/policy/new"><i class="glyphicon glyphicon-plus"></i>Upload policies</a>
 </div>
 {{/partial}} {{> base}}

@@ -48,7 +48,10 @@
 							<targetPath>apidoc</targetPath>
 						</resource>
 						<resource>
-							<directory>jslibs/jquery-textfill-v0.1</directory>
+							<directory>jslibs/jquery-textfill-0.4.0</directory>
+							<includes>
+								<include>**/jquery.textfill.min.js</include>
+							</includes>
 							<targetPath>js/jquery-textfill</targetPath>
 						</resource>
 						<resource>
@@ -67,27 +70,6 @@
 						<resource>
 							<directory>jslibs/jqBootstrapValidation-v1.3.6</directory>
 							<targetPath>js/jqBootstrapValidation</targetPath>
-						</resource>
-						<resource>
-							<directory>jslibs/JavaScript-Templates-2.4.0/</directory>
-							<includes>
-								<include>js/tmpl.min.js</include>
-							</includes>
-							<targetPath>js/JavaScript-Templates</targetPath>
-						</resource>
-						<resource>
-							<directory>jslibs/JavaScript-Load-Image-1.9.1/</directory>
-							<includes>
-								<include>js/load-image.js</include>
-							</includes>
-							<targetPath>js/JavaScript-Load-Image</targetPath>
-						</resource>
-						<resource>
-							<directory>jslibs/JavaScript-Canvas-to-Blob-2.0.7/</directory>
-							<includes>
-								<include>js/canvas-to-blob.min.js</include>
-							</includes>
-							<targetPath>js/JavaScript-Canvas-to-Blob</targetPath>
 						</resource>
 						<resource>
 							<directory>compiled-templates/</directory>
@@ -169,13 +151,13 @@
 			<artifactId>jsr311-api</artifactId>
 			<version>1.1.1</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>12.0</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>eu.scape-project</groupId>
 			<artifactId>scout-model</artifactId>
@@ -228,7 +210,8 @@
 			<groupId>com.github.jknack</groupId>
 			<artifactId>handlebars-humanize</artifactId>
 		</dependency>
-		<!-- Added this two dependencies because the email plugin would fail without them -->
+		<!-- Added this two dependencies because the email plugin would fail without 
+			them -->
 		<dependency>
 			<groupId>org.abego.treelayout</groupId>
 			<artifactId>org.abego.treelayout.core</artifactId>
@@ -261,12 +244,8 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<!--<dependency>
-				 To be compatible with asm 3.3.1 of jersey server 
-				<groupId>org.parboiled</groupId>
-				<artifactId>parboiled-java</artifactId>
-				<version>1.0.2</version>
-			</dependency>-->
+			<!--<dependency> To be compatible with asm 3.3.1 of jersey server <groupId>org.parboiled</groupId> 
+				<artifactId>parboiled-java</artifactId> <version>1.0.2</version> </dependency> -->
 		</dependencies>
 	</dependencyManagement>
 

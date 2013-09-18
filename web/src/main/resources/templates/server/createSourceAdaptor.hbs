@@ -1,31 +1,39 @@
-{{#partial "title"}}Scout - Create Source Adaptor{{/partial}}
-{{#partial "content"}} 
-<form class="container" method="POST">
+{{#partial "title"}}Scout - Create Source Adaptor{{/partial}} {{#partial
+"content"}}
+<form class="container form-horizontal" method="POST" role="form">
 	<legend>Create source adaptor</legend>
 
-	<label>Name</label>
-	<input name="instance" type="text"
-		placeholder="Unique identifying name">
-	<label>Plug-in</label>
-	<select name="plugin" id="plugin-select"> {{#plugins}}
-		<option value="{{name}}|{{version}}">{{name}} version
-			{{version}}</option>{{/plugins}}
-	</select>
-	<label>Configuration</label>
-	<div class="well" id="configuration"></div>
+	<div class="form-group">
+		<label for="uniqueName">Name</label> <input id="uniqueName"
+			class="form-control" name="instance" type="text"
+			placeholder="Unique identifying name">
+	</div>
+	<div class="form-group">
+		<label for=plugin-select>Plug-in</label> <select name="plugin"
+			id="plugin-select" class="form-control"> {{#plugins}}
+			<option value="{{name}}|{{version}}">{{name}} version
+				{{version}}</option>{{/plugins}}
 
-	<label>Source</label> 
-	<select name="source"> 
-	{{#sources}}
-		<option value="{{name}}">{{name}}: {{description}}</option>{{/sources}}
-	</select>
-	<a class="btn btn-link" href="{{mustacheletPath}}/source/new">create
-		new source</a> <br /> <br />
-	<button type="submit" class="btn btn-primary">Create</button>
+		</select>
+	</div>
+	<div class="form-group">
+		<label for="configuration">Configuration</label>
+		<div class="well" id="configuration"></div>
+	</div>
+
+	<div class="form-group">
+		<label for="source" class="col-lg-3">Source</label> <select name="source" id="source"
+			class="form-control col-lg-6"> {{#sources}}
+			<option value="{{name}}">{{name}}: {{description}}</option>{{/sources}}
+		</select> <a class="btn btn-link" href="{{mustacheletPath}}/source/new" class="col-lg-3">create
+			new source</a>
+	</div>
+	<div class="form-group">
+		<button type="submit" class="btn btn-primary">Create</button>
+	</div>
 
 </form>
-{{/partial}}
-{{#partial "scripts"}}
+{{/partial}} {{#partial "scripts"}}
 <script>
 	function updateConfiguration() {
 		var pluginSelect = document.getElementById("plugin-select");
@@ -34,12 +42,16 @@
 		var pluginName = pluginIdSplit[0];
 		var pluginVersion = pluginIdSplit[1];
 
-		$.getJSON('{{contextPath}}/api/plugin.json/' + encodeURIComponent(pluginName) + '/'
-				+ pluginVersion, function(plugin_data) {
-			var template = Handlebars.templates['plugin_configuration.hbs'];
-			var pluginHtml = template(plugin_data);
-			$('#configuration').html(pluginHtml);
-		});
+		$
+				.getJSON(
+						'{{contextPath}}/api/plugin.json/'
+								+ encodeURIComponent(pluginName) + '/'
+								+ pluginVersion,
+						function(plugin_data) {
+							var template = Handlebars.templates['plugin_configuration.hbs'];
+							var pluginHtml = template(plugin_data);
+							$('#configuration').html(pluginHtml);
+						});
 	}
 
 	$(document).ready(function() {
@@ -48,7 +60,6 @@
 		updateConfiguration();
 	});
 </script>
-{{/partial}}
-{{> base}}
+{{/partial}} {{> base}}
 
 

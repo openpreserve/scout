@@ -1,16 +1,34 @@
-	<div class="navbar navbar-inverse">
-		<div class="navbar-inner">
-			<a class="brand" href="{{mustacheletPath}}/">Scout</a>
-			<ul class="nav">
-				<li class="{{#block "NavIndexClass"}}{{/block}}"><a href="{{mustacheletPath}}/">Home</a></li>
-				<li class="{{#block "NavQueryClass"}}{{/block}}"><a href="{{mustacheletPath}}/query">Query</a></li>
-				<li class="{{#block "NavBrowseClass"}}{{/block}}"><a href="{{mustacheletPath}}/browse">Browse</a></li>
-				<!--<li class="{{#block "NavContributeClass"}}{{/block}}"><a href="{{mustacheletPath}}/contribute">Contribute</a></li> -->
 
-			</ul>
-			<ul class="nav pull-right">
-				<li class="{{#block "NavDashboardClass"}}{{/block}}"><a href="{{mustacheletPath}}/dashboard">Dashboard</a></li>
-				<li class="{{#block "NavAdministrationClass"}}{{/block}}"><a href="{{mustacheletPath}}/administration">Administration</a></li>
-			</ul>
-		</div>
+<nav class="navbar navbar-inverse" role="navigation">
+	{{!-- Brand and toggle get grouped for better mobile display --}}
+	<div class="navbar-header">
+		<button type="button" class="navbar-toggle" data-toggle="collapse"
+			data-target=".navbar-ex1-collapse">
+			<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span>
+			<span class="icon-bar"></span> <span class="icon-bar"></span>
+		</button>
+		<a class="navbar-brand" href="{{mustacheletPath}}/">Scout</a>
 	</div>
+
+	{{!-- Collect the nav links, forms, and other content for toggling --}}
+	<div class="collapse navbar-collapse navbar-ex1-collapse">
+		<ul class="nav navbar-nav">
+			<li class="{{#block "NavIndexClass"}}{{/block}}"><a
+				href="{{mustacheletPath}}/">Home</a></li>
+			<li class="{{#block "NavQueryClass"}}{{/block}}"><a
+				href="{{mustacheletPath}}/query">Query</a></li>
+			<li class="{{#block "NavBrowseClass"}}{{/block}}"><a
+				href="{{mustacheletPath}}/browse">Browse</a></li>
+			<!--<li class="{{#block "NavContributeClass"}}{{/block}}"><a href="{{mustacheletPath}}/contribute">Contribute</a></li> -->
+
+		</ul>
+
+		<ul class="nav navbar-nav navbar-right">
+			<li class="{{#block "NavDashboardClass"}}{{/block}}"><a
+				href="{{mustacheletPath}}/dashboard">Dashboard</a></li>
+			<li class="{{#block "NavAdministrationClass"}}{{/block}}"><a
+				href="{{mustacheletPath}}/administration">Administration</a></li>
+		</ul>
+
+	</div>
+</nav>

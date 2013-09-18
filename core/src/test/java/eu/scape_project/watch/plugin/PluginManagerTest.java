@@ -33,302 +33,313 @@ import eu.scape_project.watch.utils.exceptions.PluginException;
  */
 public class PluginManagerTest {
 
-  /**
-   * A constant of an adaptor jar.
-   */
-  public static final String ADAPTOR_1 = "testadaptor.jar";
+	/**
+	 * A constant of an adaptor jar.
+	 */
+	public static final String ADAPTOR_1 = "testadaptor.jar";
 
-  public static final String ADAPTOR_1_NAME = "TestAdaptor";
+	public static final String ADAPTOR_1_NAME = "TestAdaptor";
 
-  public static final String ADAPTOR_1_VERSION = "0.1";
+	public static final String ADAPTOR_1_VERSION = "0.1";
 
-  /**
-   * Another constant of an adaptor jar.
-   */
-  public static final String ADAPTOR_2 = "testadaptor-0.2.jar";
+	/**
+	 * Another constant of an adaptor jar.
+	 */
+	public static final String ADAPTOR_2 = "testadaptor-0.2.jar";
 
-  /**
-   * A default logger.
-   */
-  private static final Logger LOG = LoggerFactory.getLogger(PluginManagerTest.class);
+	/**
+	 * A default logger.
+	 */
+	private static final Logger LOG = LoggerFactory
+			.getLogger(PluginManagerTest.class);
 
-  /**
-   * 1 second in ms.
-   */
-  private static final int SECOND = 1000;
+	/**
+	 * 1 second in ms.
+	 */
+	private static final int SECOND = 1000;
 
-  /**
-   * The object under test.
-   */
-  private PluginManager manager;
+	/**
+	 * The object under test.
+	 */
+	private PluginManager manager;
 
-  /**
-   * Gets the plugin manager.
-   */
-  @Before
-  public void setUp() {
-    this.manager = PluginManager.getDefaultPluginManager();
-    this.manager.getConfig().override(ConfigUtils.DEFAULT_CONFIG);
-    this.manager.setup();
-  }
+	/**
+	 * Gets the plugin manager.
+	 */
+	@Before
+	public void setUp() {
+		cleanUp();
 
-  /**
-   * Destroys the plugin manager and removes the dummy adaptors.
-   */
-  @After
-  public void tearDown() {
-    this.manager.shutdown();
+		this.manager = PluginManager.getDefaultPluginManager();
+		this.manager.getConfig().override(ConfigUtils.DEFAULT_CONFIG);
+		this.manager.setup();
+	}
 
-    // if there are tests with notifications, delete the notification
-    // sub folder as well...
-    final File path = new File("src/test/resources/plugins/adaptors");
-    deleteFolder(path);
-  }
+	/**
+	 * Destroys the plugin manager and removes the dummy adaptors.
+	 */
+	@After
+	public void tearDown() {
+		this.manager.shutdown();
+		cleanUp();
+	}
 
-  /**
-   * Tests the creation of the manager.
-   * 
-   */
-  @Test
-  public void shouldObtainPluginManager() {
-    LOG.debug("------ Should Start PluginInterface Manager Test ------");
-    this.manager = PluginManager.getDefaultPluginManager();
-    Assert.assertNotNull(this.manager);
+	private void cleanUp() {
+		// if there are tests with notifications, delete the notification
+		// sub folder as well...
+		final File path = new File("src/test/resources/plugins/adaptors");
+		deleteFolder(path);
+	}
 
-  }
+	/**
+	 * Tests the creation of the manager.
+	 * 
+	 */
+	@Test
+	public void shouldObtainPluginManager() {
+		LOG.debug("------ Should Start PluginInterface Manager Test ------");
+		this.manager = PluginManager.getDefaultPluginManager();
+		Assert.assertNotNull(this.manager);
 
-  /**
-   * Tests the obtaining of plugin info by name.
-   */
-  @Test
-  public void shouldGetPluginInfoForName() {
-    LOG.debug("------ Should Get Plugin Info For Name ------");
-    final String name = "TestAdaptor";
-    List<PluginInfo> info = this.manager.getPluginInfo(name);
-    Assert.assertEquals(0, info.size());
-    copyTestJar(ADAPTOR_1);
+	}
 
-    this.manager.reScan();
-    this.sleep();
+	/**
+	 * Tests the obtaining of plugin info by name.
+	 */
+	@Test
+	public void shouldGetPluginInfoForName() {
+		LOG.debug("------ Should Get Plugin Info For Name ------");
+		final String name = "TestAdaptor";
+		List<PluginInfo> info = this.manager.getPluginInfo(name);
+		Assert.assertEquals(0, info.size());
+		copyTestJar(ADAPTOR_1);
 
-    info = this.manager.getPluginInfo(name);
-    Assert.assertEquals(1, info.size());
+		this.manager.reScan();
+		this.sleep();
 
-    copyTestJar(ADAPTOR_2);
+		info = this.manager.getPluginInfo(name);
+		Assert.assertEquals(1, info.size());
 
-    this.manager.reScan();
-    this.sleep();
+		copyTestJar(ADAPTOR_2);
 
-    info = this.manager.getPluginInfo(name);
-    Assert.assertEquals(2, info.size());
-  }
+		this.manager.reScan();
+		this.sleep();
 
-  /**
-   * Tests the loading of a plugin.
-   * 
-   * @throws Exception
-   *           if something goes wrong.
-   */
-  @Test
-  public void shouldLoadPlugin() throws Exception {
-    LOG.debug("------ Should Load PluginInterface Test ------");
-    List<PluginInfo> info = this.manager.getPluginInfo();
-    Assert.assertEquals(0, info.size());
-    copyTestJar(ADAPTOR_1);
+		info = this.manager.getPluginInfo(name);
+		Assert.assertEquals(2, info.size());
+	}
 
-    this.manager.reScan();
-    this.sleep();
+	/**
+	 * Tests the loading of a plugin.
+	 * 
+	 * @throws Exception
+	 *             if something goes wrong.
+	 */
+	@Test
+	public void shouldLoadPlugin() throws Exception {
+		LOG.debug("------ Should Load PluginInterface Test ------");
+		List<PluginInfo> info = this.manager.getPluginInfo();
+		Assert.assertEquals(0, info.size());
+		copyTestJar(ADAPTOR_1);
 
-    info = this.manager.getPluginInfo();
-    Assert.assertEquals(1, info.size());
+		this.manager.reScan();
+		this.sleep();
 
-    final PluginInfo i1 = info.get(0);
-    final AdaptorPluginInterface plugin = (AdaptorPluginInterface) this.manager.getPlugin(i1.getClassName(),
-        i1.getVersion());
-    plugin.execute();
-    Assert.assertNotNull(plugin);
-    Assert.assertEquals("0.1", plugin.getVersion());
-  }
+		info = this.manager.getPluginInfo();
+		Assert.assertEquals(1, info.size());
 
-  /**
-   * Tests that the init method shall not be called twice.
-   * 
-   * @throws Exception
-   *           when the init method gets called for the second time.
-   */
-  @Test(expected = PluginException.class)
-  public void shouldNotCallInitTwoTimes() throws Exception {
-    LOG.debug("------ Should Not Allow Two Init Calls Test ------");
-    copyTestJar(ADAPTOR_1);
+		final PluginInfo i1 = info.get(0);
+		final AdaptorPluginInterface plugin = (AdaptorPluginInterface) this.manager
+				.getPlugin(i1.getClassName(), i1.getVersion());
+		plugin.execute();
+		Assert.assertNotNull(plugin);
+		Assert.assertEquals("0.1", plugin.getVersion());
+	}
 
-    this.manager.reScan();
-    this.sleep();
+	/**
+	 * Tests that the init method shall not be called twice.
+	 * 
+	 * @throws Exception
+	 *             when the init method gets called for the second time.
+	 */
+	@Test(expected = PluginException.class)
+	public void shouldNotCallInitTwoTimes() throws Exception {
+		LOG.debug("------ Should Not Allow Two Init Calls Test ------");
+		copyTestJar(ADAPTOR_1);
 
-    final List<PluginInfo> info = this.manager.getPluginInfo();
-    final PluginInfo i1 = info.get(0);
-    final PluginInterface plugin = this.manager.getPlugin(i1.getClassName(), i1.getVersion());
-    plugin.init();
-    plugin.init();
+		this.manager.reScan();
+		this.sleep();
 
-    Assert.fail("This code should not have been executed!");
-  }
+		final List<PluginInfo> info = this.manager.getPluginInfo();
+		final PluginInfo i1 = info.get(0);
+		final PluginInterface plugin = this.manager.getPlugin(
+				i1.getClassName(), i1.getVersion());
+		plugin.init();
+		plugin.init();
 
-  /**
-   * Tests the loading of two versions of the same class.
-   * 
-   * @throws Exception
-   *           if something goes wrong.
-   */
-  @Test
-  public void shouldLoadTwoVersionsOfAdaptor() throws Exception {
-    LOG.debug("------ Should Load Two Versions Of Adaptor Test ------");
-    copyTestJar(ADAPTOR_1);
-    copyTestJar(ADAPTOR_2);
-    this.manager.reScan();
-    this.sleep();
+		Assert.fail("This code should not have been executed!");
+	}
 
-    final List<PluginInfo> info = this.manager.getPluginInfo();
-    Assert.assertEquals(2, info.size());
-    final PluginInfo i1 = info.get(0);
-    final PluginInfo i2 = info.get(1);
-    final AdaptorPluginInterface p1 = (AdaptorPluginInterface) this.manager.getPlugin(i1.getClassName(),
-        i1.getVersion());
-    final AdaptorPluginInterface p2 = (AdaptorPluginInterface) this.manager.getPlugin(i2.getClassName(),
-        i2.getVersion());
-    Assert.assertNotSame(i1.getVersion(), i2.getVersion());
+	/**
+	 * Tests the loading of two versions of the same class.
+	 * 
+	 * @throws Exception
+	 *             if something goes wrong.
+	 */
+	@Test
+	public void shouldLoadTwoVersionsOfAdaptor() throws Exception {
+		LOG.debug("------ Should Load Two Versions Of Adaptor Test ------");
+		copyTestJar(ADAPTOR_1);
+		copyTestJar(ADAPTOR_2);
+		this.manager.reScan();
+		this.sleep();
 
-    LOG.debug("Executing plugin 1: {}-{}", p1.getName(), p1.getVersion());
-    p1.execute();
-    LOG.debug("Executing plugin 2: {}-{}", p2.getName(), p2.getVersion());
-    p2.execute();
-  }
+		final List<PluginInfo> info = this.manager.getPluginInfo();
+		Assert.assertEquals(2, info.size());
+		final PluginInfo i1 = info.get(0);
+		final PluginInfo i2 = info.get(1);
+		final AdaptorPluginInterface p1 = (AdaptorPluginInterface) this.manager
+				.getPlugin(i1.getClassName(), i1.getVersion());
+		final AdaptorPluginInterface p2 = (AdaptorPluginInterface) this.manager
+				.getPlugin(i2.getClassName(), i2.getVersion());
+		Assert.assertNotSame(i1.getVersion(), i2.getVersion());
 
-  @Test
-  public void shouldShutdownCorrectly() {
-    LOG.debug("------ Should Shutdown Manager Test ------");
-    copyTestJar(ADAPTOR_1);
-    this.manager.reScan();
-    this.sleep();
+		LOG.debug("Executing plugin 1: {}-{}", p1.getName(), p1.getVersion());
+		p1.execute();
+		LOG.debug("Executing plugin 2: {}-{}", p2.getName(), p2.getVersion());
+		p2.execute();
+	}
 
-    List<PluginInfo> info = this.manager.getPluginInfo();
-    final PluginInfo i1 = info.get(0);
-    final PluginInterface plugin = this.manager.getPlugin(i1.getClassName(), i1.getVersion());
+	@Test
+	public void shouldShutdownCorrectly() {
+		LOG.debug("------ Should Shutdown Manager Test ------");
+		copyTestJar(ADAPTOR_1);
+		this.manager.reScan();
+		this.sleep();
 
-    this.manager.shutdown();
+		List<PluginInfo> info = this.manager.getPluginInfo();
+		final PluginInfo i1 = info.get(0);
+		final PluginInterface plugin = this.manager.getPlugin(
+				i1.getClassName(), i1.getVersion());
 
-    this.setUp();
+		this.manager.shutdown();
 
-    info = this.manager.getPluginInfo();
-    Assert.assertEquals(0, info.size());
+		this.setUp();
 
-  }
+		info = this.manager.getPluginInfo();
+		Assert.assertEquals(0, info.size());
 
-  @Test
-  public void shouldBeNotifiedForNewPlugins() throws Exception {
-    LOG.debug("------ Should Be Notified For New Plugins Test ------");
+	}
 
-    TestComponentListener observer = new TestComponentListener();
-    this.manager.addObserver(observer);
+	@Test
+	public void shouldBeNotifiedForNewPlugins() throws Exception {
+		LOG.debug("------ Should Be Notified For New Plugins Test ------");
 
-    copyTestJar(ADAPTOR_1);
-    this.manager.reScan();
-    this.sleep();
+		TestComponentListener observer = new TestComponentListener();
+		this.manager.addObserver(observer);
 
-    Assert.assertTrue(observer.isInvoked());
-  }
+		copyTestJar(ADAPTOR_1);
+		this.manager.reScan();
+		this.sleep();
 
-  /**
-   * Copies the passed jar to the test plugin directory.
-   * 
-   * @param s
-   *          the name of the jar.
-   */
-  public static void copyTestJar(final String s) {
-    InputStream inStream = null;
-    OutputStream outStream = null;
+		Assert.assertTrue(observer.isInvoked());
+	}
 
-    try {
+	/**
+	 * Copies the passed jar to the test plugin directory.
+	 * 
+	 * @param s
+	 *            the name of the jar.
+	 */
+	public static void copyTestJar(final String s) {
+		InputStream inStream = null;
+		OutputStream outStream = null;
 
-      final File source = new File("src/test/resources/" + s);
-      final File targetDir = new File("src/test/resources/plugins/adaptors/");
-      targetDir.mkdir();
-      final File target = new File(targetDir, s);
+		try {
 
-      inStream = new FileInputStream(source);
-      outStream = new FileOutputStream(target);
+			final File source = new File("src/test/resources/" + s);
+			final File targetDir = new File(
+					"src/test/resources/plugins/adaptors/");
+			targetDir.mkdir();
+			final File target = new File(targetDir, s);
 
-      IOUtils.copy(inStream, outStream);
+			inStream = new FileInputStream(source);
+			outStream = new FileOutputStream(target);
 
-      inStream.close();
-      outStream.close();
-      LOG.debug("PluginInterface is copied successful!");
-    } catch (final IOException e) {
-      e.printStackTrace();
-    }
-  }
+			IOUtils.copy(inStream, outStream);
 
-  /**
-   * Deletes all files and folders under the given path.
-   * 
-   * @param path
-   *          the path to delete.
-   */
-  public static void deleteFolder(final File path) {
-    if (path.exists()) {
-      final File[] files = path.listFiles(new FilenameFilter() {
+			inStream.close();
+			outStream.close();
+			LOG.debug("PluginInterface is copied successful!");
+		} catch (final IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-        @Override
-        public boolean accept(final File file, final String name) {
-          return name.endsWith(".jar");
-        }
-      });
-      for (final File f : files) {
-        if (f.isDirectory()) {
-          deleteFolder(f);
-        } else {
-          f.delete();
-        }
-      }
-    }
+	/**
+	 * Deletes all files and folders under the given path.
+	 * 
+	 * @param path
+	 *            the path to delete.
+	 */
+	public static void deleteFolder(final File path) {
+		if (path.exists()) {
+			final File[] files = path.listFiles(new FilenameFilter() {
 
-  }
+				@Override
+				public boolean accept(final File file, final String name) {
+					return name.endsWith(".jar");
+				}
+			});
+			for (final File f : files) {
+				if (f.isDirectory()) {
+					deleteFolder(f);
+				} else {
+					f.delete();
+				}
+			}
+		} else {
+			LOG.warn("Could not delete folder {}", path.getAbsolutePath());
+		}
 
-  /**
-   * Sleeps for 1 second, giving the plugin manager chance to load the files.
-   */
-  private void sleep() {
-    try {
-      Thread.sleep(SECOND);
-    } catch (final InterruptedException e) {
-      // swallow
-    }
-  }
+	}
 
-  private class TestComponentListener implements ScoutComponentListener {
-    private boolean invoked = false;
+	/**
+	 * Sleeps for 1 second, giving the plugin manager chance to load the files.
+	 */
+	private void sleep() {
+		try {
+			Thread.sleep(SECOND);
+		} catch (final InterruptedException e) {
+			// swallow
+		}
+	}
 
-    @Override
-    public void onChange(ScoutChangeEvent evt) {
-      LOG.debug("Scout Change Event received, investigating");
-      if (evt.getSource() == PluginManagerTest.this.manager) {
-        Object message = evt.getMessage();
-        Assert.assertNotNull(message);
-        Assert.assertTrue(message instanceof PluginInfo);
+	private class TestComponentListener implements ScoutComponentListener {
+		private boolean invoked = false;
 
-        PluginInfo info = (PluginInfo) message;
-        Assert.assertEquals(ADAPTOR_1_NAME, info.getName());
+		@Override
+		public void onChange(ScoutChangeEvent evt) {
+			LOG.debug("Scout Change Event received, investigating");
+			if (evt.getSource() == PluginManagerTest.this.manager) {
+				Object message = evt.getMessage();
+				Assert.assertNotNull(message);
+				Assert.assertTrue(message instanceof PluginInfo);
 
-      } else {
-        Assert.fail("The manager was not passed as a source to this message");
-      }
+				PluginInfo info = (PluginInfo) message;
+				Assert.assertEquals(ADAPTOR_1_NAME, info.getName());
 
-      this.invoked = true;
-    }
+			} else {
+				Assert.fail("The manager was not passed as a source to this message");
+			}
 
-    public boolean isInvoked() {
-      return invoked;
-    }
+			this.invoked = true;
+		}
 
-  }
+		public boolean isInvoked() {
+			return invoked;
+		}
+
+	}
 
 }

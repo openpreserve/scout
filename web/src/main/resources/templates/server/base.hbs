@@ -1,26 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>
-    {{#block "title"}}Scout: a preservation watch system{{/block}}
-  </title>
-  <!-- Bootstrap -->
-  <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
-  <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.0/css/bootstrap-theme.min.css" rel="stylesheet">
-  {{#block "headstyles"}}
-  {{/block}}
-  
-  {{#block "headscripts"}}
-  {{/block}}
+<title>{{#block "title"}}Scout: a preservation watch
+	system{{/block}}</title>
+<!-- Bootstrap -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
+<link href="{{contextPath}}/css/bootstrap/bootstrap.min.css"
+	rel="stylesheet">
+{{#block "headstyles"}} {{/block}} {{#block "headscripts"}} {{/block}}
 </head>
-<body>
-  {{> header}}
-  {{#block "content"}}
-    Define #partial content.
-  {{/block}}
-  {{> jslibs}}
-  {{#block "scripts"}}
-  {{/block}}
-  {{> footer}}
+<body style="padding-top: 70px;">{{> header}} {{#block "content"}} Define #partial content.
+	{{/block}} {{> jslibs}} {{#block "scripts"}} {{/block}} {{> footer}}
 </body>
 </html>

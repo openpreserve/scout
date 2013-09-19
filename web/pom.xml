@@ -48,6 +48,10 @@
 							<targetPath>apidoc</targetPath>
 						</resource>
 						<resource>
+							<directory>jslibs/bootstrap-cerulean-3.0.0</directory>
+							<targetPath>css/bootstrap</targetPath>
+						</resource>
+						<resource>
 							<directory>jslibs/jquery-textfill-0.4.0</directory>
 							<includes>
 								<include>**/jquery.textfill.min.js</include>

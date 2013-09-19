@@ -1,84 +1,85 @@
 {{#partial "title"}}Scout - Create Request{{/partial}} {{#partial
 "content"}}
-<form id="trigger_form" class="container form-horizontal" method="POST">
+<form id="trigger_form" class="container form-horizontal" method="POST" role="form">
+
 	<legend>New trigger</legend>
 
 	<div id="content">
-	<div class="control-group">
-		<label class="control-label" for="description">Name</label>
-		<div class="controls">
+	<div class="form-group">
+		<label class="control-label col-lg-2" for="description">Name</label>
+		<div class="col-lg-10">
 			<input id="description" name="description" type="text"
-				class="input-xxlarge validation" placeholder="Label to identify your trigger"
+				class="form-control validation" placeholder="Label to identify your trigger"
 				required data-validation-required-message="Trigger must have a name">
 		</div>
 	</div>
 
 	<h4>Initiators</h4>
-	<div class="control-group">
-		<label class="control-label" for="periodDaily">Schedule</label>
-		<div class="controls">
-			<label class="radio inline"> <input type="radio"
+	<div class="form-group">
+		<label class="control-label col-lg-2" for="periodDaily">Schedule</label>
+		<div class="col-lg-10">
+			<label class="radio-inline"> <input type="radio"
 				name="periodOptions" id="periodDaily" value="daily" checked>daily
-			</label> <label class="radio inline"> <input type="radio"
+			</label> <label class="radio-inline"> <input type="radio"
 				name="periodOptions" id="periodWeekly" value="weekly">weekly
-			</label> <label class="radio inline"> <input type="radio"
+			</label> <label class="radio-inline"> <input type="radio"
 				name="periodOptions" id="periodMontly" value="monthly">monthly
-			</label> <label class="radio inline"> <input type="radio"
+			</label> <label class="radio-inline"> <input type="radio"
 				name="periodOptions" id="periodQuarterly" value="quarterly">quaterly
-			</label> <label class="radio inline"> <input type="radio"
+			</label> <label class="radio-inline"> <input type="radio"
 				name="periodOptions" id="periodYearly" value="yearly">yearly
-			</label> <label class="radio inline"> <input type="radio"
+			</label> <label class="radio-inline"> <input type="radio"
 				name="periodOptions" id="periodNever" value="never">never
 			</label>
 		</div>
 	</div>
-	<div class="control-group">
-		<label class="control-label" for="addCategory">Categories</label>
-		<div class="controls">
+	<div class="form-group">
+		<label class="control-label col-lg-2" for="addCategory">Categories</label>
+		<div class="col-lg-10">
 			<a id="addCategory" class="btn btn-link">add category</a>
 		</div>
 	</div>
-	<div class="control-group">
-		<label class="control-label" for="addEntity">Entities</label>
-		<div class="controls">
+	<div class="form-group">
+		<label class="control-label col-lg-2" for="addEntity">Entities</label>
+		<div class="col-lg-10">
 			<a id="addEntity" class="btn btn-link">add entity</a>
 		</div>
 	</div>
 
-	<div class="control-group">
-		<label class="control-label" for="addProperty">Properties</label>
-		<div class="controls">
+	<div class="form-group">
+		<label class="control-label col-lg-2" for="addProperty">Properties</label>
+		<div class="col-lg-10">
 			<a id="addProperty" class="btn btn-link">add property</a>
 		</div>
 	</div>
 
 	<h4>Question</h4>
-	<div id="question_template" class="row-fluid">
+	<div id="question_template" class="row container">
 		
 	</div>
 
 	<h4>Preservation plan</h4>
-	<div class="control-group">
-		<label class="control-label" for="plan">Plan Id</label>
-		<div class="controls">
-			<input id="plan" name="plan" type="text" class="input-xxlarge"
+	<div class="form-group">
+		<label class="control-label col-lg-2" for="plan">Plan Id</label>
+		<div class="col-lg-10">
+			<input id="plan" name="plan" type="text" class="form-control"
 				placeholder="The plato preservation plan id">
 
 		</div>
 	</div>
 
 	<h4>Notifications</h4>
-	<div class="control-group">
-		<label class="control-label" for="email">Email</label>
-		<div class="controls">
-			<input id="email" name="email" type="text" class="input-xxlarge validation"
+	<div class="form-group">
+		<label class="control-label col-lg-2" for="email">Email</label>
+		<div class="col-lg-10">
+			<input id="email" name="email" type="text" class="form-control validation"
 				placeholder="The email where to send notification"
 				required data-validation-required-message="Must define a notification email">
 
 		</div>
 	</div>
-	<div class="control-group">
-		<div class="controls">
+	<div class="form-group">
+		<div class="">
 			<button id="createTriggerButton" type="submit" class="btn btn-large btn-success">
 				<i class="glyphicon glyphicon-plus"></i> Create trigger
 			</button>

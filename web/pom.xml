@@ -55,15 +55,6 @@
 							<targetPath>js/jquery-textfill</targetPath>
 						</resource>
 						<resource>
-							<directory>jslibs/jQuery-File-Upload-8.8.5</directory>
-							<includes>
-								<include>js/**</include>
-								<include>css/**</include>
-								<include>img/**</include>
-							</includes>
-							<targetPath>js/jquery-fileuploader</targetPath>
-						</resource>
-						<resource>
 							<directory>jslibs/humanize.js-v0.0.1</directory>
 							<targetPath>js/humanize</targetPath>
 						</resource>

@@ -8,44 +8,48 @@
 	{{#each parameters}}
 	<div class="form-group">
 		<label class="control-label">{{label}}</label>
-		<div class="controls">
-			{{#compare parameterType '==' 'NODE'}} <input type="text"
-				name="node_{{id}}" class="form-control col-lg-12 validation"
-				required data-validator-required-message="This field is mandatory"
-				pattern="[a-zA-Z0-9\-\_]{27}"
-				data-validation-pattern-message="Please just put the ID, it must have 27 characters and be valid"
-				placeholder="The ID from the URL"></input> {{/compare}} {{#compare
-			parameterType '==' 'LITERAL'}} {{#compare literalFilterDatatype '=='
-			'LONG'}} {{#compare literalFilterRenderingHint '=='
-			'STORAGE_VOLUME'}}
-			<div class="">
+		<div class="row">
+			{{#compare parameterType '==' 'NODE'}}
+			<div class="col-lg-12">
+				<input type="text" name="node_{{id}}"
+					class="form-control validation" required
+					data-validator-required-message="This field is mandatory"
+					pattern="[a-zA-Z0-9\-\_]{27}"
+					data-validation-pattern-message="Please just put the ID, it must have 27 characters and be valid"
+					placeholder="The ID from the URL"></input>
+			</div>
+			{{/compare}} {{#compare parameterType '==' 'LITERAL'}} {{#compare
+			literalFilterDatatype '==' 'LONG'}} {{#compare
+			literalFilterRenderingHint '==' 'STORAGE_VOLUME'}}
+			<div class="col-lg-2">
 				<input name="long-storagevolume-number_{{id}}"
-					class="form-control col-lg-2 input-mini validation" type="number"
-					min="1" required
+					class="form-control validation" type="number" min="1" required
 					data-validator-required-message="This field is mandatory"
 					data-validation-number-message="Must insert a valid number"
-					data-validation-min-message="Too low, must be higher than 0" /> <select
-					class="form-control col-lg-2 validation"
+					data-validation-min-message="Too low, must be higher than 0" />
+			</div>
+			<div class="col-lg-2">
+				<select class="form-control validation"
 					name="long-storagevolume-unit_{{id}}">
 					<option value="MB">MB</option>
 					<option value="GB">GB</option>
 					<option value="TB">TB</option>
 				</select>
 			</div>
-			{{/compare}} {{#compare literalFilterRenderingHint '!='
-			'STORAGE_VOLUME'}}
-			<div class="alert">No long besides storage size yet implemented</div>
-			{{/compare}} {{/compare}} {{#compare literalFilterDatatype '!='
-			'LONG'}}
-			<div class="alert">literal not yet implemented</div>
-			{{/compare}} {{/compare}}
-			<p class="help-block">
-				<small>{{description}}</small>
-			</p>
 		</div>
+		{{/compare}} {{#compare literalFilterRenderingHint '!='
+		'STORAGE_VOLUME'}}
+		<div class="alert">No long besides storage size yet implemented</div>
+		{{/compare}} {{/compare}} {{#compare literalFilterDatatype '!='
+		'LONG'}}
+		<div class="alert">literal not yet implemented</div>
+		{{/compare}} {{/compare}}
+		<p class="help-block col-lg-12">
+			<small>{{description}}</small>
+		</p>
 	</div>
 	{{/each}}
-	<div class="form-actions">
+	<div class="form-actions row">
 		<button id="searchButton" type="submit"
 			class="btn btn-large btn-primary" data-loading-text="Loading...">
 			<i class="glyphicon glyphicon-search"></i> Search

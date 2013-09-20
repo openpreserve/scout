@@ -1,38 +1,45 @@
 {{#partial "title"}}Scout - Create Source Adaptor{{/partial}} {{#partial
 "content"}}
-<form class="container form-horizontal" method="POST" role="form">
-	<legend>Create source adaptor</legend>
-
-	<div class="form-group">
-		<label for="uniqueName">Name</label> <input id="uniqueName"
-			class="form-control" name="instance" type="text"
-			placeholder="Unique identifying name">
-	</div>
-	<div class="form-group">
-		<label for=plugin-select>Plug-in</label> <select name="plugin"
-			id="plugin-select" class="form-control"> {{#plugins}}
-			<option value="{{name}}|{{version}}">{{name}} version
-				{{version}}</option>{{/plugins}}
-
-		</select>
-	</div>
-	<div class="form-group">
-		<label for="configuration">Configuration</label>
-		<div class="well" id="configuration"></div>
+<div class="container">
+	<div class="page-header">
+		<h1>Create source adaptor</h1>
+		<p>Configure an adaptor that will get information from an external
+			source.</p>
 	</div>
 
-	<div class="form-group">
-		<label for="source" class="col-lg-3">Source</label> <select name="source" id="source"
-			class="form-control col-lg-6"> {{#sources}}
-			<option value="{{name}}">{{name}}: {{description}}</option>{{/sources}}
-		</select> <a class="btn btn-link" href="{{mustacheletPath}}/source/new" class="col-lg-3">create
-			new source</a>
-	</div>
-	<div class="form-group">
-		<button type="submit" class="btn btn-primary">Create</button>
-	</div>
+	<form class="container form-horizontal" method="POST" role="form">
+		<div class="form-group">
+			<label for="uniqueName">Name</label> <input id="uniqueName"
+				class="form-control" name="instance" type="text"
+				placeholder="Unique identifying name">
+		</div>
+		<div class="form-group">
+			<label for=plugin-select>Plug-in</label> <select name="plugin"
+				id="plugin-select" class="form-control"> {{#plugins}}
+				<option value="{{name}}|{{version}}">{{name}} version
+					{{version}}</option>{{/plugins}}
 
-</form>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="configuration">Configuration</label>
+			<div class="well" id="configuration"></div>
+		</div>
+
+		<div class="form-group">
+			<label for="source" class="col-lg-3">Source</label> <select
+				name="source" id="source" class="form-control col-lg-6">
+				{{#sources}}
+				<option value="{{name}}">{{name}}: {{description}}</option>{{/sources}}
+			</select> <a class="btn btn-link" href="{{mustacheletPath}}/source/new"
+				class="col-lg-3">create new source</a>
+		</div>
+		<div class="form-group">
+			<button type="submit" class="btn btn-primary">Create</button>
+		</div>
+
+	</form>
+</div>
 {{/partial}} {{#partial "scripts"}}
 <script>
 	function updateConfiguration() {

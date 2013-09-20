@@ -2,12 +2,12 @@
 {{#partial "NavBrowseClass"}}active{{/partial}} {{#partial "content"}}
 <div class="container">
 	{{#adaptor}}
-	<ul class="breadcrumb">
-		<li><a href="{{mustacheletPath}}/administration">Sources</a></li>
-		<li><a href="{{mustacheletPath}}/browse/source/{{source.id}}">{{source.name}}</a></li>
-		<li class="active">{{instance}}</li>
-	</ul>
 	<div class="page-header">
+		<ul class="breadcrumb">
+			<li><a href="{{mustacheletPath}}/administration">Sources</a></li>
+			<li><a href="{{mustacheletPath}}/browse/source/{{source.id}}">{{source.name}}</a></li>
+			<li class="active">{{instance}}</li>
+		</ul>
 		<h1>Source adaptor</h1>
 	</div>
 
@@ -20,8 +20,8 @@
 		<dd>{{version}}</dd>
 		<dt>Active</dt>
 		<dd>
-			{{#if active}}<i class="glyphicon glyphicon-ok-sign"></i>{{/if}}{{#unless active}}<i
-				class="glyphicon glyphicon-remove-sign"></i>{{/unless}}
+			{{#if active}}<i class="glyphicon glyphicon-ok-sign"></i>{{/if}}{{#unless
+			active}}<i class="glyphicon glyphicon-remove-sign"></i>{{/unless}}
 		</dd>
 	</dl>
 

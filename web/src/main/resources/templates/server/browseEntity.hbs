@@ -2,12 +2,12 @@
 "NavBrowseClass"}}active{{/partial}} {{#partial "content"}}
 <div class="container">
 	{{#entity}}
-	<ul class="breadcrumb">
-		<li><a href="{{mustacheletPath}}/browse">Categories</a></li>
-		<li><a href="{{mustacheletPath}}/browse/type/{{type.id}}">{{type.name}}</a></li>
-		<li class="active">{{name}}</li>
-	</ul>
 	<div class="page-header">
+		<ul class="breadcrumb">
+			<li><a href="{{mustacheletPath}}/browse">Categories</a></li>
+			<li><a href="{{mustacheletPath}}/browse/type/{{type.id}}">{{type.name}}</a></li>
+			<li class="active">{{name}}</li>
+		</ul>
 		<h1>Entity</h1>
 	</div>
 

@@ -2,11 +2,11 @@
 "NavBrowseClass"}}active{{/partial}} {{#partial "content"}}
 <div class="container">
 	{{#source}}
-	<ul class="breadcrumb">
-		<li><a href="{{mustacheletPath}}/administration">Sources</a></li>
-		<li class="active">{{name}}</li>
-	</ul>
 	<div class="page-header">
+		<ul class="breadcrumb">
+			<li><a href="{{mustacheletPath}}/administration">Sources</a></li>
+			<li class="active">{{name}}</li>
+		</ul>
 		<h1>Source</h1>
 	</div>
 	<dl class="dl-horizontal">
@@ -17,9 +17,7 @@
 		<dd>{{description}}</dd>
 		{{/if}}
 	</dl>
-	{{/source}}
-
-	{{#if adaptors}}
+	{{/source}} {{#if adaptors}}
 	<h4>Adaptors</h4>
 	<table class="table table-hover table-striped">
 		<thead>
@@ -46,14 +44,11 @@
 			{{/adaptors}}
 		</tbody>
 	</table>
-	{{/if}}
-	{{#unless adaptors}}
+	{{/if}} {{#unless adaptors}}
 	<div class="alert alert-warning">
 		<b>Empty!</b> There are no defined adaptors for this source.
 	</div>
-	{{/unless}}
-	
-	{{^source}}
+	{{/unless}} {{^source}}
 	<div class="alert alert-error">
 		<b>Not found!</b> Could not find source {{id}}.
 	</div>

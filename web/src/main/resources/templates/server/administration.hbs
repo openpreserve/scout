@@ -1,8 +1,10 @@
 {{#partial "title"}}Scout - Administration{{/partial}} {{#partial
 "NavAdministrationClass"}}active{{/partial}} {{#partial "content"}}
 <div class="container">
-	<h1>Administration</h1>
-	<p>Private page to manage the configurations of scout.</p>
+	<div class="page-header">
+		<h1>Administration</h1>
+		<p>Private page to manage the configurations of scout.</p>
+	</div>
 
 	<h2>Source Adaptors</h2>
 	<p>All configured source adaptors that fetch information from
@@ -24,14 +26,15 @@
 				<td>{{instance}}</td>
 				<td>{{name}}</td>
 				<td>{{version}}</td>
-				<td>{{#with source}}<a href="{{mustacheletPath}}/browse/source/{{id}}">{{name}}</a>{{/with}}
+				<td>{{#with source}}<a
+					href="{{mustacheletPath}}/browse/source/{{id}}">{{name}}</a>{{/with}}
 				</td>
 				<td>{{#active}}<i class="glyphicon glyphicon-ok"></i>{{/active}}
 				</td>
 				<td>
 					<div class="btn-group">
-						<a class="dropdown-toggle" data-toggle="dropdown"
-							href="#"> <i class="glyphicon glyphicon-cog"></i> <!-- <span class="caret"></span> -->
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i
+							class="glyphicon glyphicon-cog"></i> <!-- <span class="caret"></span> -->
 						</a>
 						<ul class="dropdown-menu">
 							<li><a href="{{mustacheletPath}}/browse/adaptor/{{id}}">Browse</a></li>
@@ -86,6 +89,6 @@
 		<b>Empty!</b> There are no installed plug-ins.
 	</div>
 	{{/plugins}}
-	
+
 </div>
 {{/partial}} {{>base}}

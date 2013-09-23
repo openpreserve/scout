@@ -1,121 +1,143 @@
 {{#partial "title"}}Scout - Create Request{{/partial}} {{#partial
 "content"}}
-<form class="container form-horizontal" method="POST">
-	<legend>New trigger</legend>
+<form class="container form-horizontal" method="POST" role="form">
 
-	<div class="control-group">
-		<label class="control-label" for="description">Name</label>
-		<div class="controls">
-			<input id="description" name="description" type="text"
-				class="input-xxlarge" placeholder="Label to identify your trigger">
-		</div>
+	<div class="page-header">
+		<h1>Create a new trigger</h1>
+		<p>Receive a notification when your question detects a
+			nonconformity.</p>
 	</div>
 
-	<h4>Initiators</h4>
-	<div class="control-group">
-		<label class="control-label" for="periodDaily">Schedule</label>
-		<div class="controls">
-			<label class="radio inline"> <input type="radio"
-				name="periodOptions" id="periodDaily" value="daily">daily
-			</label> <label class="radio inline"> <input type="radio"
-				name="periodOptions" id="periodWeekly" value="weekly">weekly
-			</label> <label class="radio inline"> <input type="radio"
-				name="periodOptions" id="periodMontly" value="monthly">monthly
-			</label> <label class="radio inline"> <input type="radio"
-				name="periodOptions" id="periodQuarterly" value="quarterly">every
-				3 months
-			</label> <label class="radio inline"> <input type="radio"
-				name="periodOptions" id="periodYearly" value="yearly">yearly
-			</label> <label class="radio inline"> <input type="radio"
-				name="periodOptions" id="periodNever" value="never" checked>never
-			</label>
-		</div>
-	</div>
-	<div class="control-group">
-		<label class="control-label" for="addCategory">Categories</label>
-		<div class="controls">
-			<a id="addCategory" class="btn btn-link">add category</a>
-		</div>
-	</div>
-	<div class="control-group">
-		<label class="control-label" for="addEntity">Entities</label>
-		<div class="controls">
-			<a id="addEntity" class="btn btn-link">add entity</a>
-		</div>
-	</div>
+	<div class="content">
 
-	<div class="control-group">
-		<label class="control-label" for="addProperty">Properties</label>
-		<div class="controls">
-			<a id="addProperty" class="btn btn-link">add property</a>
-		</div>
-	</div>
-
-	<h4>Question</h4>
-	<div class="row">
-		<div class="well span2">
-			<p>
-				<strong>Target</strong>
-			</p>
-			<label class="radio"> <input type=radio name="target"
-				value="entity_type" checked="true"> Category
-			</label> <label class="radio"> <input type=radio name="target"
-				value="property"> Property
-			</label> <label class="radio"> <input type=radio name="target"
-				value="entity"> Entity
-			</label> <label class="radio"> <input type=radio name="target"
-				value="property_value"> Value
-			</label> <label class="radio"> <input type=radio name="target"
-				value="measurement"> Measurement
-			</label> <br />
-			<p>
-				<strong>Snippets</strong>
-			</p>
-			<div class="btn-group btn-group-vertical">
-				<button class="btn">Relations</button>
-				<button class="btn">Resources</button>
+		<div class="form-group">
+			<label class="control-label col-lg-2" for="description">Name</label>
+			<div class="col-lg-10">
+				<input id="description" name="description" type="text"
+					class="form-control validation" required
+					data-validation-required-message="Trigger must have a name"
+					placeholder="Label to identify your trigger">
 			</div>
 		</div>
 
-		<div class="well span10">
-			<div class="pull-right">
-				<a href="#">Help</a>
+		{{!--
+		<h4>Initiators</h4>
+		--}}
+		<div class="form-group">
+			<label class="control-label col-lg-2" for="periodDaily">Run
+				every</label>
+			<div class="col-lg-10">
+				<label class="radio-inline"> <input type="radio"
+					name="periodOptions" id="periodDaily" value="daily">day
+				</label> <label class="radio-inline"> <input type="radio"
+					name="periodOptions" id="periodWeekly" value="weekly">week
+				</label> <label class="radio-inline"> <input type="radio"
+					name="periodOptions" id="periodMontly" value="monthly">month
+				</label> <label class="radio-inline"> <input type="radio"
+					name="periodOptions" id="periodQuarterly" value="quarterly">quarter
+				</label> <label class="radio-inline"> <input type="radio"
+					name="periodOptions" id="periodYearly" value="yearly">year
+				</label> {{!-- <label class="radio-inline"> <input type="radio"
+					name="periodOptions" id="periodNever" value="never" checked>never
+				</label> --}}
 			</div>
-			<p>
-				<strong>SPARQL</strong>
-			</p>
-			<pre style="margin: 0;">SELECT ?s WHERE { <span
-					id="sparql-class-declaration"></span> .
-<textarea id="query" name="query" rows="8" class="span12"
-					style="margin: 0;"></textarea>}</pre>
-
 		</div>
-	</div>
-
-	<h4>Preservation plan</h4>
-	<div class="control-group">
-		<label class="control-label" for="plan">Plan Id</label>
-		<div class="controls">
-			<input id="plan" name="plan" type="text" class="input-xxlarge"
-				placeholder="The plato preservation plan id">
-
+		{{!--
+		<div class="control-group">
+			<label class="control-label" for="addCategory">Categories</label>
+			<div class="controls">
+				<a id="addCategory" class="btn btn-link">add category</a>
+			</div>
 		</div>
-	</div>
-
-	<h4>Notifications</h4>
-	<div class="control-group">
-		<label class="control-label" for="email">Email</label>
-		<div class="controls">
-			<input id="email" name="email" type="text" class="input-xxlarge"
-				placeholder="The email where to send notification">
-
+		<div class="control-group">
+			<label class="control-label" for="addEntity">Entities</label>
+			<div class="controls">
+				<a id="addEntity" class="btn btn-link">add entity</a>
+			</div>
 		</div>
-	</div>
-	<div class="control-group">
-		<div class="controls">
-			<button type="submit" class="btn btn-large btn-success">
-				<i class="glyphicon glyphicon-plus"></i> Create trigger
-			</button>
+
+		<div class="control-group">
+			<label class="control-label" for="addProperty">Properties</label>
+			<div class="controls">
+				<a id="addProperty" class="btn btn-link">add property</a>
+			</div>
+		</div>
+		--}}
+		<h4>Question</h4>
+		<div class="row">
+			<div class="well col-md-2">
+				<p>
+					<strong>Target</strong>
+				</p>
+				<label class="radio"> <input type=radio name="target"
+					value="entity_type" checked="true"> Category
+				</label> <label class="radio"> <input type=radio name="target"
+					value="property"> Property
+				</label> <label class="radio"> <input type=radio name="target"
+					value="entity"> Entity
+				</label> <label class="radio"> <input type=radio name="target"
+					value="property_value"> Value
+				</label> <label class="radio"> <input type=radio name="target"
+					value="measurement"> Measurement
+				</label>
+				{{!--
+				 <br />
+				<p>
+					<strong>Snippets</strong>
+				</p>
+				<div class="btn-group btn-group-vertical">
+					<button class="btn">Relations</button>
+					<button class="btn">Resources</button>
+				</div>
+				--}}
+			</div>
+
+			<div class="container col-md-10">
+				<div class="well">
+					<div class="pull-right">
+						<a href="#">Help</a>
+					</div>
+					<p>
+						<strong>SPARQL</strong>
+					</p>
+					<pre style="margin: 0;">SELECT ?s WHERE { <span
+							id="sparql-class-declaration"></span> .
+<textarea id="query" name="query" rows="8" class="col-lg-12"
+							style="margin: 0;"></textarea>}</pre>
+
+				</div>
+			</div>
+		</div>
+
+		{{!--
+		<h4>Preservation plan</h4>
+		<div class="control-group">
+			<label class="control-label" for="plan">Plan Id</label>
+			<div class="controls">
+				<input id="plan" name="plan" type="text" class="input-xxlarge"
+					placeholder="The plato preservation plan id">
+
+			</div>
+		</div>
+		--}}
+
+		<h4>Notifications</h4>
+		<div class="form-group">
+			<label class="control-label col-lg-2" for="email">Email</label>
+			<div class="col-lg-10">
+				<input id="email" name="email" type="text"
+					class="form-control validation"
+					placeholder="The email where to send notification" required
+					data-validation-required-message="Must define a notification email">
+
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-lg-offset-2 col-lg-10">
+				<button type="submit" class="btn btn-large btn-success">
+					<i class="glyphicon glyphicon-plus"></i> Create trigger
+				</button>
+			</div>
 		</div>
 	</div>
 </form>

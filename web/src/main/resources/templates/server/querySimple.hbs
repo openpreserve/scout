@@ -229,7 +229,7 @@
 										.error(function() {
 											$('#resultList')
 													.html(
-															"<div class='alert alert-error'>Error parsing SPARQL query</div>");
+															"<div class='alert alert-danger'>Error parsing SPARQL query</div>");
 											btn.button('reset');
 										});
 							});
@@ -237,7 +237,7 @@
 					.error(function() {
 						$('#resultList')
 								.html(
-										"<div class='alert alert-error'>Error getting query template</div>");
+										"<div class='alert alert-danger'>Error getting query template</div>");
 						btn.button('reset');
 					});
 		} else {

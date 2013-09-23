@@ -1,9 +1,6 @@
 package eu.scape_project.watch.web;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.Method;
 import java.net.URI;
@@ -33,9 +30,7 @@ import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.HumanizeHelper;
 import com.github.jknack.handlebars.Template;
 import com.github.jknack.handlebars.cache.HighConcurrencyTemplateCache;
-import com.github.jknack.handlebars.cache.TemplateCache;
 import com.github.jknack.handlebars.io.ClassPathTemplateLoader;
-import com.github.jknack.handlebars.io.TemplateLoader;
 import com.google.inject.Binder;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -67,12 +62,13 @@ public class TemplateService extends HttpServlet implements Filter {
 	 * DEFINE AVAILABLE TEMPLATELETS.
 	 */
 	private static final List<Class<? extends TemplateContext>> MUSTACHELETS = Arrays
-			.asList(Index.class, ErrorPage.class, Browse.class,
-					BrowseType.class, BrowseEntity.class, Administration.class,
-					CreateSourceAdaptor.class, CreateSource.class,
-					BrowseAdaptor.class, BrowseSource.class, BrowseValue.class,
-					QueryAdvanced.class, CreateAsyncRequestAdvanced.class,
-					Dashboard.class, BrowseRequest.class, BrowseProperty.class,
+			.asList(Login.class, Logout.class, Index.class, ErrorPage.class,
+					Browse.class, BrowseType.class, BrowseEntity.class,
+					Administration.class, CreateSourceAdaptor.class,
+					CreateSource.class, BrowseAdaptor.class,
+					BrowseSource.class, BrowseValue.class, QueryAdvanced.class,
+					CreateAsyncRequestAdvanced.class, Dashboard.class,
+					BrowseRequest.class, BrowseProperty.class,
 					BrowseMeasurement.class, UploadObjective.class,
 					QuerySimple.class, CreateAsyncRequestSimple.class);
 

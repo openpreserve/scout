@@ -40,6 +40,11 @@ public class ConfigUtils {
    * The property designating the folder where the plugins are located.
    */
   public static final String PLUGINS_DIRECTORY_KEY = "scout.plugins";
+  
+  /**
+   * The property designating the file where the users are defined.
+   */
+  public static final String USERS_CONFIG_KEY = "scout.users";
 
   /**
    * Name of the folder where all scout configurations will be located.

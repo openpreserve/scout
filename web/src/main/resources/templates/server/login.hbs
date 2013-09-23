@@ -1,0 +1,64 @@
+{{#partial "title"}}Login{{/partial}}
+{{#partial "NavLoginClass"}}active{{/partial}}
+{{#partial "content"}}
+<div class="container">
+	<div class="page-header">
+		<h1>Login</h1>
+		<p>Enter your username and password.</p>
+	</div>
+	<form class="container form-horizontal" method="POST">
+		<div class="form-group">
+			<label for="username" class="col-lg-2 control-label">Username</label>
+			<div class="col-lg-10">
+				<input id="username" name="username" type="text"
+					placeholder="user@example.com" class="form-control"> <span
+					class="help-block">Your user name is the email with witch
+					you have registered.</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="password" class="col-lg-2 control-label">Password</label>
+			<div class="col-lg-10">
+				<input id="password" name="password" type="password"
+					placeholder="Password" class="form-control"> <span
+					class="help-block">The password you have selected for this
+					service (may not be your email password).</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-lg-offset-2 col-lg-10">
+				<div class="checkbox">
+					<label> <input type="checkbox" name="rememberMe">
+						Remember me
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			{{#if loginError}}
+			<div class="alert alert-danger alert-dismissable col-lg-offset-2 col-lg-10">
+				<button type="button" class="close" data-dismiss="alert"
+					aria-hidden="true">&times;</button>
+				<strong>Could not log-in!</strong> 
+				{{#if IncorrectCredentialsError}}
+				Incorrect username or password. 
+				{{/if}}
+				{{#if UnknownAccountError}}
+				Unknown username <em>'{{message}}'</em>, please check your username or sign-up. 
+				{{/if}}
+				{{#if LockedAccountError}}
+				Your account is locked, please contact the administrator. 
+				{{/if}}
+				{{#if unexpectedError}}
+				{{message}}
+				{{/if}}
+			</div>
+			{{/if}}
+			<div class="col-lg-offset-2 col-lg-10">
+				<button type="submit" class="btn btn-primary">Login</button>
+			</div>
+		</div>
+
+	</form>
+</div>
+{{/partial}} {{> base}}

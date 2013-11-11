@@ -1,0 +1,655 @@
+info it worked if it ends with ok
+verbose cli [ 'node', '/usr/bin/npm', 'install', 'handlebars' ]
+info using npm@1.1.4
+info using node@v0.6.12
+verbose config file /home/lfaria/.npmrc
+verbose config file /usr/etc/npmrc
+verbose config file /usr/share/npm/npmrc
+verbose caching /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/package.json
+verbose loadDefaults swagger-ui@2.0.1
+verbose from cache /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/package.json
+verbose readDependencies: using package.json deps
+verbose cache add [ 'handlebars@~1.0.10', null ]
+silly cache add: name, spec, args [ undefined,
+silly cache add: name, spec, args   'handlebars@~1.0.10',
+silly cache add: name, spec, args   [ 'handlebars@~1.0.10', null ] ]
+verbose parsed url { pathname: 'handlebars@~1.0.10',
+verbose parsed url   path: 'handlebars@~1.0.10',
+verbose parsed url   href: 'handlebars@~1.0.10' }
+silly cache add: name, spec, args [ 'handlebars', '~1.0.10', [ 'handlebars', '~1.0.10' ] ]
+verbose parsed url { pathname: '~1.0.10', path: '~1.0.10', href: '~1.0.10' }
+verbose addNamed [ 'handlebars', '~1.0.10' ]
+verbose addNamed [ null, '>=1.0.10- <1.1.0-' ]
+silly name, range, hasData [ 'handlebars', '>=1.0.10- <1.1.0-', false ]
+verbose raw, before any munging handlebars
+verbose url resolving [ 'https://registry.npmjs.org/', './handlebars' ]
+verbose url resolved https://registry.npmjs.org/handlebars
+verbose etag "BJLY5LFN9CG6S308DU3MTNPOS"
+http GET https://registry.npmjs.org/handlebars
+http 304 https://registry.npmjs.org/handlebars
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.3.1 (Erlang OTP/R15B03)',
+silly get cb     etag: '"BJLY5LFN9CG6S308DU3MTNPOS"',
+silly get cb     date: 'Tue, 24 Sep 2013 14:03:00 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag handlebars from cache
+silly name, range, hasData 2 [ 'handlebars', '>=1.0.10- <1.1.0-', true ]
+silly versions [ 'handlebars',
+silly versions   [ '1.0.6',
+silly versions     '1.0.6-2',
+silly versions     '1.0.7',
+silly versions     '1.0.8',
+silly versions     '1.0.9',
+silly versions     '1.0.10',
+silly versions     '1.0.11',
+silly versions     '1.0.12',
+silly versions     '1.0.2-beta',
+silly versions     '1.0.4-beta',
+silly versions     '1.0.5-beta' ] ]
+verbose bin dist [ '0.6-ares1.7.5-evundefined-openssl1.0.1-v83.7.12.22-linux-x64-3.2.0-53-generic',
+verbose bin dist   { shasum: '18c6d3440c35e91b19b3ff582b9151ab4985d4fc',
+verbose bin dist     tarball: 'http://registry.npmjs.org/handlebars/-/handlebars-1.0.12.tgz' } ]
+verbose caching /home/lfaria/.npm/handlebars/1.0.12/package/package.json
+verbose loadDefaults handlebars@1.0.12
+silly resolved [ { name: 'handlebars',
+silly resolved     description: 'Extension of the Mustache logicless template language',
+silly resolved     version: '1.0.12',
+silly resolved     homepage: 'http://www.handlebarsjs.com/',
+silly resolved     keywords: [ 'handlebars mustache template html' ],
+silly resolved     repository: 
+silly resolved      { type: 'git',
+silly resolved        url: 'git://github.com/wycats/handlebars.js.git' },
+silly resolved     engines: { node: '>=0.4.7' },
+silly resolved     dependencies: { optimist: '~0.3', 'uglify-js': '~2.3' },
+silly resolved     devDependencies: 
+silly resolved      { benchmark: '~1.0',
+silly resolved        dust: '~0.3',
+silly resolved        jison: '~0.3',
+silly resolved        mocha: '*',
+silly resolved        mustache: '~0.7.2' },
+silly resolved     main: 'lib/handlebars.js',
+silly resolved     bin: { handlebars: 'bin/handlebars' },
+silly resolved     scripts: { test: 'node_modules/.bin/mocha -u qunit spec/qunit_spec.js' },
+silly resolved     optionalDependencies: {},
+silly resolved     _id: 'handlebars@1.0.12',
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.4',
+silly resolved     _nodeVersion: 'v0.6.12',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'handlebars@~1.0.10' } ]
+info into /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1 handlebars@1.0.12
+info installOne handlebars@1.0.12
+verbose from cache /home/lfaria/.npm/handlebars/1.0.12/package/package.json
+info unbuild /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars
+verbose mkdir (expected) error ENOENT, no such file or directory '/home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules'
+verbose mkdir (expected) error ENOENT, no such file or directory '/home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm'
+verbose mkdir done: /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm 755
+verbose unpack_ uid, gid [ undefined, undefined ]
+verbose unpackTarget /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars
+silly gunzTarPerm modes [ '755', '644' ]
+silly afterUntar ok
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/.jshintrc
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/min.sh
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/LICENSE
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/global-test.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/release-notes.md
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/handlebars-source.gemspec
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/package.json
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/.npmignore
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/.rspec
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/README.markdown
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/test.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/handlebars.js.nuspec
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/global.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/bower.json
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/dist
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/dist/handlebars.runtime.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/dist/handlebars.runtime.min.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/dist/handlebars.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/dist/handlebars.min.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/bin
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/bin/handlebars
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/lib
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/lib/handlebars.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/lib/handlebars
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/lib/handlebars/runtime.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/lib/handlebars/source.rb
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/lib/handlebars/browser-suffix.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/lib/handlebars/browser-prefix.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/lib/handlebars/utils.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/lib/handlebars/base.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/lib/handlebars/compiler
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/lib/handlebars/compiler/ast.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/lib/handlebars/compiler/compiler.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/lib/handlebars/compiler/printer.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/lib/handlebars/compiler/visitor.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/lib/handlebars/compiler/base.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/lib/handlebars/compiler/parser.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package/lib/handlebars/compiler/index.js
+silly chmod package 755
+verbose gunzed /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package
+verbose rm'ed /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars
+verbose renamed [ '/home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/___handlebars.npm/package',
+verbose renamed   '/home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars' ]
+verbose caching /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/package.json
+verbose loadDefaults handlebars@1.0.12
+info preinstall handlebars@1.0.12
+verbose from cache /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/package.json
+verbose readDependencies: using package.json deps
+verbose from cache /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/package.json
+verbose readDependencies: using package.json deps
+verbose cache add [ 'optimist@~0.3', null ]
+silly cache add: name, spec, args [ undefined, 'optimist@~0.3', [ 'optimist@~0.3', null ] ]
+verbose parsed url { pathname: 'optimist@~0.3',
+verbose parsed url   path: 'optimist@~0.3',
+verbose parsed url   href: 'optimist@~0.3' }
+silly cache add: name, spec, args [ 'optimist', '~0.3', [ 'optimist', '~0.3' ] ]
+verbose parsed url { pathname: '~0.3', path: '~0.3', href: '~0.3' }
+verbose addNamed [ 'optimist', '~0.3' ]
+verbose addNamed [ null, '>=0.3.0- <0.4.0-' ]
+silly name, range, hasData [ 'optimist', '>=0.3.0- <0.4.0-', false ]
+verbose cache add [ 'uglify-js@~2.3', null ]
+silly cache add: name, spec, args [ undefined, 'uglify-js@~2.3', [ 'uglify-js@~2.3', null ] ]
+verbose parsed url { pathname: 'uglify-js@~2.3',
+verbose parsed url   path: 'uglify-js@~2.3',
+verbose parsed url   href: 'uglify-js@~2.3' }
+silly cache add: name, spec, args [ 'uglify-js', '~2.3', [ 'uglify-js', '~2.3' ] ]
+verbose parsed url { pathname: '~2.3', path: '~2.3', href: '~2.3' }
+verbose addNamed [ 'uglify-js', '~2.3' ]
+verbose addNamed [ null, '>=2.3.0- <2.4.0-' ]
+silly name, range, hasData [ 'uglify-js', '>=2.3.0- <2.4.0-', false ]
+verbose raw, before any munging optimist
+verbose url resolving [ 'https://registry.npmjs.org/', './optimist' ]
+verbose url resolved https://registry.npmjs.org/optimist
+verbose etag "9V7RLH3E16P65K4JANNCBA1L9"
+http GET https://registry.npmjs.org/optimist
+verbose raw, before any munging uglify-js
+verbose url resolving [ 'https://registry.npmjs.org/', './uglify-js' ]
+verbose url resolved https://registry.npmjs.org/uglify-js
+verbose etag "6CFO6WD43L7HT6IQ08U1YN9WU"
+http GET https://registry.npmjs.org/uglify-js
+http 304 https://registry.npmjs.org/optimist
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.3.1 (Erlang OTP/R15B03)',
+silly get cb     etag: '"9V7RLH3E16P65K4JANNCBA1L9"',
+silly get cb     date: 'Tue, 24 Sep 2013 14:03:01 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag optimist from cache
+silly name, range, hasData 2 [ 'optimist', '>=0.3.0- <0.4.0-', true ]
+silly versions [ 'optimist',
+silly versions   [ '0.0.1',
+silly versions     '0.0.2',
+silly versions     '0.0.4',
+silly versions     '0.0.5',
+silly versions     '0.0.6',
+silly versions     '0.0.7',
+silly versions     '0.1.0',
+silly versions     '0.1.1',
+silly versions     '0.1.2',
+silly versions     '0.1.3',
+silly versions     '0.1.4',
+silly versions     '0.1.5',
+silly versions     '0.1.6',
+silly versions     '0.1.7',
+silly versions     '0.1.8',
+silly versions     '0.1.9',
+silly versions     '0.0.3',
+silly versions     '0.2.0',
+silly versions     '0.2.1',
+silly versions     '0.2.2',
+silly versions     '0.2.3',
+silly versions     '0.2.4',
+silly versions     '0.2.5',
+silly versions     '0.2.6',
+silly versions     '0.2.7',
+silly versions     '0.2.8',
+silly versions     '0.3.0',
+silly versions     '0.3.1',
+silly versions     '0.3.3',
+silly versions     '0.3.4',
+silly versions     '0.3.5',
+silly versions     '0.3.6',
+silly versions     '0.3.7',
+silly versions     '0.4.0',
+silly versions     '0.5.0',
+silly versions     '0.5.1',
+silly versions     '0.5.2',
+silly versions     '0.6.0' ] ]
+verbose bin dist [ '0.6-ares1.7.5-evundefined-openssl1.0.1-v83.7.12.22-linux-x64-3.2.0-53-generic',
+verbose bin dist   { shasum: 'c90941ad59e4273328923074d2cf2e7cbc6ec0d9',
+verbose bin dist     tarball: 'http://registry.npmjs.org/optimist/-/optimist-0.3.7.tgz' } ]
+verbose caching /home/lfaria/.npm/optimist/0.3.7/package/package.json
+verbose loadDefaults optimist@0.3.7
+http 304 https://registry.npmjs.org/uglify-js
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.3.1 (Erlang OTP/R15B03)',
+silly get cb     etag: '"6CFO6WD43L7HT6IQ08U1YN9WU"',
+silly get cb     date: 'Tue, 24 Sep 2013 14:03:01 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag uglify-js from cache
+silly name, range, hasData 2 [ 'uglify-js', '>=2.3.0- <2.4.0-', true ]
+silly versions [ 'uglify-js',
+silly versions   [ '0.0.1',
+silly versions     '0.0.2',
+silly versions     '0.0.3',
+silly versions     '0.0.4',
+silly versions     '0.0.5',
+silly versions     '1.0.1',
+silly versions     '1.0.2',
+silly versions     '1.0.3',
+silly versions     '1.0.4',
+silly versions     '1.0.5',
+silly versions     '1.0.6',
+silly versions     '1.0.7',
+silly versions     '1.1.0',
+silly versions     '1.1.1',
+silly versions     '1.2.0',
+silly versions     '1.2.1',
+silly versions     '1.2.2',
+silly versions     '1.2.3',
+silly versions     '1.2.4',
+silly versions     '1.2.5',
+silly versions     '1.2.6',
+silly versions     '1.3.0',
+silly versions     '1.3.1',
+silly versions     '1.3.2',
+silly versions     '1.3.3',
+silly versions     '1.3.4',
+silly versions     '2.2.0',
+silly versions     '2.2.1',
+silly versions     '2.2.2',
+silly versions     '2.2.3',
+silly versions     '2.2.4',
+silly versions     '2.2.5',
+silly versions     '2.3.0',
+silly versions     '2.3.1',
+silly versions     '2.3.2',
+silly versions     '2.3.3',
+silly versions     '2.3.4',
+silly versions     '2.3.5',
+silly versions     '2.3.6',
+silly versions     '1.3.5',
+silly versions     '2.4.0' ] ]
+verbose bin dist [ '0.6-ares1.7.5-evundefined-openssl1.0.1-v83.7.12.22-linux-x64-3.2.0-53-generic',
+verbose bin dist   { shasum: 'fa0984770b428b7a9b2a8058f46355d14fef211a',
+verbose bin dist     tarball: 'http://registry.npmjs.org/uglify-js/-/uglify-js-2.3.6.tgz' } ]
+verbose caching /home/lfaria/.npm/uglify-js/2.3.6/package/package.json
+verbose loadDefaults uglify-js@2.3.6
+silly resolved [ { name: 'optimist',
+silly resolved     version: '0.3.7',
+silly resolved     description: 'Light-weight option parsing with an argv hash. No optstrings attached.',
+silly resolved     main: './index.js',
+silly resolved     dependencies: { wordwrap: '~0.0.2' },
+silly resolved     devDependencies: { hashish: '~0.0.4', tap: '~0.4.0' },
+silly resolved     scripts: { test: 'tap ./test/*.js' },
+silly resolved     repository: 
+silly resolved      { type: 'git',
+silly resolved        url: 'git://github.com/substack/node-optimist.git' },
+silly resolved     keywords: 
+silly resolved      [ 'argument',
+silly resolved        'args',
+silly resolved        'option',
+silly resolved        'parser',
+silly resolved        'parsing',
+silly resolved        'cli',
+silly resolved        'command' ],
+silly resolved     author: 
+silly resolved      { name: 'James Halliday',
+silly resolved        email: 'mail@substack.net',
+silly resolved        url: 'http://substack.net' },
+silly resolved     license: 'MIT/X11',
+silly resolved     engine: { node: '>=0.4' },
+silly resolved     _id: 'optimist@0.3.7',
+silly resolved     optionalDependencies: {},
+silly resolved     engines: { node: '*' },
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.4',
+silly resolved     _nodeVersion: 'v0.6.12',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'optimist@~0.3' },
+silly resolved   { name: 'uglify-js',
+silly resolved     description: 'JavaScript parser, mangler/compressor and beautifier toolkit',
+silly resolved     homepage: 'http://lisperator.net/uglifyjs',
+silly resolved     main: 'tools/node.js',
+silly resolved     version: '2.3.6',
+silly resolved     engines: { node: '>=0.4.0' },
+silly resolved     maintainers: 
+silly resolved      [ { name: 'Mihai Bazon',
+silly resolved          email: 'mihai.bazon@gmail.com',
+silly resolved          url: 'http://lisperator.net/' } ],
+silly resolved     repository: { type: 'git', url: 'git://github.com/mishoo/UglifyJS2.git' },
+silly resolved     dependencies: { async: '~0.2.6', 'source-map': '~0.1.7', optimist: '~0.3.5' },
+silly resolved     bin: { uglifyjs: 'bin/uglifyjs' },
+silly resolved     scripts: { test: 'node test/run-tests.js' },
+silly resolved     _id: 'uglify-js@2.3.6',
+silly resolved     devDependencies: {},
+silly resolved     optionalDependencies: {},
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.4',
+silly resolved     _nodeVersion: 'v0.6.12',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'uglify-js@~2.3' } ]
+info into /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars optimist@0.3.7
+info into /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars uglify-js@2.3.6
+info installOne optimist@0.3.7
+info installOne uglify-js@2.3.6
+verbose from cache /home/lfaria/.npm/optimist/0.3.7/package/package.json
+info unbuild /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist
+verbose from cache /home/lfaria/.npm/uglify-js/2.3.6/package/package.json
+info unbuild /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/uglify-js
+verbose mkdir (expected) error ENOENT, no such file or directory '/home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules'
+verbose mkdir (expected) error ENOENT, no such file or directory '/home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules'
+verbose mkdir (expected) error ENOENT, no such file or directory '/home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm'
+verbose mkdir done: /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm 755
+verbose mkdir (expected) error ENOENT, no such file or directory '/home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm'
+verbose unpack_ uid, gid [ undefined, undefined ]
+verbose unpackTarget /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist
+silly gunzTarPerm modes [ '755', '644' ]
+verbose mkdir done: /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm 755
+verbose unpack_ uid, gid [ undefined, undefined ]
+verbose unpackTarget /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/uglify-js
+silly gunzTarPerm modes [ '755', '644' ]
+silly afterUntar ok
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/.travis.yml
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/LICENSE
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/readme.markdown
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/package.json
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/index.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/example
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/example/reflect.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/example/divide.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/example/line_count.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/example/usage-options.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/example/default_singles.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/example/bool.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/example/boolean_single.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/example/boolean_double.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/example/default_hash.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/example/line_count_options.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/example/string.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/example/xup.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/example/nonopt.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/example/short.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/example/line_count_wrap.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/test
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/test/parse.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/test/usage.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/test/_.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/test/_
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/test/_/argv.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package/test/_/bin.js
+silly chmod package 755
+verbose gunzed /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package
+verbose rm'ed /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist
+verbose renamed [ '/home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___optimist.npm/package',
+verbose renamed   '/home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist' ]
+verbose caching /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/package.json
+verbose loadDefaults optimist@0.3.7
+info preinstall optimist@0.3.7
+verbose from cache /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/package.json
+verbose readDependencies: using package.json deps
+verbose from cache /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/package.json
+verbose readDependencies: using package.json deps
+verbose cache add [ 'wordwrap@~0.0.2', null ]
+silly cache add: name, spec, args [ undefined, 'wordwrap@~0.0.2', [ 'wordwrap@~0.0.2', null ] ]
+verbose parsed url { pathname: 'wordwrap@~0.0.2',
+verbose parsed url   path: 'wordwrap@~0.0.2',
+verbose parsed url   href: 'wordwrap@~0.0.2' }
+silly cache add: name, spec, args [ 'wordwrap', '~0.0.2', [ 'wordwrap', '~0.0.2' ] ]
+verbose parsed url { pathname: '~0.0.2', path: '~0.0.2', href: '~0.0.2' }
+verbose addNamed [ 'wordwrap', '~0.0.2' ]
+verbose addNamed [ null, '>=0.0.2- <0.1.0-' ]
+silly name, range, hasData [ 'wordwrap', '>=0.0.2- <0.1.0-', false ]
+verbose raw, before any munging wordwrap
+verbose url resolving [ 'https://registry.npmjs.org/', './wordwrap' ]
+verbose url resolved https://registry.npmjs.org/wordwrap
+verbose etag "3HPX5BQ0X4U2A3KJNTK2473OZ"
+http GET https://registry.npmjs.org/wordwrap
+silly afterUntar ok
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/README.md
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/.travis.yml
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/LICENSE
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/package.json
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/.npmignore
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/tools
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/tools/node.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/lib
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/lib/ast.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/lib/parse.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/lib/output.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/lib/mozilla-ast.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/lib/scope.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/lib/compress.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/lib/utils.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/lib/sourcemap.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/lib/transform.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/bin
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/bin/uglifyjs
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/test
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/test/run-tests.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/test/compress
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/test/compress/typeof.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/test/compress/switch.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/test/compress/dead-code.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/test/compress/arrays.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/test/compress/drop-unused.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/test/compress/labels.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/test/compress/sequences.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/test/compress/loops.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/test/compress/conditionals.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/test/compress/issue-105.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/test/compress/debugger.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/test/compress/issue-44.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/test/compress/properties.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/test/compress/blocks.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/test/compress/issue-143.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/test/compress/issue-12.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/test/compress/issue-59.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package/test/compress/issue-22.js
+silly chmod package 755
+verbose gunzed /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package
+verbose rm'ed /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/uglify-js
+verbose renamed [ '/home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/___uglify-js.npm/package',
+verbose renamed   '/home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/uglify-js' ]
+verbose caching /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/uglify-js/package.json
+verbose loadDefaults uglify-js@2.3.6
+info preinstall uglify-js@2.3.6
+verbose from cache /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/uglify-js/package.json
+verbose readDependencies: using package.json deps
+verbose from cache /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/uglify-js/package.json
+verbose readDependencies: using package.json deps
+verbose cache add [ 'async@~0.2.6', null ]
+silly cache add: name, spec, args [ undefined, 'async@~0.2.6', [ 'async@~0.2.6', null ] ]
+verbose parsed url { pathname: 'async@~0.2.6',
+verbose parsed url   path: 'async@~0.2.6',
+verbose parsed url   href: 'async@~0.2.6' }
+silly cache add: name, spec, args [ 'async', '~0.2.6', [ 'async', '~0.2.6' ] ]
+verbose parsed url { pathname: '~0.2.6', path: '~0.2.6', href: '~0.2.6' }
+verbose addNamed [ 'async', '~0.2.6' ]
+verbose addNamed [ null, '>=0.2.6- <0.3.0-' ]
+silly name, range, hasData [ 'async', '>=0.2.6- <0.3.0-', false ]
+verbose cache add [ 'source-map@~0.1.7', null ]
+silly cache add: name, spec, args [ undefined, 'source-map@~0.1.7', [ 'source-map@~0.1.7', null ] ]
+verbose parsed url { pathname: 'source-map@~0.1.7',
+verbose parsed url   path: 'source-map@~0.1.7',
+verbose parsed url   href: 'source-map@~0.1.7' }
+silly cache add: name, spec, args [ 'source-map', '~0.1.7', [ 'source-map', '~0.1.7' ] ]
+verbose parsed url { pathname: '~0.1.7', path: '~0.1.7', href: '~0.1.7' }
+verbose addNamed [ 'source-map', '~0.1.7' ]
+verbose addNamed [ null, '>=0.1.7- <0.2.0-' ]
+silly name, range, hasData [ 'source-map', '>=0.1.7- <0.2.0-', false ]
+verbose raw, before any munging async
+verbose url resolving [ 'https://registry.npmjs.org/', './async' ]
+verbose url resolved https://registry.npmjs.org/async
+http GET https://registry.npmjs.org/async
+verbose raw, before any munging source-map
+verbose url resolving [ 'https://registry.npmjs.org/', './source-map' ]
+verbose url resolved https://registry.npmjs.org/source-map
+verbose etag "C2SGDI0IMMF3BD5IDW7NZ84GD"
+http GET https://registry.npmjs.org/source-map
+http 304 https://registry.npmjs.org/wordwrap
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.3.1 (Erlang OTP/R15B03)',
+silly get cb     etag: '"3HPX5BQ0X4U2A3KJNTK2473OZ"',
+silly get cb     date: 'Tue, 24 Sep 2013 14:03:02 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag wordwrap from cache
+silly name, range, hasData 2 [ 'wordwrap', '>=0.0.2- <0.1.0-', true ]
+silly versions [ 'wordwrap', [ '0.0.1', '0.0.2' ] ]
+verbose bin dist [ '0.6-ares1.7.5-evundefined-openssl1.0.1-v83.7.12.22-linux-x64-3.2.0-53-generic',
+verbose bin dist   { shasum: 'b79669bb42ecb409f83d583cad52ca17eaa1643f',
+verbose bin dist     tarball: 'http://registry.npmjs.org/wordwrap/-/wordwrap-0.0.2.tgz' } ]
+verbose caching /home/lfaria/.npm/wordwrap/0.0.2/package/package.json
+verbose loadDefaults wordwrap@0.0.2
+silly resolved [ { name: 'wordwrap',
+silly resolved     description: 'Wrap those words. Show them at what columns to start and stop.',
+silly resolved     version: '0.0.2',
+silly resolved     repository: 
+silly resolved      { type: 'git',
+silly resolved        url: 'git://github.com/substack/node-wordwrap.git' },
+silly resolved     main: './index.js',
+silly resolved     keywords: [ 'word', 'wrap', 'rule', 'format', 'column' ],
+silly resolved     directories: { lib: '.', example: 'example', test: 'test' },
+silly resolved     scripts: { test: 'expresso' },
+silly resolved     devDependencies: { expresso: '=0.7.x' },
+silly resolved     engines: { node: '>=0.4.0' },
+silly resolved     license: 'MIT/X11',
+silly resolved     author: 
+silly resolved      { name: 'James Halliday',
+silly resolved        email: 'mail@substack.net',
+silly resolved        url: 'http://substack.net' },
+silly resolved     _id: 'wordwrap@0.0.2',
+silly resolved     dependencies: {},
+silly resolved     optionalDependencies: {},
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.4',
+silly resolved     _nodeVersion: 'v0.6.12',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'wordwrap@~0.0.2' } ]
+info into /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist wordwrap@0.0.2
+info installOne wordwrap@0.0.2
+verbose from cache /home/lfaria/.npm/wordwrap/0.0.2/package/package.json
+info unbuild /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules/wordwrap
+verbose mkdir (expected) error ENOENT, no such file or directory '/home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules'
+verbose mkdir (expected) error ENOENT, no such file or directory '/home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules/___wordwrap.npm'
+verbose mkdir done: /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules/___wordwrap.npm 755
+verbose unpack_ uid, gid [ undefined, undefined ]
+verbose unpackTarget /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules/wordwrap
+silly gunzTarPerm modes [ '755', '644' ]
+silly afterUntar ok
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules/___wordwrap.npm/package
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules/___wordwrap.npm/package/package.json
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules/___wordwrap.npm/package/.npmignore
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules/___wordwrap.npm/package/README.markdown
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules/___wordwrap.npm/package/index.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules/___wordwrap.npm/package/example
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules/___wordwrap.npm/package/example/center.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules/___wordwrap.npm/package/example/meat.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules/___wordwrap.npm/package/test
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules/___wordwrap.npm/package/test/wrap.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules/___wordwrap.npm/package/test/break.js
+silly asyncMap in gTP /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules/___wordwrap.npm/package/test/idleness.txt
+silly chmod package 755
+verbose gunzed /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules/___wordwrap.npm/package
+verbose rm'ed /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules/wordwrap
+verbose renamed [ '/home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules/___wordwrap.npm/package',
+verbose renamed   '/home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules/wordwrap' ]
+verbose caching /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules/wordwrap/package.json
+verbose loadDefaults wordwrap@0.0.2
+info preinstall wordwrap@0.0.2
+verbose from cache /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules/wordwrap/package.json
+verbose readDependencies: using package.json deps
+verbose from cache /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules/wordwrap/package.json
+verbose readDependencies: using package.json deps
+silly resolved []
+verbose about to build /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules/wordwrap
+info build /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules/wordwrap
+verbose from cache /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules/wordwrap/package.json
+verbose linkStuff [ false,
+verbose linkStuff   false,
+verbose linkStuff   false,
+verbose linkStuff   '/home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/node_modules' ]
+info linkStuff wordwrap@0.0.2
+verbose linkBins wordwrap@0.0.2
+verbose linkMans wordwrap@0.0.2
+verbose rebuildBundles wordwrap@0.0.2
+info install wordwrap@0.0.2
+info postinstall wordwrap@0.0.2
+verbose installOne cb wordwrap@0.0.2
+verbose about to build /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist
+info build /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist
+verbose from cache /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/optimist/package.json
+verbose linkStuff [ false,
+verbose linkStuff   false,
+verbose linkStuff   false,
+verbose linkStuff   '/home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules' ]
+info linkStuff optimist@0.3.7
+verbose linkBins optimist@0.3.7
+verbose linkMans optimist@0.3.7
+verbose rebuildBundles optimist@0.3.7
+verbose rebuildBundles [ 'wordwrap' ]
+info install optimist@0.3.7
+info postinstall optimist@0.3.7
+verbose installOne cb optimist@0.3.7
+http 304 https://registry.npmjs.org/source-map
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.3.1 (Erlang OTP/R15B03)',
+silly get cb     etag: '"C2SGDI0IMMF3BD5IDW7NZ84GD"',
+silly get cb     date: 'Tue, 24 Sep 2013 14:03:03 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag source-map from cache
+silly name, range, hasData 2 [ 'source-map', '>=0.1.7- <0.2.0-', true ]
+silly versions [ 'source-map',
+silly versions   [ '0.0.0', '0.1.0', '0.1.1', '0.1.2', '0.1.3' ] ]
+verbose about to build /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/uglify-js
+ERR! error installing uglify-js@2.3.6
+info unbuild /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/uglify-js
+verbose from cache /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/uglify-js/package.json
+info preuninstall uglify-js@2.3.6
+info uninstall uglify-js@2.3.6
+verbose unbuild uglify-js@2.3.6 [ false,
+verbose unbuild uglify-js@2.3.6   '/home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules',
+verbose unbuild uglify-js@2.3.6   '/home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules' ]
+verbose binRoot [ '/home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/node_modules/.bin',
+verbose binRoot   { uglifyjs: 'bin/uglifyjs' } ]
+info postuninstall uglify-js@2.3.6
+verbose installOne cb uglify-js@2.3.6
+verbose about to build /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars
+ERR! error installing handlebars@1.0.12
+info unbuild /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars
+verbose from cache /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/handlebars/package.json
+info preuninstall handlebars@1.0.12
+info uninstall handlebars@1.0.12
+verbose unbuild handlebars@1.0.12 [ true,
+verbose unbuild handlebars@1.0.12   '/home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules',
+verbose unbuild handlebars@1.0.12   '/home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules' ]
+verbose binRoot [ '/home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/node_modules/.bin',
+verbose binRoot   { handlebars: 'bin/handlebars' } ]
+info postuninstall handlebars@1.0.12
+verbose installOne cb handlebars@1.0.12
+ERR! Error: No compatible version found: source-map@'>=0.1.7- <0.2.0-'
+ERR! Valid install targets:
+ERR! ["0.0.0","0.1.0","0.1.1","0.1.2","0.1.3"]
+ERR!     at installTargetsError (/usr/share/npm/lib/cache.js:488:10)
+ERR!     at next_ (/usr/share/npm/lib/cache.js:438:17)
+ERR!     at next (/usr/share/npm/lib/cache.js:415:44)
+ERR!     at /usr/share/npm/lib/cache.js:408:5
+ERR!     at saved (/usr/share/npm/lib/utils/npm-registry-client/get.js:147:7)
+ERR!     at Object.oncomplete (/usr/lib/nodejs/graceful-fs.js:230:7)
+ERR! You may report this log at:
+ERR!     <http://bugs.debian.org/npm>
+ERR! or use
+ERR!     reportbug --attach /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1/npm-debug.log npm
+ERR! 
+ERR! System Linux 3.2.0-53-generic
+ERR! command "node" "/usr/bin/npm" "install" "handlebars"
+ERR! cwd /home/lfaria/Projects/SCAPE/scout/web/jslibs/swagger-ui-2.0.1
+ERR! node -v v0.6.12
+ERR! npm -v 1.1.4
+ERR! message No compatible version found: source-map@'>=0.1.7- <0.2.0-'
+ERR! message Valid install targets:
+ERR! message ["0.0.0","0.1.0","0.1.1","0.1.2","0.1.3"]
+verbose exit [ 1, true ]

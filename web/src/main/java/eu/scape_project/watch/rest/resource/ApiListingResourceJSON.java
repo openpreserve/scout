@@ -8,7 +8,7 @@ import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.jaxrs.listing.ApiListing;
 
 @Path("/resources.json")
-@Api(value = "/resources", description = "List of available operations")
+@Api(value = "../resources", description = "List of available operations")
 @Produces({"application/json"})
 public class ApiListingResourceJSON extends ApiListing {
 }

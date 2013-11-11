@@ -44,7 +44,7 @@
 					</archive>
 					<webResources>
 						<resource>
-							<directory>jslibs/swagger-ui-1.1.7/dist</directory>
+							<directory>jslibs/swagger-ui-2.0.1/dist</directory>
 							<targetPath>apidoc</targetPath>
 						</resource>
 						<resource>

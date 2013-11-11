@@ -280,7 +280,7 @@ public class TemplateService extends HttpServlet implements Filter {
 		}
 
 		final Handlebars compiler = new Handlebars(new ClassPathTemplateLoader(
-				DEFAULT_RESOURCE_ROOT), new HighConcurrencyTemplateCache());
+				DEFAULT_RESOURCE_ROOT));
 
 		compiler.registerHelper("value-render", new ValueHelper());
 		HumanizeHelper.register(compiler);
@@ -316,8 +316,7 @@ public class TemplateService extends HttpServlet implements Filter {
 						+ " and " + put);
 			}
 			try {
-				final Template mustache = compiler.compile(URI.create(template
-						.value()));
+				final Template mustache = compiler.compile(template.value());
 				templateMap.put(mustachelet, mustache);
 				logger.trace("Added mustachelet {}", mustachelet);
 			} catch (final IOException e) {

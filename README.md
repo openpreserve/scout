@@ -1,4 +1,4 @@
-# About Scout
+## About Scout
 
 Let Scout be your Preservation Guide.
 
@@ -22,7 +22,7 @@ Scout is for:
 * Preservation experts
 
 
-# Features and roadmap
+## Features and roadmap
 
 ### Version 0.2.0
 
@@ -136,7 +136,7 @@ More instruction on how to use will be here soon.
 Problems and workarounds will be here when needed.
 
 
-# More information
+## More information
 
 ### Publications
 
@@ -154,7 +154,7 @@ Part of this work was supported by the European Union in the 7th Framework Progr
 
 This tool is supported by the [Open Planets Foundation](http://www.openplanetsfoundation.org). Commercial support is provided by [KEEP SOLUTIONS](http://www.keep.pt).
 
-# Develop
+## Develop
 
 [![Build Status](https://travis-ci.org/openplanets/scout.png)](https://travis-ci.org/openplanets/scout)
 

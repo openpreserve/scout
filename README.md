@@ -17,12 +17,13 @@ Scout brings the following benefits:
 #### Who is intended audience?
 
 Scout is for:
+
 * Content holders
 * Preservation experts
 
 # Features and roadmap
 
-Version 0.2.0:
+#### Version 0.2.0
 
 * Ontologic knowledge base backend
 * Information sources:
@@ -39,7 +40,7 @@ Version 0.2.0:
 * Notifications:
  * Email
 
-Roadmap:
+#### Roadmap
 
 * Information sources:
  * Repository events (e.g. ingest, access, preservation action)
@@ -156,7 +157,7 @@ This tool is supported by the [Open Planets Foundation](http://www.openplanetsfo
 
 [![Build Status](https://travis-ci.org/openplanets/scout.png)](https://travis-ci.org/openplanets/scout)
 
-## Requirements
+#### Requirements
 
 To build you require:
  * Maven 3: http://maven.apache.org/
@@ -167,7 +168,7 @@ For using the recommended IDE you require:
  * Eclipse checkstyle plugin: http://marketplace.eclipse.org/node/150
  * Eclipse m2eclipse plugin: http://marketplace.eclipse.org/content/maven-integration-eclipse
 
-## Setup IDE
+#### Setup IDE
 
 After you install eclipse and clone the repo, install the following
 plugins listed above. To install a plugin click on Help > Eclipse Market Place
@@ -191,7 +192,7 @@ To activate checkstyle for a certain project just right click on it select check
 This will continouosly check the code as you type and mark the bad spots with yellow and will provide
 warnings.
 
-## Build
+#### Build
 
 To compile go to the sources folder and execute the command:
 
@@ -201,11 +202,11 @@ $ mvn clean install
 
 After successful compile the binary will be available at `/web/target/scout-web-*.war`.
 
-## Deploy
+#### Deploy
 
 To deploy to Tomcat, please see instalation instructions above.
 
-## Contribute
+#### Contribute
 
 1. [Fork the GitHub project](https://help.github.com/articles/fork-a-repo)
 2. Change the code and push into the forked project

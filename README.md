@@ -59,7 +59,9 @@ Scout is for:
 ## How to install and use
 
 ### Requirements
+
 To install you need:
+
 * Linux or MacOS X operative system (tested in Ubuntu LTS 12.04)
 * Maven 3
 * Apache Tomcat 7.x

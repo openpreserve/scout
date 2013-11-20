@@ -60,7 +60,7 @@ Scout is for:
 
 ### Requirements
 To install you need:
-* *nix operative system (tested in Ubuntu LTS 12.04)
+* \*nix operative system (tested in Ubuntu LTS 12.04)
 * Maven 3
 * Apache Tomcat 7.x
 * Optional[^1]: Mail Transport Agent (e.g. Postfix) 

@@ -2,11 +2,11 @@
 
 Let Scout be your Preservation Guide.
 
-#### What does Scout do?
+### What does Scout do?
 
 Scout is a preservation watch system being developed within the [SCAPE project](http://www.scape-project.eu). It provides an ontological knowledge base to centralize all necessary information to detect preservation risks and opportunities. It uses plugins to allow easy integration of new sources of information, as file format registries, tools for characterization, migration and quality assurance, policies, human knowledge and others. The knowledge base can be easily browsed and triggers can be installed to automatically notify users of new risks and opportunities. Examples of such notification could be: content fails to conform to defined policies, a format became obsolete or new tools able to render your content are available.
 
-#### What are the benefits for end user?
+### What are the benefits for end user?
 
 Scout brings the following benefits:
 * Helps you know when your content is at risk
@@ -14,7 +14,7 @@ Scout brings the following benefits:
 * Discover who else is holding content of a specific type (file format)
 * Know whether your repository is the only one using a specific preservation tool
 
-#### Who is intended audience?
+### Who is intended audience?
 
 Scout is for:
 
@@ -23,7 +23,7 @@ Scout is for:
 
 # Features and roadmap
 
-#### Version 0.2.0
+### Version 0.2.0
 
 * Ontologic knowledge base backend
 * Information sources:
@@ -40,7 +40,7 @@ Scout is for:
 * Notifications:
  * Email
 
-#### Roadmap
+### Roadmap
 
 * Information sources:
  * Repository events (e.g. ingest, access, preservation action)
@@ -57,21 +57,21 @@ Scout is for:
 
 # How to install and use
 
-#### Requirements
+### Requirements
 To install you need:
 * *nix operative system (tested in Ubuntu LTS 12.04)
 * Maven 3
 * Apache Tomcat 7.x
 * Optional[^1]: Mail Transport Agent (e.g. Postfix) 
 
-#### Download
+### Download
 
 | Version | Size   | SHA1                                                    |                      |
 |---------|--------|---------------------------------------------------------|----------------------|
 | v0.0.1  | 1.2 MB | <small></small> |soon|
 
 
-#### Install instructions
+### Install instructions
 
 To install follow these steps:
 
@@ -116,7 +116,7 @@ $ cp [SOURCES]/web/target/scout-web-*.war [TOMCAT]/webapps/
 
 [^1]: An external SMTP server can optionally be configured.
 
-#### Use
+### Use
 
 To use the tool, open it in your browser, e.g. at [http://localhost:8080/scout-web-v0.2.0/](http://localhost:8080/scout-web-v0.2.0/)
 
@@ -130,26 +130,26 @@ To create the PRONOM adaptor
 
 More instruction on how to use will be here soon.
 
-#### Troubleshooting
+### Troubleshooting
 
 Problems and workarounds will be here when needed.
 
 
 # More information
 
-#### Publications
+### Publications
 
 TODO add publications.
 
-#### Licence
+### Licence
 
 Scout is released under [Apache version 2.0 license](LICENSE.txt).
 
-#### Acknowledgements
+### Acknowledgements
 
 Part of this work was supported by the European Union in the 7th Framework Program, IST, through the SCAPE project, Contract 270137.
 
-#### Support
+### Support
 
 This tool is supported by the [Open Planets Foundation](http://www.openplanetsfoundation.org). Commercial support is provided by [KEEP SOLUTIONS](http://www.keep.pt).
 
@@ -157,7 +157,7 @@ This tool is supported by the [Open Planets Foundation](http://www.openplanetsfo
 
 [![Build Status](https://travis-ci.org/openplanets/scout.png)](https://travis-ci.org/openplanets/scout)
 
-#### Requirements
+### Requirements
 
 To build you require:
  * Maven 3: http://maven.apache.org/
@@ -168,7 +168,7 @@ For using the recommended IDE you require:
  * Eclipse checkstyle plugin: http://marketplace.eclipse.org/node/150
  * Eclipse m2eclipse plugin: http://marketplace.eclipse.org/content/maven-integration-eclipse
 
-#### Setup IDE
+### Setup IDE
 
 After you install eclipse and clone the repo, install the following
 plugins listed above. To install a plugin click on Help > Eclipse Market Place
@@ -192,7 +192,7 @@ To activate checkstyle for a certain project just right click on it select check
 This will continouosly check the code as you type and mark the bad spots with yellow and will provide
 warnings.
 
-#### Build
+### Build
 
 To compile go to the sources folder and execute the command:
 
@@ -202,11 +202,11 @@ $ mvn clean install
 
 After successful compile the binary will be available at `/web/target/scout-web-*.war`.
 
-#### Deploy
+### Deploy
 
 To deploy to Tomcat, please see instalation instructions above.
 
-#### Contribute
+### Contribute
 
 1. [Fork the GitHub project](https://help.github.com/articles/fork-a-repo)
 2. Change the code and push into the forked project

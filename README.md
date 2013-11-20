@@ -24,8 +24,6 @@ Scout is for:
 
 # Features and roadmap
 
-##
-
 ### Version 0.2.0
 
 * Ontologic knowledge base backend

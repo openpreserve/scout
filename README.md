@@ -56,7 +56,7 @@ Scout is for:
 * Notifications:
   * HTTP push API
 
-# How to install and use
+## How to install and use
 
 ### Requirements
 To install you need:

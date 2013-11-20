@@ -9,6 +9,7 @@ Scout is a preservation watch system being developed within the [SCAPE project](
 ### What are the benefits for end user?
 
 Scout brings the following benefits:
+
 * Helps you know when your content is at risk
 * Helps you reduce risks by community engagement and assistance
 * Discover who else is holding content of a specific type (file format)
@@ -160,10 +161,12 @@ This tool is supported by the [Open Planets Foundation](http://www.openplanetsfo
 ### Requirements
 
 To build you require:
+
  * Maven 3: http://maven.apache.org/
  * clone this repo (if you haven't)
 
 For using the recommended IDE you require:
+
  * Eclipse Indigo: http://www.eclipse.org/downloads/index-developer.php
  * Eclipse checkstyle plugin: http://marketplace.eclipse.org/node/150
  * Eclipse m2eclipse plugin: http://marketplace.eclipse.org/content/maven-integration-eclipse
@@ -213,6 +216,7 @@ To deploy to Tomcat, please see instalation instructions above.
 3. [Submit a pull request](https://help.github.com/articles/using-pull-requests)
 
 To increase the changes of you code being accepted and merged into the official source here's a checklist of things to go over before submitting a contribution. For example:
+
 * Has unit tests (that covers at least 80% of the code)
 * Has documentation (at least 80% of public API)
 * Agrees to contributor license agreement, certifying that any contributed code is original work and that the copyright is turned over to the project

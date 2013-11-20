@@ -1,4 +1,4 @@
-## About Scout
+# Scout
 
 Let Scout be your Preservation Guide.
 

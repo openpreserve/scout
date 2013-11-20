@@ -67,10 +67,7 @@ To install you need:
 
 ### Download
 
-| Version | Size   | SHA1                                                    |                      |
-|---------|--------|---------------------------------------------------------|----------------------|
-| v0.0.1  | 1.2 MB | <small></small> |soon|
-
+Will be available soon.
 
 ### Install instructions
 

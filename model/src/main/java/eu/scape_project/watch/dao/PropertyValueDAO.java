@@ -410,6 +410,7 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
       measurement.save();
 
       ret = super.saveImpl(pv);
+      logger.trace("Saving {} with {}", ret, measurement);
 
     } else {
       // tag existing property value with a new measurement.
@@ -427,6 +428,8 @@ public final class PropertyValueDAO extends AbstractDO<PropertyValue> {
       measurement.save();
 
       ret = existingPV;
+      
+      logger.trace("Saving {} with {}", ret, measurement);
     }
 
     return ret;

@@ -1,8 +1,18 @@
 package eu.scape_project.watch.adaptor.c3po;
 
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_CNF;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_TYPE;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.ENDPOINT_TYPE_DUMMY;
+import static eu.scape_project.watch.adaptor.c3po.common.C3POConstants.SCHEDULING_TIME;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import junit.framework.Assert;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import eu.scape_project.watch.domain.Entity;
 import eu.scape_project.watch.domain.Property;
@@ -10,11 +20,6 @@ import eu.scape_project.watch.interfaces.ResultInterface;
 import eu.scape_project.watch.utils.ConfigParameter;
 import eu.scape_project.watch.utils.exceptions.InvalidParameterException;
 import eu.scape_project.watch.utils.exceptions.PluginException;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import junit.framework.Assert;
 
 public class C3POAdaptorTest {
 
@@ -66,13 +71,12 @@ public class C3POAdaptorTest {
   
   @Test
   public void onExecute() throws Exception {
-    final List<ConfigParameter> parameters = this.adaptor.getParameters();
     final Map<String, String> values = new HashMap<String, String>();
 
-    for (final ConfigParameter cp : parameters) {
-      values.put(cp.getKey(), cp.getValue());
-    }
-
+    values.put(ENDPOINT_CNF, "");
+    values.put(SCHEDULING_TIME, "0");
+    values.put(ENDPOINT_TYPE, ENDPOINT_TYPE_DUMMY);
+    
     this.adaptor.setParameterValues(values);
     
     final boolean hasNext = this.adaptor.hasNext();

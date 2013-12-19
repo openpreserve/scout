@@ -138,9 +138,13 @@ Problems and workarounds will be here when needed.
 
 ### Publications
 
-TODO add publications.
+ * Faria, Akbik, Sierman, Ras, Ferreira, Ramalho: [Automatic preservation watch using information extraction on the Web: a case study on semantic extraction of natural language for digital preservation](http://hdl.handle.net/1822/25214).  In: iPRES 2013, Lisbon, Portugal.
+ * Kraxner, Plangg, Duretec, Becker, Faria: [The SCAPE planning and watch suite: supporting the preservation lifecycle in repositories](http://hdl.handle.net/1822/25215). In: iPRES 2013, Lisbon, Portugal.
+ * Faria, Becker, Duretec, Ferreira, Ramalho: [Supporting the preservation lifecycle in repositories](http://hdl.handle.net/1822/25101). In: Open Repositories 2013, Charlottetown, Canada.
+ * Faria, Petrov, Duretec, Becker, Ferreira, Ramalho: [Design and architecture of a novel preservation watch system](http://hdl.handle.net/1822/21447). In: ICADL 2012, Taipei, Taiwan.
+ * Becker, Duretec, Petrov, Faria, Ferreira, Ramalho: [Preservation Watch: what to monitor and how](http://hdl.handle.net/1822/20666). In: iPRES 2012, Toronto, Canada.
 
- * 
+
 
 ### Licence
 

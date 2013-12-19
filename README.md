@@ -45,8 +45,6 @@ Scout is for:
 ### Roadmap
 
 * Information sources:
- * Repository events (e.g. ingest, access, preservation action)
- * Web content renderability analisys
  * Tools catalogues (via myExperiment)
  * External assessment via Plato
  * Simulation of repository resources

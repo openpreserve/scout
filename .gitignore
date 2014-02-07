@@ -8,3 +8,5 @@ bin/
 prototype/data/tdb/*
 .checkstyle
 */.checkstyle
+# Vagrant directory
+.vagrant

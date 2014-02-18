@@ -24,245 +24,252 @@ import eu.scape_project.watch.utils.KBUtils;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Measurement extends RdfBean<Measurement> {
 
-  // private static final Logger LOG = LoggerFactory
-  // .getLogger(Measurement.class);
+	/**
+	 * Get measurement Id.
+	 * 
+	 * @param entityName
+	 *            The name of the related entity.
+	 * @param propertyName
+	 *            The name of the related property.
+	 * @param timestamp
+	 *            The time stamp of the measurement.
+	 * @return The id to be used in RDF queries.
+	 */
+	public static final String createId(final String entityName,
+			String propertyName, final Date timestamp) {
+		return KBUtils.hashId(entityName, propertyName, timestamp);
+	}
 
-  /**
-   * Get measurement Id.
-   * 
-   * @param propertyName
-   *          The name of the related property.
-   * @param timestamp
-   *          The time stamp of the measurement.
-   * @return The id to be used in RDF queries.
-   */
-  public static final String createId(final String propertyName, final Date timestamp) {
-    return KBUtils.hashId(propertyName, timestamp);
-  }
+	/**
+	 * Auto-generated id.
+	 */
+	@Id
+	private String id;
 
-  /**
-   * Auto-generated id.
-   */
-  @Id
-  private String id;
+	/**
+	 * The measured property value.
+	 */
+	@XmlElement
+	@JsonProperty
+	private PropertyValue propertyValue;
 
-  /**
-   * The measured property value.
-   */
-  @XmlElement
-  @JsonProperty
-  private PropertyValue propertyValue;
+	/**
+	 * The moment in time of the measurement.
+	 */
+	@XmlElement
+	private Date timestamp;
 
-  /**
-   * The moment in time of the measurement.
-   */
-  @XmlElement
-  private Date timestamp;
+	/**
+	 * Flag measurement as significant.
+	 */
+	@XmlElement
+	private boolean significant;
 
-  /**
-   * Flag measurement as significant.
-   */
-  @XmlElement
-  private boolean significant;
+	/**
+	 * Flag measurement as the last measurement.
+	 */
+	@XmlElement
+	private boolean last;
 
-  /**
-   * Flag measurement as the last measurement.
-   */
-  @XmlElement
-  private boolean last;
+	/**
+	 * Flag measurement as a limit measurement.
+	 */
+	@XmlElement
+	private boolean limit;
 
-  /**
-   * Flag measurement as a limit measurement.
-   */
-  @XmlElement
-  private boolean limit;
+	/**
+	 * The source adaptor that made the measurement.
+	 */
+	@XmlElement
+	@JsonProperty
+	private SourceAdaptor adaptor;
 
-  /**
-   * The source adaptor that made the measurement.
-   */
-  @XmlElement
-  @JsonProperty
-  private SourceAdaptor adaptor;
+	/**
+	 * Create a new empty measurement.
+	 */
+	public Measurement() {
+		super();
+	}
 
-  /**
-   * Create a new empty measurement.
-   */
-  public Measurement() {
-    super();
-  }
+	/**
+	 * Create a new measurement.
+	 * 
+	 * @param pv
+	 *            The measured property value.
+	 * @param timestamp
+	 *            The moment in time of the measurement.
+	 * @param adaptor
+	 *            The source adaptor that took the measurement.
+	 */
+	public Measurement(final PropertyValue pv, final Date timestamp,
+			final SourceAdaptor adaptor) {
+		this.propertyValue = pv;
+		this.timestamp = (Date) timestamp.clone();
+		this.last = false;
+		this.limit = false;
+		this.adaptor = adaptor;
 
-  /**
-   * Create a new measurement.
-   * 
-   * @param pv
-   *          The measured property value.
-   * @param timestamp
-   *          The moment in time of the measurement.
-   * @param adaptor
-   *          The source adaptor that took the measurement.
-   */
-  public Measurement(final PropertyValue pv, final Date timestamp, final SourceAdaptor adaptor) {
-    this.propertyValue = pv;
-    this.timestamp = (Date) timestamp.clone();
-    this.last = false;
-    this.limit = false;
-    this.adaptor = adaptor;
+		updateId();
+		updateSignificant();
+	}
 
-    updateId();
-    updateSignificant();
-  }
+	/**
+	 * Update unique identifier of the measurement.
+	 */
+	private void updateId() {
 
-  /**
-   * Update unique identifier of the measurement.
-   */
-  private void updateId() {
-    String propertyName;
+		if (propertyValue != null) {
+			if (propertyValue.getEntity() != null
+					&& propertyValue.getProperty() != null) {
+				this.id = createId(propertyValue.getEntity().getName(),
+						propertyValue.getProperty().getName(), this.timestamp);
+			} else {
+				this.id = "unknown";
+			}
+		} else {
+			this.id = "unknown";
+		}
+	}
 
-    if (this.propertyValue != null && this.propertyValue.getProperty() != null) {
-      propertyName = this.propertyValue.getProperty().getName();
-    } else {
-      propertyName = "unknown";
-    }
+	public PropertyValue getPropertyValue() {
+		return propertyValue;
+	}
 
-    this.id = createId(propertyName, this.timestamp);
-  }
+	public void setPropertyValue(final PropertyValue propertyValue) {
+		this.propertyValue = propertyValue;
+		updateId();
 
-  public PropertyValue getPropertyValue() {
-    return propertyValue;
-  }
+	}
 
-  public void setPropertyValue(final PropertyValue propertyValue) {
-    this.propertyValue = propertyValue;
-    updateId();
+	public String getId() {
+		return id;
+	}
 
-  }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-  public String getId() {
-    return id;
-  }
+	public Date getTimestamp() {
+		return (Date) timestamp.clone();
+	}
 
-  public void setId(String id) {
-    this.id = id;
-  }
+	public void setTimestamp(final Date timestamp) {
+		this.timestamp = (Date) timestamp.clone();
+		updateId();
+	}
 
-  public Date getTimestamp() {
-    return (Date) timestamp.clone();
-  }
+	public boolean isSignificant() {
+		return significant;
+	}
 
-  public void setTimestamp(final Date timestamp) {
-    this.timestamp = (Date) timestamp.clone();
-    updateId();
-  }
+	public void setSignificant(final boolean significant) {
+		this.significant = significant;
+	}
 
-  public boolean isSignificant() {
-    return significant;
-  }
+	private void updateSignificant() {
+		this.significant = last || limit;
+	}
 
-  public void setSignificant(final boolean significant) {
-    this.significant = significant;
-  }
+	public boolean isLast() {
+		return last;
+	}
 
-  private void updateSignificant() {
-    this.significant = last || limit;
-  }
+	public void setLast(boolean last) {
+		this.last = last;
+		updateSignificant();
+	}
 
-  public boolean isLast() {
-    return last;
-  }
+	public boolean isLimit() {
+		return limit;
+	}
 
-  public void setLast(boolean last) {
-    this.last = last;
-    updateSignificant();
-  }
+	public void setLimit(boolean limit) {
+		this.limit = limit;
+		updateSignificant();
+	}
 
-  public boolean isLimit() {
-    return limit;
-  }
+	public SourceAdaptor getAdaptor() {
+		return adaptor;
+	}
 
-  public void setLimit(boolean limit) {
-    this.limit = limit;
-    updateSignificant();
-  }
+	public void setAdaptor(final SourceAdaptor adaptor) {
+		this.adaptor = adaptor;
+	}
 
-  public SourceAdaptor getAdaptor() {
-    return adaptor;
-  }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((adaptor == null) ? 0 : adaptor.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + (last ? 1231 : 1237);
+		result = prime * result + (limit ? 1231 : 1237);
+		result = prime * result
+				+ ((propertyValue == null) ? 0 : propertyValue.hashCode());
+		result = prime * result + (significant ? 1231 : 1237);
+		result = prime * result
+				+ ((timestamp == null) ? 0 : timestamp.hashCode());
+		return result;
+	}
 
-  public void setAdaptor(final SourceAdaptor adaptor) {
-    this.adaptor = adaptor;
-  }
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Measurement)) {
+			return false;
+		}
+		final Measurement other = (Measurement) obj;
+		if (adaptor == null) {
+			if (other.adaptor != null) {
+				return false;
+			}
+		} else if (!adaptor.equals(other.adaptor)) {
+			return false;
+		}
+		if (id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!id.equals(other.id)) {
+			return false;
+		}
+		if (last != other.last) {
+			return false;
+		}
+		if (limit != other.limit) {
+			return false;
+		}
+		if (propertyValue == null) {
+			if (other.propertyValue != null) {
+				return false;
+			}
+		} else if (!propertyValue.equals(other.propertyValue)) {
+			return false;
+		}
+		if (significant != other.significant) {
+			return false;
+		}
+		if (timestamp == null) {
+			if (other.timestamp != null) {
+				return false;
+			}
+		} else if (!timestamp.equals(other.timestamp)) {
+			return false;
+		}
+		return true;
+	}
 
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((adaptor == null) ? 0 : adaptor.hashCode());
-    result = prime * result + ((id == null) ? 0 : id.hashCode());
-    result = prime * result + (last ? 1231 : 1237);
-    result = prime * result + (limit ? 1231 : 1237);
-    result = prime * result + ((propertyValue == null) ? 0 : propertyValue.hashCode());
-    result = prime * result + (significant ? 1231 : 1237);
-    result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
-    return result;
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (!(obj instanceof Measurement)) {
-      return false;
-    }
-    final Measurement other = (Measurement) obj;
-    if (adaptor == null) {
-      if (other.adaptor != null) {
-        return false;
-      }
-    } else if (!adaptor.equals(other.adaptor)) {
-      return false;
-    }
-    if (id == null) {
-      if (other.id != null) {
-        return false;
-      }
-    } else if (!id.equals(other.id)) {
-      return false;
-    }
-    if (last != other.last) {
-      return false;
-    }
-    if (limit != other.limit) {
-      return false;
-    }
-    if (propertyValue == null) {
-      if (other.propertyValue != null) {
-        return false;
-      }
-    } else if (!propertyValue.equals(other.propertyValue)) {
-      return false;
-    }
-    if (significant != other.significant) {
-      return false;
-    }
-    if (timestamp == null) {
-      if (other.timestamp != null) {
-        return false;
-      }
-    } else if (!timestamp.equals(other.timestamp)) {
-      return false;
-    }
-    return true;
-  }
-
-  @Override
-  public String toString() {
-    return String.format(
-      "Measurement [id=%s, propertyValue=%s, timestamp=%s, significant=%s, last=%s, limit=%s, adaptor=%s]", id,
-      propertyValue, timestamp, significant, last, limit, adaptor);
-  }
+	@Override
+	public String toString() {
+		return String
+				.format("Measurement [id=%s, propertyValue=%s, timestamp=%s, significant=%s, last=%s, limit=%s, adaptor=%s]",
+						id, propertyValue, timestamp, significant, last, limit,
+						adaptor);
+	}
 
 }

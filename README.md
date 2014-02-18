@@ -1,11 +1,31 @@
-# About Scout
+# Scout
 
-Scout is a preservation watch system being developed within the [SCAPE project](http://www.scape-project.eu). It provides an ontological knowledge base to centralize all necessary information to detect preservation risks and opportunities. It uses plugins to allow easy integration of new sources of information, as file format registries, tools for characterization, migration and quality assurance, policies, human knowledge and others. The knowledge base can be easily browsed and triggers can be installed to automatically notify users of new risks and opportunities. Examples of such notification could be: content fails to conform to defined policies, a format became obsolete or new tools able to render your
-content are available.
+Let Scout be your Preservation Guide.
 
-## Features
+### What does Scout do?
 
-Version 0.2.0:
+Scout is a preservation watch system being developed within the [SCAPE project](http://www.scape-project.eu). It provides an ontological knowledge base to centralize all necessary information to detect preservation risks and opportunities. It uses plugins to allow easy integration of new sources of information, as file format registries, tools for characterization, migration and quality assurance, policies, human knowledge and others. The knowledge base can be easily browsed and triggers can be installed to automatically notify users of new risks and opportunities. Examples of such notification could be: content fails to conform to defined policies, a format became obsolete or new tools able to render your content are available.
+
+### What are the benefits for end user?
+
+Scout brings the following benefits:
+
+* Helps you know when your content is at risk
+* Helps you reduce risks by community engagement and assistance
+* Discover who else is holding content of a specific type (file format)
+* Know whether your repository is the only one using a specific preservation tool
+
+### Who is intended audience?
+
+Scout is for:
+
+* Content holders
+* Preservation experts
+
+
+## Features and roadmap
+
+### Version 0.2.0
 
 * Ontologic knowledge base backend
 * Information sources:
@@ -22,8 +42,7 @@ Version 0.2.0:
 * Notifications:
  * Email
 
-## Roadmap
-Version 1.0.0:
+### Roadmap
 
 * Information sources:
  * Repository events (e.g. ingest, access, preservation action)
@@ -38,20 +57,24 @@ Version 1.0.0:
 * Notifications:
   * HTTP push API
 
-## License
+## How to install and use
 
-Scout is released under [Apache version 2.0 license](LICENSE.txt).
+### Requirements
 
-# Install
+To install you need:
 
-## Requirements
-
-* *nix operative system (tested in Ubuntu LTS 12.04)
+* Linux or MacOS X operative system (tested in Ubuntu LTS 12.04)
 * Maven 3
 * Apache Tomcat 7.x
 * Optional[^1]: Mail Transport Agent (e.g. Postfix) 
 
-## Instructions
+### Download
+
+Will be available soon.
+
+### Install instructions
+
+To install follow these steps:
 
  1. Download and install [Apache Tomcat 7.x](http://tomcat.apache.org/download-70.cgi)
  2. Configure Apache Tomcat to use more memory. Edit `bin/catalina.sh` and add the following line in the beggining of the file, after the comments:
@@ -94,9 +117,11 @@ $ cp [SOURCES]/web/target/scout-web-*.war [TOMCAT]/webapps/
 
 [^1]: An external SMTP server can optionally be configured.
 
-# Configure
+### Use
 
-## Create the PRONOM adaptor
+To use the tool, open it in your browser, e.g. at [http://localhost:8080/scout-web-v0.2.0/](http://localhost:8080/scout-web-v0.2.0/)
+
+To create the PRONOM adaptor
 
  1. Open the scout-web web application
  2. Go to Administration
@@ -104,18 +129,50 @@ $ cp [SOURCES]/web/target/scout-web-*.war [TOMCAT]/webapps/
  4. Create a new Source called "PRONOM"
  5. Select the new Source Adaptor with the pronom plugin and the instance name "pronom-default"
 
-# Develop
+More instruction on how to use will be here soon.
+
+### Troubleshooting
+
+Problems and workarounds will be here when needed.
+
+
+## More information
+
+### Publications
+
+TODO add publications.
+
+### Licence
+
+Scout is released under [Apache version 2.0 license](LICENSE.txt).
+
+### Acknowledgements
+
+Part of this work was supported by the European Union in the 7th Framework Program, IST, through the SCAPE project, Contract 270137.
+
+### Support
+
+This tool is supported by the [Open Planets Foundation](http://www.openplanetsfoundation.org). Commercial support is provided by [KEEP SOLUTIONS](http://www.keep.pt).
+
+## Develop
 
 [![Build Status](https://travis-ci.org/openplanets/scout.png)](https://travis-ci.org/openplanets/scout)
 
-## Requirements
- * Eclipse Indigo: http://www.eclipse.org/downloads/index-developer.php
- * Eclipse checkstyle plugin: http://marketplace.eclipse.org/node/150
- * Eclipse m2eclipse plugin: http://marketplace.eclipse.org/content/maven-integration-eclipse
+### Requirements
+
+To build you require:
+
  * Maven 3: http://maven.apache.org/
  * clone this repo (if you haven't)
 
-## Setup IDE
+For using the recommended IDE you require:
+
+ * Eclipse Indigo: http://www.eclipse.org/downloads/index-developer.php
+ * Eclipse checkstyle plugin: http://marketplace.eclipse.org/node/150
+ * Eclipse m2eclipse plugin: http://marketplace.eclipse.org/content/maven-integration-eclipse
+
+### Setup IDE
+
 After you install eclipse and clone the repo, install the following
 plugins listed above. To install a plugin click on Help > Eclipse Market Place
 and search them or just use the nice drag and drop feature and drag them from the links above.
@@ -123,7 +180,7 @@ and search them or just use the nice drag and drop feature and drag them from th
 As soon as you are ready import the maven modules by selecting File > Import > Maven > Existing Maven Projects.
 Maven will fetch the whole internet (this is normal) and will import the projects for you.
 
-If you are planning to contribute please setup the provided eclipse_formatter, cleanup_profile and checkstyle config file
+If you are planning to contribute please setup the provided eclipse\_formatter, cleanup\_profile and checkstyle config file
 (in the build-tools-config project). To do this for all projects in this eclipse instance follow these steps:
 
 Select Window > Preferences. In the new window select Java > Code Style > Clean Up
@@ -138,7 +195,28 @@ To activate checkstyle for a certain project just right click on it select check
 This will continouosly check the code as you type and mark the bad spots with yellow and will provide
 warnings.
 
-# Acknowledgements
+### Build
 
-Part of this work was supported by the European Union in the 7th Framework Program, IST, through the SCAPE project, Contract 270137.
+To compile go to the sources folder and execute the command:
 
+```bash
+$ mvn clean install
+```
+
+After successful compile the binary will be available at `/web/target/scout-web-*.war`.
+
+### Deploy
+
+To deploy to Tomcat, please see instalation instructions above.
+
+### Contribute
+
+1. [Fork the GitHub project](https://help.github.com/articles/fork-a-repo)
+2. Change the code and push into the forked project
+3. [Submit a pull request](https://help.github.com/articles/using-pull-requests)
+
+To increase the changes of you code being accepted and merged into the official source here's a checklist of things to go over before submitting a contribution. For example:
+
+* Has unit tests (that covers at least 80% of the code)
+* Has documentation (at least 80% of public API)
+* Agrees to contributor license agreement, certifying that any contributed code is original work and that the copyright is turned over to the project

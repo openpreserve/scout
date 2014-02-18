@@ -8,117 +8,124 @@ package eu.scape_project.watch.adaptor.c3po.common;
  */
 public final class C3POConstants {
 
-  // ############ configuration of the adaptor #################
-  /**
-   * The configuration parameter for the c3po endpoint. It should be a correct
-   * http(s) web address (with port if needed), or 'dummy' if the source should
-   * be simulated.
-   */
-  public static final String ENDPOINT_CNF = "c3po.endpoint";
+	// ############ configuration of the adaptor #################
+	/**
+	 * The configuration parameter for the c3po endpoint. It should be a correct
+	 * http(s) web address (with port if needed), or 'dummy' if the source
+	 * should be simulated.
+	 */
+	public static final String ENDPOINT_CNF = "c3po.endpoint";
 
-  /**
-   * The default value of the {@link C3POConstants#ENDPOINT_CNF} configuration
-   * parameter.
-   */
-  public static final String ENDPOINT_DEFAULT = "dummy";
+	/**
+	 * The default value of the {@link C3POConstants#ENDPOINT_CNF} configuration
+	 * parameter.
+	 */
+	public static final String ENDPOINT_DEFAULT = "dummy";
 
-  /**
-   * How often will it be scheduled 
-   */
-  public static final String SCHEDULING_TIME = "scheduling";
-  
-  /**
-   * A human readable description of the {@link C3POConstants#ENDPOINT_CNF}
-   * configuration parameter.
-   */
-  public static final String ENDPOINT_DESC = "The url endpoint for the c3po profiler source";
+	/**
+	 * How often will it be scheduled
+	 */
+	public static final String SCHEDULING_TIME = "scheduling";
 
-  public static final String SCHEDULING_TIME_DESC = "Time in minutes to denote how often is adaptor executed, to execute only once enter 0";
-  
-  // ############ supported properties #################
-  /**
-   * The collection name identifier property.
-   */
-  public static final String CP_COLLECTION_IDENTIFIER = "Collection name";
+	/**
+	 * A human readable description of the {@link C3POConstants#ENDPOINT_CNF}
+	 * configuration parameter.
+	 */
+	public static final String ENDPOINT_DESC = "The url endpoint for the c3po profiler source";
 
-  /**
-   * The collection overall size property.
-   */
-  public static final String CP_COLLECTION_SIZE = "Collection size";
+	public static final String ENDPOINT_TYPE = "c3po.endpoint.type";
+	public static final String ENDPOINT_TYPE_WEBSERVICE = "webservice";
+	public static final String ENDPOINT_TYPE_FILE = "file";
+	public static final String ENDPOINT_TYPE_DUMMY = "dummy";
 
-  /**
-   * The count of the objects property.
-   */
-  public static final String CP_OBJECTS_COUNT = "Objects count";
+	public static final String ENDPOINT_TYPE_DESC = "The type of the endpoint, options are 'webservice' to connect to C3PO webservice, 'file' to read from C3PO exported profiles on some HTTP server, or 'dummy' to automatically create some default data";
 
-  /**
-   * The avg size of an object within the collection property.
-   */
-  public static final String CP_OBJECTS_AVG_SIZE = "Objects avg size";
+	public static final String SCHEDULING_TIME_DESC = "Time in minutes to denote how often is adaptor executed, to execute only once enter 0";
 
-  /**
-   * The size of the smallest object property (in bytes).
-   */
-  public static final String CP_OBJECTS_MIN_SIZE = "Objects min size";
+	// ############ supported properties #################
+	/**
+	 * The collection name identifier property.
+	 */
+	public static final String CP_COLLECTION_IDENTIFIER = "Collection name";
 
-  /**
-   * The size of the largest object property (in bytes).
-   */
-  public static final String CP_OBJECTS_MAX_SIZE = "Objects max size";
+	/**
+	 * The collection overall size property.
+	 */
+	public static final String CP_COLLECTION_SIZE = "Collection size";
 
-  /**
-   * The standard deviation of the size of objects property (in bytes).
-   */
-  public static final String CP_OBJECTS_SD_SIZE = "Objects sd size";
+	/**
+	 * The count of the objects property.
+	 */
+	public static final String CP_OBJECTS_COUNT = "Objects count";
 
-  /**
-   * The statistical mode of the formats within the collection property.
-   */
-  public static final String CP_FORMAT_MODE = "Format mode";
+	/**
+	 * The avg size of an object within the collection property.
+	 */
+	public static final String CP_OBJECTS_AVG_SIZE = "Objects avg size";
 
-  /**
-   * The format distribution property.
-   */
-  public static final String CP_DISTRIBUTION = "%s distribution";
+	/**
+	 * The size of the smallest object property (in bytes).
+	 */
+	public static final String CP_OBJECTS_MIN_SIZE = "Objects min size";
 
-  /**
-   * The statistical mode of the PRONOM identifiers within the collection
-   * property.
-   */
-  public static final String CP_PUID_MODE = "cp.puid.mode";
+	/**
+	 * The size of the largest object property (in bytes).
+	 */
+	public static final String CP_OBJECTS_MAX_SIZE = "Objects max size";
 
-  /**
-   * The distribution of PRONOM identifiers within the collection property.
-   */
-  public static final String CP_PUID_DISTRIBUTION = "cp.puid.distribution";
+	/**
+	 * The standard deviation of the size of objects property (in bytes).
+	 */
+	public static final String CP_OBJECTS_SD_SIZE = "Objects sd size";
 
-  /**
-   * The statistical mode of the mime types property.
-   */
-  public static final String CP_MIMETYPE_MODE = "cp.mimetype.mode";
+	/**
+	 * The statistical mode of the formats within the collection property.
+	 */
+	public static final String CP_FORMAT_MODE = "Format mode";
 
-  /**
-   * The distribution of the mime types property.
-   */
-  public static final String CP_MIMETYPE_DISTRIBUTION = "cp.mimetype.distribution";
+	/**
+	 * The format distribution property.
+	 */
+	public static final String CP_DISTRIBUTION = "%s distribution";
 
-  // ############ misc #################
+	/**
+	 * The statistical mode of the PRONOM identifiers within the collection
+	 * property.
+	 */
+	public static final String CP_PUID_MODE = "cp.puid.mode";
 
-  /**
-   * The name of the collection profile Entity.
-   */
-  public static final String CP_NAME = "content_profile";
-  
-  /**
-   * The human readable description of the collection profile Entity.
-   */
-  public static final String CP_DESCRIPTION = "Represents a content profile";
+	/**
+	 * The distribution of PRONOM identifiers within the collection property.
+	 */
+	public static final String CP_PUID_DISTRIBUTION = "cp.puid.distribution";
 
-  /**
-   * Utility classes have only hidden constructors.
-   */
-  
-  private C3POConstants() {
+	/**
+	 * The statistical mode of the mime types property.
+	 */
+	public static final String CP_MIMETYPE_MODE = "cp.mimetype.mode";
 
-  }
+	/**
+	 * The distribution of the mime types property.
+	 */
+	public static final String CP_MIMETYPE_DISTRIBUTION = "cp.mimetype.distribution";
+
+	// ############ misc #################
+
+	/**
+	 * The name of the collection profile Entity.
+	 */
+	public static final String CP_NAME = "content_profile";
+
+	/**
+	 * The human readable description of the collection profile Entity.
+	 */
+	public static final String CP_DESCRIPTION = "Represents a content profile";
+
+	/**
+	 * Utility classes have only hidden constructors.
+	 */
+
+	private C3POConstants() {
+
+	}
 }

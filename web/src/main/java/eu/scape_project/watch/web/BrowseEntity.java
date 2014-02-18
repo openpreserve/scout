@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.inject.Inject;
 
 import eu.scape_project.watch.dao.DAO;
@@ -17,37 +20,46 @@ import eu.scape_project.watch.web.annotations.TemplateSource;
 @TemplateSource("browseEntity")
 public class BrowseEntity extends TemplateContext {
 
-  public List<Property> getProperties() {
-    return DAO.PROPERTY.listWithType(getEntity().getType().getName(), 0, 100);
-  }
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
-  public List<PropertyValue> getValues() {
+	public List<Property> getProperties() {
+		return DAO.PROPERTY.listWithType(getEntity().getType().getName(), 0,
+				100);
+	}
 
-    // TODO optimize
-    final Entity entity = getEntity();
-    final List<Property> properties = DAO.PROPERTY.listWithType(entity.getType().getId(), 0, 1000);
+	public List<PropertyValue> getValues() {
 
-    final List<PropertyValue> ret = new ArrayList<PropertyValue>();
+		// TODO optimize
+		final Entity entity = getEntity();
+		final List<Property> properties = DAO.PROPERTY.listWithType(entity
+				.getType().getId(), 0, 1000);
 
-    for (final Property property : properties) {
-      final PropertyValue pv = DAO.PROPERTY_VALUE.find(entity.getId(), property.getId());
-      if (pv != null) {
-        ret.add(pv);
-      }
-    }
+		final List<PropertyValue> ret = new ArrayList<PropertyValue>();
 
-    // return DAO.PROPERTY_VALUE.listWithEntity(getEntity(), 0, 100);
-    return ret;
-  }
+		for (final Property property : properties) {
 
-  @Inject
-  private Matcher m;
+			final PropertyValue pv = DAO.PROPERTY_VALUE.find(entity.getId(),
+					property.getId());
+			if (pv != null) {
+				ret.add(pv);
+			}
 
-  public String getId() {
-    return m.group(1);
-  }
+			log.info("Entity " + entity.getName() + " has property "
+					+ property.getName() + " with value: " + pv);
+		}
 
-  public Entity getEntity() {
-    return DAO.ENTITY.findById(getId());
-  }
+		// return DAO.PROPERTY_VALUE.listWithEntity(getEntity(), 0, 100);
+		return ret;
+	}
+
+	@Inject
+	private Matcher m;
+
+	public String getId() {
+		return m.group(1);
+	}
+
+	public Entity getEntity() {
+		return DAO.ENTITY.findById(getId());
+	}
 }

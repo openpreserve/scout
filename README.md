@@ -68,7 +68,7 @@ To install you need:
 
 ### Download
 
-Will be available soon.
+You can download all necessary files at [version 0.2.0 release](https://github.com/openplanets/scout/releases/tag/v0.2.0).
 
 ### Install instructions
 
@@ -80,38 +80,21 @@ To install follow these steps:
 JAVA_OPTS="-Xmx512m -Xms128m $JAVA_OPTS"
 ```
  3. Optional[^1]: Install a mail transport agent (e.g. `$ sudo apt-get install postfix`)
- 4. Download and uncompress the [last stable version of Scout sources](https://github.com/openplanets/scout/tags)
- 5. Go to the Scout sources folder and compile with:
- 
- ```
- $ cd [SOURCES]
- $ mvn clean install
- ```
- 
- 6. Install Scout Web Application into Apache Tomcat
+ 4. Download Scout [Web Application](https://github.com/openplanets/scout/releases/download/v0.2.0/scout-web.war) and all [plugins](https://github.com/openplanets/scout/releases/download/v0.2.0/plugins.zip)
+ 5. Install Scout Web Application into Apache Tomcat
 ```
-$ cp [SOURCES]/web/target/scout-web-*.war [TOMCAT]/webapps/
+$ cp scout-web.war [TOMCAT]/webapps/
 ```
- 7. Create the following directories with write permissions by the user running the Apache Tomcat server
+ 6. Create the following directories with write permissions by the user running the Apache Tomcat server
  ```
  $ sudo mkdir /usr/local/scout
  $ sudo chown [TOMCAT_USER] /usr/local/scout
  $ sudo su [TOMCAT_USER]
  $ mkdir /usr/local/scout/data
- $ mkdir /usr/local/scout/plugins
- $ mkdir /usr/local/scout/plugins/adaptors
- $ mkdir /usr/local/scout/plugins/notifications
+ $ unzip plugins.zip -d /usr/local/scout/
  $ mkdir ~/.scout 
- ```
- 8. Copy available adaptor plugins
-```
- $ find [SOURCES]/adaptors/ -name *-jar-with-dependencies.jar -exec cp -v {} /usr/local/scout/plugins/adaptors/ \;
-```
- 9. Copy available notification plugins
-```
- $ find [SOURCES]/notifications/ -name *-jar-with-dependencies.jar -exec cp -v {} /usr/local/scout/plugins/notifications/ \;
-```
- 10. Start Apache Tomcat server
+
+ 7. Start Apache Tomcat server
 
 [^1]: An external SMTP server can optionally be configured.
 

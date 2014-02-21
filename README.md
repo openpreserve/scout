@@ -64,7 +64,7 @@ To install you need:
 * Linux or MacOS X operative system (tested in Ubuntu LTS 12.04)
 * Maven 3
 * Apache Tomcat 7.x
-* Optional[^1]: Mail Transport Agent (e.g. Postfix) 
+* Option: Mail Transport Agent (e.g. Postfix) or an external SMTP service provider
 
 ### Download
 
@@ -81,7 +81,7 @@ To install follow these steps:
    JAVA_OPTS="-Xmx512m -Xms128m $JAVA_OPTS"
    ```
 
-3. Option: Install a mail transport agent (e.g. `$ sudo apt-get install postfix`) or use an external SMTP server.
+3. Option: Install a mail transport agent (e.g. `$ sudo apt-get install postfix`) or use an external SMTP service provider.
 4. Download Scout [web application](https://github.com/openplanets/scout/releases/download/v0.2.0/scout-web.war) and [all plugins](https://github.com/openplanets/scout/releases/download/v0.2.0/plugins.zip)
 5. Install Scout web application into Apache Tomcat
 
@@ -104,7 +104,7 @@ To install follow these steps:
 
 ### Use
 
-To use the tool, open it in your browser, e.g. at [http://localhost:8080/scout-web-v0.2.0/](http://localhost:8080/scout-web-v0.2.0/)
+To use the tool, open it in your browser, e.g. at [http://localhost:8080/scout-web/](http://localhost:8080/scout-web/)
 
 To create the PRONOM adaptor
 

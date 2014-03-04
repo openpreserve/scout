@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>scout-notifications</artifactId>
 		<groupId>eu.scape-project</groupId>
-		<version>0.2.0</version>
+		<version>0.2.1</version>
 	</parent>
 	<artifactId>email-notification</artifactId>
 	<version>0.0.3</version>

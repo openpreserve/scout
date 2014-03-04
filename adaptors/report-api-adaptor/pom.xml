@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>scout-adaptors</artifactId>
 		<groupId>eu.scape-project</groupId>
-		<version>0.2.0</version>
+		<version>0.2.1</version>
 	</parent>
 	<artifactId>report-api-adaptor</artifactId>
 	<version>0.0.2</version>

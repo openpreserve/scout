@@ -5,7 +5,7 @@
 
 	<groupId>eu.scape-project</groupId>
 	<artifactId>scout</artifactId>
-	<version>0.2.0</version>
+	<version>0.2.1</version>
 	<packaging>pom</packaging>
 	<description>Scout is a monitor component as defined in the SCAPE project</description>
 	<name>Scout</name>
@@ -244,12 +244,12 @@
 			<dependency>
 				<groupId>eu.scape-project</groupId>
 				<artifactId>scout-core</artifactId>
-				<version>0.2.0</version>
+				<version>0.2.1</version>
 			</dependency>
 			<dependency>
 				<groupId>eu.scape-project</groupId>
 				<artifactId>scout-model</artifactId>
-				<version>0.2.0</version>
+				<version>0.2.1</version>
 			</dependency>
 			<dependency>
 				<groupId>com.github.jknack</groupId>

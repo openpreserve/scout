@@ -57,13 +57,14 @@ $ cp [SOURCES]/web/target/scout-web-*.war [TOMCAT]/webapps/
 ```
  $ find [SOURCES]/notifications/ -name *-jar-with-dependencies.jar -exec cp -v {} /usr/local/scout/plugins/notifications/ \;
 ```
- 10. Start Apache Tomcat server
+ 10. Save [users.ini](users.ini) to /usr/local/scout
+ 11. Start Apache Tomcat server
 
 [^1]: An external SMTP server can optionally be configured.
 
 ## Using SCOUT
 
-To use the tool, open it in your browser, e.g. at [http://localhost:8080/scout-web-v0.2.0/](http://localhost:8080/scout-web-v0.2.0/)
+To use the tool, open it in your browser, e.g. at [http://localhost:8080/scout-web-v0.2.0/](http://localhost:8080/scout-web-v0.2.0/). Use username 'admin' and password 'admin' to login as an administrator.
 
 To create the PRONOM adaptor
 

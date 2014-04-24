@@ -204,7 +204,7 @@
 				postdata['template'] = templateId;
 				var jqxhr = $.post("", postdata, function() {
 					console.log("created trigger");
-					document.location = "{{mustacheletPath}}/dashboarclassd";
+					document.location = "{{mustacheletPath}}/dashboard";
 				});
 
 				jqxhr.fail(function() {

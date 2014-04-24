@@ -64,60 +64,47 @@ To install you need:
 * Linux or MacOS X operative system (tested in Ubuntu LTS 12.04)
 * Maven 3
 * Apache Tomcat 7.x
-* Optional[^1]: Mail Transport Agent (e.g. Postfix) 
+* Option: Mail Transport Agent (e.g. Postfix) or an external SMTP service provider
 
 ### Download
 
-Will be available soon.
+You can download all necessary files at [version 0.2.0 release](https://github.com/openplanets/scout/releases/tag/v0.2.0).
 
 ### Install instructions
 
 To install follow these steps:
 
- 1. Download and install [Apache Tomcat 7.x](http://tomcat.apache.org/download-70.cgi)
- 2. Configure Apache Tomcat to use more memory. Edit `bin/catalina.sh` and add the following line in the beggining of the file, after the comments:
-```
-JAVA_OPTS="-Xmx512m -Xms128m $JAVA_OPTS"
-```
- 3. Optional[^1]: Install a mail transport agent (e.g. `$ sudo apt-get install postfix`)
- 4. Download and uncompress the [last stable version of Scout sources](https://github.com/openplanets/scout/tags)
- 5. Go to the Scout sources folder and compile with:
- 
- ```
- $ cd [SOURCES]
- $ mvn clean install
- ```
- 
- 6. Install Scout Web Application into Apache Tomcat
-```
-$ cp [SOURCES]/web/target/scout-web-*.war [TOMCAT]/webapps/
-```
- 7. Create the following directories with write permissions by the user running the Apache Tomcat server
- ```
- $ sudo mkdir /usr/local/scout
- $ sudo chown [TOMCAT_USER] /usr/local/scout
- $ sudo su [TOMCAT_USER]
- $ mkdir /usr/local/scout/data
- $ mkdir /usr/local/scout/plugins
- $ mkdir /usr/local/scout/plugins/adaptors
- $ mkdir /usr/local/scout/plugins/notifications
- $ mkdir ~/.scout 
- ```
- 8. Copy available adaptor plugins
-```
- $ find [SOURCES]/adaptors/ -name *-jar-with-dependencies.jar -exec cp -v {} /usr/local/scout/plugins/adaptors/ \;
-```
- 9. Copy available notification plugins
-```
- $ find [SOURCES]/notifications/ -name *-jar-with-dependencies.jar -exec cp -v {} /usr/local/scout/plugins/notifications/ \;
-```
- 10. Start Apache Tomcat server
+1. Download and install [Apache Tomcat 7.x](http://tomcat.apache.org/download-70.cgi)
+2. Configure Apache Tomcat to use more memory. Edit `bin/catalina.sh` and add the following line in the beggining of the file, after the comments:
 
-[^1]: An external SMTP server can optionally be configured.
+   ```
+   JAVA_OPTS="-Xmx512m -Xms128m $JAVA_OPTS"
+   ```
+
+3. Option: Install a mail transport agent (e.g. `$ sudo apt-get install postfix`) or use an external SMTP service provider.
+4. Download Scout [web application](https://github.com/openplanets/scout/releases/download/v0.2.0/scout-web.war) and [all plugins](https://github.com/openplanets/scout/releases/download/v0.2.0/plugins.zip)
+5. Install Scout web application into Apache Tomcat
+
+   ```
+   $ cp scout-web.war [TOMCAT]/webapps/
+   ```
+   
+6. Create the following directories with write permissions by the user running the Apache Tomcat server
+
+   ```
+   $ sudo mkdir /usr/local/scout
+   $ sudo chown [TOMCAT_USER] /usr/local/scout
+   $ sudo su [TOMCAT_USER]
+   $ mkdir /usr/local/scout/data
+   $ unzip plugins.zip -d /usr/local/scout/
+   $ mkdir ~/.scout 
+   ```
+
+7. Start Apache Tomcat server
 
 ### Use
 
-To use the tool, open it in your browser, e.g. at [http://localhost:8080/scout-web-v0.2.0/](http://localhost:8080/scout-web-v0.2.0/)
+To use the tool, open it in your browser, e.g. at [http://localhost:8080/scout-web/](http://localhost:8080/scout-web/)
 
 To create the PRONOM adaptor
 

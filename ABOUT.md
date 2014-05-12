@@ -16,7 +16,7 @@ In short, Scout is a web-based service which:
 What Can Scout Do For Me?
 -------------------------
 Finding out when and how your digital content is at risk is a hard and heavy task to do alone. 
-Many repositories have similar content and are facing similar preservation issues, but they don’t have the means to help each other preserve their content and discover synergies in an easy way, beyond informal community interaction.
+Many repositories have similar content and are facing similar preservation issues, but they don't have the means to help each other preserve their content and discover synergies in an easy way, beyond informal community interaction.
 
 Scout helps you to:
 
@@ -33,17 +33,17 @@ Scout Can Be Used By
 
 How can you engage with Scout?
 
-* Access Scout – get access to the community knowledge
-* Create a content profile – monitor your collections
-* Share your content profile – join the community and discover synergies
-* Define your interests – be notified about opportunities and risks
+* Access Scout: get access to the community knowledge
+* Create a content profile: monitor your collections
+* Share your content profile: join the community and discover synergies
+* Define your interests: be notified about opportunities and risks
 
 Publications
 ------------
 
 * Faria, Akbik, Sierman, Ras, Ferreira, Ramalho: [Automatic preservation watch using information extraction on the Web: a case study on semantic extraction of natural language for digital preservation](http://hdl.handle.net/1822/25214). In: iPRES 2013, Lisbon, Portugal.
 * Kraxner, Plangg, Duretec, Becker, Faria: [The SCAPE planning and watch suite: supporting the preservation lifecycle in repositories](http://hdl.handle.net/1822/25215). In: iPRES 2013, Lisbon, Portugal.
-* Faria, Becker, Duretec, Ferreira, Ramalho: [Supporting the preservation lifecycle in repositories.](http://hdl.handle.net/1822/25101). In: Open Repositories 2013, Charlottetown, Canada.
+* Faria, Becker, Duretec, Ferreira, Ramalho: [Supporting the preservation lifecycle in repositories](http://hdl.handle.net/1822/25101). In: Open Repositories 2013, Charlottetown, Canada.
 * Faria, Petrov, Duretec, Becker, Ferreira, Ramalho: [Design and architecture of a novel preservation watch system](http://hdl.handle.net/1822/21447). In: ICADL 2012, Taipei, Taiwan.
 * Becker, Duretec, Petrov, Faria, Ferreira, Ramalho: [Preservation Watch: what to monitor and how](http://hdl.handle.net/1822/21447). In: iPRES 2012, Toronto, Canada.
  

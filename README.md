@@ -21,7 +21,7 @@ Will be available soon.
 To install follow these steps:
 
  1. Download and install [Apache Tomcat 7.x](http://tomcat.apache.org/download-70.cgi)
- 2. Configure Apache Tomcat to use more memory. Edit `bin/catalina.sh` and add the following line in the beggining of the file, after the comments:
+ 2. Configure Apache Tomcat to use more memory. Edit `bin/catalina.sh` and add the following line in the beginning of the file, after the comments:
 ```
 JAVA_OPTS="-Xmx512m -Xms128m $JAVA_OPTS"
 ```
@@ -80,7 +80,7 @@ More instruction on how to use will be here soon.
 
 Problems and workarounds will be here when needed.
 
-## Licence
+## License
 
 Scout is released under [Apache version 2.0 license](LICENSE.txt).
 

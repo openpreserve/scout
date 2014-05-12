@@ -20,9 +20,7 @@ For using the recommended IDE you require:
 
 ### Setup IDE
 
-After you install eclipse and clone the repo, install the following
-plugins listed above. To install a plugin click on Help > Eclipse Market Place
-and search them or just use the nice drag and drop feature and drag them from the links above.
+After you install eclipse and clone the repo, install the plugins listed above. To install a plugin click on Help > Eclipse Market Place and search them or just use the nice drag and drop feature and drag them from the links above.
 
 As soon as you are ready import the maven modules by selecting File > Import > Maven > Existing Maven Projects.
 Maven will fetch the whole internet (this is normal) and will import the projects for you.
@@ -39,7 +37,7 @@ Project Relative Configuration. Afterwards give a name and browse to the checkst
 maven module. At the end select this to be the default checkstyle config.
 
 To activate checkstyle for a certain project just right click on it select checkstyle > activate checkstyle.
-This will continouosly check the code as you type and mark the bad spots with yellow and will provide
+This will continuously check the code as you type and mark the bad spots with yellow and will provide
 warnings.
 
 ### Build
@@ -54,7 +52,7 @@ After successful compile the binary will be available at `/web/target/scout-web-
 
 ### Deploy
 
-To deploy to Tomcat, please see instalation instructions above.
+To deploy to Tomcat, please see installation instructions above.
 
 ## Contribute
 
@@ -62,7 +60,7 @@ To deploy to Tomcat, please see instalation instructions above.
 2. Change the code and push into the forked project
 3. [Submit a pull request](https://help.github.com/articles/using-pull-requests)
 
-To increase the changes of you code being accepted and merged into the official source here's a checklist of things to go over before submitting a contribution. For example:
+To increase the chances of you changes being accepted and merged into the official source here's a checklist of things to go over before submitting a contribution. For example:
 
 * Has unit tests (that covers at least 80% of the code)
 * Has documentation (at least 80% of public API)

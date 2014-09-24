@@ -20,45 +20,49 @@ Will be available soon.
 
 To install follow these steps:
 
- 1. Download and install [Apache Tomcat 7.x](http://tomcat.apache.org/download-70.cgi)
- 2. Configure Apache Tomcat to use more memory. Edit `bin/catalina.sh` and add the following line in the beginning of the file, after the comments:
-```
-JAVA_OPTS="-Xmx512m -Xms128m $JAVA_OPTS"
-```
- 3. Optional[^1]: Install a mail transport agent (e.g. `$ sudo apt-get install postfix`)
- 4. Download and uncompress the [last stable version of Scout sources](https://github.com/openplanets/scout/tags)
- 5. Go to the Scout sources folder and compile with:
- 
+1. Download and install [Apache Tomcat 7.x](http://tomcat.apache.org/download-70.cgi)
+2. Configure Apache Tomcat to use more memory. Edit `bin/catalina.sh` and add the following line in the beginning of the file, after the comments:
+
+ ```shell
+ JAVA_OPTS="-Xmx512m -Xms128m $JAVA_OPTS"
  ```
- $ cd [SOURCES]
- $ mvn clean install
+3. Optional[^1]: Install a mail transport agent (e.g. `$ sudo apt-get install postfix`)
+* Download and uncompress the [last stable version of Scout sources](https://github.com/openplanets/scout/tags)
+* Go to the Scout sources folder and compile with:
+
+ ```shell
+ cd [SOURCES]
+ mvn clean install
  ```
- 
- 6. Install Scout Web Application into Apache Tomcat
-```
-$ cp [SOURCES]/web/target/scout-web-*.war [TOMCAT]/webapps/
-```
- 7. Create the following directories with write permissions by the user running the Apache Tomcat server
-```shell
- $ sudo mkdir /usr/local/scout
- $ sudo chown [TOMCAT_USER] /usr/local/scout
- $ sudo su [TOMCAT_USER]
- $ mkdir /usr/local/scout/data
- $ mkdir /usr/local/scout/plugins
- $ mkdir /usr/local/scout/plugins/adaptors
- $ mkdir /usr/local/scout/plugins/notifications
- $ mkdir ~/.scout 
-```
- 8. Copy available adaptor plugins
-```
- $ find [SOURCES]/adaptors/ -name *-jar-with-dependencies.jar -exec cp -v {} /usr/local/scout/plugins/adaptors/ \;
-```
- 9. Copy available notification plugins
-```
- $ find [SOURCES]/notifications/ -name *-jar-with-dependencies.jar -exec cp -v {} /usr/local/scout/plugins/notifications/ \;
-```
- 10. Save [users.ini](users.ini) to /usr/local/scout
- 11. Start Apache Tomcat server
+* Install Scout Web Application into Apache Tomcat
+
+ ```shell
+ cp [SOURCES]/web/target/scout-web-*.war [TOMCAT]/webapps/
+ ```
+* Create the following directories with write permissions by the user running the Apache Tomcat server
+
+ ```shell
+ sudo mkdir /usr/local/scout
+ sudo chown [TOMCAT_USER] /usr/local/scout
+ sudo su [TOMCAT_USER]
+ mkdir /usr/local/scout/data
+ mkdir /usr/local/scout/plugins
+ mkdir /usr/local/scout/plugins/adaptors
+ mkdir /usr/local/scout/plugins/notifications
+ mkdir ~/.scout 
+ ```
+* Copy available adaptor plugins
+
+ ```shell
+ find [SOURCES]/adaptors/ -name *-jar-with-dependencies.jar -exec cp -v {} /usr/local/scout/plugins/adaptors/ \;
+ ```
+* Copy available notification plugins
+
+ ```shell
+ find [SOURCES]/notifications/ -name *-jar-with-dependencies.jar -exec cp -v {} /usr/local/scout/plugins/notifications/ \;
+ ```
+* Save [users.ini](users.ini) to /usr/local/scout
+* Start Apache Tomcat server
 
 [^1]: An external SMTP server can optionally be configured.
 

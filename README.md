@@ -39,7 +39,7 @@ JAVA_OPTS="-Xmx512m -Xms128m $JAVA_OPTS"
 $ cp [SOURCES]/web/target/scout-web-*.war [TOMCAT]/webapps/
 ```
  7. Create the following directories with write permissions by the user running the Apache Tomcat server
- ```
+```shell
  $ sudo mkdir /usr/local/scout
  $ sudo chown [TOMCAT_USER] /usr/local/scout
  $ sudo su [TOMCAT_USER]
@@ -48,7 +48,7 @@ $ cp [SOURCES]/web/target/scout-web-*.war [TOMCAT]/webapps/
  $ mkdir /usr/local/scout/plugins/adaptors
  $ mkdir /usr/local/scout/plugins/notifications
  $ mkdir ~/.scout 
- ```
+```
  8. Copy available adaptor plugins
 ```
  $ find [SOURCES]/adaptors/ -name *-jar-with-dependencies.jar -exec cp -v {} /usr/local/scout/plugins/adaptors/ \;

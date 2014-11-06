@@ -235,7 +235,7 @@
 					.getJSON(
 							apiRequest,
 							function(questionTemplate) {
-								var template = Handlebars.templates['questionTemplateForTrigger.hbs'];
+								var template = Handlebars.templates['questionTemplateForTrigger'];
 								var html = template(questionTemplate);
 								$('#question_template').html(html);
 
@@ -302,7 +302,7 @@
 					});
 
 		} else {
-			var template = Handlebars.templates['questionTemplateList.hbs'];
+			var template = Handlebars.templates['questionTemplateList'];
 			// TODO fetch template list and add as an input to the temaplate
 			var context = {
 				mustacheletPath : "{{mustacheletPath}}"

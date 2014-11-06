@@ -70,7 +70,7 @@ Paginator.prototype = {
 				contextPath : contextPath,
 				mustacheletPath : mustacheletPath
 			};
-			var baseTemplate = Handlebars.templates['base_paginated_list.hbs'];
+			var baseTemplate = Handlebars.templates['base_paginated_list'];
 			Handlebars.registerPartial("base_paginated_list", baseTemplate);
 			var html = template(context);
 			$(divID).html(html);

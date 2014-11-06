@@ -158,7 +158,6 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 	 */
 	@Override
 	public String getName() {
-		LOG.debug("getName()");
 		return ReportAPIAdaptor.NAME;
 	}
 
@@ -167,7 +166,6 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 	 */
 	@Override
 	public String getVersion() {
-		LOG.debug("getVersion()");
 		return ReportAPIAdaptor.VERSION;
 	}
 
@@ -176,7 +174,6 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 	 */
 	@Override
 	public String getDescription() {
-		LOG.debug("getDescription()");
 		return ReportAPIAdaptor.DESCRIPTION;
 	}
 
@@ -185,7 +182,6 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 	 */
 	@Override
 	public PluginType getPluginType() {
-		LOG.debug("getPluginType()");
 		return PluginType.ADAPTOR;
 	}
 
@@ -194,7 +190,6 @@ public class ReportAPIAdaptor implements AdaptorPluginInterface {
 	 */
 	@Override
 	public List<ConfigParameter> getParameters() {
-		LOG.debug("getParameters()");
 		return this.defaultConfig;
 	}
 

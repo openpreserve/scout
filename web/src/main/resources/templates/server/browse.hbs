@@ -13,7 +13,7 @@
 {{/partial}}
 {{#partial "scripts"}}
 <script>
-var paginator = Paginator({{entityTypeCount}}, '/api/entitytype.json/list', 20, 'type_list.hbs', '#typeList', '{{contextPath}}', '{{mustacheletPath}}');
+var paginator = Paginator({{entityTypeCount}}, '/api/entitytype.json/list', 20, 'type_list', '#typeList', '{{contextPath}}', '{{mustacheletPath}}');
 paginator.init();
 </script>
 {{/partial}}

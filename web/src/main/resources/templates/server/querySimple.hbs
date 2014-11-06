@@ -134,8 +134,13 @@
 							.getJSON(
 									apiRequest,
 									function(questionTemplate) {
-										var template = Handlebars.templates['questionTemplate.hbs'];
-										var html = template(questionTemplate);
+										var template = Handlebars.templates['questionTemplate'];
+										var context = {
+											questionTemplate : questionTemplate,
+											contextPath : '{{contextPath}}',
+											mustacheletPath : '{{mustacheletPath}}'
+										};
+										var html = template(context);
 										$('#question_template').html(html);
 
 										$("#search_form").submit(
@@ -196,19 +201,19 @@
 													var template;
 
 													if (target.toLowerCase() == 'entity_type') {
-														template = 'type_list.hbs';
+														template = 'type_list';
 													} else if (target
 															.toLowerCase() == 'property') {
-														template = 'property_list_for_query.hbs';
+														template = 'property_list_for_query';
 													} else if (target
 															.toLowerCase() == 'entity') {
-														template = 'entity_list_for_query.hbs';
+														template = 'entity_list_for_query';
 													} else if (target
 															.toLowerCase() == 'property_value') {
-														template = 'value_list_for_query.hbs';
+														template = 'value_list_for_query';
 													} else if (target
 															.toLowerCase() == 'measurement') {
-														template = 'measurement_list_for_query.hbs';
+														template = 'measurement_list_for_query';
 													}
 
 													paginator = Paginator(

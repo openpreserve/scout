@@ -64,7 +64,7 @@
 	$('.jtextfill').textfill({maxFontPixels: 100});
 	
 	var api = "/api/measurement.json/list?value={{id}}"
-	var paginator = Paginator({{versionMeasurementCount}}, api, 20, 'version_measurement_list.hbs', '#versionMeasurementList', '{{contextPath}}', '{{mustacheletPath}}');
+	var paginator = Paginator({{versionMeasurementCount}}, api, 20, 'version_measurement_list', '#versionMeasurementList', '{{contextPath}}', '{{mustacheletPath}}');
 	paginator.init();
 </script>
 

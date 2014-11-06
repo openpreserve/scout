@@ -114,7 +114,7 @@
 </div>
 {{/partial}} {{#partial "scripts"}}
 <script>
-	var paginator = Paginator({{eventCount}}, '/api/sourceadaptorevent.json/list?adaptor={{adaptor.id}}', 20, 'event_list.hbs', '#eventList', '{{contextPath}}', '{{mustacheletPath}}');
+	var paginator = Paginator({{eventCount}}, '/api/sourceadaptorevent.json/list?adaptor={{adaptor.id}}', 20, 'event_list', '#eventList', '{{contextPath}}', '{{mustacheletPath}}');
 	paginator.init();
 </script>
 {{/partial}} {{>base}}

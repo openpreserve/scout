@@ -1,3 +1,5 @@
+{{#with questionTemplate}}
+
 <p>
 	<strong>{{title}}</strong>
 </p>
@@ -9,7 +11,22 @@
 	<div class="form-group">
 		<label class="control-label">{{label}}</label>
 		<div class="row">
-			{{#compare parameterType '==' 'NODE'}}
+			{{#compare parameterType '==' 'NODE'}} {{#compare nodeFilterTarget
+			'==' 'ENTITY'}}
+			<div class="col-lg-12">
+				<select id="node_{{id}}" class="form-control" name="node_{{id}}">
+				</select>
+				<script type="text/javascript">
+				console.log("making request");
+				$.getJSON('{{../../../../../contextPath}}/api/request.json/list/?target=ENTITY&start=0&max=100&query='+encodeURIComponent('{{nodeFilterSparql}}'), function(data) {
+					$.each(data, function(index, value) {
+						console.log("name="+value.name+", id="+value.id);
+						$('#node_{{id}}').append($("<option></option>").attr("value",value.id).text(value.name));
+					});
+				});
+				</script>
+			</div>
+			{{/compare}} {{#compare nodeFilterTarget '!=' 'ENTITY'}}
 			<div class="col-lg-12">
 				<input type="text" name="node_{{id}}"
 					class="form-control validation" required
@@ -18,8 +35,8 @@
 					data-validation-pattern-message="Please just put the ID, it must have 27 characters and be valid"
 					placeholder="The ID from the URL"></input>
 			</div>
-			{{/compare}} {{#compare parameterType '==' 'LITERAL'}} {{#compare
-			literalFilterDatatype '==' 'LONG'}} {{#compare
+			{{/compare}} {{/compare}} {{#compare parameterType '==' 'LITERAL'}}
+			{{#compare literalFilterDatatype '==' 'LONG'}} {{#compare
 			literalFilterRenderingHint '==' 'STORAGE_VOLUME'}}
 			<div class="col-lg-2">
 				<input name="long-storagevolume-number_{{id}}"
@@ -65,4 +82,4 @@
 		$(".validation").jqBootstrapValidation();
 	});
 </script>
-{{/if}}
+{{/if}} {{/with}}

@@ -109,22 +109,22 @@
 				.getJSON(
 						apiCountRequest,
 						function(count) {
-							var apiListRequest = '{{contextPath}}/api/request.json/list/?target='
+							var apiListRequest = '/api/request.json/list/?target='
 									+ target
 									+ '&query='
 									+ encodeURIComponent(query);
 							var template;
 
 							if (target == 'entity_type') {
-								template = 'type_list.hbs';
+								template = 'type_list';
 							} else if (target == 'property') {
-								template = 'property_list_for_query.hbs';
+								template = 'property_list_for_query';
 							} else if (target == 'entity') {
-								template = 'entity_list_for_query.hbs';
+								template = 'entity_list_for_query';
 							} else if (target == 'property_value') {
-								template = 'value_list_for_query.hbs';
+								template = 'value_list_for_query';
 							} else if (target == 'measurement') {
-								template = 'measurement_list_for_query.hbs';
+								template = 'measurement_list_for_query';
 							}
 
 							paginator = Paginator(count, apiListRequest, 20,

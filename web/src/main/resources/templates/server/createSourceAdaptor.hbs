@@ -55,7 +55,7 @@
 								+ encodeURIComponent(pluginName) + '/'
 								+ pluginVersion,
 						function(plugin_data) {
-							var template = Handlebars.templates['plugin_configuration.hbs'];
+							var template = Handlebars.templates['plugin_configuration'];
 							var pluginHtml = template(plugin_data);
 							$('#configuration').html(pluginHtml);
 						});

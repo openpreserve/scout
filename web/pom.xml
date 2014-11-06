@@ -33,6 +33,29 @@
 				</configuration>
 			</plugin>
 			<plugin>
+				<groupId>com.github.jknack</groupId>
+				<artifactId>handlebars-maven-plugin</artifactId>
+				<version>1.3.0</version>
+				<executions>
+					<execution>
+						<id>precompile</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>precompile</goal>
+						</goals>
+						<configuration>
+							<!-- <output>${project.build.directory}/${project.build.finalName}/js/templates/templates.js</output> -->
+							<output>${project.basedir}/compiled-templates/templates.js</output>
+							<prefix>${project.basedir}/src/main/resources/templates/client/</prefix>
+							<minimize>true</minimize>
+							<includeRuntime>false</includeRuntime>
+							<amd>false</amd>
+							<encoding>UTF-8</encoding>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.1.1</version>
 				<configuration>
@@ -204,6 +227,11 @@
 		<dependency>
 			<groupId>com.github.jknack</groupId>
 			<artifactId>handlebars-humanize</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.3.2</version>
 		</dependency>
 		<!-- Added this two dependencies because the email plugin would fail without 
 			them -->

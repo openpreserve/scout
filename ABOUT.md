@@ -13,6 +13,8 @@ In short, Scout is a web-based service which:
 * enables content holders to monitor changes in the preservation environment that can influence their own preservation setup
 * provides notification about, for example, format obsolescence, new preservation tools, and policy conformity
 
+<iframe src="https://player.vimeo.com/video/120675490?color=ffffff" width="800" height="600" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+
 What Can Scout Do For Me?
 -------------------------
 Finding out when and how your digital content is at risk is a hard and heavy task to do alone. 

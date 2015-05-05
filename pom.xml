@@ -9,7 +9,7 @@
 	<packaging>pom</packaging>
 	<description>Scout is a monitor component as defined in the SCAPE project</description>
 	<name>Scout</name>
-	<url>http://www.opf-labs.org/maven/bamboo/scape-pw/</url>
+	<url>http://scout.scape-project.eu</url>
 
 	<licenses>
 		<license>
@@ -43,9 +43,9 @@
 	</developers>
 
 	<scm>
-		<connection>scm:git:git@github.com:openplanets/scape-pw.git</connection>
-		<developerConnection>scm:git:git@github.com:openplanets/scape-pw.git</developerConnection>
-		<url>git@github.com:openplanets/scape-pw.git</url>
+		<connection>scm:git:git@github.com:openpreserve/scout.git</connection>
+		<developerConnection>scm:git:git@github.com:openpreserve/scout.git</developerConnection>
+		<url>git@github.com:openpreserve/scout.git</url>
 	</scm>
 
 	<modules>
@@ -212,7 +212,7 @@
 				<site>
 					<id>opf.jenkins.site</id>
 					<name>OPF Labs Maven Local Website</name>
-					<url>file:///var/www/projects/scape/scout</url>
+					<url>file:///var/www/projects.opf-labs.org/scape/scout</url>
 				</site>
 			</distributionManagement>
 		</profile>

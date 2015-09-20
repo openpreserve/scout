@@ -62,7 +62,7 @@
 	type="text/javascript"></script>
 <script>
 	$('.jtextfill').textfill({maxFontPixels: 100});
-	
+
 	var api = "/api/measurement.json/list?value={{id}}"
 	var paginator = Paginator({{versionMeasurementCount}}, api, 20, 'version_measurement_list', '#versionMeasurementList', '{{contextPath}}', '{{mustacheletPath}}');
 	paginator.init();
@@ -89,7 +89,7 @@ $(function () {
     	// static variables
     	var datatype = "{{propertyValue.property.datatype}}";
     	var renderingHint =  "{{propertyValue.property.renderingHint}}";
-    	
+
     	var yFormatter = function(value) {
     		console.log("value: "+value);
     		var ret;
@@ -104,26 +104,26 @@ $(function () {
     		 console.log("formatted: "+ret);
     		 return ret;
     	};
-    	
+
         // define the options
         var options = {
-    
+
             chart: {
                 renderTo: 'historyGraph'
             },
-    
+
             title: {
                 text: null
             },
-    
+
             subtitle: {
                 text: null
             },
-    
+
             xAxis: {
                 type: 'datetime'
             },
-    
+
             yAxis: [{ // left y axis
                 title: {
                     text: null
@@ -154,12 +154,12 @@ $(function () {
                 },
                 showFirstLabel: false
             }],
-    
+
             tooltip: {
                 shared: true,
                 crosshairs: true
             },
-    
+
             plotOptions: {
                 series: {
                     cursor: 'pointer',
@@ -173,7 +173,7 @@ $(function () {
                                     },
                                     headingText: this.name,
                                     maincontentText: 'Taken at ' + moment(this.x).format('dddd, D MMMM YYYY, h:mm:ss a') +'<br/> '+
-                                        'From source ???', 
+                                        'From source ???',
                                 });
                             }
                         }
@@ -184,17 +184,17 @@ $(function () {
                 }
             },
         };
-    
+
         var api = "{{contextPath}}/api/measurement.json/list?entity={{propertyValue.entity.id}}&property={{propertyValue.property.id}}&significant=true";
-        
+
         var getMeasurements = function(api, start, max) {
         	var apiRequest = api + "&start="+start+"&max="+max;
-        	
+
         	$.getJSON(apiRequest, function(data) {
             	var measurements = [];
             	var myseries = {};
             	var datatype = '{{propertyValue.property.datatype}}';
-            	
+
             	for (var i = 0; i < data.length; i++) {
             	    var measurement = data[i];
             	    var date = new Date(measurement.timestamp);
@@ -202,29 +202,33 @@ $(function () {
             	    var version = measurement.propertyValue.version;
             	    if(datatype == 'STRING_DICTIONARY') {
             	    	for(var j = 0; j < value.length; j++) {
-            	    		var keySeries = myseries[value[j].key];
-            	    		if(!keySeries) {
-            	    			keySeries = {measurements: []};
-            	    			myseries[value[j].key] = keySeries;
-            	    		}
-            	    		var realValue = value[j].value;
-            	    		var intValue = parseInt(realValue);
-            	    		if(intValue == NaN) {
-            	    			keySeries.measurements.push({name: realValue, x: date, y: version});
-            	    		} else {
-            	    			keySeries.measurements.push({name: realValue, x: date, y: intValue});
-            	    		}
-            	    		
+											if(j<100) {
+	            	    		var keySeries = myseries[value[j].key];
+	            	    		if(!keySeries) {
+	            	    			keySeries = {measurements: []};
+	            	    			myseries[value[j].key] = keySeries;
+	            	    		}
+	            	    		var realValue = value[j].value;
+	            	    		var intValue = parseInt(realValue);
+	            	    		if(intValue == NaN) {
+	            	    			keySeries.measurements.push({name: realValue, x: date, y: version});
+	            	    		} else {
+	            	    			keySeries.measurements.push({name: realValue, x: date, y: intValue});
+	            	    		}
+											} else {
+												// TODO add all remaining values to an "other" series
+												console.log("ignoring value "+value[j].key);
+											}
             	    	}
             	    } else if(datatype == 'INTEGER' || datatype == 'LONG' ||datatype == 'FLOAT' || datatype == 'DOUBLE') {
-            	    	measurements.push({name: ValueRenderer.renderValue(measurement.propertyValue), x: date, y: value});	
+            	    	measurements.push({name: ValueRenderer.renderValue(measurement.propertyValue), x: date, y: value});
             	    } else if(datatype == 'DATE') {
             	    	var dateValue = new Date(value);
-            	    	measurements.push({name: ValueRenderer.renderValue(measurement.propertyValue), x: date, y: dateValue});	
+            	    	measurements.push({name: ValueRenderer.renderValue(measurement.propertyValue), x: date, y: dateValue});
             	    } else {
             	    	measurements.push({name: ValueRenderer.renderValue(measurement.propertyValue), x: date, y: version});
             	    }
-            	    
+
             	}
             	// Define date series
             	if(datatype == 'STRING_DICTIONARY') {
@@ -253,10 +257,10 @@ $(function () {
             	chart = new Highcharts.Chart(options);
             });
         };
-    	
+
         getMeasurements(api, 0, 100);
-        
-    
+
+
 	});
 });
 </script>

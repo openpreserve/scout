@@ -10,7 +10,7 @@ To install you need:
 * Linux or MacOS X operative system (tested in Ubuntu LTS 12.04)
 * Maven 3
 * Apache Tomcat 7.x
-* Optional[^1]: Mail Transport Agent (e.g. Postfix) 
+* Optional[^1]: Mail Transport Agent (e.g. Postfix)
 
 ### Download
 
@@ -49,19 +49,19 @@ To install follow these steps:
  mkdir /usr/local/scout/plugins
  mkdir /usr/local/scout/plugins/adaptors
  mkdir /usr/local/scout/plugins/notifications
- mkdir ~/.scout 
+ mkdir ~/.scout
  ```
 * Copy available adaptor plugins
 
  ```shell
- find [SOURCES]/adaptors/ -name *-jar-with-dependencies.jar -exec cp -v {} /usr/local/scout/plugins/adaptors/ \;
+ find [SOURCES]/adaptors/ -name "*-jar-with-dependencies.jar" -exec cp -v {} /usr/local/scout/plugins/adaptors/ \;
  ```
 * Copy available notification plugins
 
  ```shell
- find [SOURCES]/notifications/ -name *-jar-with-dependencies.jar -exec cp -v {} /usr/local/scout/plugins/notifications/ \;
+ find [SOURCES]/notifications/ -name "*-jar-with-dependencies.jar" -exec cp -v {} /usr/local/scout/plugins/notifications/ \;
  ```
-* Save [users.ini](users.ini) to /usr/local/scout
+* Save [users.ini](https://raw.githubusercontent.com/openpreserve/scout/master/users.ini) to /usr/local/scout
 * Start Apache Tomcat server
 
 [^1]: An external SMTP server can optionally be configured.

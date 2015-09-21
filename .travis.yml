@@ -1,7 +1,2 @@
 language: java
-jdk:
-  - oraclejdk8
-  - oraclejdk7
-# Build timeout with openjdk7 - Travis issue? https://travis-ci.org/openplanets/scout/builds/24991492
-# - openjdk7
-  - openjdk6
+sudo: false

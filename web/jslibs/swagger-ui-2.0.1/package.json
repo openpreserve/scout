@@ -19,6 +19,6 @@
   "readmeFilename": "README.md",
   "dependencies": {
     "coffee-script": "~1.5.0",
-    "handlebars": "~1.0.10"
+    "handlebars": "~4.4.3"
   }
 }
